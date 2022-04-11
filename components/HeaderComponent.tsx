@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
         mainHeader: {
             fontSize:25,
             textTransform: "uppercase",
+            fontWeight: "bold",
         }, 
         headerContainer:{
             paddingRight: 10,

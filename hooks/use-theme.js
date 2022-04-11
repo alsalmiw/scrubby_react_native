@@ -15,6 +15,7 @@ export default function UseTheme(){
     const [greenColor, setGreenColor] = useState("#98B117")
     const [yellowColor, setYellowColor] = useState("#F8AA07")
     const [blueColor, setBlueColor] = useState("#1699B1")
+    const [primaryFont, setPrimaryFont] = useState("")
 
 
 return{primaryColor, secondaryTextColor, primaryTextColor, lightLilacColor, lilacColor, orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor }

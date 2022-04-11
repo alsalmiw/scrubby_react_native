@@ -1,20 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-// import { ThemeProvider } from './context/ThemeContext';
-// import HeaderComponent from './components/HeaderComponent'
+import { ThemeProvider } from './context/ThemeContext';
+import HeaderComponent from './components/HeaderComponent'
 
 
 export default function App() {
   return (
-    // <ThemeProvider>
-    // <HeaderComponent title="Header Component"/>
-    <>
+    
+   
+    
+    <ThemeProvider>
     <View style={styles.container}>
     <Text>WhatWhat</Text>
- 
+    <HeaderComponent title="Hello" />
     </View>
-    </>
-    // {/* </ThemeProvider> */}
+    </ThemeProvider> 
+    
   );
 }
 

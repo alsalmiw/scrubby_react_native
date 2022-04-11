@@ -3,26 +3,20 @@ import {StyleSheet} from "react-native"
 
 export default function UseTheme(){
 
-    const primaryColor='#5D5D5D'
-    const secondaryColor='#5D5D5D'
+    const [primaryTextColor, setPrimaryTextColor] = useState("#454444")
+    const [secondaryTextColor, setSecondaryTextColor] = useState("#5D5D5D")
+    const [primaryColor, setPrimaryColor] = useState("#FFFF")
+    const [lightLilacColor, setlightLilacColor] = useState("#D9DBE7")
+    const [lilacColor, setLilacColor] = useState("#A3A0B3")
+    const [orangeColor, setOrangeColor] = useState("#E2683C")
+    const [purpleColor, setPurpleColor] = useState("#6455B5")
+    const [fuchsiaColor, setFuchsiaColor] = useState("#B74482")
+    const [violetColor, setVioletColor] = useState("#A26099")
+    const [greenColor, setGreenColor] = useState("#98B117")
+    const [yellowColor, setYellowColor] = useState("#F8AA07")
+    const [blueColor, setBlueColor] = useState("#1699B1")
 
-    const theme = StyleSheet.create({
-        inputBox:{
-            borderBottomColor: 'red',
-            backgroundColor: 'white',
-            padding: 20,
-            borderBottomWidth: 1
-        },
-        loginBtn: {
-            backgroundColor: 'blue',
-        },
-        mainHeader: {
-            Color: primaryColor,
-            fontSize:25,
-            textTransform: "uppercase",
-        }
-    })
 
-return{theme}
+return{primaryColor, secondaryTextColor, primaryTextColor, lightLilacColor, lilacColor, orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor }
 }
 

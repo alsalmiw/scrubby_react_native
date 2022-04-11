@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 // import { ThemeProvider } from './context/ThemeContext';
 // import HeaderComponent from './components/HeaderComponent'
 
-
+import InputFieldComponent from './components/AddEdit/InputFieldComponent';
 export default function App() {
   return (
     // <ThemeProvider>
@@ -11,7 +11,7 @@ export default function App() {
     <>
     <View style={styles.container}>
     <Text>WhatWhat</Text>
- 
+    <InputFieldComponent />
     </View>
     </>
     // {/* </ThemeProvider> */}

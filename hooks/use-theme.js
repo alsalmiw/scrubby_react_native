@@ -3,7 +3,10 @@ import {StyleSheet} from "react-native"
 
 export default function UseTheme(){
 
-    const styles = StyleSheet.create({
+    const primaryColor='#5D5D5D'
+    const secondaryColor='#5D5D5D'
+
+    const theme = StyleSheet.create({
         inputBox:{
             borderBottomColor: 'red',
             backgroundColor: 'white',
@@ -12,9 +15,14 @@ export default function UseTheme(){
         },
         loginBtn: {
             backgroundColor: 'blue',
+        },
+        mainHeader: {
+            Color: primaryColor,
+            fontSize:25,
+            textTransform: "uppercase",
         }
     })
 
-return{styles}
+return{theme}
 }
 

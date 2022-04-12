@@ -3,6 +3,7 @@ import { FC, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, StatusBar } from 'react-native';
 import CoinsPointsDisplayContainer from '../../components/Profile/CoinsPointsDisplayContainer'
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
+import AddPhotoComponent from '../../components/AddPhotoComponent';
 
 const MyProfileScreen: FC = ()=> {
   
@@ -13,7 +14,7 @@ const MyProfileScreen: FC = ()=> {
  
     <ScrollView style={styles.container}>
         
-        {/* <CoinsPointsDisplayContainer coins="200" points="10,000" /> */}
+        {/* <CoinsPointsDisplayContainer coins="200" points="10,000" />
         {arr.map((title, idx) => {
           return (
            <TaskSpaceRowComponent key={idx} idx={idx+r}>
@@ -23,7 +24,9 @@ const MyProfileScreen: FC = ()=> {
         </TaskSpaceRowComponent>
           )
         })}
-       
+        */}
+
+        <AddPhotoComponent photo={"photo"}/>
         
     </ScrollView>
 

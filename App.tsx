@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 // import { ThemeProvider } from './context/ThemeContext';
 // import HeaderComponent from './components/HeaderComponent'
 
-import InputFieldComponent from './components/AddEdit/InputFieldComponent';
+import InputFieldComponent from './components/AddEdit/InputFieldComponentLogin';
 export default function App() {
   return (
     // <ThemeProvider>

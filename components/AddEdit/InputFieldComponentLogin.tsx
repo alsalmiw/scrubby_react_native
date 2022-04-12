@@ -5,7 +5,7 @@ import { TextInput } from 'react-native-paper';
 
 
 
-const InputFieldComponent = () => {
+const InputFieldComponentLogin = () => {
 
 
   return (
@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default InputFieldComponent;
+export default InputFieldComponentLogin;

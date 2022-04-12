@@ -1,44 +1,64 @@
-import {FC} from 'react'
-import { Image, StyleSheet, TextInput, View } from 'react-native'
+import * as React from 'react';
+import { Image, StyleSheet, View } from 'react-native';
+import { TextInput } from 'react-native-paper';
 
-import loginIcon from '.../image/Iconfether.png'
 
-const InputFieldComponent: FC =() =>{
-    return(
-        <View style={styles.searchSection}>
-            <Image source={loginIcon} style={styles.iconPad} />
-            <TextInput style={styles.inputBox} onChangeText={(e) => console.log(e)} placeholder='username' />
-        </View>
-    );
-}
+
+
+const InputFieldComponent = () => {
+
+
+  return (
+    <View style={styles.SectionStyle}>
+    <Image
+        source={require('../../image/icon.png')}
+        style={styles.ImageStyle}
+    />
+    <TextInput
+        autoComplete='off'
+        style={styles.inputUsername}
+        placeholder="Username"
+        underlineColorAndroid={'transparent'}
+    />
+    
+</View>
+    
+  );
+};
 
 const styles = StyleSheet.create({
-    inputBox:{
-        borderRadius:15,
-        borderColor:'black',
-        borderWidth:1,
-        width:300,
-        height:50,
-        textAlign:'center',
-        fontSize:25,
-        flex: 1,
-        paddingTop: 10,
-        paddingRight: 10,
-        paddingBottom: 10,
-        paddingLeft: 0
-    },
-    iconPad:{
-        padding: 10
-    },
-    searchSection: {
-        flex: 1,
+    SectionStyle: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: 'white',
+        borderWidth: 1,
+        borderColor: '#000',
+        height: 60,
+        width:300,
+        borderRadius: 5,
+        margin: 10,
     },
-
-
+    ImageStyle: {
+        padding: 10,
+        marginRight:20,
+        marginLeft:20,
+        margin: 5,
+        height: 25,
+        width: 25,
+        resizeMode: 'stretch',
+        alignItems: 'center',
+    },
+    inputUsername:{
+        flex:1,
+        height:25,
+        width:200,
+        backgroundColor:'white',
+        borderWidth:0,
+        borderBottomWidth:0
+        
+    }
 })
 
-export default InputFieldComponent
+
+export default InputFieldComponent;

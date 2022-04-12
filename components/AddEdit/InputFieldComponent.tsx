@@ -18,11 +18,11 @@ const InputFieldComponent = () => {
         autoComplete='off'
         style={styles.inputUsername}
         placeholder="Username"
-        underlineColorAndroid={'transparent'}
+        mode='flat'
     />
     
 </View>
-    
+
   );
 };
 
@@ -32,12 +32,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'white',
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: '#000',
         height: 60,
         width:300,
-        borderRadius: 5,
+        borderRadius: 10,
         margin: 10,
+        overflow:'hidden'
     },
     ImageStyle: {
         padding: 10,
@@ -51,11 +52,16 @@ const styles = StyleSheet.create({
     },
     inputUsername:{
         flex:1,
-        height:25,
-        width:200,
+        height:60,
+        width:50,
+        paddingEnd:10,
         backgroundColor:'white',
-        borderWidth:0,
-        borderBottomWidth:0
+        textDecorationLine:"underline",
+        overflow:'hidden',
+        borderRadius: 0,
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+
         
     }
 })

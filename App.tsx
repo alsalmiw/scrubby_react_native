@@ -3,20 +3,13 @@ import { StyleSheet, Text, View } from 'react-native';
 import { ThemeProvider } from './context/ThemeContext';
 import HeaderComponent from './components/HeaderComponent'
 import UnderlinedHeaderComponent from './components/UnderlinedHeaderComponent';
+import NavigationComponent from './components/NavigationComponent'
 
 export default function App() {
   return (
-    
-   
-    
     <ThemeProvider>
-    <View style={styles.container}>
-    <Text>WhatWhat</Text>
-    <HeaderComponent title="Hello" />
-    <UnderlinedHeaderComponent title="My Rooms" />
-    </View>
+    <NavigationComponent />
     </ThemeProvider> 
-    
   );
 }
 

@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
+import { AntDesign } from '@expo/vector-icons';
+
 
 
 
@@ -12,10 +14,7 @@ const InputFieldComponentLogin = () => {
         //userlogin input
         <>
             <View style={styles.SectionStyle}>
-                <Image
-                    source={require('../../image/icon.png')}
-                    style={styles.ImageStyle}
-                />
+            <AntDesign name="user" size={28} color="#808080" style={styles.ImageStyle} />
                 <TextInput
                     autoComplete='off'
                     style={styles.inputUsername}
@@ -27,10 +26,7 @@ const InputFieldComponentLogin = () => {
             </View>
 
             <View style={styles.SectionStyle}>
-                <Image
-                    source={require('../../image/lock.png')}
-                    style={[styles.ImageStyle, { width: 25, height: 30 }]}
-                />
+            <AntDesign name="lock" size={28} color="#808080" style={styles.ImageStyle}/>
                 <TextInput
                     autoComplete='off'
                     style={styles.inputUsername}
@@ -58,17 +54,13 @@ const styles = StyleSheet.create({
         width: 300,
         borderRadius: 10,
         margin: 10,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        
+
     },
     ImageStyle: {
-        padding: 10,
-        marginRight: 20,
-        marginLeft: 20,
-        margin: 5,
-        height: 25,
-        width: 25,
-        resizeMode: 'stretch',
-        alignItems: 'center',
+        paddingLeft:10
+
     },
     inputUsername: {
         flex: 1,

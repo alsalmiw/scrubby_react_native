@@ -10,11 +10,12 @@ export default function App() {
     // <ThemeProvider>
     // <HeaderComponent title="Header Component"/>
     <>
-    <View style={styles.container}>
-    <Text>WhatWhat</Text>
-    {/* <InputFieldComponent/> */}
     <LoginAndCreateAccountScreen />
-    </View>
+    {/* <View style={styles.container}>
+    <InputFieldComponent/>
+    <LoginAndCreateAccountScreen />
+    <Text>Hello World I am usable</Text>
+    </View> */}
     
     </>
     // {/* </ThemeProvider> */}

@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { ScrollView, StyleSheet, Text, View } from "react-native"
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native"
 import { Button } from "react-native-paper"
 
 
@@ -8,24 +8,20 @@ import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentL
 const LoginAndCreateAccountScreen: FC = () => {
 
     return (
+
         <View style={styles.backgroundColor}>
-            <ScrollView >
-                <View>
-                    <Text style={styles.title}>Sign up</Text>
-                </View>
+            <View style={{ flex: 0.8, alignItems: "center", justifyContent: "center" }}>
+                <Text style={styles.title}>Sign up</Text>
 
                 <View style={styles.inputPosition}>
-                <InputFieldComponentLogin />
+                    <InputFieldComponentLogin />
                 </View>
-                
-
 
                 <View>
                     <Text style={styles.loginTxt}>Already have an account. <Text onPress={() => console.log('go to login page')} style={{ color: 'blue' }}>Login here.</Text></Text>
                 </View>
-
-            </ScrollView>
-            <View>
+            </View>
+            <View style={{ flex: 0.2, alignItems:'center'}}>
                 <Button style={styles.loginBtn} mode="contained" onPress={() => console.log('Pressed')}>
                     <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
                         Create Account
@@ -39,10 +35,10 @@ const LoginAndCreateAccountScreen: FC = () => {
 
 const styles = StyleSheet.create({
     backgroundColor: {
-        backgroundColor: "#1699B1",
         flex: 1,
+        backgroundColor: '#1699B1',
         minWidth: "100%",
-        minHeight:'100%'
+        minHeight: '100%',
     },
     title: {
         color: "white",
@@ -57,17 +53,13 @@ const styles = StyleSheet.create({
     },
     loginBtn: {
         backgroundColor: "#F8AA07",
-        minWidth: '100%',
-        position: 'absolute',
-        height: 70,
-        left: 0,
-        right: 0,
-        bottom: 0
+        borderRadius:50,
+        maxWidth:'85%'
     },
-    inputPosition:{
-        flex:1,
-        alignItems:'center'
-    }
+    inputPosition: {
+        alignItems: 'center'
+    },
+
 })
 
 export default LoginAndCreateAccountScreen;

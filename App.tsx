@@ -6,6 +6,19 @@ import UnderlinedHeaderComponent from './components/UnderlinedHeaderComponent';
 import NavigationComponent from './components/NavigationComponent'
 
 export default function App() {
+
+  const displayHandler = () => {
+    console.log('Hello World')
+  }
+
+  const displayAddHandler = () => {
+    console.log('This is the add button');
+  }
+
+  const displayFullHandler = () => {
+    console.log('Full Display');
+  }
+
   return (
     <ThemeProvider>
     <NavigationComponent />
@@ -20,4 +33,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  addButtonContainer: {
+    flex: 1,
+  }
 });

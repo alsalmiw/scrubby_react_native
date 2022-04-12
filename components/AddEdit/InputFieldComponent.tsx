@@ -9,6 +9,8 @@ const InputFieldComponent = () => {
 
 
   return (
+      //userlogin input
+      <>
     <View style={styles.SectionStyle}>
     <Image
         source={require('../../image/icon.png')}
@@ -17,11 +19,30 @@ const InputFieldComponent = () => {
     <TextInput
         autoComplete='off'
         style={styles.inputUsername}
-        placeholder="Username"
+        placeholder="username"
         mode='flat'
     />
     
 </View>
+
+
+
+
+<View style={styles.SectionStyle}>
+<Image
+    source={require('../../image/lock.png')}
+    style={[styles.ImageStyle, {width:25, height:30}]}
+/>
+<TextInput
+    autoComplete='off'
+    style={styles.inputUsername}
+    placeholder="password"
+    mode='flat'
+/>
+
+</View>
+
+</>
 
   );
 };
@@ -59,6 +80,7 @@ const styles = StyleSheet.create({
         textDecorationLine:"underline",
         overflow:'hidden',
         borderRadius: 0,
+        borderColor:'#808080',
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
 

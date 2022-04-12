@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 // import HeaderComponent from './components/HeaderComponent'
 
 import InputFieldComponent from './components/AddEdit/InputFieldComponentLogin';
+import LoginAndCreateAccountScreen from './screens/LoginCreateAccountScreen';
 export default function App() {
   return (
     // <ThemeProvider>
@@ -11,8 +12,10 @@ export default function App() {
     <>
     <View style={styles.container}>
     <Text>WhatWhat</Text>
-    <InputFieldComponent />
+    {/* <InputFieldComponent/> */}
+    <LoginAndCreateAccountScreen />
     </View>
+    
     </>
     // {/* </ThemeProvider> */}
   );

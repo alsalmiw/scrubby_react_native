@@ -8,6 +8,7 @@ import NavigationComponent from './components/NavigationComponent'
 export default function App() {
   return (
     <ThemeProvider>
+    
     <NavigationComponent />
     </ThemeProvider> 
   );

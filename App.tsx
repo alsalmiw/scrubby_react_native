@@ -30,7 +30,7 @@ export default function App() {
     <>
       <View style={styles.container}>
         {/* This is the ButtonModalComponent */}
-        <ButtonModalComponent onPress={displayHandler}>Completed</ButtonModalComponent>
+        <ButtonModalComponent onPress={displayHandler} >Completed</ButtonModalComponent>
         {/* This is the AddItemButtonComponent */}
         <AddItemButtonComponent onPress={displayAddHandler}>
           {/* This is the expo vector icon, size is based on pixels */}
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   addButtonContainer: {

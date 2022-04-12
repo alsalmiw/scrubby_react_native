@@ -24,7 +24,8 @@ export default FullButtonComponent;
 
 const styles = StyleSheet.create({
     buttonOuterContainer: {
-        overflow: 'hidden'
+        overflow: 'hidden',
+        width: '100%'
     },
     buttonInnerContainer: {
         backgroundColor: '#1699B1',
@@ -32,6 +33,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: 'white',
-        textAlign: 'center'
+        textAlign: 'center',
+        fontSize: 25
     }
 });

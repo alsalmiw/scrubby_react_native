@@ -14,7 +14,7 @@ const AddItemButtonComponent:FC<{onPress: () => void}> = (props) => {
                 style={styles.buttonInnerContainer}
                 onPress={addButtonHandler}
             >
-                <Text style={styles.buttonText}>{props.children}</Text>
+                <View>{props.children}</View>
             </Pressable>
         </View>
     )
@@ -33,11 +33,7 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
 
-    buttonText: {
-        color: 'white',
-        textAlign: 'center',
-        fontSize: 30
-    }
+    
 
 
 })

@@ -45,6 +45,7 @@ const InputFieldComponentLogin = () => {
                         selectionColor='#808080'
                         onChangeText={(e)=>setPassword(e)}
                         secureTextEntry={hide}  
+                        
                     />
             
 

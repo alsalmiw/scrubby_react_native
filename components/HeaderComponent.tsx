@@ -1,6 +1,6 @@
 import React from "react";
 import { FC, useContext } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, StatusBar } from "react-native";
 import {ThemeContext} from "../context/ThemeContext"
 
 interface TitleType{
@@ -24,10 +24,12 @@ const styles = StyleSheet.create({
             fontWeight: "bold",
         }, 
         headerContainer:{
+            paddingTop: StatusBar.currentHeight,
             paddingRight: 10,
             width:'100%',
             flexDirection: "row",
-            justifyContent: "flex-end"
+            justifyContent: "flex-end",
+            marginBottom:30,
         }
     })
 

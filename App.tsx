@@ -24,9 +24,10 @@ export default function App() {
 
   return (
     <UserProvider>
-                <ThemeProvider>
-          <LoginAndCreateAccountScreen />
-          {/* <NavigationComponent /> */}
+    <ThemeProvider>
+                 <NavigationComponent /> 
+          {/* <LoginAndCreateAccountScreen /> */}
+          
 
           </ThemeProvider> 
     </UserProvider>

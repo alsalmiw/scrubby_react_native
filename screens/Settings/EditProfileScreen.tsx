@@ -3,11 +3,7 @@ import { FC, useState } from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import AddPhotoComponent from '../../components/AddPhotoComponent';
-
-type RootStackParamList = { 
-  Settings: {title: string, location: string}
-  EditProfile: {title: string}
-}
+import RootStackParamList from '../../types/INavigateSettings'
 
 type Props = NativeStackScreenProps <RootStackParamList, 'EditProfile'>
 

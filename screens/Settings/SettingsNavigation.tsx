@@ -3,12 +3,9 @@ import { FC } from 'react';
 import EditProfileScreen from '../Settings/EditProfileScreen'
 import SettingsScreen from '../Settings/SettingsScreen'
 import ManageInvitesScreen from '../Settings/ManageInvitesScreen'
+import RootStackParamList from '../../types/INavigateSettings'
 
-type RootStackParamList = { 
-  Settings: {title: string}
-  EditProfile: {title: string}
-  ManageInvites: {title: string}
-}
+
 const Tab = createNativeStackNavigator<RootStackParamList>();
 
 const SettingsNavigation: FC = ()=> {

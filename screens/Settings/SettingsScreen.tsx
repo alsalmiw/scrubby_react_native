@@ -8,12 +8,10 @@ import { FontAwesome } from '@expo/vector-icons';
 import HeaderComponent from "../../components/HeaderComponent"
 import EditProfileScreen from '../Settings/EditProfileScreen'
 import ManageInvitesScreen from '../Settings/ManageInvitesScreen'
+import RootStackParamList from '../../types/INavigateSettings'
 
-type RootStackParamList = { 
-  Settings: {title: string}
-  EditProfile: {title: string}
-  ManageInvites: {title: string}
-}
+
+
 const Tab = createNativeStackNavigator<RootStackParamList>();
 
 const SettingsScreen: FC = ()=> {

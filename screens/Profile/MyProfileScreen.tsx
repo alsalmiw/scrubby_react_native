@@ -26,7 +26,7 @@ const MyProfileScreen: FC = ()=> {
         })}
         */}
 
-        <AddPhotoComponent />
+    
         
     </View>
 
@@ -37,7 +37,6 @@ const MyProfileScreen: FC = ()=> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E2683C',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: StatusBar.currentHeight

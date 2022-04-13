@@ -1,5 +1,5 @@
-import { FC, useState } from "react"
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native"
+import { FC, useContext, useState } from "react"
+import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native"
 import { Button } from "react-native-paper"
 
 
@@ -8,8 +8,11 @@ import { Button } from "react-native-paper"
 
 import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentLogin"
 
+import { CreateAccount, UserLogin } from "../services/dataService"
+
 const LoginAndCreateAccountScreen: FC = () => {
-    const [login, setLogin] = useState(true)
+    const [login, setLogin] = useState(true);
+
 
     return (
 
@@ -30,11 +33,14 @@ const LoginAndCreateAccountScreen: FC = () => {
                             </View>
                         </View>
                         <View style={{ flex: 0.2, alignItems: 'center' }}>
-                            <Button style={styles.loginBtn} mode="contained" onPress={() => console.log('Pressed')}>
-                                <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+                            <Pressable style={styles.loginBtn} onPress={() => console.log('clicked')}>
+
+                                <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white', padding: 10 }}>
                                     Create Account
                                 </Text>
-                            </Button>
+
+                            </Pressable>
+
                         </View>
                     </View>
                     :
@@ -51,11 +57,13 @@ const LoginAndCreateAccountScreen: FC = () => {
                             </View>
                         </View>
                         <View style={{ flex: 0.2, alignItems: 'center' }}>
-                            <Button style={styles.loginBtn} mode="contained" onPress={() => console.log('Pressed')} >
-                                <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+                            <Pressable style={styles.loginBtn} onPress={() => console.log('clicked')}>
+
+                                <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white', padding: 10 }}>
                                     Login
                                 </Text>
-                            </Button>
+
+                            </Pressable>
                         </View>
                     </View>
             }
@@ -83,24 +91,24 @@ const styles = StyleSheet.create({
         fontStyle: 'italic'
     },
     loginBtn: {
+        flex: 0,
+        flexDirection: 'row',
+        alignItems: 'center',
+        textAlign: 'center',
+        justifyContent: 'center',
         backgroundColor: "#F8AA07",
-        borderRadius: 50,
-        marginRight:40,
-        marginLeft:40,
-       marginTop:10,
-        paddingTop:10,
-        paddingBottom:10,
+        borderRadius: 20,
+        width: "80%",
 
-        borderWidth: 1,
-        borderColor: '#fff'
+
     },
     inputPosition: {
         alignItems: 'center'
     },
-    loginContent:{
+    loginContent: {
         flex: 0.8,
-         alignItems: "center",
-          justifyContent: "center"
+        alignItems: "center",
+        justifyContent: "center"
     }
 
 })

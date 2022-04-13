@@ -21,6 +21,7 @@ const InputFieldComponentLogin = () => {
                     placeholder="username"
                     mode='flat'
                     selectionColor='#808080'
+                    onChangeText={(e)=>console.log(e)}
                 />
 
             </View>
@@ -33,6 +34,7 @@ const InputFieldComponentLogin = () => {
                     placeholder="password"
                     mode='flat'
                     selectionColor='#808080'
+                    onChangeText={(e)=>console.log(e)}
                 />
 
             </View>
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         borderWidth: 2,
-        borderColor: '#808080',
+        borderColor: "white",
         height: 60,
         width: 300,
         borderRadius: 10,
@@ -73,6 +75,7 @@ const styles = StyleSheet.create({
         borderRadius: 0,
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
+    
 
 
 

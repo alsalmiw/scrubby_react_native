@@ -26,3 +26,6 @@ async function CreateAccount(newUser){
     let data = await res.json();
    return data;
 }
+
+
+export {UserLogin, CreateAccount }

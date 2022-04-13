@@ -7,11 +7,36 @@ import { Button } from "react-native-paper"
 
 
 import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentLogin"
+import UserContext from "../context/UserContext"
+import INewUser from "../Interfaces/INewUser"
 
+//fetch
 import { CreateAccount, UserLogin } from "../services/dataService"
+
+
+
 
 const LoginAndCreateAccountScreen: FC = () => {
     const [login, setLogin] = useState(true);
+    const {username, password} = useContext(UserContext)
+
+
+    const addUser = async () =>{
+    let userData:INewUser = {
+        Id:0,
+        Username: username,
+        Password: password
+    }
+    console.log(userData)
+    let result = await CreateAccount(userData);
+    if(result)
+    {
+        console.log(result)
+    }
+    console.log(result)
+     
+}
+
 
 
     return (
@@ -33,7 +58,8 @@ const LoginAndCreateAccountScreen: FC = () => {
                             </View>
                         </View>
                         <View style={{ flex: 0.2, alignItems: 'center' }}>
-                            <Pressable style={styles.loginBtn} onPress={() => console.log('clicked')}>
+                            <Pressable style={styles.loginBtn} onPress={() => {addUser();
+                                  setLogin(!login)}}>
 
                                 <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white', padding: 10 }}>
                                     Create Account

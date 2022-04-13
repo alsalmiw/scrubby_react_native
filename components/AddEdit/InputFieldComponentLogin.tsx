@@ -1,13 +1,20 @@
-import * as React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import React, { useState } from "react";
+import { FC, useContext } from "react";
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
 import { AntDesign } from '@expo/vector-icons';
+
+import UseUser from '../../hooks/use-user';
+import UserContext from '../../context/UserContext';
 
 
 
 
 const InputFieldComponentLogin = () => {
+    const {setPassword, setUsername } = useContext(UserContext)
+    const [hide, setHide] = useState(true);
+    const [eye, setEye] = useState(true);
 
 
     return (
@@ -21,23 +28,28 @@ const InputFieldComponentLogin = () => {
                     placeholder="username"
                     mode='flat'
                     selectionColor='#808080'
-                    onChangeText={(e)=>console.log(e)}
+                    onChangeText={(e)=>setUsername(e)}
                 />
 
             </View>
+
 
             <View style={styles.SectionStyle}>
             <AntDesign name="lock" size={28} color="#808080" style={styles.ImageStyle}/>
+            
                 <TextInput
-                    autoComplete='off'
-                    style={styles.inputUsername}
-                    placeholder="password"
-                    mode='flat'
-                    selectionColor='#808080'
-                    onChangeText={(e)=>console.log(e)}
-                />
+                        autoComplete='off'
+                        style={styles.inputUsername}
+                        placeholder="password"
+                        mode='flat'
+                        selectionColor='#808080'
+                        onChangeText={(e)=>setPassword(e)}
+                        secureTextEntry={hide}  
+                    />
+            
 
             </View>
+
 
         </>
 

@@ -1,5 +1,8 @@
-async function UserLogin(userData){
-    let res= await fetch('https://scrubbyapi.azurewebsites.net/Login', {
+import INewUser from '../Interfaces/INewUser';
+import IUserLogin from '../Interfaces/IUserLogin'
+
+async function UserLogin(userData:IUserLogin){
+    let res= await fetch('https://scrubbyapi.azurewebsites.net/User/Login', {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -7,11 +10,13 @@ async function UserLogin(userData){
         body: JSON.stringify(userData)
     });
     let data = await res.json();
+    console.log(data)
    return data;
+   
 }
 
-async function CreateAccount(newUser){
-    let res= await fetch('https://scrubbyapi.azurewebsites.net/AddUser', {
+async function CreateAccount(newUser:INewUser){
+    let res= await fetch('https://scrubbyapi.azurewebsites.net/User/AddUser', {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -24,6 +29,7 @@ async function CreateAccount(newUser){
         throw new Error (message)
     }
     let data = await res.json();
+    console.log(data)
    return data;
 }
 

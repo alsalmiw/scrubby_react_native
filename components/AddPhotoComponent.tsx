@@ -3,7 +3,7 @@ import { FC, useContext } from "react";
 import { StyleSheet, Text, View, TouchableHighlight } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import {ThemeContext} from "../context/ThemeContext"
-
+//
 interface PhotoType{
     photo: string;
 }

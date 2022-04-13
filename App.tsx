@@ -3,7 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { ThemeProvider } from './context/ThemeContext';
 import HeaderComponent from './components/HeaderComponent'
 import UnderlinedHeaderComponent from './components/UnderlinedHeaderComponent';
-import NavigationComponent from './components/NavigationComponent'
+import NavigationComponent from './components/NavigationComponent';
+
+import LoginAndCreateAccountScreen from './screens/LoginCreateAccountScreen';
 
 export default function App() {
 
@@ -21,8 +23,8 @@ export default function App() {
 
   return (
     <ThemeProvider>
-    
-    <NavigationComponent />
+    <LoginAndCreateAccountScreen />
+    {/* <NavigationComponent /> */}
     </ThemeProvider> 
   );
 }

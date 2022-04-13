@@ -2,17 +2,32 @@ import { StatusBar } from 'expo-status-bar';
 import { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const SettingsScreen: FC = ()=> {
+import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
+
+const SettingsScreen: FC = () => {
+
+  const displayBackHandler = () => {
+    console.log('Back Button is working')
+  }
+
+  const displayAcceptHandler = () => {
+    console.log('Accept Button is working')
+  }
+
   return (
-    
-   
-    
- 
+
     <View style={styles.container}>
-        <Text>My Settings Page</Text>
+      <Text>My Settings Page</Text>
+      <TwoFullButtonComponent
+        onBackPress={displayBackHandler}
+        onAcceptPress={displayAcceptHandler}
+        text1="Back"
+        text2="Accept"
+      >
+      </TwoFullButtonComponent>
     </View>
 
-    
+
   );
 }
 

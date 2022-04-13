@@ -58,8 +58,7 @@ const LoginAndCreateAccountScreen: FC = () => {
                             </View>
                         </View>
                         <View style={{ flex: 0.2, alignItems: 'center' }}>
-                            <Pressable style={styles.loginBtn} onPress={() => {addUser();
-                                  setLogin(!login)}}>
+                            <Pressable style={styles.loginBtn} onPress={() => addUser()}>
 
                                 <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white', padding: 10 }}>
                                     Create Account

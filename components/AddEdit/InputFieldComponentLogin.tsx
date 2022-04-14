@@ -12,7 +12,7 @@ import UserContext from '../../context/UserContext';
 
 
 const InputFieldComponentLogin = () => {
-    const {setPassword, setUsername } = useContext(UserContext)
+    const {setPassword,password, username, setUsername } = useContext(UserContext)
     const [hide, setHide] = useState(true);
     const [eye, setEye] = useState(true);
 
@@ -23,6 +23,7 @@ const InputFieldComponentLogin = () => {
             <View style={styles.SectionStyle}>
             <AntDesign name="user" size={28} color="#808080" style={styles.ImageStyle} />
                 <TextInput
+                    value={username}
                     autoComplete='off'
                     style={styles.inputUsername}
                     placeholder="username"
@@ -38,6 +39,7 @@ const InputFieldComponentLogin = () => {
             <AntDesign name="lock" size={28} color="#808080" style={styles.ImageStyle}/>
             
                 <TextInput
+                        value={password}
                         autoComplete='off'
                         style={styles.inputUsername}
                         placeholder="password"

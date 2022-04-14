@@ -8,6 +8,7 @@ import NavigationComponent from './components/NavigationComponent';
 
 import LoginAndCreateAccountScreen from './screens/LoginCreateAccountScreen';
 
+
 export default function App() {
 
   const displayHandler = () => {
@@ -24,11 +25,15 @@ export default function App() {
 
   return (
     <UserProvider>
+
+
+      
                 <ThemeProvider>
           <LoginAndCreateAccountScreen />
           {/* <NavigationComponent /> */}
 
           </ThemeProvider> 
+
     </UserProvider>
 
 

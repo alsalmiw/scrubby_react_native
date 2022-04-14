@@ -1,7 +1,6 @@
 import { FC, useContext, useState } from "react"
-import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native"
+import { Alert, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native"
 import { Button } from "react-native-paper"
-
 
 
 
@@ -9,6 +8,7 @@ import { Button } from "react-native-paper"
 import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentLogin"
 import UserContext from "../context/UserContext"
 import INewUser from "../Interfaces/INewUser"
+import IUserLogin from "../Interfaces/IUserLogin"
 
 //fetch
 import { CreateAccount, UserLogin } from "../services/dataService"
@@ -37,6 +37,49 @@ const LoginAndCreateAccountScreen: FC = () => {
      
 }
 
+const userLogin = async () =>{
+    let userLoginData:IUserLogin ={
+        Username: username,
+        Password: password
+    }
+    console.log(userLoginData)
+    let result = await UserLogin(userLoginData);
+    if(result)
+    {
+        console.log(result)
+    }
+    console.log(result)
+}
+// check if username/ password is filled out
+const checkTextInput = () => {
+    if(login){
+        if (!username.trim()) {
+            Alert.alert("Error", 'Please Enter username', [{text:"Cancel", style:"cancel"}]);
+          return;
+        }
+        if (!password.trim()) {
+            Alert.alert("Error", 'Please Enter password', [{text:"Cancel", style:"cancel"}]);
+          return;
+        }
+        else addUser() ,setPassword("") , setUsername("");
+    }
+    else if(!login)
+    {
+        if (!username.trim()) {
+            Alert.alert("Error", 'Please Enter username login', [{text:"Cancel", style:"cancel"}]);
+          return;
+        }
+        if (!password.trim()) {
+            Alert.alert("Error", 'Please Enter password login', [{text:"Cancel", style:"cancel"}]);
+          return;
+        }
+        else userLogin() ,setPassword("") , setUsername("");
+    }
+
+  };
+
+  // send to edit profile page
+
 
 
     return (
@@ -54,12 +97,12 @@ const LoginAndCreateAccountScreen: FC = () => {
                             </View>
 
                             <View>
-                                <Text style={styles.loginTxt}>Already have an account. <Text onPress={() => setLogin(!login)} style={{ color: 'blue' }}>Login here.</Text></Text>
+                                <Text style={styles.loginTxt}>Already have an account. <Text onPress={() => {setLogin(!login), setPassword("") , setUsername("") }} style={{ color: 'blue' }}>Login here.</Text></Text>
                             </View>
                         </View>
                         <View style={{ flex: 0.2, alignItems: 'center' }}>
-                            <Pressable style={styles.loginBtn} onPress={() => {addUser();
-                            
+                            <Pressable style={styles.loginBtn} onPress={() => {
+                            checkTextInput()
                             
                             }}>
 
@@ -81,11 +124,11 @@ const LoginAndCreateAccountScreen: FC = () => {
                             </View>
 
                             <View>
-                                <Text style={styles.loginTxt}>New here? <Text onPress={() => setLogin(!login)} style={{ color: 'blue' }}>Create an Account</Text></Text>
+                                <Text style={styles.loginTxt}>New here? <Text onPress={() => {setLogin(!login), setPassword("") , setUsername("")} } style={{ color: 'blue' }}>Create an Account</Text></Text>
                             </View>
                         </View>
                         <View style={{ flex: 0.2, alignItems: 'center' }}>
-                            <Pressable style={styles.loginBtn} onPress={() => console.log('clicked')}>
+                            <Pressable style={styles.loginBtn} onPress={() => checkTextInput()}>
 
                                 <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white', padding: 10 }}>
                                     Login
@@ -116,7 +159,8 @@ const styles = StyleSheet.create({
     loginTxt: {
         color: 'white',
         textAlign: 'center',
-        fontStyle: 'italic'
+        fontStyle: 'italic',
+        marginTop:20
     },
     loginBtn: {
         flex: 0,
@@ -131,12 +175,14 @@ const styles = StyleSheet.create({
 
     },
     inputPosition: {
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop:25
     },
     loginContent: {
         flex: 0.8,
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        marginTop:10
     },
     
 

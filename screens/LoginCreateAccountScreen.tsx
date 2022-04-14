@@ -74,13 +74,13 @@ const checkTextInput = () => {
             Alert.alert("Error", 'Please Enter password login', [{text:"Cancel", style:"cancel"}]);
           return;
         }
-        else userLogin() ,setPassword("") , setUsername("");
+        else userLogin() ,setPassword("") , setUsername(""), console.log("logged in");
     }
 
   };
 
-  // send to edit profile page
-  //
+  // send to edit profile page when creating account
+  //send to home page when login 
 
 
 

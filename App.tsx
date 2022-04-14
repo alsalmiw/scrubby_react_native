@@ -7,6 +7,7 @@ import UnderlinedHeaderComponent from './components/UnderlinedHeaderComponent';
 import NavigationComponent from './components/NavigationComponent';
 
 import LoginAndCreateAccountScreen from './screens/LoginCreateAccountScreen';
+import InputFieldComponent from './components/AddEdit/InputFieldComponent';
 
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
       
                 <ThemeProvider>
           <LoginAndCreateAccountScreen />
+          {/* <InputFieldComponent /> */}
           {/* <NavigationComponent /> */}
 
           </ThemeProvider> 

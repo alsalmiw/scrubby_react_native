@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { FC, useContext } from "react";
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
-
-import { AntDesign } from '@expo/vector-icons';
 
 import UseUser from '../../hooks/use-user';
 import UserContext from '../../context/UserContext';
@@ -13,7 +11,7 @@ import UserContext from '../../context/UserContext';
 
 
 
-const InputFieldComponentLogin = () => {
+const InputFieldComponent = () => {
     const {setPassword,password, username, setUsername } = useContext(UserContext)
     const [hide, setHide] = useState(true);
     const [eye, setEye] = useState(true);
@@ -24,35 +22,15 @@ const InputFieldComponentLogin = () => {
         <>
             
             <View style={styles.SectionStyle}>
-            <AntDesign name="user" size={28} color="#808080" style={styles.ImageStyle} />
                 <TextInput
-                    value={username}
+                    value={""}
                     autoComplete='off'
                     style={styles.inputUsername}
-                    placeholder="username"
+                    placeholder="something"
                     mode='flat'
                     selectionColor='#808080'
-                    onChangeText={(e)=>setUsername(e)}
+                    onChangeText={(e)=>console.log(e)}
                 />
-
-            </View>
-
-
-            <View style={styles.SectionStyle}>
-            <AntDesign name="lock" size={28} color="#808080" style={styles.ImageStyle}/>
-            
-                <TextInput
-                        value={password}
-                        autoComplete='off'
-                        style={styles.inputUsername}
-                        placeholder="password"
-                        mode='flat'
-                        selectionColor='#808080'
-                        onChangeText={(e)=>setPassword(e)}
-                        secureTextEntry={hide}  
-                        
-                    />
-            
 
             </View>
 
@@ -69,7 +47,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         borderWidth: 2,
-        borderColor: "white",
+        //change back to white for other pages
+        borderColor: "black",
         height: 60,
         width: 300,
         borderRadius: 10,
@@ -99,4 +78,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default InputFieldComponentLogin;
+export default InputFieldComponent;

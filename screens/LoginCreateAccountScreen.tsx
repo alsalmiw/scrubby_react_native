@@ -13,6 +13,7 @@ import IUserLogin from "../Interfaces/IUserLogin"
 
 //fetch
 import { CreateAccount, UserLogin } from "../services/dataService"
+import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
 
 
 
@@ -34,7 +35,7 @@ const LoginAndCreateAccountScreen: FC = () => {
     {
         console.log(result)
     }
-    console.log(result)
+    Alert.alert("Error", 'This username is already taken. Please choose another name', [{text:"Cancel", style:"cancel"}])
      
 }
 

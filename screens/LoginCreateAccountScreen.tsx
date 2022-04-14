@@ -3,6 +3,7 @@ import { Alert, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } fr
 import { Button } from "react-native-paper"
 
 
+import {Keyboard, TouchableWithoutFeedback} from 'react-native'
 
 
 import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentLogin"
@@ -79,6 +80,7 @@ const checkTextInput = () => {
   };
 
   // send to edit profile page
+  //
 
 
 
@@ -88,55 +90,59 @@ const checkTextInput = () => {
             {
                 login
                     ?
-                    <View style={styles.backgroundColor}>
-                        <View style={styles.loginContent}>
-                            <Text style={styles.title}>Sign up</Text>
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                        <View style={styles.backgroundColor}>
+                            <View style={styles.loginContent}>
+                                <Text style={styles.title}>Sign up</Text>
 
-                            <View style={styles.inputPosition}>
-                                <InputFieldComponentLogin />
+                                <View style={styles.inputPosition}>
+                                    <InputFieldComponentLogin />
+                                </View>
+
+                                <View>
+                                    <Text style={styles.loginTxt}>Already have an account. <Text onPress={() => {setLogin(!login), setPassword("") , setUsername("") }} style={{ color: 'blue' }}>Login here.</Text></Text>
+                                </View>
                             </View>
+                            <View style={{ flex: 0.2, alignItems: 'center' }}>
+                                <Pressable style={styles.loginBtn} onPress={() => {
+                                checkTextInput()
+                                
+                                }}>
 
-                            <View>
-                                <Text style={styles.loginTxt}>Already have an account. <Text onPress={() => {setLogin(!login), setPassword("") , setUsername("") }} style={{ color: 'blue' }}>Login here.</Text></Text>
+                                    <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white', padding: 10 }}>
+                                        Create Account
+                                    </Text>
+
+                                </Pressable>
+
                             </View>
                         </View>
-                        <View style={{ flex: 0.2, alignItems: 'center' }}>
-                            <Pressable style={styles.loginBtn} onPress={() => {
-                            checkTextInput()
-                            
-                            }}>
-
-                                <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white', padding: 10 }}>
-                                    Create Account
-                                </Text>
-
-                            </Pressable>
-
-                        </View>
-                    </View>
+                    </TouchableWithoutFeedback>
                     :
-                    <View style={styles.backgroundColor}>
-                        <View style={styles.loginContent}>
-                            <Text style={styles.title}>Login</Text>
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                        <View style={styles.backgroundColor}>
+                            <View style={styles.loginContent}>
+                                <Text style={styles.title}>Login</Text>
 
-                            <View style={styles.inputPosition}>
-                                <InputFieldComponentLogin />
+                                <View style={styles.inputPosition}>
+                                    <InputFieldComponentLogin />
+                                </View>
+
+                                <View>
+                                    <Text style={styles.loginTxt}>New here? <Text onPress={() => {setLogin(!login), setPassword("") , setUsername("")} } style={{ color: 'blue' }}>Create an Account</Text></Text>
+                                </View>
                             </View>
+                            <View style={{ flex: 0.2, alignItems: 'center' }}>
+                                <Pressable style={styles.loginBtn} onPress={() => checkTextInput()}>
 
-                            <View>
-                                <Text style={styles.loginTxt}>New here? <Text onPress={() => {setLogin(!login), setPassword("") , setUsername("")} } style={{ color: 'blue' }}>Create an Account</Text></Text>
+                                    <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white', padding: 10 }}>
+                                        Login
+                                    </Text>
+
+                                </Pressable>
                             </View>
                         </View>
-                        <View style={{ flex: 0.2, alignItems: 'center' }}>
-                            <Pressable style={styles.loginBtn} onPress={() => checkTextInput()}>
-
-                                <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white', padding: 10 }}>
-                                    Login
-                                </Text>
-
-                            </Pressable>
-                        </View>
-                    </View>
+                    </TouchableWithoutFeedback>
             }
         </>
 

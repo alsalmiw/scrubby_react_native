@@ -11,6 +11,8 @@ import UserContext from '../../context/UserContext';
 
 
 
+
+
 const InputFieldComponentLogin = () => {
     const {setPassword,password, username, setUsername } = useContext(UserContext)
     const [hide, setHide] = useState(true);
@@ -20,6 +22,7 @@ const InputFieldComponentLogin = () => {
     return (
         //userlogin input
         <>
+            
             <View style={styles.SectionStyle}>
             <AntDesign name="user" size={28} color="#808080" style={styles.ImageStyle} />
                 <TextInput

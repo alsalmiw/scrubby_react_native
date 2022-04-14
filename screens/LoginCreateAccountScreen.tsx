@@ -20,8 +20,7 @@ import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
 
 const LoginAndCreateAccountScreen: FC = () => {
     const [login, setLogin] = useState(true);
-    const {username, setUsername, password, setPassword} = useContext(UserContext)
-
+    const {username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword} = useContext(UserContext)
 
     const addUser = async () =>{
     let userData:INewUser = {
@@ -63,7 +62,7 @@ const checkTextInput = () => {
             Alert.alert("Error", 'Please Enter password', [{text:"Cancel", style:"cancel"}]);
           return;
         }
-        else addUser() ,setPassword("") , setUsername("");
+        else addUser(), setSavedUsername(username), setSavedPassword(password), setPassword(""), setUsername("");
     }
     else if(!login)
     {
@@ -75,7 +74,7 @@ const checkTextInput = () => {
             Alert.alert("Error", 'Please Enter password login', [{text:"Cancel", style:"cancel"}]);
           return;
         }
-        else userLogin() ,setPassword("") , setUsername(""), console.log("logged in");
+        else userLogin(), setSavedUsername(username), setSavedPassword(password), setPassword("") , setUsername(""), console.log("logged in");
     }
 
   };

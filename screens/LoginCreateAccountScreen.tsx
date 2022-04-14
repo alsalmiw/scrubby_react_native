@@ -113,8 +113,7 @@ const checkTextInput = () => {
                                 <Text style={styles.title}>Sign up</Text>
 
                                 <View style={styles.inputPosition}>
-                                    {/* <InputFieldComponentLogin /> */}
-                                    <ChildFreeBoolComponent />
+                                    <InputFieldComponentLogin />
                                 </View>
 
                                 <View>

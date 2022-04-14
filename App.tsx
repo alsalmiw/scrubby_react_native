@@ -29,12 +29,12 @@ const App: FC =()=> {
    <UserProvider>
     <ThemeProvider>
                  
-          <LoginAndCreateAccountScreen />
+          {/* <LoginAndCreateAccountScreen /> */}
           <NavigationComponent /> 
 
           </ThemeProvider> 
     </UserProvider>
-  </NavigationContainer>
+</NavigationContainer>
    
 
 
@@ -53,3 +53,5 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 });
+
+export default App;

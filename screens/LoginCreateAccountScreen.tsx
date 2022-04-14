@@ -29,12 +29,17 @@ const LoginAndCreateAccountScreen: FC = () => {
         Password: password
     }
     console.log(userData)
+    setSavedUsername(username);
+    setSavedPassword(password);
+    //console.log(savedUsername)
+
     let result = await CreateAccount(userData);
     if(result)
     {
         console.log(result)
     }
-    Alert.alert("Error", 'This username is already taken. Please choose another name', [{text:"Cancel", style:"cancel"}])
+    
+    else Alert.alert("Error", 'This username is already taken. Please choose another name', [{text:"Cancel", style:"cancel"}])
      
 }
 
@@ -44,11 +49,15 @@ const userLogin = async () =>{
         Password: password
     }
     console.log(userLoginData)
+    setSavedUsername(username);
+    setSavedPassword(password);
+    
     let result = await UserLogin(userLoginData);
     if(result)
     {
         console.log(result)
     }
+
     console.log(result)
 }
 // check if username/ password is filled out
@@ -62,7 +71,10 @@ const checkTextInput = () => {
             Alert.alert("Error", 'Please Enter password', [{text:"Cancel", style:"cancel"}]);
           return;
         }
-        else addUser(), setSavedUsername(username), setSavedPassword(password), setPassword(""), setUsername("");
+        else {addUser();
+            console.log(savedUsername);
+            setPassword("");
+            setUsername("");}
     }
     else if(!login)
     {
@@ -74,7 +86,12 @@ const checkTextInput = () => {
             Alert.alert("Error", 'Please Enter password login', [{text:"Cancel", style:"cancel"}]);
           return;
         }
-        else userLogin(), setSavedUsername(username), setSavedPassword(password), setPassword("") , setUsername(""), console.log("logged in");
+        else {
+            userLogin();
+            console.log(savedUsername);
+             setPassword("");
+              setUsername("");
+               console.log("logged in");}
     }
 
   };
@@ -105,7 +122,8 @@ const checkTextInput = () => {
                             </View>
                             <View style={{ flex: 0.2, alignItems: 'center' }}>
                                 <Pressable style={styles.loginBtn} onPress={() => {
-                                checkTextInput()
+                                checkTextInput();
+                                
                                 
                                 }}>
 

@@ -16,8 +16,18 @@ export default function UseTheme(){
     const [yellowColor, setYellowColor] = useState("#F8AA07")
     const [blueColor, setBlueColor] = useState("#1699B1")
     const [primaryFont, setPrimaryFont] = useState("")
+    // const myRoomsCategory = new Map([
+    //     ["Bathroom", require('../image/bath.png') ],
+    //     ["Attic", ],
+    //     ["Bedroom", ],
+    //     ["Yard", ],
+    //     ["Garage", ],
+    //     ["Kitchen", ],
+    //     ["Living Room", ],
+    //     ["Office", ],
+    // ])
 
 
-return{primaryColor, secondaryTextColor, primaryTextColor, lightLilacColor, lilacColor, orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor }
+return{ primaryColor, secondaryTextColor, primaryTextColor, lightLilacColor, lilacColor, orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor }
 }
 

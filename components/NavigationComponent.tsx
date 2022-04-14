@@ -6,8 +6,9 @@ import { MaterialCommunityIcons, Ionicons, FontAwesome } from '@expo/vector-icon
 import {ThemeContext} from "../context/ThemeContext"
 import ScheduleScreen from '../screens/Schedule/ScheduleScreen'
 import MyProfileScreen from '../screens/Profile/MyProfileScreen';
-import SettingsScreen from '../screens/Settings/SettingsScreen';
+import SettingsNavigation from '../screens/Settings/SettingsNavigation';
 import TaskFamilyScreen from '../screens/Tasking/TaskFamilyScreen'
+
 
 const Tab = createBottomTabNavigator();
 
@@ -24,6 +25,7 @@ const MyTabs: FC = () =>{
         name="Schedule"
         component={ScheduleScreen}
         options={{
+          headerShown: false,
           tabBarLabel: 'Schedule',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="calendar-month" color={color} size={size} />
@@ -34,6 +36,7 @@ const MyTabs: FC = () =>{
         name="Profile" 
         component={MyProfileScreen}
         options={{
+          headerShown: false,
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" color={color} size={size} />
@@ -44,6 +47,7 @@ const MyTabs: FC = () =>{
         name="Tasking"
         component={TaskFamilyScreen}
         options={{
+          headerShown: false,
           tabBarLabel: 'Tasking',
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="group" color={color} size={size} />
@@ -51,10 +55,11 @@ const MyTabs: FC = () =>{
         }}
       />
       <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
+        name="SettingsNavigation"
+        component={SettingsNavigation}
         options={{
-          tabBarLabel: 'Settings',
+          headerShown: false,
+          tabBarLabel: 'Settings Navigation',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="settings-sharp" color={color} size={size} />
           ),

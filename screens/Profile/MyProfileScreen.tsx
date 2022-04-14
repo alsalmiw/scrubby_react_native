@@ -9,10 +9,10 @@ const MyProfileScreen: FC = ()=> {
   
   let r = Math.floor (Math.random()*7)
 
-  let arr = ['jfghjshg', 'shjfgkhjsdfgkj', 'hfsgsjdhkdhjfg', 'idfoaijufiafj', 'sgdfgsgdsg', 'sddsgsdgsdg', 'adfafaf', 'sdfsdfgsd', 'sdfgsfafa', 'sdgsdgsdfg']
+  //let arr = ['jfghjshg', 'shjfgkhjsdfgkj', 'hfsgsjdhkdhjfg', 'idfoaijufiafj', 'sgdfgsgdsg', 'sddsgsdgsdg', 'adfafaf', 'sdfsdfgsd', 'sdfgsfafa', 'sdgsdgsdfg']
   return (
  
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
         
         {/* <CoinsPointsDisplayContainer coins="200" points="10,000" />
         {arr.map((title, idx) => {
@@ -26,9 +26,9 @@ const MyProfileScreen: FC = ()=> {
         })}
         */}
 
-        <AddPhotoComponent photo={"photo"}/>
+    
         
-    </ScrollView>
+    </View>
 
     
   );
@@ -37,9 +37,8 @@ const MyProfileScreen: FC = ()=> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingTop: StatusBar.currentHeight
   },
 });

@@ -14,6 +14,7 @@ import IUserLogin from "../Interfaces/IUserLogin"
 //fetch
 import { CreateAccount, UserLogin } from "../services/dataService"
 import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
+import ChildFreeBoolComponent from "../components/Settings/ChildFreeBoolComponent"
 
 
 
@@ -31,7 +32,6 @@ const LoginAndCreateAccountScreen: FC = () => {
     console.log(userData)
     setSavedUsername(username);
     setSavedPassword(password);
-    //console.log(savedUsername)
 
     let result = await CreateAccount(userData);
     if(result)
@@ -89,9 +89,9 @@ const checkTextInput = () => {
         else {
             userLogin();
             console.log(savedUsername);
-             setPassword("");
-              setUsername("");
-               console.log("logged in");}
+            setPassword("");
+            setUsername("");
+            console.log("logged in");}
     }
 
   };
@@ -113,7 +113,8 @@ const checkTextInput = () => {
                                 <Text style={styles.title}>Sign up</Text>
 
                                 <View style={styles.inputPosition}>
-                                    <InputFieldComponentLogin />
+                                    {/* <InputFieldComponentLogin /> */}
+                                    <ChildFreeBoolComponent />
                                 </View>
 
                                 <View>
@@ -122,7 +123,7 @@ const checkTextInput = () => {
                             </View>
                             <View style={{ flex: 0.2, alignItems: 'center' }}>
                                 <Pressable style={styles.loginBtn} onPress={() => {
-                                checkTextInput();
+                                 checkTextInput();
                                 
                                 
                                 }}>

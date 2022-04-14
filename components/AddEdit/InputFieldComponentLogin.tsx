@@ -22,7 +22,6 @@ const InputFieldComponentLogin = () => {
     return (
         //userlogin input
         <>
-            
             <View style={styles.SectionStyle}>
             <AntDesign name="user" size={28} color="#808080" style={styles.ImageStyle} />
                 <TextInput

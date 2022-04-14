@@ -1,10 +1,7 @@
-import React, { useState } from "react";
-import { FC, useContext } from "react";
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
-import UseUser from '../../hooks/use-user';
-import UserContext from '../../context/UserContext';
 
 
 
@@ -12,13 +9,7 @@ import UserContext from '../../context/UserContext';
 
 
 const InputFieldComponent = () => {
-    const {setPassword,password, username, setUsername } = useContext(UserContext)
-    const [hide, setHide] = useState(true);
-    const [eye, setEye] = useState(true);
-
-
     return (
-        //userlogin input
         <>
             
             <View style={styles.SectionStyle}>
@@ -47,8 +38,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         borderWidth: 2,
-        //change back to white for other pages
-        borderColor: "black",
+        borderColor: "white",
         height: 60,
         width: 300,
         borderRadius: 10,

@@ -16,7 +16,7 @@ import UserContext from '../../context/UserContext';
 const InputFieldComponentLogin = () => {
     const {setPassword,password, username, setUsername } = useContext(UserContext)
     const [hide, setHide] = useState(true);
-    const [eye, setEye] = useState(true);
+
 
 
     return (

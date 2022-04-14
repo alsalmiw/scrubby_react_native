@@ -71,9 +71,7 @@ const MyTabs: FC = () =>{
 
 const NavigationComponent: FC =()=> {
   return (
-    <NavigationContainer>
       <MyTabs />
-    </NavigationContainer>
   );
 }
 

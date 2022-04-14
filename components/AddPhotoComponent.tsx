@@ -36,6 +36,16 @@ const AddPhotoComponent: FC =() => {
           if(hasGalleryPermission==false){
               return <Text>No Access to Internal Storage</Text>
           }
+
+        //   const handleImage = (event) => {
+        //     let file = event.target.files[0];
+        //     const reader = new FileReader();
+        //     reader.onloadend = () => {
+        //       console.log(reader.result)
+        //       setBlogImage(reader.result)
+        //     }
+        //     reader.readAsDataURL(file)
+        //   }
         
     }
     return(

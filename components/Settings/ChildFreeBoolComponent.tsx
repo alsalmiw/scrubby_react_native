@@ -17,7 +17,7 @@ const ChildFreeBoolComponent = ()=>{
             onValueChange={toggleSwitch}
             value={isEnabled}
             {...setIsChildFree(isEnabled)}
-            // {...console.log(isChildFree)}
+
           />
         </View>
       );

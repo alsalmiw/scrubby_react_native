@@ -33,6 +33,7 @@ const App: FC =()=> {
           <NavigationComponent /> 
 
           </ThemeProvider> 
+
     </UserProvider>
 </NavigationContainer>
    

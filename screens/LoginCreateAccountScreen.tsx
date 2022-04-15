@@ -6,28 +6,21 @@ import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentL
 import UserContext from "../context/UserContext"
 import INewUser from "../Interfaces/INewUser"
 import IUserLogin from "../Interfaces/IUserLogin"
-
-//fetch
 import { CreateAccount, UserLogin } from "../services/dataService"
 import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
 import ChildFreeBoolComponent from "../components/Settings/ChildFreeBoolComponent"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-
-
 import PhotoComponent from "../components/PhotoComponent"
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 type RootStackParamList ={
     login:undefined,
     Nav: undefined,
   }
+
   type Props = NativeStackScreenProps<RootStackParamList, 'login'>
 
-
 const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
-
-
-
 
     const [login, setLogin] = useState(true);
     const { username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword } = useContext(UserContext)
@@ -45,6 +38,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
         let result = await CreateAccount(userData);
         if (result) {
             AsyncStorage.setItem("Token", result.token);
+            navigation.navigate('Nav')
             console.log(result)
         }
 
@@ -65,6 +59,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
         if (result) {
             AsyncStorage.setItem("Token", result.token);
             console.log(result)
+            navigation.navigate('Nav')
         }
         else{
             Alert.alert("Error", 'Incorrect Username or Password', [{ text: "Cancel", style: "cancel" }])

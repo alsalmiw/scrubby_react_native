@@ -12,86 +12,66 @@ import {UpdateName, UpdatePassword} from '../../services/dataService'
 import UserContext from '../../context/UserContext';
 import INewName from '../../Interfaces/INewName'
 import IUserLogin from '../../Interfaces/IUserLogin';
+import { FontAwesome } from '@expo/vector-icons';
+import { ThemeContext } from '../../context/ThemeContext';
 
+type Props = NativeStackScreenProps <RootStackParamList, 'ChangePassword'>
 
-
-
-type Props = NativeStackScreenProps <RootStackParamList, 'EditProfile'>
-
-const EditProfileScreen: FC<Props> = ({navigation, route})=> {
-  
-  const [newName, setNewName] = useState('')
+const ChangePasswordScreen: FC<Props> = ({navigation, route})=> {
+const {fuchsiaColor, yellowColor} = useContext(ThemeContext)
   const [newPassword, setNewPassword] = useState('')
+  const [repeatNewPassword, setRepeatNewPassword] = useState('')
   const {username, userData} = useContext(UserContext)
 
 
-  const saveName = async () => {
-    let data:INewName = {
-      Username: "Walaa",
-      Name: newName
-    }
-    console.log(data)
-    let result = await UpdateName(data)
-    if(result) {
-        console.log (result)
-    }
-
-  }
+ 
 
   const changePassword = async () => {
-    let data:IUserLogin = {
-      Username: "Walaa",
-      Password: newPassword
-    }
+      if(newPassword===repeatNewPassword)
+      {
+         let data:IUserLogin = {
+         Username: "Walaa",
+        Password: newPassword
+        }
     let result = await UpdatePassword(data)
     if(result) {
         console.log (result)
+        alert("You have successfully updated your password")
+        navigation.navigate('Settings')
     }
-
+      }
+      else{
+          alert("Please make sure both passwords are correct")
+      }
   }
 
   const handleSave = () => {
-    if(newName.length==0)
-    {
-      console.log("newName is empty")
-    }
-    else if(newPassword.length==0)
-    {
-      console.log("newPassword is empty");
-    }
-    
+    changePassword()
   }
   
   return (
  
-    <View style={styles.container}>
-        <TitleComponent title="Edit Profile" />
-        <AddPhotoComponent />
-        <WhiteSubTitleComponent title="Name" />
-        <InputFieldComponent holder="enter your name" onChangeText={(e: string)=>setNewName(e)} />
-        <Text style={{color:"white", width:"80%"}}>An empty field will not result in an update</Text>
-        <WhiteSubTitleComponent title="Password" />
+    <View style={[styles.container, {backgroundColor:fuchsiaColor}]}>
+        <TitleComponent title="Change Password" />
+        <FontAwesome name='lock' size={100} style={{marginRight: 10, color: 'white'}} />
+        <WhiteSubTitleComponent title="New Password" />
         <InputFieldComponent holder="enter your new password" onChangeText={(e: string)=>setNewPassword(e)} />
-        <Text style={{color:"white", width:"80%"}}>An empty field will not result in an update</Text>
-        <FullButtonComponent onPress={handleSave} color="white">
+        <WhiteSubTitleComponent title="Repeat New Password" />
+        <InputFieldComponent holder="repeat your new password" onChangeText={(e: string)=>setRepeatNewPassword(e)} />
+        <FullButtonComponent onPress={handleSave} color={yellowColor}>
           <Text>Save</Text>
         </FullButtonComponent>
-
-        
     </View>
-
-    
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E2683C',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: StatusBar.currentHeight
   },
 });
 
-export default EditProfileScreen
+export default ChangePasswordScreen

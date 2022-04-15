@@ -1,15 +1,14 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import IButtonStandard from '../Interfaces/IButtonStandard'
 
 const FullButtonComponent: FC<IButtonStandard> = (props) => {
-
     const buttonHandler = () => {
         props.onPress()
     }
 
     return (
-        <View style={styles.buttonOuterContainer}>
+        <View style={[styles.buttonOuterContainer, {backgroundColor:props.color}]}>
             <Pressable
                 style={styles.buttonInnerContainer}
                 onPress={buttonHandler}
@@ -30,7 +29,6 @@ const styles = StyleSheet.create({
         bottom: 0,
     },
     buttonInnerContainer: {
-        backgroundColor: '#1699B1',
         paddingVertical: '5%',
     },
     buttonText: {

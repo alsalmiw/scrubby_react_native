@@ -21,8 +21,9 @@ const SettingsScreen: FC = ()=> {
 
         <View style={styles.container}>
           <HeaderComponent title="Settings"/>
+          <SettingsLinkComponent linkName='Logout' linkTo='login' icon='sign-out'/>
          <SettingsLinkComponent linkName='Edit Profile' linkTo='EditProfile' icon='edit'/>
-        <SettingsLinkComponent linkName='change Password' linkTo='editProfile' icon='edit'/>
+        <SettingsLinkComponent linkName='Change Password' linkTo='ChangePassword' icon='lock'/>
      </View>
 
     

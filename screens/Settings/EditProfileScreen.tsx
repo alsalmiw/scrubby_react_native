@@ -12,6 +12,7 @@ import {UpdateName, UpdatePassword} from '../../services/dataService'
 import UserContext from '../../context/UserContext';
 import INewName from '../../Interfaces/INewName'
 import IUserLogin from '../../Interfaces/IUserLogin';
+import { ThemeContext } from '../../context/ThemeContext';
 
 
 
@@ -19,7 +20,7 @@ import IUserLogin from '../../Interfaces/IUserLogin';
 type Props = NativeStackScreenProps <RootStackParamList, 'EditProfile'>
 
 const EditProfileScreen: FC<Props> = ({navigation, route})=> {
-  
+  const {orangeColor, blueColor} = useContext(ThemeContext)
   const [newName, setNewName] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const {username, userData} = useContext(UserContext)
@@ -64,16 +65,12 @@ const EditProfileScreen: FC<Props> = ({navigation, route})=> {
   
   return (
  
-    <View style={styles.container}>
+    <View style={[styles.container,{backgroundColor:orangeColor}]}>
         <TitleComponent title="Edit Profile" />
         <AddPhotoComponent />
         <WhiteSubTitleComponent title="Name" />
         <InputFieldComponent holder="enter your name" onChangeText={(e: string)=>setNewName(e)} />
-        <Text style={{color:"white", width:"80%"}}>An empty field will not result in an update</Text>
-        <WhiteSubTitleComponent title="Password" />
-        <InputFieldComponent holder="enter your new password" onChangeText={(e: string)=>setNewPassword(e)} />
-        <Text style={{color:"white", width:"80%"}}>An empty field will not result in an update</Text>
-        <FullButtonComponent onPress={handleSave} color="white">
+        <FullButtonComponent onPress={handleSave} color={blueColor}>
           <Text>Save</Text>
         </FullButtonComponent>
 
@@ -87,7 +84,6 @@ const EditProfileScreen: FC<Props> = ({navigation, route})=> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E2683C',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: StatusBar.currentHeight

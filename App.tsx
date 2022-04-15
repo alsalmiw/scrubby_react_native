@@ -1,29 +1,45 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { ThemeProvider } from './context/ThemeContext';
-import HeaderComponent from './components/HeaderComponent'
-import UnderlinedHeaderComponent from './components/UnderlinedHeaderComponent';
-import NavigationComponent from './components/NavigationComponent'
+import UserContext, { UserProvider } from './context/UserContext';
+import NavigationComponent from './components/NavigationComponent';
+import { NavigationContainer } from '@react-navigation/native';
+import LoginAndCreateAccountScreen from './screens/LoginCreateAccountScreen';
+import { FC, useContext, useEffect } from 'react';
+import RootStackParamList from './types/INavigateProfile'
 
-export default function App() {
 
-  const displayHandler = () => {
-    console.log('Hello World')
-  }
+const App: FC =()=> {
+  const {username, password} = useContext(UserContext)
 
-  const displayAddHandler = () => {
-    console.log('This is the add button');
-  }
+  useEffect(() => {
+   
+  }, [])
+  
 
-  const displayFullHandler = () => {
-    console.log('Full Display');
+  const checkUser=()=>{
+    if(username !=null) {
+
+    }
   }
 
   return (
+
+    <NavigationContainer>
+   <UserProvider>
     <ThemeProvider>
-    
-    <NavigationComponent />
-    </ThemeProvider> 
+                 
+          {/* <LoginAndCreateAccountScreen /> */}
+          <NavigationComponent /> 
+
+          </ThemeProvider> 
+
+    </UserProvider>
+</NavigationContainer>
+   
+
+
+
   );
 }
 
@@ -38,3 +54,5 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 });
+
+export default App;

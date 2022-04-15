@@ -61,6 +61,9 @@ const MyProfileScreen: FC = () => {
         })}
         */}
 
+    {/* <Text>MyProfile</Text>
+        
+    </View> */}
 
       <HeaderComponent title="MY PROFILE"></HeaderComponent>
       <View style={styles.firstRow}>
@@ -176,6 +179,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
 
+    alignItems: 'center',
+    paddingTop: StatusBar.currentHeight
   },
 
   nameAndCoinContainer: {

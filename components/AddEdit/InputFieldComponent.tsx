@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 

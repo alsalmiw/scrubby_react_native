@@ -9,9 +9,8 @@ interface Props {
 }
 
 const TaskSpaceRowComponent: FC<Props> =({children, idx}) => {
-    const {orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor} = useContext(ThemeContext)
-    const [bgColor, setBgColor]= useState('')
-
+    const {orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor, bgColor, setBgColor} = useContext(ThemeContext)
+    
   useEffect(()=> {
       selectColor()
     console.log(idx)

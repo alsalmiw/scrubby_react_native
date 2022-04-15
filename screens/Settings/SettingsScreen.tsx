@@ -6,7 +6,6 @@ import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import SettingsLinkComponent from '../../components/Settings/SettingsLinkComponent';
 import { FontAwesome } from '@expo/vector-icons';
 import HeaderComponent from "../../components/HeaderComponent"
-import EditProfileScreen from '../Settings/EditProfileScreen'
 import ManageInvitesScreen from '../Settings/ManageInvitesScreen'
 import RootStackParamList from '../../types/INavigateSettings'
 

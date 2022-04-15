@@ -1,11 +1,7 @@
 import { FC, useContext, useState } from "react"
 import { Alert, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native"
 import { Button } from "react-native-paper"
-
-
 import {Keyboard, TouchableWithoutFeedback} from 'react-native'
-
-
 import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentLogin"
 import UserContext from "../context/UserContext"
 import INewUser from "../Interfaces/INewUser"
@@ -15,11 +11,16 @@ import IUserLogin from "../Interfaces/IUserLogin"
 import { CreateAccount, UserLogin } from "../services/dataService"
 import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
 import ChildFreeBoolComponent from "../components/Settings/ChildFreeBoolComponent"
+import { NativeStackScreenProps } from "@react-navigation/native-stack"
+
+type RootStackParamList ={
+    login:undefined,
+    Nav: undefined,
+  }
+  type Props = NativeStackScreenProps<RootStackParamList, 'login'>
 
 
-
-
-const LoginAndCreateAccountScreen: FC = () => {
+const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
     const [login, setLogin] = useState(true);
     const {username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword} = useContext(UserContext)
 
@@ -36,6 +37,7 @@ const LoginAndCreateAccountScreen: FC = () => {
     let result = await CreateAccount(userData);
     if(result)
     {
+        navigation.navigate('Nav')
         console.log(result)
     }
     
@@ -55,6 +57,7 @@ const userLogin = async () =>{
     let result = await UserLogin(userLoginData);
     if(result)
     {
+        navigation.navigate('Nav')
         console.log(result)
     }
 

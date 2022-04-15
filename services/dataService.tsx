@@ -1,5 +1,6 @@
 import INewUser from '../Interfaces/INewUser';
 import IUserLogin from '../Interfaces/IUserLogin'
+import INewName from '../Interfaces/INewName'
 
 let link = "https://scrubbyapi.azurewebsites.net"
 
@@ -36,14 +37,14 @@ async function CreateAccount(newUser:INewUser){
 }
 
 
-async function UpdateName(Name:string, Username:string) {
-    let res= await fetch(`${link}/User/UpdateName/${Username}/${Name}`, {
+async function UpdateName(newName: INewName) {
+    let res= await fetch(`${link}/User/UpdateName`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         //might be wrong
-        body: JSON.stringify({})
+        body: JSON.stringify(newName)
     });
     if(!res.ok)
     {

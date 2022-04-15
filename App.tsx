@@ -6,8 +6,16 @@ import NavigationComponent from './components/NavigationComponent';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginAndCreateAccountScreen from './screens/LoginCreateAccountScreen';
 import { FC, useContext, useEffect } from 'react';
-import RootStackParamList from './types/INavigateProfile'
+// import RootStackParamList from './types/INavigateProfile'
 
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+type RootStackParamList ={
+  login:undefined,
+  Nav: undefined,
+}
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App: FC =()=> {
   const {username, password} = useContext(UserContext)
@@ -28,9 +36,17 @@ const App: FC =()=> {
     <NavigationContainer>
    <UserProvider>
     <ThemeProvider>
-                 
-          {/* <LoginAndCreateAccountScreen /> */}
-          <NavigationComponent /> 
+         <Stack.Navigator>
+<Stack.Screen name="login" 
+component={LoginAndCreateAccountScreen} 
+options={{headerShown: false}} />
+
+
+<Stack.Screen name="Nav" 
+component={NavigationComponent} 
+options={{headerShown: false}} />
+
+         </Stack.Navigator>
 
           </ThemeProvider> 
 

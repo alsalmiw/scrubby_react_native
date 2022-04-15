@@ -19,6 +19,7 @@ const EditProfileScreen: FC<Props> = ({navigation, route})=> {
 
   const handleSave = () => {
     console.log(newName, newPassword)
+    
   }
   
   return (
@@ -30,6 +31,7 @@ const EditProfileScreen: FC<Props> = ({navigation, route})=> {
         <InputFieldComponent holder="enter your name" onChangeText={(e: string)=>setNewName(e)} />
         <WhiteSubTitleComponent title="Password" />
         <InputFieldComponent holder="enter your new password" onChangeText={(e: string)=>setNewPassword(e)} />
+        <Text style={{color:"white"}}>Leave empty to keep your old password</Text>
         <FullButtonComponent onPress={handleSave}>
           <Text>Save</Text>
         </FullButtonComponent>

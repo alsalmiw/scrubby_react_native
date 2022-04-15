@@ -8,14 +8,17 @@ import UserContext from '../../context/UserContext';
 
 
 
+interface IInputType{
+    onChangeText: Function;
+    holder: string;
+}
 
 
+const InputFieldComponent: FC<IInputType> = (props) => {
 
-const InputFieldComponent = () => {
-    const {setPassword,password, username, setUsername } = useContext(UserContext)
-    const [hide, setHide] = useState(true);
-    const [eye, setEye] = useState(true);
-
+    const handleOnChange = (e: string) => {
+        props.onChangeText(e)
+    }
 
     return (
         //userlogin input
@@ -26,10 +29,10 @@ const InputFieldComponent = () => {
                     value={""}
                     autoComplete='off'
                     style={styles.inputUsername}
-                    placeholder="something"
+                    placeholder={props.holder}
                     mode='flat'
                     selectionColor='#808080'
-                    onChangeText={(e)=>console.log(e)}
+                    onChangeText={(e)=>handleOnChange(e)}
                 />
 
             </View>
@@ -48,9 +51,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderWidth: 2,
         //change back to white for other pages
-        borderColor: "black",
+        borderColor: "white",
         height: 60,
-        width: 300,
+        width: "80%",
         borderRadius: 10,
         margin: 10,
         overflow: 'hidden',

@@ -7,7 +7,7 @@ interface TitleType{
     title: string;
 }
 
-const TitleComponent: FC<TitleType> =({title}) => {
+const WhiteSubTitleComponent: FC<TitleType> =({title}) => {
   
 
     return(
@@ -19,16 +19,18 @@ const TitleComponent: FC<TitleType> =({title}) => {
 
 const styles = StyleSheet.create({
         mainHeader: {
-            fontSize:30,
+            fontSize:20,
             color: "white",
+            fontWeight: "bold"
         }, 
         headerContainer:{
             paddingRight: 10,
-            width:'100%',
+            width:'80%',
             flexDirection: "row",
-            justifyContent: "center",
-            marginBottom:30,
+            justifyContent: "flex-start",
+            marginBottom:2,
+            marginTop:15,
         }
     })
 
-export default TitleComponent
+export default WhiteSubTitleComponent

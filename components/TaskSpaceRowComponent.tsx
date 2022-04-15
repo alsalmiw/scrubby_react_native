@@ -28,6 +28,7 @@ const TaskSpaceRowComponent: FC<Props> =({children, idx}) => {
 
     return(
         <View style={[styles.container, {backgroundColor:bgColor}]}>
+            
             {children}
 
         </View>

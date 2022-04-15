@@ -17,7 +17,8 @@ export default TaskSpaceRowIconComponent;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderRadius: 5
     }
 })
 

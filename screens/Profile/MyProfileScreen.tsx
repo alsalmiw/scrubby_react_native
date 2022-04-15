@@ -17,6 +17,7 @@ import UseTheme from '../../hooks/use-theme';
 import { Dimensions } from 'react-native';
 
 import { Entypo } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { useTheme } from 'react-native-paper';
 import { ThemeContext } from '../../context/ThemeContext';
 
@@ -89,6 +90,38 @@ const MyProfileScreen: FC = () => {
             <Text style={styles.textStyle}>Hello World</Text>
             <TaskSpaceRowIconComponent>
               <Entypo name="check" size={24} color={bgColor} />
+              
+            </TaskSpaceRowIconComponent>
+          </View>
+        </TaskSpaceRowComponent>
+
+        <TaskSpaceRowComponent idx={r}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text style={styles.textStyle}>Hello World</Text>
+            <TaskSpaceRowIconComponent>
+              <Entypo name="check" size={24} color={bgColor} />
+              
+            </TaskSpaceRowIconComponent>
+          </View>
+        </TaskSpaceRowComponent>
+
+        <TaskSpaceRowComponent idx={r}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text style={styles.textStyle}>Hello World</Text>
+            <TaskSpaceRowIconComponent>
+              <Entypo name="check" size={24} color={bgColor} />
+              
+            </TaskSpaceRowIconComponent>
+          </View>
+        </TaskSpaceRowComponent>
+
+        <TaskSpaceRowComponent idx={r}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text style={styles.textStyle}>Hello World</Text>
+            <TaskSpaceRowIconComponent>
+              {/* <Entypo name="trash" size={24} color={bgColor} /> */}
+              <Feather name="trash-2" size={24} color={bgColor} />
+              
             </TaskSpaceRowIconComponent>
           </View>
         </TaskSpaceRowComponent>
@@ -121,6 +154,7 @@ const MyProfileScreen: FC = () => {
       </View>
 
     </View>
+
 
 
 

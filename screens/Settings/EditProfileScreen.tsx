@@ -14,9 +14,6 @@ import INewName from '../../Interfaces/INewName'
 import IUserLogin from '../../Interfaces/IUserLogin';
 import { ThemeContext } from '../../context/ThemeContext';
 
-
-
-
 type Props = NativeStackScreenProps <RootStackParamList, 'EditProfile'>
 
 const EditProfileScreen: FC<Props> = ({navigation, route})=> {
@@ -34,33 +31,13 @@ const EditProfileScreen: FC<Props> = ({navigation, route})=> {
     console.log(data)
     let result = await UpdateName(data)
     if(result) {
-        console.log (result)
+      alert("You have successfully updated your name")
+      navigation.navigate('Settings')
     }
-
-  }
-
-  const changePassword = async () => {
-    let data:IUserLogin = {
-      Username: "Walaa",
-      Password: newPassword
-    }
-    let result = await UpdatePassword(data)
-    if(result) {
-        console.log (result)
-    }
-
   }
 
   const handleSave = () => {
-    if(newName.length==0)
-    {
-      console.log("newName is empty")
-    }
-    else if(newPassword.length==0)
-    {
-      console.log("newPassword is empty");
-    }
-    
+    saveName()
   }
   
   return (

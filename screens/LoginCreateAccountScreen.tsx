@@ -17,7 +17,7 @@ import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
 import ChildFreeBoolComponent from "../components/Settings/ChildFreeBoolComponent"
 import PhotoComponent from "../components/PhotoComponent"
 
-import { AsyncStorage } from '@react-native-async-storage/async-storage';;
+import AsyncStorage from '@react-native-async-storage/async-storage';;
 
 
 const LoginAndCreateAccountScreen: FC = () => {
@@ -60,6 +60,7 @@ const LoginAndCreateAccountScreen: FC = () => {
         }
         else{
             Alert.alert("Error", 'Incorrect Username or Password', [{ text: "Cancel", style: "cancel" }])
+            console.log('fail')
         }
 
         console.log(result)
@@ -94,11 +95,9 @@ const LoginAndCreateAccountScreen: FC = () => {
             }
             else {
                 userLogin();
-                
                 console.log(savedUsername);
                 setPassword("");
                 setUsername("");
-                console.log("logged in");
             }
         }
 

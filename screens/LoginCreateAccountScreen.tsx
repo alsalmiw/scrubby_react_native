@@ -115,13 +115,7 @@ const LoginAndCreateAccountScreen: FC = () => {
                                 <Text style={styles.title}>Sign up</Text>
 
                                 <View style={styles.inputPosition}>
-                                    {/* <InputFieldComponentLogin /> */}
-                                    <PhotoComponent>
-                                        <Image
-                                            source={} style={{ width: 190, height: 110 }}
-
-                                        />
-                                    </PhotoComponent>
+                                    <InputFieldComponentLogin />
                                 </View>
 
                                 <View>

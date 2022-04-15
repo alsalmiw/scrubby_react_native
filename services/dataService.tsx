@@ -1,9 +1,10 @@
 import INewUser from '../Interfaces/INewUser';
 import IUserLogin from '../Interfaces/IUserLogin'
 
+let link = "https://scrubbyapi.azurewebsites.net"
 
 async function UserLogin(userData:IUserLogin){
-    let res= await fetch('https://scrubbyapi.azurewebsites.net/User/Login', {
+    let res= await fetch(`${link}/User/Login`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -17,7 +18,7 @@ async function UserLogin(userData:IUserLogin){
 }
 
 async function CreateAccount(newUser:INewUser){
-    let res= await fetch('https://scrubbyapi.azurewebsites.net/User/AddUser', {
+    let res= await fetch(`${link}/User/AddUser`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -36,7 +37,7 @@ async function CreateAccount(newUser:INewUser){
 
 
 async function UpdateName(Name:string, Username:string) {
-    let res= await fetch(`https://scrubbyapi.azurewebsites.net/User/UpdateName/${Username}/${Name}`, {
+    let res= await fetch(`${link}/User/UpdateName/${Username}/${Name}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -55,7 +56,7 @@ async function UpdateName(Name:string, Username:string) {
 }
 
 async function DeleteUser(id:number) {
-    let res= await fetch(`https://scrubbyapi.azurewebsites.net/User/UpdateUserInfo/${id}`, {
+    let res= await fetch(`${link}/User/UpdateUserInfo/${id}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

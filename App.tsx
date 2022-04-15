@@ -8,7 +8,17 @@ import NavigationComponent from './components/NavigationComponent';
 
 import LoginAndCreateAccountScreen from './screens/LoginCreateAccountScreen';
 import InputFieldComponent from './components/AddEdit/InputFieldComponent';
+import PhotoComponent from './components/PhotoComponent';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+
+type  RootStackParamList ={
+  Login: undefined
+  nav: undefined
+}
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
 
@@ -26,15 +36,25 @@ export default function App() {
 
   return (
     <UserProvider>
+      <ThemeProvider>
+
+        <NavigationContainer>
+          <Stack.Navigator>
+
+          
+          <Stack.Screen name="Login" component={LoginAndCreateAccountScreen} />
+
+          <Stack.Screen name="nav" component={LoginAndCreateAccountScreen} />
+          </Stack.Navigator>
 
 
-      
-                <ThemeProvider>
-          <LoginAndCreateAccountScreen />
-          {/* <InputFieldComponent /> */}
-          {/* <NavigationComponent /> */}
+        </NavigationContainer>
+        {/* <LoginAndCreateAccountScreen /> */}
+        {/* <InputFieldComponent /> */}
+        {/* <NavigationComponent /> */}
 
-          </ThemeProvider> 
+
+      </ThemeProvider>
 
     </UserProvider>
 

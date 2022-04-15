@@ -8,7 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 const AddPhotoComponent: FC =() => {
     const {lilacColor} = useContext(ThemeContext)
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState({});
     const [hasGalleryPermission, setHasGalleryPermission] =useState(false);
 
     useEffect(()=>{
@@ -24,18 +24,50 @@ const AddPhotoComponent: FC =() => {
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
-            quality: 1,
+            quality: 0,
           });
       
           console.log(result);
       
           if (!result.cancelled) {
             setImage(result.uri);
+            console.log(result.uri)
+
           }
 
           if(hasGalleryPermission==false){
               return <Text>No Access to Internal Storage</Text>
           }
+
+          const SavePhoto = async () => {
+              const form = new FormData();
+              form.append('profile', JSON.stringify( {
+                  name: new Date() + "profile",
+                  uri: image,
+                  type: 'image'
+
+                }))
+
+                let res = await fetch('',{
+                    method: "POST",
+                    body: form,
+                    headers:{
+                    "Content-Type": "multipart/form-data",
+                    }
+                    
+                })
+                let response = await res.json()
+                console.log(response)
+          }
+        //   const handleImage = (event) => {
+        //     let file = event.target.files[0];
+        //     const reader = new FileReader();
+        //     reader.onloadend = () => {
+        //       console.log(reader.result)
+        //       setBlogImage(reader.result)
+        //     }
+        //     reader.readAsDataURL(file)
+        //   }
         
     }
     return(

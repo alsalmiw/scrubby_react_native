@@ -5,10 +5,18 @@ import { TextInput } from 'react-native-paper';
 
 
 
+interface IInputType{
+    onChangeText: Function;
+    holder: string;
+}
 
 
+const InputFieldComponent: FC<IInputType> = (props) => {
 
-const InputFieldComponent = () => {
+    const handleOnChange = (e: string) => {
+        props.onChangeText(e)
+    }
+
     return (
         <>
             
@@ -17,10 +25,10 @@ const InputFieldComponent = () => {
                     value={""}
                     autoComplete='off'
                     style={styles.inputUsername}
-                    placeholder="something"
+                    placeholder={props.holder}
                     mode='flat'
                     selectionColor='#808080'
-                    onChangeText={(e)=>console.log(e)}
+                    onChangeText={(e)=>handleOnChange(e)}
                 />
 
             </View>
@@ -38,9 +46,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         borderWidth: 2,
+        //change back to white for other pages
         borderColor: "white",
         height: 60,
-        width: 300,
+        width: "80%",
         borderRadius: 10,
         margin: 10,
         overflow: 'hidden',

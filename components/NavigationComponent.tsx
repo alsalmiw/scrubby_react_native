@@ -59,7 +59,7 @@ const MyTabs: FC = () =>{
         component={SettingsNavigation}
         options={{
           headerShown: false,
-          tabBarLabel: 'Settings Navigation',
+          tabBarLabel: 'Settings',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="settings-sharp" color={color} size={size} />
           ),
@@ -71,9 +71,8 @@ const MyTabs: FC = () =>{
 
 const NavigationComponent: FC =()=> {
   return (
-    <NavigationContainer>
+    
       <MyTabs />
-    </NavigationContainer>
   );
 }
 

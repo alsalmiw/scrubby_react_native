@@ -26,7 +26,7 @@ const MyProfileScreen: FC = ()=> {
         })}
         */}
 
-    
+    <Text>MyProfile</Text>
         
     </View>
 

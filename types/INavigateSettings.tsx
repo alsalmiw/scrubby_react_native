@@ -1,8 +1,9 @@
 
 type RootStackParamList = { 
-    Settings: {title: string}
+    Settings: undefined
     EditProfile: {title: string}
     ManageInvites: {title: string}
+    ChangePassword: {title: string}
   }
 
   

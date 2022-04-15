@@ -48,7 +48,8 @@ options={{headerShown: false}} />
 
          </Stack.Navigator>
 
-          </ThemeProvider> 
+
+      </ThemeProvider>
 
     </UserProvider>
 </NavigationContainer>

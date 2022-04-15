@@ -1,6 +1,7 @@
 import INewUser from '../Interfaces/INewUser';
 import IUserLogin from '../Interfaces/IUserLogin'
 
+
 async function UserLogin(userData:IUserLogin){
     let res= await fetch('https://scrubbyapi.azurewebsites.net/User/Login', {
         method: "POST",
@@ -34,4 +35,41 @@ async function CreateAccount(newUser:INewUser){
 }
 
 
-export {UserLogin, CreateAccount }
+async function UpdateUsername(id:number, Username:string) {
+    let res= await fetch(`https://scrubbyapi.azurewebsites.net/User/UpdateUser/${id}/${Username}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        //might be wrong
+        body: JSON.stringify({})
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data = await res.json();
+    console.log(data)
+   return data;
+}
+
+async function DeleteUser(id:number) {
+    let res= await fetch(`https://scrubbyapi.azurewebsites.net/User/UpdateUserInfo/${id}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({})
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data = await res.json();
+    console.log(data)
+}
+
+
+export {UserLogin, CreateAccount, UpdateUsername, DeleteUser }

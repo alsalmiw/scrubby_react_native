@@ -1,9 +1,11 @@
 import INewUser from '../Interfaces/INewUser';
 import IUserLogin from '../Interfaces/IUserLogin'
+import INewName from '../Interfaces/INewName'
 
+let link = "https://scrubbyapi.azurewebsites.net"
 
 async function UserLogin(userData:IUserLogin){
-    let res= await fetch('https://scrubbyapi.azurewebsites.net/User/Login', {
+    let res= await fetch(`${link}/User/Login`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -17,7 +19,7 @@ async function UserLogin(userData:IUserLogin){
 }
 
 async function CreateAccount(newUser:INewUser){
-    let res= await fetch('https://scrubbyapi.azurewebsites.net/User/AddUser', {
+    let res= await fetch(`${link}/User/AddUser`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -35,14 +37,33 @@ async function CreateAccount(newUser:INewUser){
 }
 
 
-async function UpdateName(Name:string, Username:string) {
-    let res= await fetch(`https://scrubbyapi.azurewebsites.net/User/UpdateName/${Username}/${Name}`, {
+async function UpdateName(newName: INewName) {
+    let res= await fetch(`${link}/User/UpdateName`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         //might be wrong
-        body: JSON.stringify({})
+        body: JSON.stringify(newName)
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data = await res.json();
+    console.log(data)
+   return data;
+}
+
+async function UpdatePassword(newPassword: IUserLogin) {
+    let res= await fetch(`${link}/User/UpdatePassword`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        //might be wrong
+        body: JSON.stringify(newPassword)
     });
     if(!res.ok)
     {
@@ -55,7 +76,7 @@ async function UpdateName(Name:string, Username:string) {
 }
 
 async function DeleteUser(id:number) {
-    let res= await fetch(`https://scrubbyapi.azurewebsites.net/User/UpdateUserInfo/${id}`, {
+    let res= await fetch(`${link}/User/UpdateUserInfo/${id}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -72,4 +93,4 @@ async function DeleteUser(id:number) {
 }
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser }
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, UpdatePassword }

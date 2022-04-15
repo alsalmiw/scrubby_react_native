@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
+import IButtonStandard from '../Interfaces/IButtonStandard'
 
-
-const FullButtonComponent: FC<{ onPress: () => void }> = (props) => {
+const FullButtonComponent: FC<IButtonStandard> = (props) => {
 
     const buttonHandler = () => {
         props.onPress()
@@ -25,11 +25,13 @@ export default FullButtonComponent;
 const styles = StyleSheet.create({
     buttonOuterContainer: {
         overflow: 'hidden',
-        width: '100%'
+        width: '100%',
+        position: 'absolute',
+        bottom: 0,
     },
     buttonInnerContainer: {
         backgroundColor: '#1699B1',
-        paddingVertical: '4%',
+        paddingVertical: '5%',
     },
     buttonText: {
         color: 'white',

@@ -1,62 +1,59 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { ThemeProvider } from './context/ThemeContext';
-import { UserProvider } from './context/UserContext';
-import HeaderComponent from './components/HeaderComponent'
-import UnderlinedHeaderComponent from './components/UnderlinedHeaderComponent';
+import UserContext, { UserProvider } from './context/UserContext';
 import NavigationComponent from './components/NavigationComponent';
-
-import LoginAndCreateAccountScreen from './screens/LoginCreateAccountScreen';
-import InputFieldComponent from './components/AddEdit/InputFieldComponent';
-import PhotoComponent from './components/PhotoComponent';
 import { NavigationContainer } from '@react-navigation/native';
+import LoginAndCreateAccountScreen from './screens/LoginCreateAccountScreen';
+import { FC, useContext, useEffect } from 'react';
+// import RootStackParamList from './types/INavigateProfile'
+
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-
-type  RootStackParamList ={
-  Login: undefined
-  nav: undefined
+type RootStackParamList ={
+  login:undefined,
+  Nav: undefined,
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function App() {
+const App: FC =()=> {
+  const {username, password} = useContext(UserContext)
 
-  const displayHandler = () => {
-    console.log('Hello World')
-  }
+  useEffect(() => {
+   
+  }, [])
+  
 
-  const displayAddHandler = () => {
-    console.log('This is the add button');
-  }
+  const checkUser=()=>{
+    if(username !=null) {
 
-  const displayFullHandler = () => {
-    console.log('Full Display');
+    }
   }
 
   return (
-    <UserProvider>
-      <ThemeProvider>
 
-        <NavigationContainer>
-          <Stack.Navigator>
-
-          
-          <Stack.Screen name="Login" component={LoginAndCreateAccountScreen} />
-
-          <Stack.Screen name="nav" component={LoginAndCreateAccountScreen} />
-          </Stack.Navigator>
+    <NavigationContainer>
+   <UserProvider>
+    <ThemeProvider>
+         <Stack.Navigator>
+<Stack.Screen name="login" 
+component={LoginAndCreateAccountScreen} 
+options={{headerShown: false}} />
 
 
-        </NavigationContainer>
-        {/* <LoginAndCreateAccountScreen /> */}
-        {/* <InputFieldComponent /> */}
-        {/* <NavigationComponent /> */}
+<Stack.Screen name="Nav" 
+component={NavigationComponent} 
+options={{headerShown: false}} />
+
+         </Stack.Navigator>
 
 
       </ThemeProvider>
 
     </UserProvider>
+</NavigationContainer>
+   
 
 
 
@@ -74,3 +71,5 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 });
+
+export default App;

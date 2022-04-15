@@ -35,8 +35,8 @@ async function CreateAccount(newUser:INewUser){
 }
 
 
-async function UpdateUsername(id:number, Username:string) {
-    let res= await fetch(`https://scrubbyapi.azurewebsites.net/User/UpdateUser/${id}/${Username}`, {
+async function UpdateName(Name:string, Username:string) {
+    let res= await fetch(`https://scrubbyapi.azurewebsites.net/User/UpdateName/${Username}/${Name}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -72,4 +72,4 @@ async function DeleteUser(id:number) {
 }
 
 
-export {UserLogin, CreateAccount, UpdateUsername, DeleteUser }
+export {UserLogin, CreateAccount, UpdateName, DeleteUser }

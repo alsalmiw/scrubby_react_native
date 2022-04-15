@@ -56,7 +56,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
         setSavedPassword(password);
 
         let result = await UserLogin(userLoginData);
-        if (result) {
+        if (result.token != null) {
             AsyncStorage.setItem("Token", result.token);
             console.log(result)
             navigation.navigate('Nav')
@@ -66,7 +66,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
             console.log('fail')
         }
 
-        console.log(result)
+        
     }
     // check if username/ password is filled out
     const checkTextInput = () => {

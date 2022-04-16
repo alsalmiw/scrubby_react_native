@@ -1,62 +1,28 @@
 // import { StatusBar } from 'expo-status-bar';
-import {NativeStackScreenProps, createNativeStackNavigator} from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import { FC, useContext } from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { StyleSheet, View} from 'react-native';
 import SettingsLinkComponent from '../../components/Settings/SettingsLinkComponent';
 import { FontAwesome, FontAwesome5  } from '@expo/vector-icons';
 import HeaderComponent from "../../components/HeaderComponent"
-import ManageInvitesScreen from '../Settings/ManageInvitesScreen'
 import RootStackParamList from '../../types/INavigateSettings'
 import { ThemeContext } from '../../context/ThemeContext';
 import ChildFreeBoolComponent from '../../components/Settings/ChildFreeBoolComponent'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
+type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>
 
-const Tab = createNativeStackNavigator<RootStackParamList>();
-
-const SettingsScreen: FC = ()=> {
+const SettingsScreen: FC<Props> = ({navigation})=> {
   const {orangeColor, blueColor, fuchsiaColor, violetColor, greenColor, yellowColor, purpleColor} = useContext(ThemeContext)
+  //const navigation = useNavigation();
 
- let settingsLinks =[
-   {
-    Name:'Logout',
-    To:'login',
-    Icon:'sign-out',
-  },
-  {
-    Name:'Edit Profile',
-    To:'EditProfile',
-    Icon:'edit',
-  },
-  {
-    Name:'Invites',
-    To:'invite',
-    Icon:'group',
-  },
-  {
-    Name:'Change Password',
-    To:'ChangePassword',
-    Icon:'lock',
-  },
-  {
-    Name:'Child Free',
-    To:'',
-    Icon: <ChildFreeBoolComponent/>,
-  },
-  {
-    Name:'Score Board',
-    To:'scoreBoard',
-    Icon:<FontAwesome name={'star'} size={25} style={{marginRight: 10, color: orangeColor}} />,
-  },
-  {
-    Name:'Redeem Coins',
-    To:'redeemCoins',
-    Icon: <FontAwesome5 name={'coins'} size={25} style={{marginRight: 10, color: yellowColor}} />,
-  },
-
- ]
 const handleLogOut = () => {
+  AsyncStorage.removeItem("Token");
+  navigation.navigate('login')
+}
+
+const handleNone = () => {
 
 }
 
@@ -65,15 +31,35 @@ const handleLogOut = () => {
         <View style={styles.container}>
           <HeaderComponent title="Settings"/>
 
-         
-                <SettingsLinkComponent linkName='Logout' linkTo='login' onPress={() =>handleLogOut()}>
+                <SettingsLinkComponent linkName='Logout' onPress={() =>handleLogOut()}>
                   <FontAwesome name={'sign-out'} size={25} style={{marginRight: 10, color: greenColor}} />
-                  </SettingsLinkComponent>
+                </SettingsLinkComponent>
+
+                <SettingsLinkComponent linkName='Edit Profile' onPress={()=>navigation.navigate('EditProfile')} >
+                  <FontAwesome name={'edit'} size={25} style={{marginRight: 10, color: orangeColor}} />
+                </SettingsLinkComponent>
+
+                <SettingsLinkComponent linkName='Invites'  onPress={()=> navigation.navigate('ManageInvites')} >
+                  <FontAwesome name={'group'} size={25} style={{marginRight: 10, color: fuchsiaColor}} />
+                </SettingsLinkComponent>
+
+                <SettingsLinkComponent linkName='Child Free' onPress={()=>handleNone()} >
+                 <ChildFreeBoolComponent/>
+                </SettingsLinkComponent>
+
+                <SettingsLinkComponent linkName='Change Password' onPress={()=> navigation.navigate('ChangePassword')} >
+                  <FontAwesome name={'lock'} size={25} style={{marginRight: 10, color: blueColor}} />
+                </SettingsLinkComponent>
+
+                <SettingsLinkComponent linkName='Score Board'  onPress={()=> navigation.navigate('ScoreBoard')} >
+                  <FontAwesome name={'star'} size={25} style={{marginRight: 10, color: orangeColor}} />
+                </SettingsLinkComponent>
+
+                <SettingsLinkComponent linkName='Redeem Coins' onPress={()=>navigation.navigate('RedeemCoins')} >
+                  <FontAwesome5 name={'coins'} size={25} style={{marginRight: 10, color: yellowColor}} />
+                </SettingsLinkComponent>
       
           
-          {/* <SettingsLinkComponent linkName='Logout' linkTo='login' icon='sign-out'/>
-         <SettingsLinkComponent linkName='Edit Profile' linkTo='EditProfile' icon='edit'/>
-        <SettingsLinkComponent linkName='Change Password' linkTo='ChangePassword' icon='lock'/> */}
      </View>
 
 

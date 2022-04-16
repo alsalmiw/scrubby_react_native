@@ -6,18 +6,16 @@ import {useNavigation} from "@react-navigation/native"
 
 interface TitleType{
     linkName: string;
-    linkTo: any;
     children: ReactNode
     onPress: Function;
 }
 
 const SettingsLinkComponent: FC<TitleType> =(props) => {
     const {secondaryTextColor, lightLilacColor} = useContext(ThemeContext)
-    const navigation = useNavigation();
+
 
     const handleLink = () => {
         props.onPress()
-        navigation.navigate(props.linkTo)
     }
 
     return(

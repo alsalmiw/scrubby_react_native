@@ -6,6 +6,7 @@ import { MaterialCommunityIcons, Ionicons, FontAwesome } from '@expo/vector-icon
 import {ThemeContext} from "../context/ThemeContext"
 import ScheduleScreen from '../screens/Schedule/ScheduleScreen'
 import MyProfileScreen from '../screens/Profile/MyProfileScreen';
+import AddNewSpaceScreen from '../screens/Profile/AddNewSpaceScreen'
 import SettingsNavigation from '../screens/Settings/SettingsNavigation';
 import TaskFamilyScreen from '../screens/Tasking/TaskFamilyScreen'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -38,7 +39,7 @@ const MyTabs: FC = () =>{
       />
       <Tab.Screen
         name="Profile" 
-        component={MyProfileScreen}
+        component={AddNewSpaceScreen}
         options={{
           headerShown: false,
           tabBarLabel: 'Profile',

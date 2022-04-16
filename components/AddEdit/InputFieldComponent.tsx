@@ -1,18 +1,16 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
-
-
-
 
 interface IInputType{
     onChangeText: Function;
     holder: string;
+    hide: boolean;
 }
 
 
 const InputFieldComponent: FC<IInputType> = (props) => {
-
+ 
     const handleOnChange = (e: string) => {
         props.onChangeText(e)
     }
@@ -28,6 +26,7 @@ const InputFieldComponent: FC<IInputType> = (props) => {
                     placeholder={props.holder}
                     mode='flat'
                     selectionColor='#808080'
+                    secureTextEntry={props.hide} 
                     onChangeText={(e)=>handleOnChange(e)}
                 />
 

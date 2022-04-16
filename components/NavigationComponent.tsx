@@ -8,8 +8,12 @@ import ScheduleScreen from '../screens/Schedule/ScheduleScreen'
 import MyProfileScreen from '../screens/Profile/MyProfileScreen';
 import SettingsNavigation from '../screens/Settings/SettingsNavigation';
 import TaskFamilyScreen from '../screens/Tasking/TaskFamilyScreen'
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-
+type RootStackParamList ={
+  Nav: undefined,
+}
+type Props = NativeStackScreenProps<RootStackParamList, 'Nav'>
 const Tab = createBottomTabNavigator();
 
 const MyTabs: FC = () =>{
@@ -69,7 +73,7 @@ const MyTabs: FC = () =>{
   );
 }
 
-const NavigationComponent: FC =()=> {
+const NavigationComponent: FC <Props> =()=> {
   return (
     
       <MyTabs />

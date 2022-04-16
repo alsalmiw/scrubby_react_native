@@ -11,46 +11,41 @@ import WhiteSubTitleComponent from '../../components/AddEdit/WhiteSubTitleCompon
 import {UpdateName} from '../../services/dataService'
 import UserContext from '../../context/UserContext';
 import INewName from '../../Interfaces/INewName'
-
+import { ThemeContext } from '../../context/ThemeContext';
 
 type Props = NativeStackScreenProps <RootStackParamList, 'EditProfile'>
 
 const EditProfileScreen: FC<Props> = ({navigation, route})=> {
-  
+  const {orangeColor, blueColor} = useContext(ThemeContext)
   const [newName, setNewName] = useState('')
-  const [newPassword, setNewPassword] = useState('')
-  const {username, userData} = useContext(UserContext)
+  const {username} = useContext(UserContext)
 
 
   const saveName = async () => {
     let data:INewName = {
-      Username: "Walaa",
+      Username: username,
       Name: newName
     }
     console.log(data)
     let result = await UpdateName(data)
     if(result) {
-        console.log (result)
+      alert("You have successfully updated your name")
+      navigation.navigate('Settings')
     }
-
   }
 
   const handleSave = () => {
     saveName()
-    console.log(newName, newPassword)
-
   }
   
   return (
  
-    <View style={styles.container}>
+    <View style={[styles.container,{backgroundColor:orangeColor}]}>
         <TitleComponent title="Edit Profile" />
         <AddPhotoComponent />
         <WhiteSubTitleComponent title="Name" />
-        <InputFieldComponent holder="enter your name" onChangeText={(e: string)=>setNewName(e)} />
-        <WhiteSubTitleComponent title="Password" />
-        <InputFieldComponent holder="enter your new password" onChangeText={(e: string)=>setNewPassword(e)} />
-        <FullButtonComponent onPress={handleSave}>
+        <InputFieldComponent holder="enter your name" hide={false} onChangeText={(e: string)=>setNewName(e)} />
+        <FullButtonComponent onPress={handleSave} color={blueColor}>
           <Text>Save</Text>
         </FullButtonComponent>
 
@@ -64,10 +59,9 @@ const EditProfileScreen: FC<Props> = ({navigation, route})=> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E2683C',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: StatusBar.currentHeight
+    marginTop: StatusBar.currentHeight
   },
 });
 

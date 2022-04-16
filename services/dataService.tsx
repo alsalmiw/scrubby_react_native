@@ -56,6 +56,25 @@ async function UpdateName(newName: INewName) {
    return data;
 }
 
+async function UpdatePassword(newPassword: IUserLogin) {
+    let res= await fetch(`${link}/User/UpdatePassword`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        //might be wrong
+        body: JSON.stringify(newPassword)
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data = await res.json();
+    console.log(data)
+   return data;
+}
+
 async function DeleteUser(id:number) {
     let res= await fetch(`${link}/User/UpdateUserInfo/${id}`, {
         method: "POST",
@@ -74,4 +93,4 @@ async function DeleteUser(id:number) {
 }
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser }
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, UpdatePassword }

@@ -91,7 +91,7 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
         </View>
       </View>
       <View style={styles.newSpaceContainer}>
-        <TaskSpaceRowComponent idx={r}>
+        <TaskSpaceRowComponent idx={r} onPress={() => navigation.navigate('AddNewRoom')}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.textStyle}>Hello World</Text>
             <TaskSpaceRowIconComponent>
@@ -101,7 +101,7 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
           </View>
         </TaskSpaceRowComponent>
 
-        <TaskSpaceRowComponent idx={r}>
+        <TaskSpaceRowComponent idx={r} onPress={() => navigation.navigate('AddNewRoom')}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.textStyle}>Hello World</Text>
             <TaskSpaceRowIconComponent>
@@ -111,7 +111,7 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
           </View>
         </TaskSpaceRowComponent>
 
-        <TaskSpaceRowComponent idx={r}>
+        <TaskSpaceRowComponent idx={r} onPress={() => navigation.navigate('AddNewRoom')}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.textStyle}>Hello World</Text>
             <TaskSpaceRowIconComponent>
@@ -121,7 +121,7 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
           </View>
         </TaskSpaceRowComponent>
 
-        <TaskSpaceRowComponent idx={r}>
+        <TaskSpaceRowComponent idx={r} onPress={() => navigation.navigate('AddNewRoom')}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.textStyle}>Hello World</Text>
             <TaskSpaceRowIconComponent>

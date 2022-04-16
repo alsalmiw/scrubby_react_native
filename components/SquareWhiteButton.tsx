@@ -1,28 +1,36 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { FC, useContext } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import {ThemeContext} from "../context/ThemeContext"
+import { Pressable, StyleSheet,} from "react-native";
 
 interface Props {
     children: ReactNode,
-    idx: number,
+    onPress: Function
 }
 
-const SquareWhiteButton: FC<Props> =({children, idx}) => {
+const SquareWhiteButton: FC<Props> =(props) => {
    
 
   useEffect(()=> {
  
-    console.log(idx)
+   
 },[])
 
-   
+   const icons = new Map([
+       ['bathroom', require('../image/bath.png')],
+       ['garage', require('../image/garage.png')],
+       ['bedroom', require('../image/doublebed.png')],
+       ['kitchen', require('../image/kitchen.png')],
+       ['office', require('../image/officedesk.png')],
+       ['livingRoom', require('../image/livingroom.png')],
+       ['yard', require('../image/fence.png')],
+       ['attic', require('../image/attic.png')],
+   ])
 
     return(
-        <View style={[styles.container]}>
-            {children}
+        <Pressable style={[styles.container]} onPress={props.onPress()}>
+          {props.children}
 
-        </View>
+        </Pressable>
     )
 }
 

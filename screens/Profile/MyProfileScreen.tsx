@@ -9,7 +9,7 @@ import UserNameComponent from '../../components/UserNameComponent';
 import UnderlinedHeaderComponent from '../../components/UnderlinedHeaderComponent';
 import AddItemButtonComponent from '../../components/AddItemButtonComponent';
 import TaskSpaceRowIconComponent from '../../components/TaskSpaceRowIconComponent';
-
+import RootStackParamList from '../../types/INavigateProfile'
 import UseTheme from '../../hooks/use-theme';
 
 
@@ -18,14 +18,16 @@ import { Dimensions } from 'react-native';
 
 import { Entypo } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import { useTheme } from 'react-native-paper';
 import { ThemeContext } from '../../context/ThemeContext';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 const windowWidth = Dimensions.get('window').width * 0.33;
 
-const MyProfileScreen: FC = () => {
+type Props = NativeStackScreenProps <RootStackParamList, 'MyProfile'>
 
-  const {bgColor} = useContext(ThemeContext)
+const MyProfileScreen: FC<Props> = ({navigation}) => {
+
+  const {bgColor, lilacColor} = useContext(ThemeContext)
 
   let r = Math.floor(Math.random() * 7)
 
@@ -40,6 +42,7 @@ const MyProfileScreen: FC = () => {
 
   const displayAddIcon = () => {
     console.log('Plus Icon Works');
+    navigation.navigate('AddNewSpace')
   }
 
   const displayProfileStuff = () => {
@@ -67,7 +70,7 @@ const MyProfileScreen: FC = () => {
 
       <HeaderComponent title="MY PROFILE"></HeaderComponent>
       <View style={styles.firstRow}>
-        <AddPhotoComponent photo={"photo"} />
+        <AddPhotoComponent />
         <View style={styles.nameAndCoinContainer}>
 
           <UserNameComponent name="Daniel"></UserNameComponent>
@@ -81,7 +84,7 @@ const MyProfileScreen: FC = () => {
       <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo=""></UnderlinedHeaderComponent>
       <View style={styles.secondRow}>
         <AddItemButtonComponent onPress={displayAddIcon}>
-          <Entypo name="squared-plus" size={50} color="grey" />
+          <Entypo name="squared-plus" size={50} color={lilacColor} />
         </AddItemButtonComponent>
         <View style={styles.userNameContainer}>
           <UserNameComponent name="Create a New Space"></UserNameComponent>
@@ -141,9 +144,9 @@ const MyProfileScreen: FC = () => {
             return (
               <View>
                 {index === 0 ? <AddItemButtonComponent onPress={displayAddIcon}>
-                  <Entypo name="squared-cross" size={windowWidth} color="grey" />
+                  <Entypo name="squared-cross" size={windowWidth} color={lilacColor}  />
                 </AddItemButtonComponent> : <AddItemButtonComponent onPress={displayProfileStuff}>
-                  <Entypo name="squared-plus" size={windowWidth} color="grey" />
+                  <Entypo name="squared-plus" size={windowWidth} color={lilacColor}  />
                 </AddItemButtonComponent>}
               </View>
 
@@ -215,7 +218,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'white'
+    color: '#FFF'
   }
 
 });

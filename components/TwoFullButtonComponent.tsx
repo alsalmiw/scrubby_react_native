@@ -4,8 +4,9 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 interface Comp {
     text1: string,
     text2: string,
-    onBackPress: () => void,
-    onAcceptPress: () => void,
+    color:string,
+    onBackPress: Function,
+    onAcceptPress: Function,
 
 }
 
@@ -19,7 +20,7 @@ const TwoFullButtonComponent: FC<Comp> = (props) => {
         props.onAcceptPress()
     }
     return (
-        <View style={styles.buttonOuterContainer}>
+        <View style={[styles.buttonOuterContainer, {backgroundColor:props.color}]}>
                 <Pressable
                     style={styles.buttonInnerContainer}
                     onPress={backButtonHandler}
@@ -45,7 +46,6 @@ const styles = StyleSheet.create({
     buttonOuterContainer: {
         width: '100%',
         overflow: 'hidden',
-        backgroundColor: '#6455B5',
         paddingVertical: '2%',
         flexDirection: 'row',
     },

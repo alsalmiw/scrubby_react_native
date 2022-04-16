@@ -8,14 +8,18 @@ import { ThemeContext } from '../../context/ThemeContext';
 import TitleComponent from '../../components/AddEdit/TitleComponent';
 import WhiteSubTitleComponent from '../../components/AddEdit/WhiteSubTitleComponent';
 import InputFieldComponent from '../../components/AddEdit/InputFieldComponent';
+import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 
-type Props = NativeStackScreenProps <RootStackParamList, 'AddSpace'>
+type Props = NativeStackScreenProps <RootStackParamList, 'AddNewSpace'>
 
-const ScoreBoardScreen: FC<Props> = ({navigation, route})=> {
+const AddNewSpaceScreen: FC<Props> = ({navigation, route})=> {
   
     const {purpleColor, greenColor} = useContext(ThemeContext)
     const [newSpace, setNewSpace] = useState('')
 
+    const handleAddSpace = () => {
+    navigation.navigate('MyProfile')
+}
   return (
  
     <View style={[styles.container, {backgroundColor:purpleColor}]}>
@@ -24,7 +28,7 @@ const ScoreBoardScreen: FC<Props> = ({navigation, route})=> {
          <WhiteSubTitleComponent title="Name" />
         <InputFieldComponent holder="enter new space" hide={false} onChangeText={(e: string)=>setNewSpace(e)} />
         </View>
-       
+       <TwoFullButtonComponent text1="Back" text2="Add" color={greenColor} onAcceptPress={()=>handleAddSpace()} onBackPress={()=>navigation.goBack()}/>
     </View>
 
     
@@ -35,10 +39,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: "10%",
     justifyContent:"space-between",
     paddingTop: StatusBar.currentHeight
   },
 });
 
-export default ScoreBoardScreen
+export default AddNewSpaceScreen

@@ -23,12 +23,12 @@ const styles = StyleSheet.create({
             color: "white",
         }, 
         headerContainer:{
-            paddingRight: 10,
+          
             width:'100%',
             flexDirection: "row",
             justifyContent: "center",
             marginBottom:30,
-            marginTop:30
+            marginTop:50
         }
     })
 

@@ -3,7 +3,7 @@ type RootStackParamList = {
     MyProfile: undefined
     AddedItems: undefined
     ChildTasks: undefined
-    AddSpace: undefined
+    AddNewSpace: undefined
   }
 
   

@@ -37,18 +37,15 @@ const App: FC =()=> {
    <UserProvider>
     <ThemeProvider>
          <Stack.Navigator>
-<Stack.Screen name="login" 
-component={LoginAndCreateAccountScreen} 
-options={{headerShown: false}} />
+            {/* <Stack.Screen name="login" 
+            component={LoginAndCreateAccountScreen} 
+            options={{headerShown: false}} /> */}
 
-
-<Stack.Screen name="Nav" 
-component={NavigationComponent} 
-options={{headerShown: false}} />
+            <Stack.Screen name="Nav" 
+            component={NavigationComponent} 
+            options={{headerShown: false}} />
 
          </Stack.Navigator>
-
-
       </ThemeProvider>
 
     </UserProvider>

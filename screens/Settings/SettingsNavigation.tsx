@@ -5,6 +5,8 @@ import SettingsScreen from '../Settings/SettingsScreen'
 import ManageInvitesScreen from '../Settings/ManageInvitesScreen'
 import RootStackParamList from '../../types/INavigateSettings'
 import ChangePasswordScreen from './ChangePasswordScreen';
+import RedeemCoinsScreen from './RedeemCoinsScreen';
+import ScoreBoardScreen from '../ScoreBoardScreen'
 
 
 
@@ -19,6 +21,10 @@ const SettingsNavigation: FC = ()=> {
            <Tab.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="ManageInvites" component={ManageInvitesScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ headerShown: false }}/>
+          <Tab.Screen name="ScoreBoard" component={ScoreBoardScreen} options={{ headerShown: false }}/>
+          <Tab.Screen name="RedeemCoins" component={RedeemCoinsScreen} options={{ headerShown: false }}/>
+
+
         </Tab.Navigator>
   );
 }

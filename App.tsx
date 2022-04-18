@@ -10,6 +10,8 @@ import { FC, useContext, useEffect } from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import AddItemsScreen from './screens/Profile/AddItemsScreen';
+
 type RootStackParamList ={
   login:undefined,
   Nav: undefined,
@@ -36,7 +38,7 @@ const App: FC =()=> {
     <NavigationContainer>
    <UserProvider>
     <ThemeProvider>
-         <Stack.Navigator>
+         {/* <Stack.Navigator>
 <Stack.Screen name="login" 
 component={LoginAndCreateAccountScreen} 
 options={{headerShown: false}} />
@@ -46,7 +48,9 @@ options={{headerShown: false}} />
 component={NavigationComponent} 
 options={{headerShown: false}} />
 
-         </Stack.Navigator>
+         </Stack.Navigator> */}
+
+         <AddItemsScreen />
 
 
       </ThemeProvider>
@@ -72,4 +76,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default App;
+export default App;7

@@ -1,7 +1,7 @@
 const icons = [
     {
-        Name: 'bathroom',
-        Link: require('../image/bath.png'),
+     Name: 'bathroom',
+    Link: require('../image/bath.png'),
   },
   { 
       Name:"garage",

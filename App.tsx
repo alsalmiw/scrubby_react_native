@@ -40,10 +40,10 @@ const App: FC =()=> {
     <NavigationContainer>
    <UserProvider>
     <ThemeProvider>
-         <Stack.Navigator>
-            {/* <Stack.Screen name="login" 
+         {/* <Stack.Navigator>
+            <Stack.Screen name="login" 
             component={LoginAndCreateAccountScreen} 
-            options={{headerShown: false}} /> */}
+            options={{headerShown: false}} />
 
             <Stack.Screen name="Nav" 
             component={NavigationComponent} 
@@ -53,7 +53,8 @@ const App: FC =()=> {
             component={ChildTasksScreen} 
             options={{headerShown: false}} />
 
-         </Stack.Navigator>
+         </Stack.Navigator> */}
+         <AddItemsScreen />
       </ThemeProvider>
 
     </UserProvider>

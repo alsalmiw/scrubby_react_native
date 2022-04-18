@@ -14,6 +14,7 @@ type RootStackParamList ={
   Nav: undefined,
 }
 type Props = NativeStackScreenProps<RootStackParamList, 'Nav'>
+
 const Tab = createBottomTabNavigator();
 
 const MyTabs: FC = () =>{

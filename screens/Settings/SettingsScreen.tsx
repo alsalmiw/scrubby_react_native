@@ -1,4 +1,3 @@
-// import { StatusBar } from 'expo-status-bar';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import { FC, useContext } from 'react';
 import { StyleSheet, View} from 'react-native';

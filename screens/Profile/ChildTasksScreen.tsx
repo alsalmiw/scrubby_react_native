@@ -6,7 +6,7 @@ const ChildTasksScreen: FC = ()=> {
   
   return (
     <View style={styles.container}>
-    <Text>ChildTasksScreen</Text> 
+    <Text>Child Tasks Screen</Text> 
     </View>
   );
 }

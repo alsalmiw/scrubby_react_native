@@ -9,7 +9,7 @@ const icons = [
   },
   { 
     Name:"bedroom",
-    Link:require('../image/doublebed.png')
+    Link:require('../image/bed.png')
 },
 { 
     Name:"kitchen",

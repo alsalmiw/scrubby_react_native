@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 import IButtonStandard from '../Interfaces/IButtonStandard'
 
 const FullButtonComponent: FC<IButtonStandard> = (props) => {
+
     const buttonHandler = () => {
         props.onPress()
     }

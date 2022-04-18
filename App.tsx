@@ -6,6 +6,7 @@ import NavigationComponent from './components/NavigationComponent';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginAndCreateAccountScreen from './screens/LoginCreateAccountScreen';
 import { FC, useContext, useEffect } from 'react';
+import ChildTasksScreen from './screens/Profile/ChildTasksScreen';
 // import RootStackParamList from './types/INavigateProfile'
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -15,6 +16,7 @@ import AddItemsScreen from './screens/Profile/AddItemsScreen';
 type RootStackParamList ={
   login:undefined,
   Nav: undefined,
+  Child: undefined,
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -38,21 +40,20 @@ const App: FC =()=> {
     <NavigationContainer>
    <UserProvider>
     <ThemeProvider>
-         {/* <Stack.Navigator>
-<Stack.Screen name="login" 
-component={LoginAndCreateAccountScreen} 
-options={{headerShown: false}} />
+         <Stack.Navigator>
+            {/* <Stack.Screen name="login" 
+            component={LoginAndCreateAccountScreen} 
+            options={{headerShown: false}} /> */}
 
+            <Stack.Screen name="Nav" 
+            component={NavigationComponent} 
+            options={{headerShown: false}} />
+            
+              <Stack.Screen name="Child" 
+            component={ChildTasksScreen} 
+            options={{headerShown: false}} />
 
-<Stack.Screen name="Nav" 
-component={NavigationComponent} 
-options={{headerShown: false}} />
-
-         </Stack.Navigator> */}
-
-         <AddItemsScreen />
-
-
+         </Stack.Navigator>
       </ThemeProvider>
 
     </UserProvider>

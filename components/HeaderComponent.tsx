@@ -3,16 +3,16 @@ import { FC, useContext } from "react";
 import { StyleSheet, Text, View, StatusBar } from "react-native";
 import {ThemeContext} from "../context/ThemeContext"
 
-interface TitleType{
+interface TitleType {
     title: string;
 }
 
-const HeaderComponent: FC<TitleType> =({title}) => {
-    const {secondaryTextColor} = useContext(ThemeContext)
+const HeaderComponent: FC<TitleType> = ({ title }) => {
+    const { secondaryTextColor } = useContext(ThemeContext)
 
-    return(
+    return (
         <View style={styles.headerContainer}>
-        <Text style={[styles.mainHeader, {color:secondaryTextColor}]}>{title}</Text>
+            <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{title}</Text>
         </View>
     )
 }

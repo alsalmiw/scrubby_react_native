@@ -38,6 +38,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
         let result = await CreateAccount(userData);
         if (result) {
             AsyncStorage.setItem("Token", result.token);
+            AsyncStorage.setItem("Username", username);
             navigation.navigate('Nav')
             console.log(result)
         }

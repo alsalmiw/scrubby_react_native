@@ -5,15 +5,16 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, Ionicons, FontAwesome } from '@expo/vector-icons';
 import {ThemeContext} from "../context/ThemeContext"
 import ScheduleScreen from '../screens/Schedule/ScheduleScreen'
-import MyProfileScreen from '../screens/Profile/MyProfileScreen';
 import SettingsNavigation from '../screens/Settings/SettingsNavigation';
 import TaskFamilyScreen from '../screens/Tasking/TaskFamilyScreen'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import ProfileNavigation from '../screens/Profile/ProfileNavigation';
 
 type RootStackParamList ={
   Nav: undefined,
 }
 type Props = NativeStackScreenProps<RootStackParamList, 'Nav'>
+
 const Tab = createBottomTabNavigator();
 
 const MyTabs: FC = () =>{
@@ -38,7 +39,7 @@ const MyTabs: FC = () =>{
       />
       <Tab.Screen
         name="Profile" 
-        component={MyProfileScreen}
+        component={ProfileNavigation}
         options={{
           headerShown: false,
           tabBarLabel: 'Profile',

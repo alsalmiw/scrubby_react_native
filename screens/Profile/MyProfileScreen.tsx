@@ -1,5 +1,5 @@
 // import { StatusBar } from 'expo-status-bar';
-import { FC, useContext, useState } from 'react';
+import { FC, useContext, useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View, StatusBar, FlatList } from 'react-native';
 import CoinsPointsDisplayContainer from '../../components/Profile/CoinsPointsDisplayContainer'
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
@@ -12,6 +12,7 @@ import TaskSpaceRowIconComponent from '../../components/TaskSpaceRowIconComponen
 import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
 import RootStackParamList from '../../types/INavigateProfile'
 import UseTheme from '../../hooks/use-theme';
+import { GetUserById } from '../../services/dataService';
 
 
 //This is just testing
@@ -32,6 +33,7 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
   const {bgColor, lilacColor} = useContext(ThemeContext)
 
   let r = Math.floor(Math.random() * 7)
+  let userName = 'DB';
 
   let testDummyArr = [
     { name: 'plus', id: '0' },
@@ -55,9 +57,17 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
     navigation.navigate('AddNewRoom');
   }
 
+  const asyncShit = async (userName:String) => {
+    console.log(userName)
+  }
+
+  {asyncShit(userName)}
+
   return (
 
     <View style={styles.container}>
+
+      
 
       {/* <CoinsPointsDisplayContainer coins="200" points="10,000" />
         {arr.map((title, idx) => {

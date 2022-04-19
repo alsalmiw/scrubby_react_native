@@ -1,32 +1,28 @@
 // import { StatusBar } from 'expo-status-bar';
-import { FC, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, StatusBar, Pressable, Image, Button } from 'react-native';
 ////
 
 import icons from '../../types/Icons';
 import { Dimensions } from 'react-native';
+import Line from '../../components/AddEdit/LineComponent';
+import UnderlinedHeaderComponent from '../../components/UnderlinedHeaderComponent';
+import UserContext from '../../context/UserContext';
 
 
 const AddItemsScreen: FC = () => {
-  const [seeAll, setSeeAll] = useState(false)
+   const {seeAll, setSeeAll} = useContext(UserContext)
 
   return (
     <View style={styles.container}>
       <View style={styles.headTitle}>
         <Text>MASTER BATHROOM ITEMS</Text>
       </View>
-      <View style={{ flexDirection: 'row', borderBottomWidth:2, borderColor:"grey", justifyContent:"space-between" }}>
-        <Text style={{ justifyContent: 'flex-start', textAlign:"left" }}>Add Items from Categories  </Text>
-        {
-          seeAll ?
-            <Text style={styles.clickText} onPress={() => { setSeeAll(!seeAll), console.log(seeAll) }}>see all</Text>
-            :
-            <Text style={styles.clickText} onPress={() => { setSeeAll(!seeAll), console.log(seeAll) }}>see less</Text>
-        }
-
-
+      <View style={{ flexDirection: 'row', justifyContent: "space-between", paddingLeft: 10, paddingRight: 10 }}>
+        <UnderlinedHeaderComponent titleOne={'AddItems from Categories'} titleTwo={'see all'} titleThree={'see less'} />
       </View>
-      
+        {/* <Line /> */}
+
       <>
         {
           seeAll ?
@@ -39,8 +35,8 @@ const AddItemsScreen: FC = () => {
                     return (
                       <View style={styles.categories}>
                         <Pressable key={idx} >
-                          <View style={{ alignItems:'center'}}>
-                          <Image style={{ width: 50, height: 50,  }} source={icon.Link} />
+                          <View style={{ alignItems: 'center' }}>
+                            <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                           </View>
                           <Text style={{ textAlign: 'center' }}>{icons[idx].Name} </Text>
                         </Pressable>
@@ -52,16 +48,16 @@ const AddItemsScreen: FC = () => {
             </View>
             :
             <View style={styles.rest2}>
-              <View style={{flexDirection:'row', flexWrap:'wrap'}}>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                 {
                   icons.map((icon, idx) => {
                     return (
                       <View style={styles.categories2}>
                         <Pressable key={idx} >
-                        <View style={{ alignItems:'center'}}>
-                          <Image style={{ width: 50, height: 50, }} source={icon.Link} />
+                          <View style={{ alignItems: 'center' }}>
+                            <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                           </View>
-                          <Text style={{ textAlign: 'center',}}>{icons[idx].Name} </Text>
+                          <Text style={{ textAlign: 'center', }}>{icons[idx].Name} </Text>
                         </Pressable>
                       </View>
                     )
@@ -95,7 +91,7 @@ const styles = StyleSheet.create({
   rest: {
     flex: 0.1,
     paddingLeft: 10,
-    marginTop:10
+    marginTop: 10
 
   },
   categories: {
@@ -105,7 +101,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     minWidth: 83,
-    maxWidth:84,
+    maxWidth: 84,
     marginRight: 10,
 
   },
@@ -116,18 +112,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     flexShrink: 1,
-    marginTop:10
+    marginTop: 10
   },
   categories2: {
     borderColor: 'black',
     borderWidth: 2,
     borderRadius: 8,
     padding: 10,
-    paddingBottom:2,
+    paddingBottom: 2,
     minWidth: 84,
-    maxWidth:84,
+    maxWidth: 84,
     marginRight: 10,
-    marginBottom:10
+    marginBottom: 10
 
   },
 

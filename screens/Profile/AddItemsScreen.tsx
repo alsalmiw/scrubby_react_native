@@ -72,7 +72,7 @@ const AddItemsScreen: FC = () => {
               </View>
               <UnderlinedOneHeaderComponent titleFirst={'Items'} />
               <ScrollView>
-                
+                {/* <SquareColoredButton children={'hi'} idx={5} /> */}
               </ScrollView>
             </View>
             

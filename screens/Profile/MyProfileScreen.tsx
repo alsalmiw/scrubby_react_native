@@ -99,11 +99,10 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
       </View>
       <View style={styles.newSpaceContainer}>
         {/* Make this a component for check marks */}
-        <TaskSpaceRowCheck idx={r} onPress={handleAddNewRoomNavigation} />
+        <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} />
+        <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} />
+        <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} />
 
-        <TaskSpaceRowCheck idx={r} onPress={handleAddNewRoomNavigation} />
-
-        <TaskSpaceRowCheck idx={r} onPress={handleAddNewRoomNavigation} />
 
         {/* Make this a component for the trash  */}
         {/* <TaskSpaceRowComponent idx={r} onPress={handleAddNewRoomNavigation}>

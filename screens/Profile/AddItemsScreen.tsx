@@ -1,13 +1,15 @@
 // import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, StatusBar, Pressable, Image, Button } from 'react-native';
-////
+
 
 import icons from '../../types/Icons';
 import { Dimensions } from 'react-native';
 import Line from '../../components/AddEdit/LineComponent';
 import UnderlinedHeaderComponent from '../../components/UnderlinedHeaderComponent';
 import UserContext from '../../context/UserContext';
+import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
+import SquareColoredButton from '../../components/SquareColoredButton';
 
 
 const AddItemsScreen: FC = () => {
@@ -21,11 +23,12 @@ const AddItemsScreen: FC = () => {
       <View style={{ flexDirection: 'row', justifyContent: "space-between", paddingLeft: 10, paddingRight: 10 }}>
         <UnderlinedHeaderComponent titleOne={'AddItems from Categories'} titleTwo={'see all'} titleThree={'see less'} />
       </View>
-        {/* <Line /> */}
+
 
       <>
         {
           seeAll ?
+          <>
             <View style={styles.rest}>
 
               <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -34,7 +37,7 @@ const AddItemsScreen: FC = () => {
                   icons.map((icon, idx) => {
                     return (
                       <View style={styles.categories}>
-                        <Pressable key={idx} >
+                        <Pressable key={idx} onPress={()=>console.log('im clicked')}>
                           <View style={{ alignItems: 'center' }}>
                             <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                           </View>
@@ -45,7 +48,10 @@ const AddItemsScreen: FC = () => {
                   })
                 }
               </ScrollView>
+              
             </View>
+            <UnderlinedOneHeaderComponent titleFirst={'Items'} />
+            </>
             :
             <View style={styles.rest2}>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
@@ -53,7 +59,7 @@ const AddItemsScreen: FC = () => {
                   icons.map((icon, idx) => {
                     return (
                       <View style={styles.categories2}>
-                        <Pressable key={idx} >
+                        <Pressable key={idx} onPress={()=>console.log('im clicked')}>
                           <View style={{ alignItems: 'center' }}>
                             <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                           </View>
@@ -64,10 +70,17 @@ const AddItemsScreen: FC = () => {
                   })
                 }
               </View>
+              <UnderlinedOneHeaderComponent titleFirst={'Items'} />
+              <ScrollView>
+                
+              </ScrollView>
             </View>
+            
         }
       </>
-
+        
+          
+        
     </View>
   );
 }

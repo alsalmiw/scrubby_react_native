@@ -13,7 +13,7 @@ import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
 import RootStackParamList from '../../types/INavigateProfile'
 import UseTheme from '../../hooks/use-theme';
 import { GetUserById } from '../../services/dataService';
-
+//
 
 //This is just testing
 import { Dimensions } from 'react-native';
@@ -23,6 +23,7 @@ import { Feather } from '@expo/vector-icons';
 import { ThemeContext } from '../../context/ThemeContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import TaskSpaceRowCheck from '../../components/TaskSpaceRowCheck';
+import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 
 const windowWidth = Dimensions.get('window').width * 0.33;
 
@@ -98,7 +99,7 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
       </View>
 
 
-      <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo=""></UnderlinedHeaderComponent>
+      <UnderlinedOneHeaderComponent titleFirst="My Spaces" />
       <View style={styles.secondRow}>
         <AddItemButtonComponent onPress={displayAddIcon}>
           <Entypo name="squared-plus" size={50} color={lilacColor} />
@@ -132,7 +133,7 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
 
 
 
-      <UnderlinedHeaderComponent titleOne="Kids" titleTwo=""></UnderlinedHeaderComponent>
+      <UnderlinedOneHeaderComponent titleFirst="Kids" />
 
       <View style={styles.thirdRow}>
         <FlatList data={testDummyArr}

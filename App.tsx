@@ -11,6 +11,8 @@ import ChildTasksScreen from './screens/Profile/ChildTasksScreen';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import AddItemsScreen from './screens/Profile/AddItemsScreen';
+
 type RootStackParamList ={
   login:undefined,
   Nav: undefined,
@@ -38,10 +40,10 @@ const App: FC =()=> {
     <NavigationContainer>
    <UserProvider>
     <ThemeProvider>
-         <Stack.Navigator>
-            {/* <Stack.Screen name="login" 
+         {/* <Stack.Navigator>
+            <Stack.Screen name="login" 
             component={LoginAndCreateAccountScreen} 
-            options={{headerShown: false}} /> */}
+            options={{headerShown: false}} />
 
             <Stack.Screen name="Nav" 
             component={NavigationComponent} 
@@ -51,7 +53,8 @@ const App: FC =()=> {
             component={ChildTasksScreen} 
             options={{headerShown: false}} />
 
-         </Stack.Navigator>
+         </Stack.Navigator> */}
+         <AddItemsScreen />
       </ThemeProvider>
 
     </UserProvider>
@@ -75,4 +78,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default App;
+export default App;7

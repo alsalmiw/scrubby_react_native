@@ -5,26 +5,18 @@ import {ThemeContext} from "../context/ThemeContext"
 import UserContext from "../context/UserContext";
 
 interface TitleType{
-    titleOne: string;
-    titleTwo: any;
-    titleThree: any;
+    titleFirst: string;
+
 }
 
-const UnderlinedHeaderComponent: FC<TitleType> =({titleOne, titleTwo, titleThree}) => {
+const UnderlinedOneHeaderComponent: FC<TitleType> =({titleFirst}) => {
     const {secondaryTextColor, lightLilacColor} = useContext(ThemeContext)
-    const {seeAll, setSeeAll} = useContext(UserContext)
+
 
 
     return(
         <View style={[styles.headerContainer, {borderBottomColor: lightLilacColor} ]}>
-        <Text style={[styles.mainHeader, {color:secondaryTextColor}]}>{titleOne}</Text>
-        {
-            seeAll?
-                    <Text style={[styles.mainHeader, {color:secondaryTextColor}, {textDecorationLine:'underline'}]} onPress={()=> setSeeAll(!seeAll)}>{titleTwo}</Text>
-                    :
-                    <Text style={[styles.mainHeader, {color:secondaryTextColor}, {textDecorationLine:'underline'}]}  onPress={()=> setSeeAll(!seeAll)}>{titleThree}</Text>
-        }
-
+        <Text style={[styles.mainHeader, {color:secondaryTextColor}]}>{titleFirst}</Text>
         </View>
     )
 }
@@ -43,4 +35,4 @@ const styles = StyleSheet.create({
         }
     })
 
-export default UnderlinedHeaderComponent
+export default UnderlinedOneHeaderComponent 

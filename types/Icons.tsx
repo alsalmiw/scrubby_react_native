@@ -1,30 +1,30 @@
 const icons = [
     {
-     Name: 'bathroom',
+     Name: 'BathRm',
     Link: require('../image/bath.png'),
   },
   { 
-      Name:"garage",
+      Name:"Garage",
       Link:require('../image/garage.png')
   },
   { 
-    Name:"bedroom",
+    Name:"BedRm",
     Link:require('../image/bed.png')
 },
 { 
-    Name:"kitchen",
+    Name:"Kitchen",
     Link:require('../image/kitchen.png')
 },
 { 
-    Name:"office",
+    Name:"Office",
     Link:require('../image/officedesk.png')
 },
 { 
-    Name:"livingRoom",
+    Name:"LivingRm",
     Link:require('../image/livingroom.png')
 },
 { 
-    Name:"yard",
+    Name:"Yard",
     Link:require('../image/fence.png')
 },
 { 

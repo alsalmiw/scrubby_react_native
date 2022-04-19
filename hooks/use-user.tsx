@@ -6,6 +6,7 @@ export default function UseUser(){
     const [password, setPassword] = useState('')
     const [savedUsername, setSavedUsername] = useState('username')
     const [savedPassword, setSavedPassword] = useState('password')
+    const [seeAll, setSeeAll] = useState(false)
     const [isChildFree, setIsChildFree] = useState(true)
     const [userData, setUserData] = useState({
         id: 0,
@@ -40,5 +41,5 @@ export default function UseUser(){
         collectionId: 0,
     })
 
-    return{username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms}
+    return{username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms}
 }

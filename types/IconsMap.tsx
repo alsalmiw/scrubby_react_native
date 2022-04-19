@@ -6,7 +6,7 @@ const iconsMap = new Map([
     ['office', require('../image/officedesk.png')],
     ['livingRoom', require('../image/livingroom.png')],
     ['yard', require('../image/fence.png')],
-    ['attic', require('../image/attic.png')],
+    ['laundry',require('../image/laundryroom.png')],
 ])
 
 export default iconsMap

@@ -1,5 +1,5 @@
 // import { StatusBar } from 'expo-status-bar';
-import { FC, useContext, useState } from 'react';
+import { FC, useContext, useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View, StatusBar, FlatList } from 'react-native';
 import CoinsPointsDisplayContainer from '../../components/Profile/CoinsPointsDisplayContainer'
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
@@ -9,8 +9,10 @@ import UserNameComponent from '../../components/UserNameComponent';
 import UnderlinedHeaderComponent from '../../components/UnderlinedHeaderComponent';
 import AddItemButtonComponent from '../../components/AddItemButtonComponent';
 import TaskSpaceRowIconComponent from '../../components/TaskSpaceRowIconComponent';
+import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
 import RootStackParamList from '../../types/INavigateProfile'
 import UseTheme from '../../hooks/use-theme';
+import { GetUserById } from '../../services/dataService';
 
 
 //This is just testing
@@ -20,6 +22,7 @@ import { Entypo } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { ThemeContext } from '../../context/ThemeContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import TaskSpaceRowCheck from '../../components/TaskSpaceRowCheck';
 
 const windowWidth = Dimensions.get('window').width * 0.33;
 
@@ -30,6 +33,7 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
   const {bgColor, lilacColor} = useContext(ThemeContext)
 
   let r = Math.floor(Math.random() * 7)
+  let userName = 'DB';
 
   let testDummyArr = [
     { name: 'plus', id: '0' },
@@ -48,9 +52,22 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
   const displayProfileStuff = () => {
     console.log('Profile Image Stuff');
   }
+
+  const handleAddNewRoomNavigation = () => {
+    navigation.navigate('AddNewRoom');
+  }
+
+  const asyncShit = async (userName:String) => {
+    console.log(userName)
+  }
+
+  {asyncShit(userName)}
+
   return (
 
     <View style={styles.container}>
+
+      
 
       {/* <CoinsPointsDisplayContainer coins="200" points="10,000" />
         {arr.map((title, idx) => {
@@ -91,46 +108,25 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
         </View>
       </View>
       <View style={styles.newSpaceContainer}>
-        <TaskSpaceRowComponent idx={r} onPress={() => navigation.navigate('AddNewRoom')}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={styles.textStyle}>Hello World</Text>
-            <TaskSpaceRowIconComponent>
-              <Entypo name="check" size={24} color={bgColor} />
-              
-            </TaskSpaceRowIconComponent>
-          </View>
-        </TaskSpaceRowComponent>
+        {/* Make this a component for check marks */}
+        <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} />
+        <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} />
+        <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} />
 
-        <TaskSpaceRowComponent idx={r} onPress={() => navigation.navigate('AddNewRoom')}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={styles.textStyle}>Hello World</Text>
-            <TaskSpaceRowIconComponent>
-              <Entypo name="check" size={24} color={bgColor} />
-              
-            </TaskSpaceRowIconComponent>
-          </View>
-        </TaskSpaceRowComponent>
 
-        <TaskSpaceRowComponent idx={r} onPress={() => navigation.navigate('AddNewRoom')}>
+        {/* Make this a component for the trash  */}
+        {/* <TaskSpaceRowComponent idx={r} onPress={handleAddNewRoomNavigation}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.textStyle}>Hello World</Text>
             <TaskSpaceRowIconComponent>
-              <Entypo name="check" size={24} color={bgColor} />
-              
-            </TaskSpaceRowIconComponent>
-          </View>
-        </TaskSpaceRowComponent>
-
-        <TaskSpaceRowComponent idx={r} onPress={() => navigation.navigate('AddNewRoom')}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={styles.textStyle}>Hello World</Text>
-            <TaskSpaceRowIconComponent>
-              {/* <Entypo name="trash" size={24} color={bgColor} /> */}
               <Feather name="trash-2" size={24} color={bgColor} />
               
             </TaskSpaceRowIconComponent>
           </View>
-        </TaskSpaceRowComponent>
+        </TaskSpaceRowComponent> */}
+
+        <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} />
+        
 
       </View>
 
@@ -144,9 +140,9 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
             return (
               <View>
                 {index === 0 ? <AddItemButtonComponent onPress={displayAddIcon}>
-                  <Entypo name="squared-cross" size={windowWidth} color={lilacColor}  />
-                </AddItemButtonComponent> : <AddItemButtonComponent onPress={displayProfileStuff}>
                   <Entypo name="squared-plus" size={windowWidth} color={lilacColor}  />
+                </AddItemButtonComponent> : <AddItemButtonComponent onPress={displayProfileStuff}>
+                  <Entypo name="squared-cross" size={windowWidth} color={lilacColor}  />
                 </AddItemButtonComponent>}
               </View>
 

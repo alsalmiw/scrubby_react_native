@@ -9,27 +9,24 @@ import { Dimensions } from 'react-native';
 
 const AddItemsScreen: FC = () => {
   const [seeAll, setSeeAll] = useState(false)
-  const windowWidth = Dimensions.get('window').width / 0.25;
-  const firstRow: any = [];
-  const secRow: any = [];
-  icons.filter((x, idx) => idx < Math.floor(icons.length / 2) ? firstRow.push(x) : secRow.push(x))
 
   return (
     <View style={styles.container}>
       <View style={styles.headTitle}>
         <Text>MASTER BATHROOM ITEMS</Text>
       </View>
-      <View style={{flex:0.1, flexDirection:'row'}}>
-        <Text style={{justifyContent:'flex-start', textAlign:'left'}}>Add Items from Categories  </Text>
-          {
-            seeAll ?
+      <View style={{ flexDirection: 'row', borderBottomWidth:2, borderColor:"grey", justifyContent:"space-between" }}>
+        <Text style={{ justifyContent: 'flex-start', textAlign:"left" }}>Add Items from Categories  </Text>
+        {
+          seeAll ?
             <Text style={styles.clickText} onPress={() => { setSeeAll(!seeAll), console.log(seeAll) }}>see all</Text>
             :
             <Text style={styles.clickText} onPress={() => { setSeeAll(!seeAll), console.log(seeAll) }}>see less</Text>
-          }
-          
+        }
+
 
       </View>
+      
       <>
         {
           seeAll ?
@@ -42,7 +39,9 @@ const AddItemsScreen: FC = () => {
                     return (
                       <View style={styles.categories}>
                         <Pressable key={idx} >
-                          <Image style={{ width: 50, height: 50, }} source={icon.Link} />
+                          <View style={{ alignItems:'center'}}>
+                          <Image style={{ width: 50, height: 50,  }} source={icon.Link} />
+                          </View>
                           <Text style={{ textAlign: 'center' }}>{icons[idx].Name} </Text>
                         </Pressable>
                       </View>
@@ -52,41 +51,24 @@ const AddItemsScreen: FC = () => {
               </ScrollView>
             </View>
             :
-            <>
-              <View style={styles.rest2}>
+            <View style={styles.rest2}>
+              <View style={{flexDirection:'row', flexWrap:'wrap'}}>
                 {
-                  firstRow.map((icon: string, idx: number) => {
-
+                  icons.map((icon, idx) => {
                     return (
                       <View style={styles.categories2}>
                         <Pressable key={idx} >
-                          <Image style={{ width: 50, height: 50, }} source={firstRow[idx].Link} />
-                          <Text style={{ textAlign: 'center' }}>{firstRow[idx].Name} </Text>
-                        </Pressable>
-                      </View>
-                    )
-                  })
-
-                }
-
-
-              </View>
-              <View style={styles.rest2}>
-                {
-                  secRow.map((icon: string, idx: number) => {
-
-                    return (
-                      <View style={styles.categories2}>
-                        <Pressable key={idx} >
-                          <Image style={{ width: 50, height: 50, }} source={secRow[idx].Link} />
-                          <Text style={{ textAlign: 'center' }}>{secRow[idx].Name} </Text>
+                        <View style={{ alignItems:'center'}}>
+                          <Image style={{ width: 50, height: 50, }} source={icon.Link} />
+                          </View>
+                          <Text style={{ textAlign: 'center',}}>{icons[idx].Name} </Text>
                         </Pressable>
                       </View>
                     )
                   })
                 }
               </View>
-            </>
+            </View>
         }
       </>
 
@@ -97,8 +79,6 @@ const AddItemsScreen: FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
     paddingTop: StatusBar.currentHeight
   },
   headTitle: {
@@ -111,40 +91,43 @@ const styles = StyleSheet.create({
   clickText: {
     textDecorationLine: 'underline',
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems:'flex-end'
-
   },
   rest: {
     flex: 0.1,
-    paddingLeft: 10
+    paddingLeft: 10,
+    marginTop:10
 
   },
   categories: {
+
     borderColor: 'black',
     borderWidth: 2,
     borderRadius: 8,
     padding: 10,
-    minWidth: 75,
+    minWidth: 83,
+    maxWidth:84,
     marginRight: 10,
 
   },
   rest2: {
     flex: 0.1,
     paddingLeft: 10,
-    flexDirection: 'row',
     minWidth: 'auto',
-    marginTop: 10
-
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    flexShrink: 1,
+    marginTop:10
   },
   categories2: {
-
     borderColor: 'black',
     borderWidth: 2,
     borderRadius: 8,
     padding: 10,
-    minWidth: 75,
+    paddingBottom:2,
+    minWidth: 84,
+    maxWidth:84,
     marginRight: 10,
+    marginBottom:10
 
   },
 

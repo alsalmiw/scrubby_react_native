@@ -1,6 +1,6 @@
 const icons = [
     {
-     Name: 'Bathroom',
+     Name: 'BathRm',
     Link: require('../image/bath.png'),
   },
   { 
@@ -8,7 +8,7 @@ const icons = [
       Link:require('../image/garage.png')
   },
   { 
-    Name:"Bedroom",
+    Name:"BedRm",
     Link:require('../image/bed.png')
 },
 { 
@@ -20,7 +20,7 @@ const icons = [
     Link:require('../image/officedesk.png')
 },
 { 
-    Name:"LivingRoom",
+    Name:"LivingRm",
     Link:require('../image/livingroom.png')
 },
 { 

@@ -13,6 +13,7 @@ import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
 import RootStackParamList from '../../types/INavigateProfile'
 import UseTheme from '../../hooks/use-theme';
 // import { GetUserById } from '../../services/dataService';
+import {getLocalStorageInfo} from '../../services/localStorage'
 //
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GetSpaceCollectionById } from '../../services/dataService';
@@ -45,6 +46,8 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
+
+ 
 
   let r = Math.floor(Math.random() * 7)
   let Id = 4;

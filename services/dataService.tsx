@@ -98,5 +98,12 @@ async function GetSpaceCollectionById(UserId: number) {
     return data;
 }
 
+async function GetUserByUsername(Username:string) {
+    let res = await fetch(`${link}/User/GetUserByUsername/${Username}`);
+    let data = await res.json();
+    return data;
+}
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, UpdatePassword, GetSpaceCollectionById }
+
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, UpdatePassword, GetSpaceCollectionById, GetUserByUsername }
+

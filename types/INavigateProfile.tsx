@@ -5,6 +5,9 @@ type RootStackParamList = {
     ChildTasks: undefined
     AddNewSpace: undefined
     AddNewRoom: undefined
+    AddItems: undefined
+    AddedTasks: undefined
+    Rooms: undefined
   }
 
   

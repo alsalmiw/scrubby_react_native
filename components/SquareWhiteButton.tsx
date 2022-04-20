@@ -15,16 +15,7 @@ const SquareWhiteButton: FC<Props> =(props) => {
    
 },[])
 
-   const icons = new Map([
-       ['bathroom', require('../image/bath.png')],
-       ['garage', require('../image/garage.png')],
-       ['bedroom', require('../image/doublebed.png')],
-       ['kitchen', require('../image/kitchen.png')],
-       ['office', require('../image/officedesk.png')],
-       ['livingRoom', require('../image/livingroom.png')],
-       ['yard', require('../image/fence.png')],
-       ['attic', require('../image/attic.png')],
-   ])
+  
 
     return(
         <Pressable style={[styles.container]} onPress={props.onPress()}>

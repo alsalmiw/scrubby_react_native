@@ -92,11 +92,11 @@ async function DeleteUser(id:number) {
     console.log(data)
 }
 
-async function GetUserById(Username:string) {
-    let res = await fetch(`${link}/User/GetUserByUsername/${Username}`);
+async function GetSpaceCollectionById(UserId: number) {
+    let res = await fetch(`${link}/SpaceCollection/GetSpaceCollectionById/${UserId}`);
     let data = await res.json();
     return data;
 }
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, UpdatePassword, GetUserById }
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, UpdatePassword, GetSpaceCollectionById }

@@ -7,7 +7,8 @@ import { Feather } from '@expo/vector-icons';
 
 interface Props {
   onPress: Function,
-  idx: number
+  idx: number,
+  children: ReactNode
 }
 
 
@@ -21,7 +22,7 @@ const TaskSpaceRowTrash: FC<Props> = (props) => {
   return (
     <TaskSpaceRowComponent idx={props.idx} onPress={handleNav}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={styles.textStyle}>Hello World</Text>
+        <Text style={styles.textStyle}>{props.children}</Text>
         <TaskSpaceRowIconComponent>
           {/* <Entypo name="trash" size={24} color={bgColor} /> */}
           <Feather name="trash-2" size={24} color={bgColor} />

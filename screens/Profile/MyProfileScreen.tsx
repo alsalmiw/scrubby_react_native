@@ -47,7 +47,7 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
 
   const displayAddIcon = () => {
     console.log('Plus Icon Works');
-    navigation.navigate('AddNewSpace')
+    navigation.navigate('AddItems')
   }
 
   const displayProfileStuff = () => {

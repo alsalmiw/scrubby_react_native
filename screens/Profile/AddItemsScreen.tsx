@@ -25,6 +25,9 @@ const AddItemsScreen: FC = () => {
   const [plus, setPlus] = useState(true);
   let r = Math.floor(Math.random() * 7)
 
+  const AddItems =()=> {
+    
+  }
 
   return (
     <View style={styles.container}>
@@ -91,11 +94,11 @@ const AddItemsScreen: FC = () => {
         <UnderlinedOneHeaderComponent titleFirst={'Items'} />
       </View>
 
-      <ScrollView style={{   }}>
+      {/* <ScrollView >
         <View style={styles.rest3}>
         <View style={{ flexDirection:'row', flexWrap:'wrap',  }}>
         <Pressable onPress={() => {setPlus(!plus), console.log("+") }}>
-          <SquareColoredButton idx={r} >
+          <SquareColoredButton idx={r} onPress={() =>AddItems()}
             {
               plus ?
                 <>
@@ -111,53 +114,14 @@ const AddItemsScreen: FC = () => {
 
           </SquareColoredButton>
         </Pressable>
-        <SquareColoredButton idx={r} >
-          <Entypo name="minus" size={45} color="white" style={{ paddingBottom: 0, textAlign: 'center' }} />
-          <Text style={{ color: 'white', textAlign: 'center', paddingTop: 0 }}>Sink</Text>
-        </SquareColoredButton>
-        <SquareColoredButton idx={r} >
-          <Entypo name="minus" size={45} color="white" style={{ paddingBottom: 0, textAlign: 'center' }} />
-          <Text style={{ color: 'white', textAlign: 'center', paddingTop: 0 }}>Sink</Text>
-        </SquareColoredButton>
-        <SquareColoredButton idx={r} >
-          <Entypo name="minus" size={45} color="white" style={{ paddingBottom: 0, textAlign: 'center' }} />
-          <Text style={{ color: 'white', textAlign: 'center', paddingTop: 0 }}>Sink</Text>
-        </SquareColoredButton>
-        <SquareColoredButton idx={r} >
-          <Entypo name="minus" size={45} color="white" style={{ paddingBottom: 0, textAlign: 'center' }} />
-          <Text style={{ color: 'white', textAlign: 'center', paddingTop: 0 }}>Sink</Text>
-        </SquareColoredButton>
-        <SquareColoredButton idx={r} >
-          <Entypo name="minus" size={45} color="white" style={{ paddingBottom: 0, textAlign: 'center' }} />
-          <Text style={{ color: 'white', textAlign: 'center', paddingTop: 0 }}>Sink</Text>
-        </SquareColoredButton>
-        <SquareColoredButton idx={r} >
-          <Entypo name="minus" size={45} color="white" style={{ paddingBottom: 0, textAlign: 'center' }} />
-          <Text style={{ color: 'white', textAlign: 'center', paddingTop: 0 }}>Sink</Text>
-        </SquareColoredButton>
-        <SquareColoredButton idx={r} >
-          <Entypo name="minus" size={45} color="white" style={{ paddingBottom: 0, textAlign: 'center' }} />
-          <Text style={{ color: 'white', textAlign: 'center', paddingTop: 0 }}>Sink</Text>
-        </SquareColoredButton>
-        <SquareColoredButton idx={r} >
-          <Entypo name="minus" size={45} color="white" style={{ paddingBottom: 0, textAlign: 'center' }} />
-          <Text style={{ color: 'white', textAlign: 'center', paddingTop: 0 }}>Sink</Text>
-        </SquareColoredButton>
-        <SquareColoredButton idx={r} >
-          <Entypo name="minus" size={45} color="white" style={{ paddingBottom: 0, textAlign: 'center' }} />
-          <Text style={{ color: 'white', textAlign: 'center', paddingTop: 0 }}>Sink</Text>
-        </SquareColoredButton>
-        <SquareColoredButton idx={r} >
-          <Entypo name="minus" size={45} color="white" style={{ paddingBottom: 0, textAlign: 'center' }} />
-          <Text style={{ color: 'white', textAlign: 'center', paddingTop: 0 }}>Sink</Text>
-        </SquareColoredButton>
+      
         </View>
         </View>
       </ScrollView>
 
+*/}
 
-
-    </View>
+    </View> 
   );
 }
 

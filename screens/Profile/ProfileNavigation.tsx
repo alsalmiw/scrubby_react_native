@@ -6,7 +6,8 @@ import ChildTasksScreen from '../Profile/ChildTasksScreen';
 import RootStackParamList from '../../types/INavigateProfile'
 import AddNewSpaceScreen from '../Profile/AddNewSpaceScreen'
 import AddNewRoomScreen from '../Profile/AddNewRoomScreen';
-import AddItemsScreen from '../Profile/AddedItemsScreen'
+import AddItemsScreen from '../Profile/AddItemsScreen'
+import AddedTasksScreen from '../Profile/AddedtasksScreen';
 
 
 const Tab = createNativeStackNavigator<RootStackParamList>();
@@ -22,7 +23,7 @@ const ProfileNavigation: FC = ()=> {
            <Tab.Screen name="AddedItems" component={AddedItemsScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="ChildTasks" component={ChildTasksScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="AddItems" component={AddItemsScreen} options={{ headerShown: false }}/>
-          <Tab.Screen name="AddedTasks" component={AddItemsScreen} options={{ headerShown: false }}/>
+          <Tab.Screen name="AddedTasks" component={AddedTasksScreen} options={{ headerShown: false }}/>
         </Tab.Navigator>
   );
 }

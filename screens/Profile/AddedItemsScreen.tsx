@@ -6,7 +6,7 @@ const AddedItemsScreen: FC = ()=> {
   
   return (
     <View style={styles.container}>
-    <Text>AddItemsScreen</Text> 
+    <Text>AddedItemsScreen</Text> 
     </View>
   );
 }

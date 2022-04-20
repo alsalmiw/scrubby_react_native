@@ -92,11 +92,11 @@ async function DeleteUser(id:number) {
     console.log(data)
 }
 
-async function GetUserById(Username:string) {
+async function GetUserByUsername(Username:string) {
     let res = await fetch(`${link}/User/GetUserByUsername/${Username}`);
     let data = await res.json();
     return data;
 }
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, UpdatePassword, GetUserById }
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, UpdatePassword, GetUserByUsername }

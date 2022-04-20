@@ -12,7 +12,8 @@ import TaskSpaceRowIconComponent from '../../components/TaskSpaceRowIconComponen
 import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
 import RootStackParamList from '../../types/INavigateProfile'
 import UseTheme from '../../hooks/use-theme';
-import { GetUserById } from '../../services/dataService';
+// import { GetUserById } from '../../services/dataService';
+import {getLocalStorageInfo} from '../../services/localStorage'
 //
 
 //This is just testing
@@ -32,6 +33,8 @@ type Props = NativeStackScreenProps <RootStackParamList, 'MyProfile'>
 const MyProfileScreen: FC<Props> = ({navigation}) => {
 
   const {bgColor, lilacColor} = useContext(ThemeContext)
+
+ 
 
   let r = Math.floor(Math.random() * 7)
   let userName = 'DB';

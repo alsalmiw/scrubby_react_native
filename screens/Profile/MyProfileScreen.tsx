@@ -80,10 +80,8 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   useEffect(() => {
     const AsyncGetSpaceCollectionById = async () => {
       let result = await GetSpaceCollectionById(Id);
-      setNewSpace(prevState => {
-        return [...prevState, result];
-      });
-      console.log(result);
+      setNewSpace([result]);
+      console.log(r);
     }
 
     AsyncGetSpaceCollectionById();
@@ -136,6 +134,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       </View>
       <View style={styles.newSpaceContainer}>
         {/* Make this a component for check marks */}
+        {/* For now I have a key with random numbers, this will be switched out with something else */}
         {newSpace.map(element => <TaskSpaceRowTrash idx={r} key={Math.random().toString()} onPress={handleAddNewRoomNavigation} />
       
         )}

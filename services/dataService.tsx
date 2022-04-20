@@ -92,18 +92,24 @@ async function DeleteUser(id:number) {
     console.log(data)
 }
 
-async function GetSpaceCollectionById(UserId: number) {
-    let res = await fetch(`${link}/SpaceCollection/GetSpaceCollectionById/${UserId}`);
+async function GetSpaceCollectionByUserId(UserId: number) {
+    let res = await fetch(`${link}/SpaceCollection/GetSpaceCollectionByUserId/${UserId}`);
     let data = await res.json();
     return data;
 }
 
 async function GetUserByUsername(Username:string) {
-    let res = await fetch(`${link}/User/GetUserByUsername/${Username}`);
+    let res = await fetch(`${link}/User/GetUserPublicInfoByUserName/${Username}`);
     let data = await res.json();
     return data;
 }
 
+async function GetDependantByUserId (Id: number){
+let res = await fetch(`${link}/Dependent/GetDependantByUserId/${Id}`);
+let data = await res.json();
+return data;
+}
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, UpdatePassword, GetSpaceCollectionById, GetUserByUsername }
+
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, UpdatePassword, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId }
 

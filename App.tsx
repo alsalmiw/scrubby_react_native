@@ -41,9 +41,9 @@ const App: FC =()=> {
    <UserProvider>
     <ThemeProvider>
          <Stack.Navigator>
-            {/* <Stack.Screen name="login" 
+            <Stack.Screen name="login" 
             component={LoginAndCreateAccountScreen} 
-            options={{headerShown: false}} /> */}
+            options={{headerShown: false}} />
 
             <Stack.Screen name="Nav" 
             component={NavigationComponent} 

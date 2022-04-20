@@ -83,7 +83,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
             }
             else {
                 addUser();
-                console.log(savedUsername);
+                //console.log(savedUsername);
                 setPassword("");
                 setUsername("");
             }
@@ -100,7 +100,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
             }
             else {
                 userLogin();
-                console.log(savedUsername);
+                //console.log(savedUsername);
                 setPassword("");
                 setUsername("");
             }

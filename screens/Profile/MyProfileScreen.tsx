@@ -13,10 +13,9 @@ import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
 import RootStackParamList from '../../types/INavigateProfile'
 import UseTheme from '../../hooks/use-theme';
 // import { GetUserById } from '../../services/dataService';
-import {getLocalStorageInfo} from '../../services/localStorage'
 //
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GetSpaceCollectionById } from '../../services/dataService';
+import { GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId } from '../../services/dataService';
 
 
 //This is just testing
@@ -28,6 +27,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import TaskSpaceRowCheck from '../../components/TaskSpaceRowCheck';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
+import UserContext from '../../context/UserContext';
 
 const windowWidth = Dimensions.get('window').width * 0.33;
 
@@ -43,6 +43,7 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor } = useContext(ThemeContext)
+  const { savedUsername, setSavedUsername, userData, setUserData, childData, setChildData } = useContext(UserContext)
 
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
@@ -84,15 +85,39 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   // }
 
   useEffect(() => {
-    const AsyncGetSpaceCollectionById = async () => {
-      let result = await GetSpaceCollectionById(Id);
-      setNewSpace([result]);
-      console.log(r);
-    }
-
+   // console.log(savedUsername)
     AsyncGetSpaceCollectionById();
+   
 
   }, [])
+
+  const AsyncGetSpaceCollectionById = async () => {
+
+    let userInfo:any= await AsyncStorage.getItem("Username");
+    if(userInfo) {
+      setSavedUsername(userInfo)
+      console.log(userInfo)
+    }
+    
+    let data = await GetUserByUsername(savedUsername)
+    // console.log(data)
+    if (data.length!=0)
+    {
+      setUserData(data)
+    let result = await GetSpaceCollectionByUserId(data.id);
+    let children = await GetDependantByUserId(data.id);
+    console.log(children)
+    if(result.length!=0){
+      setNewSpace([result])
+    }
+    if(children.length!=0){
+      setChildData(children)
+    }
+
+    }
+    
+  }
+
 
   return (
 

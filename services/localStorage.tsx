@@ -1,24 +1,35 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useContext } from 'react';
+import { FC, useContext } from 'react';
 import UserContext from '../context/UserContext';
-import {GetUserByUsername} from './dataService'
+import {GetUserByUsername, GetSpaceCollectionByUserId, GetDependantByUserId} from './dataService'
 
 
-async function getLocalStorageInfo() {
-    const { username, setUsername, userData, setUserData } = useContext(UserContext)
-   let token = AsyncStorage.getItem("Token");
-   let userInfo:any= AsyncStorage.getItem("Username");
-
-   if(userInfo!=null)
-   {
-    let data = await GetUserByUsername(userInfo)
+async function getLocalStorageInfo () {
+    const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildData } = useContext(UserContext)
+  
+    let userInfo:any= await AsyncStorage.getItem("Username");
+    if(userInfo) {
+      setSavedUsername(userInfo)
+      console.log(userInfo)
+    }
+    
+    let data = await GetUserByUsername(savedUsername)
+    // console.log(data)
     if (data.length!=0)
     {
-        setUserData(data)
-        console.log(data)
-    }    
-   }
-    setUsername(userInfo)
+      setUserData(data)
+    let result = await GetSpaceCollectionByUserId(data.id);
+    let children = await GetDependantByUserId(data.id);
+    console.log(children)
+    if(result.length!=0){
+        setMySpaces([result])
+    }
+    if(children.length!=0){
+      setChildData(children)
+    }
+
+    }
+
 
 }
 

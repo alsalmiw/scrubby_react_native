@@ -19,44 +19,16 @@ type Props = NativeStackScreenProps <RootStackParamList, 'Rooms'>
 
 const SpaceRoomsScreen: FC<Props> = ({navigation})=> {
 
-  const { savedUsername, setSavedUsername, userData, setUserData, childData, setChildData, newSpace, setNewSpace } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, userData, setUserData, childData, setChildData, newSpace, setNewSpace, myRooms } = useContext(UserContext)
 
 
   useEffect(() => {
-    // console.log(savedUsername)
-     AsyncGetSpaceCollectionById();
+   
     
  
    }, [])
  
-   const AsyncGetSpaceCollectionById = async () => {
- 
-     let userInfo:any= await AsyncStorage.getItem("Username");
-     if(userInfo) {
-       setSavedUsername(userInfo)
-       console.log(userInfo)
-     }
-     
-     let data = await GetUserByUsername(savedUsername)
-     // console.log(data)
-     if (data.length!=0)
-     {
-       setUserData(data)
-     let result = await GetSpaceCollectionByUserId(data.id);
-     let children = await GetDependantByUserId(data.id);
-     console.log(children)
-     if(result.length!=0){
-       setNewSpace([result])
-
-       let rooms = await GetSpacesByCollectionID(result.id)
-     }
-     if(children.length!=0){
-       setChildData(children)
-     }
- 
-     }
-     
-   }
+   
 
 
   

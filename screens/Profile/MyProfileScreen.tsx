@@ -15,7 +15,7 @@ import UseTheme from '../../hooks/use-theme';
 // import { GetUserById } from '../../services/dataService';
 //
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId } from '../../services/dataService';
+import { GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetSpacesByCollectionID } from '../../services/dataService';
 
 
 //This is just testing
@@ -43,7 +43,7 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, userData, setUserData, childData, setChildData } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, userData, setUserData, childData, setChildData, myRooms, setMyRooms,setMySpace } = useContext(UserContext)
 
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
@@ -64,7 +64,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const displayAddIcon = () => {
     console.log('Plus Icon Works');
-    navigation.navigate('AddNewRoom')
+    navigation.navigate('AddItems')
   }
 
   const displayProfileStuff = () => {
@@ -72,7 +72,22 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   }
 
   const handleAddNewRoomNavigation = () => {
-    navigation.navigate('AddItems');
+    navigation.navigate('AddNewRoom');
+  }
+
+  const handleGoToSpaceRooms = async(space:any)=> {
+    console.log("collection id is "+space.id)
+    let spaceRooms = await GetSpacesByCollectionID(space.id)
+    setMySpace(space)
+
+    if (spaceRooms.length != 0){
+      setMyRooms(spaceRooms)
+      navigation.navigate('Rooms')
+    }
+    else{
+      setMyRooms('')
+      navigation.navigate('Rooms')
+    }
   }
 
 
@@ -99,12 +114,12 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       console.log(userInfo)
     }
 
-    let data = await GetUserByUsername(savedUsername)
-    console.log('Data id is ' + data.id);
-    // console.log(data)
-    if (data.length != 0) {
-      setUserData(data)
-      let result = await GetSpaceCollectionByUserId(data.id);
+    let user = await GetUserByUsername(savedUsername)
+    console.log('user id is ' + user.id);
+    // console.log(user)
+    if (user.length != 0) {
+      setUserData(user)
+      let result = await GetSpaceCollectionByUserId(user.id);
       let children = await GetDependantByUserId(2);
       console.log(children)
       if (result.length != 0) {
@@ -157,7 +172,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
       {/* <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo=""></UnderlinedHeaderComponent> */}
       <View style={styles.secondRow}>
-        <AddItemButtonComponent onPress={displayAddIcon}>
+        <AddItemButtonComponent onPress={handleAddNewRoomNavigation}>
           <Entypo name="squared-plus" size={50} color={lilacColor} />
         </AddItemButtonComponent>
         <View style={styles.userNameContainer}>
@@ -168,13 +183,13 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
         {/* Make this a component for check marks */}
         {/* For now I have a key with random numbers, this will be switched out with something else */}
 
-        {newSpace.map(element =>
+        {newSpace.map((space, idx) =>
           <TaskSpaceRowTrash
-            idx={r}
-            key={Math.random().toString()}
-            onPress={handleAddNewRoomNavigation}
+            idx={r+idx}
+            key={idx}
+            onPress={()=>handleGoToSpaceRooms(space)}
           >
-            {element.collectionName}
+            {space.collectionName}
           </TaskSpaceRowTrash>
 
         )}

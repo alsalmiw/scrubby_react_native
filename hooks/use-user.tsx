@@ -24,8 +24,9 @@ export default function UseUser(){
     const [userData, setUserData] = useState([])
     const [childData, setChildData] = useState([])
     const [mySpaces, setMySpaces] =useState([])
+    const [mySpace, setMySpace] =useState([])
     const [newSpace, setNewSpace] = useState<newSpace[]>([]);
     const [myRooms, setMyRooms] = useState<myRooms[]>([])
 
-    return{username, newSpace, setNewSpace, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms}
+    return{username, newSpace, setNewSpace, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, mySpace, setMySpace}
 }

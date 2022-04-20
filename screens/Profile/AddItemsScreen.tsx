@@ -45,8 +45,8 @@ const AddItemsScreen: FC = () => {
     setAllTask(data)
 
   }
-  const AddItems = () => {
-    setAllTask
+  const AddItems = (name:string) => {
+    icons
   }
 
   return (
@@ -68,7 +68,7 @@ const AddItemsScreen: FC = () => {
                       icons.map((icon, idx) => {
                         return (
                           <View style={styles.categories}>
-                            <Pressable key={idx} onPress={() => console.log(icons[idx].Name)}>
+                            <Pressable key={idx} onPress={() => AddItems(icons[idx].Name)}>
                               <View style={{ alignItems: 'center' }}>
                                 <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                               </View>
@@ -110,23 +110,23 @@ const AddItemsScreen: FC = () => {
         <ScrollView>
           <View style={styles.rest3}>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: '2%' }}>
-              <SquareColoredButton idx={r} onPress={() => { AddItems(), console.log("+") }} >
+              <SquareColoredButton idx={r} onPress={() => {  console.log("+") }} >
                 <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
                 <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
               </SquareColoredButton>
-              <SquareColoredButton idx={r} onPress={() => { AddItems() }} >
+              <SquareColoredButton idx={r} onPress={() => {  }} >
                 <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
                 <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
               </SquareColoredButton>
-              <SquareColoredButton idx={r} onPress={() => { AddItems() }} >
+              <SquareColoredButton idx={r} onPress={() => {  }} >
                 <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
                 <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
               </SquareColoredButton>
-              <SquareColoredButton idx={r} onPress={() => { AddItems() }} >
+              <SquareColoredButton idx={r} onPress={() => {  }} >
                 <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
                 <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
               </SquareColoredButton>
-              <SquareColoredButton idx={r} onPress={() => { AddItems() }} >
+              <SquareColoredButton idx={r} onPress={() => {  }} >
                 <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
                 <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
               </SquareColoredButton>

@@ -17,6 +17,8 @@ import { AntDesign } from '@expo/vector-icons';
 
 import { Dimensions } from 'react-native';
 import HeaderComponent from '../../components/HeaderComponent';
+import FullButtonComponent from '../../components/FullButtonComponent';
+import { ThemeContext } from '../../context/ThemeContext';
 
 
 
@@ -25,11 +27,14 @@ const AddItemsScreen: FC = () => {
   const [plus, setPlus] = useState(true);
   let r = Math.floor(Math.random() * 7)
 
-  const AddItems =()=> {
-    
+  const { purpleColor} = useContext(ThemeContext)
+
+  const AddItems = () => {
+
   }
 
   return (
+    <>
     <View style={styles.container}>
       <View style={styles.headTitle}>
 
@@ -94,34 +99,67 @@ const AddItemsScreen: FC = () => {
         <UnderlinedOneHeaderComponent titleFirst={'Items'} />
       </View>
 
-      {/* <ScrollView >
+      <ScrollView>
         <View style={styles.rest3}>
-        <View style={{ flexDirection:'row', flexWrap:'wrap',  }}>
-        <Pressable onPress={() => {setPlus(!plus), console.log("+") }}>
-          <SquareColoredButton idx={r} onPress={() =>AddItems()}
-            {
-              plus ?
-                <>
-                  <Entypo name="minus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
-                  <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
-                </>
-                :
-                <>
-                  <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
-                  <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
-                </>
-            }
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft:'2%'}}>
 
-          </SquareColoredButton>
-        </Pressable>
-      
+            <SquareColoredButton idx={r} onPress={() => { AddItems(), setPlus(!plus), console.log("+") }} >
+              {
+                plus ?
+                  <>
+                    <Entypo name="minus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
+                    <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
+                  </>
+                  :
+                  <>
+                    <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
+                    <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
+                  </>
+              }
+
+            </SquareColoredButton>
+            <SquareColoredButton idx={r} onPress={() => { AddItems(), setPlus(!plus), console.log("+") }} >
+
+                    <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
+                    <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
+
+            </SquareColoredButton>
+            <SquareColoredButton idx={r} onPress={() => { AddItems(), setPlus(!plus), console.log("+") }} >
+
+                    <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
+                    <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
+
+
+            </SquareColoredButton>
+            <SquareColoredButton idx={r} onPress={() => { AddItems(), setPlus(!plus), console.log("+") }} >
+
+                    <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
+                    <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
+
+
+            </SquareColoredButton>
+            <SquareColoredButton idx={r} onPress={() => { AddItems(), setPlus(!plus), console.log("+") }} >
+                    <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
+                    <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
+            </SquareColoredButton>
+
+
+          </View>
         </View>
-        </View>
-      </ScrollView>
+      </ScrollView >
+      {
+        seeAll?
+        <View style={{flex:0.45}}></View>
+        :
+        null
+      }
 
-*/}
 
-    </View> 
+    </View >
+    <FullButtonComponent onPress={()=>console.log('im clikced')} color={purpleColor}>
+      <Text>Done</Text>
+    </FullButtonComponent>
+    </>
   );
 }
 
@@ -131,7 +169,7 @@ const styles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight
   },
   headTitle: {
-    flex: 0.2,
+    flex: 0.5,
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
@@ -142,7 +180,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   rest: {
-    flex: 0,
+    flex: 0.4,
     paddingLeft: 10,
     marginTop: 10,
 
@@ -163,7 +201,7 @@ const styles = StyleSheet.create({
 
   },
   rest2: {
-    flex: 0,
+    flex: 0.8,
     paddingLeft: 10,
     minWidth: 'auto',
     flexDirection: 'row',
@@ -193,10 +231,12 @@ const styles = StyleSheet.create({
 
 
   },
-  rest3:{
-    paddingLeft:'3%',
-    paddingRight:'3%',
-    textAlign:'center'
+  rest3: {
+    paddingLeft: '3%',
+    paddingRight: '3%',
+    textAlign: 'center',
+    justifyContent:'center',
+    alignItems:'center'
   }
 
 

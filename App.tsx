@@ -49,9 +49,9 @@ const App: FC =()=> {
             component={NavigationComponent} 
             options={{headerShown: false}} />
             
-              {/* <Stack.Screen name="Child" 
+              <Stack.Screen name="Child" 
             component={ChildTasksScreen} 
-            options={{headerShown: false}} /> */}
+            options={{headerShown: false}} />
 
          </Stack.Navigator>
          {/* <AddItemsScreen /> */}

@@ -48,7 +48,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
 
- 
+
 
   let r = Math.floor(Math.random() * 7)
   let Id = 4;
@@ -85,39 +85,40 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   // }
 
   useEffect(() => {
-   // console.log(savedUsername)
+    // console.log(savedUsername)
     AsyncGetSpaceCollectionById();
-   
+
 
   }, [])
 
   const AsyncGetSpaceCollectionById = async () => {
 
-    let userInfo:any= await AsyncStorage.getItem("Username");
-    if(userInfo) {
+    let userInfo: any = await AsyncStorage.getItem("Username");
+    if (userInfo) {
       setSavedUsername(userInfo)
       console.log(userInfo)
     }
-    
+
     let data = await GetUserByUsername(savedUsername)
+    console.log('Data id is ' + data.id);
     // console.log(data)
-    if (data.length!=0)
-    {
+    if (data.length != 0) {
       setUserData(data)
-    let result = await GetSpaceCollectionByUserId(data.id);
-    let children = await GetDependantByUserId(data.id);
-    console.log(children)
-    if(result.length!=0){
-      setNewSpace([result])
-    }
-    if(children.length!=0){
-      setChildData(children)
-    }
+      let result = await GetSpaceCollectionByUserId(data.id);
+      let children = await GetDependantByUserId(2);
+      console.log(children)
+      if (result.length != 0) {
+        setNewSpace([...result])
+      }
+      if (children.length != 0) {
+        setChildData(...children)
+      }
 
     }
-    
+
   }
 
+ 
 
   return (
 
@@ -146,9 +147,9 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
         <AddPhotoComponent />
         <View style={styles.nameAndCoinContainer}>
 
-          <UserNameComponent name="Daniel"></UserNameComponent>
+          <UserNameComponent name={savedUsername}></UserNameComponent>
           <View style={styles.coinContainer}>
-            <CoinsPointsDisplayContainer coins="20" points="39"></CoinsPointsDisplayContainer>
+            <CoinsPointsDisplayContainer coins={`${childData.dependentCoins}`} points="39"></CoinsPointsDisplayContainer>
           </View>
         </View>
       </View>
@@ -166,9 +167,18 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       <View style={styles.newSpaceContainer}>
         {/* Make this a component for check marks */}
         {/* For now I have a key with random numbers, this will be switched out with something else */}
-        {newSpace.map(element => <TaskSpaceRowTrash idx={r} key={Math.random().toString()} onPress={handleAddNewRoomNavigation} />
-      
+
+        {newSpace.map(element =>
+          <TaskSpaceRowTrash
+            idx={r}
+            key={Math.random().toString()}
+            onPress={handleAddNewRoomNavigation}
+          >
+            {element.collectionName}
+          </TaskSpaceRowTrash>
+
         )}
+
         {/* <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} />
         <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} />
         <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} /> */}

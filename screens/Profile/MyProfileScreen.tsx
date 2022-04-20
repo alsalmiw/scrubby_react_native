@@ -12,7 +12,7 @@ import TaskSpaceRowIconComponent from '../../components/TaskSpaceRowIconComponen
 import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
 import RootStackParamList from '../../types/INavigateProfile'
 import UseTheme from '../../hooks/use-theme';
-import { GetUserById } from '../../services/dataService';
+import { GetSpaceCollectionById } from '../../services/dataService';
 
 
 //This is just testing
@@ -26,14 +26,24 @@ import TaskSpaceRowCheck from '../../components/TaskSpaceRowCheck';
 
 const windowWidth = Dimensions.get('window').width * 0.33;
 
-type Props = NativeStackScreenProps <RootStackParamList, 'MyProfile'>
+type Props = NativeStackScreenProps<RootStackParamList, 'MyProfile'>
 
-const MyProfileScreen: FC<Props> = ({navigation}) => {
+interface newSpace {
+  collectionName: string,
+  id: number,
+  isDeleted: boolean,
+  userId: number
+}
 
-  const {bgColor, lilacColor} = useContext(ThemeContext)
+const MyProfileScreen: FC<Props> = ({ navigation }) => {
+
+  const { bgColor, lilacColor } = useContext(ThemeContext)
+
+  //This is a test useState for populating create a new space
+  const [newSpace, setNewSpace] = useState<newSpace[]>([]);
 
   let r = Math.floor(Math.random() * 7)
-  let userName = 'DB';
+  let Id = 4;
 
   let testDummyArr = [
     { name: 'plus', id: '0' },
@@ -57,17 +67,35 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
     navigation.navigate('AddNewRoom');
   }
 
-  const asyncShit = async (userName:String) => {
-    console.log(userName)
-  }
 
-  {asyncShit(userName)}
+  // const asyncShit = async (Id: number) => {
+  //   let result = await GetSpaceCollectionById(Id);
+  //   setNewSpace(prevState => {
+  //     return [...prevState, result];
+  //   });
+  //   console.log(result);
+  // }
+
+  useEffect(() => {
+    const AsyncGetSpaceCollectionById = async () => {
+      let result = await GetSpaceCollectionById(Id);
+      setNewSpace(prevState => {
+        return [...prevState, result];
+      });
+      console.log(result);
+    }
+
+    AsyncGetSpaceCollectionById();
+
+    
+
+  }, [])
 
   return (
 
     <View style={styles.container}>
 
-      
+
 
       {/* <CoinsPointsDisplayContainer coins="200" points="10,000" />
         {arr.map((title, idx) => {
@@ -81,7 +109,7 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
         })}
         */}
 
-    {/* <Text>MyProfile</Text>
+      {/* <Text>MyProfile</Text>
         
     </View> */}
 
@@ -109,9 +137,12 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
       </View>
       <View style={styles.newSpaceContainer}>
         {/* Make this a component for check marks */}
+        {newSpace.map(element => <TaskSpaceRowTrash idx={r} key={Math.random().toString()} onPress={handleAddNewRoomNavigation} />
+      
+        )}
+        {/* <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} />
         <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} />
-        <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} />
-        <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} />
+        <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} /> */}
 
 
         {/* Make this a component for the trash  */}
@@ -125,8 +156,8 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
           </View>
         </TaskSpaceRowComponent> */}
 
-        <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} />
-        
+        {/* <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} /> */}
+
 
       </View>
 
@@ -140,9 +171,9 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
             return (
               <View>
                 {index === 0 ? <AddItemButtonComponent onPress={displayAddIcon}>
-                  <Entypo name="squared-plus" size={windowWidth} color={lilacColor}  />
+                  <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
                 </AddItemButtonComponent> : <AddItemButtonComponent onPress={displayProfileStuff}>
-                  <Entypo name="squared-cross" size={windowWidth} color={lilacColor}  />
+                  <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />
                 </AddItemButtonComponent>}
               </View>
 

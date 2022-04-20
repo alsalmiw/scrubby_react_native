@@ -12,6 +12,7 @@ import TaskSpaceRowIconComponent from '../../components/TaskSpaceRowIconComponen
 import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
 import RootStackParamList from '../../types/INavigateProfile'
 import UseTheme from '../../hooks/use-theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GetSpaceCollectionById } from '../../services/dataService';
 
 
@@ -86,8 +87,6 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     }
 
     AsyncGetSpaceCollectionById();
-
-    
 
   }, [])
 

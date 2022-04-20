@@ -28,8 +28,8 @@ const icons = [
     Link:require('../image/fence.png')
 },
 { 
-    Name:"Attic",
-    Link:require('../image/attic.png')
+    Name:"Laundry",
+    Link:require('../image/laundryroom.png')
 },
 ]
 

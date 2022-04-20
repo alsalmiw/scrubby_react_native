@@ -55,7 +55,7 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
   }
 
   const handleAddNewRoomNavigation = () => {
-    navigation.navigate('AddNewRoom');
+    navigation.navigate('AddItems');
   }
 
   const asyncShit = async (userName:String) => {
@@ -99,7 +99,7 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
       </View>
 
 
-      <UnderlinedOneHeaderComponent titleFirst="My Spaces" />
+      {/* <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo=""></UnderlinedHeaderComponent> */}
       <View style={styles.secondRow}>
         <AddItemButtonComponent onPress={displayAddIcon}>
           <Entypo name="squared-plus" size={50} color={lilacColor} />
@@ -133,7 +133,7 @@ const MyProfileScreen: FC<Props> = ({navigation}) => {
 
 
 
-      <UnderlinedOneHeaderComponent titleFirst="Kids" />
+      {/* <UnderlinedHeaderComponent titleOne="Kids" titleTwo=""></UnderlinedHeaderComponent> */}
 
       <View style={styles.thirdRow}>
         <FlatList data={testDummyArr}

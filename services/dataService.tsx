@@ -110,6 +110,12 @@ let data = await res.json();
 return data;
 }
 
+async function GetSpacesByCollectionID (Id: number){
+    let res = await fetch(`${link}/SpacesInfo/GetSpacesByCollectionID/${Id}`);
+    let data = await res.json();
+    return data;
+    }
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, UpdatePassword, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId }
+
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, UpdatePassword, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetSpacesByCollectionID }
 

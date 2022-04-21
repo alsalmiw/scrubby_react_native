@@ -64,7 +64,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const displayAddIcon = () => {
     console.log('Plus Icon Works');
-    navigation.navigate('AddItems')
+    navigation.navigate('AddNewSpace')
   }
 
   const displayProfileStuff = () => {
@@ -77,7 +77,8 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const handleGoToSpaceRooms = async(space:any)=> {
     console.log("collection id is "+space.id)
-    let spaceRooms = await GetSpacesByCollectionID(space.id)
+    let spaceRooms = await GetSpacesByCollectionID(3)
+    console.log("spacerooms" + spaceRooms)
     setMySpace(space)
 
     if (spaceRooms.length != 0){

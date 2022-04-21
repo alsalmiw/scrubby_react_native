@@ -1,6 +1,7 @@
 import INewUser from '../Interfaces/INewUser';
 import IUserLogin from '../Interfaces/IUserLogin'
 import INewName from '../Interfaces/INewName'
+import IRoom from '../Interfaces/IRoom';
 
 let link = "https://scrubbyapi.azurewebsites.net"
 
@@ -75,6 +76,25 @@ async function UpdatePassword(newPassword: IUserLogin) {
    return data;
 }
 
+async function AddNewRoom(room: IRoom) {
+    let res= await fetch(`${link}/spaceInfo/AddNewSpace`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        //might be wrong
+        body: JSON.stringify(room)
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data = await res.json();
+    console.log(data)
+   return data;
+}
+
 async function DeleteUser(id:number) {
     let res= await fetch(`${link}/User/UpdateUserInfo/${id}`, {
         method: "POST",
@@ -122,5 +142,5 @@ async function GetAllSpaceItems(){
     return data;
 }
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, UpdatePassword, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, GetSpacesByCollectionID }
+export {UserLogin, CreateAccount, UpdateName, DeleteUser,AddNewRoom, UpdatePassword, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, GetSpacesByCollectionID }
 

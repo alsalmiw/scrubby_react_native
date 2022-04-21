@@ -6,6 +6,7 @@ interface IInputType{
     onChangeText: Function;
     holder: string;
     hide: boolean;
+    maxLength: number;
 }
 
 
@@ -21,6 +22,7 @@ const InputFieldComponent: FC<IInputType> = (props) => {
             <View style={styles.SectionStyle}>
                 <TextInput
                     value={""}
+                    maxLength={props.maxLength}
                     autoComplete='off'
                     style={styles.inputUsername}
                     placeholder={props.holder}

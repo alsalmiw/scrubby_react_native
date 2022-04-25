@@ -20,33 +20,46 @@ import FullButtonComponent from '../../components/FullButtonComponent';
 import { ThemeContext } from '../../context/ThemeContext';
 import { GetAllSpaceItems } from '../../services/dataService';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+interface taskInfo {
+  description:string;
+  id:number;
+  name:string;
+  tags:string;
+  UserId:number;
+}
 
 const AddItemsScreen: FC = () => {
-  const { seeAll, setSeeAll } = useContext(UserContext)
+  const { seeAll, setSeeAll, task, setTask,allTask, setAllTask, addTask, setAddTask, userData } = useContext(UserContext)
 
   let r = Math.floor(Math.random() * 7)
 
   const { purpleColor } = useContext(ThemeContext)
 
-  const [task, setTask] = useState([]);
-  const [allTask, setAllTask] = useState([])
+  // const [task, setTask] = useState<taskInfo[]>([]);
+  // const [allTask, setAllTask] = useState<taskInfo[]>([])
+  // const [addTask, setAddTask] = useState<taskInfo[]>([])
 
 
 
   useEffect(() => {
     fetchSpaceInfo();
-
+    
 
   }, [])
 
   const fetchSpaceInfo = async () => {
     let data = await GetAllSpaceItems();
-    setAllTask(data)
+    if (data.length != 0) {
+      setAllTask(data);
+    }
+
+
 
   }
-  const AddItems = (name:string) => {
-    icons
+  const AddItems = (name: string) => {
+    setTask(allTask.filter((aTask:taskInfo) => aTask.tags.includes(name.toLowerCase())))
   }
 
   return (
@@ -68,7 +81,7 @@ const AddItemsScreen: FC = () => {
                       icons.map((icon, idx) => {
                         return (
                           <View style={styles.categories}>
-                            <Pressable key={idx} onPress={() => AddItems(icons[idx].Name)}>
+                            <Pressable key={idx} onPress={() => AddItems(icons[idx].Name) }>
                               <View style={{ alignItems: 'center' }}>
                                 <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                               </View>
@@ -81,7 +94,7 @@ const AddItemsScreen: FC = () => {
                   </ScrollView>
 
                 </View>
-                {/* <UnderlinedOneHeaderComponent titleFirst={'Items'} /> */}
+
               </>
               :
               <View style={styles.rest2}>
@@ -90,7 +103,7 @@ const AddItemsScreen: FC = () => {
                     icons.map((icon, idx) => {
                       return (
                         <View style={styles.categories2}>
-                          <Pressable key={idx} onPress={() => console.log(icons[idx].Name)}>
+                          <Pressable key={idx} onPress={() => AddItems(icons[idx].Name)}>
                             <View style={{ alignItems: 'center' }}>
                               <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                             </View>
@@ -104,41 +117,31 @@ const AddItemsScreen: FC = () => {
               </View>
           }
         </>
-        <View style={[styles.underlineContainer, { marginBottom: 5 }]}>
-          <UnderlinedOneHeaderComponent titleFirst={'Items'} />
+        
+        <View style={styles.underlineContainer}>
+        <UnderlinedOneHeaderComponent titleFirst={'Items'} />
         </View>
         <ScrollView>
           <View style={styles.rest3}>
+          <View style={[styles.underlineContainer, { marginBottom: 5 }]}>
+          
+        </View>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: '2%' }}>
-              <SquareColoredButton idx={r} onPress={() => {  console.log("+") }} >
-                <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
-                <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
-              </SquareColoredButton>
-              <SquareColoredButton idx={r} onPress={() => {  }} >
-                <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
-                <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
-              </SquareColoredButton>
-              <SquareColoredButton idx={r} onPress={() => {  }} >
-                <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
-                <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
-              </SquareColoredButton>
-              <SquareColoredButton idx={r} onPress={() => {  }} >
-                <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
-                <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
-              </SquareColoredButton>
-              <SquareColoredButton idx={r} onPress={() => {  }} >
-                <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
-                <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>Sink</Text>
-              </SquareColoredButton>
+              {
+                task.map((colorBtn:taskInfo, x:number) => {
+                  return (
+                  <SquareColoredButton key={x} idx={r+x} onPress={() => {addTask.push(colorBtn) , console.log(addTask)} } >
+                    <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
+                    <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>{colorBtn.name}</Text>
+                  </SquareColoredButton>
+                  )
+                })
+              }
+              
             </View>
           </View>
         </ScrollView >
-        {
-          seeAll ?
-            <View style={{ flex: 0.45 }}></View>
-            :
-            null
-        }
+
 
 
       </View >
@@ -151,21 +154,21 @@ const AddItemsScreen: FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: StatusBar.currentHeight
+    paddingTop: StatusBar.currentHeight,
+    position:'absolute'
   },
   headTitle: {
-    flex: 0.5,
+
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
+    marginTop:40
   },
   clickText: {
     textDecorationLine: 'underline',
     flexDirection: 'row',
   },
   rest: {
-    flex: 0.4,
     paddingLeft: 10,
     marginTop: 10,
   },
@@ -183,7 +186,6 @@ const styles = StyleSheet.create({
 
   },
   rest2: {
-    flex: 0.8,
     paddingLeft: 10,
     minWidth: 'auto',
     flexDirection: 'row',
@@ -211,6 +213,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   rest3: {
+
     paddingLeft: '3%',
     paddingRight: '3%',
     textAlign: 'center',

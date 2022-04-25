@@ -2,6 +2,7 @@ import {useState} from "react"
 
 export default function UseUser(){
 
+
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [savedUsername, setSavedUsername] = useState('username')
@@ -11,6 +12,9 @@ export default function UseUser(){
     const [userData, setUserData] = useState([])
     const [childData, setChildData] = useState([])
     const [mySpaces, setMySpaces] =useState([])
+    const [task, setTask] = useState([]);
+    const [allTask, setAllTask] = useState([])
+    const [addTask, setAddTask] = useState([])
 
     const [myRooms, setMyRooms] = useState({
         id: 0,
@@ -19,5 +23,5 @@ export default function UseUser(){
         collectionId: 0,
     })
 
-    return{username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms}
+    return{username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask}
 }

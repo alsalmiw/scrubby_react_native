@@ -1,12 +1,12 @@
 const iconsMap = new Map([
-    ['bathroom', require('../image/bath.png')],
-    ['garage', require('../image/garage.png')],
-    ['bedroom', require('../image/bed.png')],
-    ['kitchen', require('../image/kitchen.png')],
-    ['office', require('../image/officedesk.png')],
-    ['livingRoom', require('../image/livingroom.png')],
-    ['yard', require('../image/fence.png')],
-    ['laundry',require('../image/laundryroom.png')],
+    ['Bathroom', require('../image/bath.png')],
+    ['Garage', require('../image/garage.png')],
+    ['Bedroom', require('../image/bed.png')],
+    ['Kitchen', require('../image/kitchen.png')],
+    ['Office', require('../image/officedesk.png')],
+    ['LivingRoom', require('../image/livingroom.png')],
+    ['Yard', require('../image/fence.png')],
+    ['Laundry',require('../image/laundryroom.png')],
 ])
 
 export default iconsMap

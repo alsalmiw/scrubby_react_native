@@ -22,7 +22,8 @@ type Props = NativeStackScreenProps <RootStackParamList, 'Rooms'>
 const SpaceRoomsScreen: FC<Props> = ({navigation})=> {
   const { bgColor, lilacColor } = useContext(ThemeContext)
   const { username, newSpace, setNewSpace, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, mySpace, setMySpace} = useContext(UserContext)
-  const windowWidth = Dimensions.get('window').width * 0.33;
+
+  const windowWidth = Dimensions.get('window').width * 0.25;
 
   useEffect(() => {
    
@@ -36,23 +37,25 @@ const SpaceRoomsScreen: FC<Props> = ({navigation})=> {
   
   return (
     <View style={styles.container}>
-   <HeaderComponent title={'Smiths house'}/> 
+   <HeaderComponent title={mySpace.collectionName}/> 
    <UnderlinedOneHeaderComponent titleFirst={'My Rooms'} />
 
-   <View>
+   <View style={styles.roomsContainer}>
 
    <AddItemButtonComponent onPress={() =>navigation.navigate('AddNewRoom')}>
-    <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
+    <Entypo  name="squared-plus" size={100} color={lilacColor} />
     </AddItemButtonComponent> 
 
        
     {
     myRooms.length!=0?
       myRooms.map((room:any, idx:number) => {
+        return(
         <SquareColoredButton key={idx} idx={r+idx} onPress={() =>navigation.navigate('AddedItems')}>
-    
+          <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
         <Text style={[{color:"#FFF"}]}>{room.spaceName}</Text>
-    </SquareColoredButton>
+        </SquareColoredButton>
+        )
       })
       :
       null
@@ -65,16 +68,24 @@ const SpaceRoomsScreen: FC<Props> = ({navigation})=> {
     </View>
   );
 }
-
+const windowWidth = Dimensions.get('window').width * 0.33;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 50,
     padding:10
   },
+  roomsContainer:{
+    flex: 1,
+    flexDirection: 'row',
+    
+  },
   iconSize:{
     width: 60,
     height: 60,
+},
+buttonSize: {
+   width:50, height:50
 }
 });
 

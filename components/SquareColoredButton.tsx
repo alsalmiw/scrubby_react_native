@@ -28,7 +28,7 @@ const SquareColoredButton: FC<Props> =(props) => {
     }
 
     return(
-        <Pressable style={[styles.container, {backgroundColor:bgColor}]} onPress={()=>props.onPress()}>
+        <Pressable  style={[styles.container,  {backgroundColor:bgColor}]} onPress={()=>props.onPress()}>
             {props.children}
 
         </Pressable>
@@ -39,9 +39,11 @@ const styles = StyleSheet.create({
        container: {
             width:80,
             height: 80,
-            padding: 10,
-            borderRadius:5,
-            margin: 3,
+            padding: 2,
+            borderRadius:10,
+            margin: 12,
+            justifyContent: 'center',
+            alignItems: 'center'
         },
     })
 

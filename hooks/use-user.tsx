@@ -1,5 +1,6 @@
 import {useState} from "react"
 import { ISpace } from "../Interfaces/ISpace"
+import IUserData from "../Interfaces/IUserData"
 
 export default function UseUser(){
 
@@ -22,7 +23,7 @@ export default function UseUser(){
     const [savedPassword, setSavedPassword] = useState('password')
     const [seeAll, setSeeAll] = useState(false)
     const [isChildFree, setIsChildFree] = useState(true)
-    const [userData, setUserData] = useState([])
+    const [userData, setUserData] = useState<IUserData[]>([])
     const [childData, setChildData] = useState([])
     const [mySpaces, setMySpaces] =useState<newSpace[]>([])
     const [mySpace, setMySpace] =useState([])

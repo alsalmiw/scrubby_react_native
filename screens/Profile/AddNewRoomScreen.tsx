@@ -41,6 +41,7 @@ const AddNewRoomScreen: FC<Props> = ({navigation, route})=> {
       {
         Alert.alert("You have successfully added a new room")
         navigation.goBack()
+        setMyRooms([...myRooms,newRoom])
       }
    
 

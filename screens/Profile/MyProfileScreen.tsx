@@ -63,9 +63,9 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     { name: 'pic', id: '5' },
   ]
 
-  const displayAddIcon = () => {
+  const handleAddChild = () => {
     console.log('Plus Icon Works');
-    navigation.navigate('AddNewSpace')
+    navigation.navigate('AddChild')
   }
 
   const displayProfileStuff = () => {
@@ -78,7 +78,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const handleGoToSpaceRooms = async(space:any)=> {
     console.log("collection id is "+space.id)
-    let spaceRooms = await GetSpacesByCollectionID(3)
+    let spaceRooms = await GetSpacesByCollectionID(space.id)
     console.log("spacerooms" + spaceRooms)
     setMySpace(space)
 
@@ -140,7 +140,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   return (
 
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
 
 
 
@@ -227,7 +227,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
           renderItem={({ item, index }) => {
             return (
               <View>
-                {index === 0 ? <AddItemButtonComponent onPress={displayAddIcon}>
+                {index === 0 ? <AddItemButtonComponent onPress={handleAddChild}>
                   <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
                 </AddItemButtonComponent> : <AddItemButtonComponent onPress={displayProfileStuff}>
                   <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />
@@ -243,7 +243,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
         />
       </View>
 
-    </View>
+    </ScrollView>
 
 
 
@@ -262,12 +262,10 @@ const styles = StyleSheet.create({
   },
 
   firstRow: {
-    marginVertical: '4%',
+    marginVertical: '0%',
     flexDirection: 'row',
     justifyContent: 'center',
-
     alignItems: 'center',
-    paddingTop: StatusBar.currentHeight
   },
 
   nameAndCoinContainer: {

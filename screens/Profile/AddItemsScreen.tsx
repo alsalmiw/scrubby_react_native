@@ -18,10 +18,10 @@ import { Dimensions } from 'react-native';
 import HeaderComponent from '../../components/HeaderComponent';
 import FullButtonComponent from '../../components/FullButtonComponent';
 import { ThemeContext } from '../../context/ThemeContext';
-import { GetAllSpaceItems } from '../../services/dataService';
+import { AddSelectedTask, GetAllSpaceItems } from '../../services/dataService';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+//
 interface taskInfo {
   description:string;
   id:number;
@@ -130,7 +130,7 @@ const AddItemsScreen: FC = () => {
               {
                 task.map((colorBtn:taskInfo, x:number) => {
                   return (
-                  <SquareColoredButton key={x} idx={r+x} onPress={() => {addTask.push(colorBtn) , console.log(addTask)} } >
+                  <SquareColoredButton key={x} idx={r+x} onPress={() => { colorBtn.UserId= userData.id , addTask.push(colorBtn) , console.log(addTask)} } >
                     <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
                     <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>{colorBtn.name}</Text>
                   </SquareColoredButton>
@@ -145,7 +145,7 @@ const AddItemsScreen: FC = () => {
 
 
       </View >
-      <FullButtonComponent onPress={() => console.log('im clikced')} color={purpleColor}>
+      <FullButtonComponent onPress={() => {AddSelectedTask(addTask), console.log(AddSelectedTask(addTask)) }} color={purpleColor}>
         <Text>Done</Text>
       </FullButtonComponent>
     </>

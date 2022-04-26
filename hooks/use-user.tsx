@@ -29,6 +29,9 @@ export default function UseUser(){
     const [mySpace, setMySpace] =useState([])
     const [newSpace, setNewSpace] = useState<ISpace[]>([]);
     // const [myRooms, setMyRooms] = useState<myRooms[]>([])
+    const [task, setTask] = useState([]);
+    const [allTask, setAllTask] = useState([])
+    const [addTask, setAddTask] = useState([])
 
     const [myRooms, setMyRooms] = useState({
         id: 0,

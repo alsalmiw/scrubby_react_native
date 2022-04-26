@@ -13,6 +13,7 @@ import UserContext from '../../context/UserContext';
 import INewName from '../../Interfaces/INewName'
 import { ThemeContext } from '../../context/ThemeContext';
 import IChild from '../../Interfaces/IChild';
+import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 
 type Props = NativeStackScreenProps <RootStackParamList, 'AddChild'>
 
@@ -40,7 +41,9 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
     if(result) {
       alert("You have successfully add a new child")
       navigation.goBack()
+         console.log(childData)
       setChildData([...childData, newChildData])
+   
     }
   }
 
@@ -53,13 +56,18 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
     <View style={[styles.container,{backgroundColor:orangeColor}]}>
         <TitleComponent title="Add New Child" />
         <AddPhotoComponent />
+        <View>
         <WhiteSubTitleComponent title="Name" />
         <InputFieldComponent maxLength={20} holder="enter your name" hide={false} onChangeText={(e: string)=>setNewChildName(e)} />
+        </View>
+        <View>
         <WhiteSubTitleComponent title="Age" />
         <InputFieldComponent maxLength={20} holder="enter your childs age" hide={false} onChangeText={(e: number)=>setNewChildAge(e)} />
-        <FullButtonComponent onPress={handleSave} color={blueColor}>
+        {/* <FullButtonComponent onPress={handleSave} color={blueColor}>
           <Text>Save</Text>
-        </FullButtonComponent>
+        </FullButtonComponent> */}
+        </View>
+        <TwoFullButtonComponent text1="Back" text2="Add" color={blueColor} onAcceptPress={()=>handleSave()} onBackPress={()=>navigation.goBack()}/>
 
         
     </View>
@@ -72,7 +80,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     marginTop: StatusBar.currentHeight
   },
 });

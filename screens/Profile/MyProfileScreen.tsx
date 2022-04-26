@@ -1,6 +1,6 @@
 // import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useState, useEffect } from 'react';
-import { ScrollView, StyleSheet, Text, View, StatusBar, FlatList } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, StatusBar, FlatList, Pressable } from 'react-native';
 import CoinsPointsDisplayContainer from '../../components/Profile/CoinsPointsDisplayContainer'
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import AddPhotoComponent from '../../components/AddPhotoComponent';
@@ -28,6 +28,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import TaskSpaceRowCheck from '../../components/TaskSpaceRowCheck';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 import UserContext from '../../context/UserContext';
+import { ISpace } from '../../Interfaces/ISpace';
 
 const windowWidth = Dimensions.get('window').width * 0.33;
 
@@ -43,7 +44,7 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, userData, setUserData, childData, setChildData, myRooms, setMyRooms,setMySpace } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, userData, setUserData, childData, setChildData, myRooms, setMyRooms,setMySpace, setMySpaces, mySpaces} = useContext(UserContext)
 
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
@@ -62,9 +63,9 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     { name: 'pic', id: '5' },
   ]
 
-  const displayAddIcon = () => {
+  const handleAddChild = () => {
     console.log('Plus Icon Works');
-    navigation.navigate('AddItems')
+    navigation.navigate('AddChild')
   }
 
   const displayProfileStuff = () => {
@@ -72,12 +73,13 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   }
 
   const handleAddNewRoomNavigation = () => {
-    navigation.navigate('AddNewRoom');
+    navigation.navigate('AddNewSpace');
   }
 
   const handleGoToSpaceRooms = async(space:any)=> {
     console.log("collection id is "+space.id)
     let spaceRooms = await GetSpacesByCollectionID(space.id)
+    console.log("spacerooms" + spaceRooms)
     setMySpace(space)
 
     if (spaceRooms.length != 0){
@@ -120,10 +122,11 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     if (user.length != 0) {
       setUserData(user)
       let result = await GetSpaceCollectionByUserId(user.id);
-      let children = await GetDependantByUserId(2);
-      console.log(children)
+      let children = await GetDependantByUserId(user.id);
+      console.log(result)
       if (result.length != 0) {
         setNewSpace([...result])
+        setMySpaces(result)
       }
       if (children.length != 0) {
         setChildData(...children)
@@ -137,7 +140,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   return (
 
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
 
 
 
@@ -171,19 +174,19 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
 
       {/* <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo=""></UnderlinedHeaderComponent> */}
-      <View style={styles.secondRow}>
+      <Pressable style={styles.secondRow} onPress={handleAddNewRoomNavigation}>
         <AddItemButtonComponent onPress={handleAddNewRoomNavigation}>
           <Entypo name="squared-plus" size={50} color={lilacColor} />
         </AddItemButtonComponent>
         <View style={styles.userNameContainer}>
           <UserNameComponent name="Create a New Space"></UserNameComponent>
         </View>
-      </View>
+      </Pressable>
       <View style={styles.newSpaceContainer}>
         {/* Make this a component for check marks */}
         {/* For now I have a key with random numbers, this will be switched out with something else */}
 
-        {newSpace.map((space, idx) =>
+        {mySpaces.map((space:ISpace, idx:number) =>
           <TaskSpaceRowTrash
             idx={r+idx}
             key={idx}
@@ -224,7 +227,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
           renderItem={({ item, index }) => {
             return (
               <View>
-                {index === 0 ? <AddItemButtonComponent onPress={displayAddIcon}>
+                {index === 0 ? <AddItemButtonComponent onPress={handleAddChild}>
                   <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
                 </AddItemButtonComponent> : <AddItemButtonComponent onPress={displayProfileStuff}>
                   <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />
@@ -240,7 +243,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
         />
       </View>
 
-    </View>
+    </ScrollView>
 
 
 
@@ -259,12 +262,10 @@ const styles = StyleSheet.create({
   },
 
   firstRow: {
-    marginVertical: '4%',
+    marginVertical: '0%',
     flexDirection: 'row',
     justifyContent: 'center',
-
     alignItems: 'center',
-    paddingTop: StatusBar.currentHeight
   },
 
   nameAndCoinContainer: {

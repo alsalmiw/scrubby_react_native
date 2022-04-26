@@ -8,6 +8,7 @@ type RootStackParamList = {
     AddItems: undefined
     AddedTasks: undefined
     Rooms: undefined
+    AddChild: undefined
   }
 
   

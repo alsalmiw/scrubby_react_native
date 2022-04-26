@@ -9,7 +9,7 @@ const AddItemButtonComponent:FC<{onPress: () => void}> = (props) => {
     }
 
     return (
-        <View style={styles.buttonOuterContainer}>
+        <View style={[styles.buttonOuterContainer]}>
             <Pressable
                 style={styles.buttonInnerContainer}
                 onPress={addButtonHandler}

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
             fontWeight: "bold",
         }, 
         headerContainer:{
-            paddingTop: StatusBar.currentHeight,
+            paddingTop: 45,
             paddingRight: 10,
             width:'100%',
             flexDirection: "row",

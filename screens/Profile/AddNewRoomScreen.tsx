@@ -1,7 +1,7 @@
 // import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useState } from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { StyleSheet, View, StatusBar, Image, Pressable } from 'react-native';
+import { StyleSheet, View, StatusBar, Image, Pressable, Alert, TouchableHighlight } from 'react-native';
 
 import RootStackParamList from '../../types/INavigateProfile'
 import { ThemeContext } from '../../context/ThemeContext';
@@ -11,22 +11,46 @@ import InputFieldComponent from '../../components/AddEdit/InputFieldComponent';
 import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 import SquareWhiteButton from '../../components/SquareWhiteButton';
 import icons from '../../types/Icons'
+import UserContext from '../../context/UserContext';
+import IRoom from '../../Interfaces/IRoom'
+import {AddNewRoom} from '../../services/dataService'
 
 type Props = NativeStackScreenProps <RootStackParamList, 'AddNewSpace'>
 
 const AddNewRoomScreen: FC<Props> = ({navigation, route})=> {
   
     const {yellowColor, fuchsiaColor} = useContext(ThemeContext)
-    const [newSpace, setNewSpace] = useState('')
-    const [category, setCategory] = useState('')
+    const { username, newSpace, setNewSpace, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, mySpace, setMySpace} = useContext(UserContext)
 
-    const handleAddRoom = () => {
-    navigation.navigate('MyProfile')
+    const [category, setCategory] = useState('')
+    const [roomName, setRoomName] = useState('')
+
+    const handleAddRoom = async() => {
+      console.log('myspace' + mySpace)
+      
+      let newRoom:IRoom = {
+        id:0, 
+        spaceName: roomName,
+        spaceCategory: category,
+        collectionId: mySpace.id
+      }
+      console.log(newRoom)
+
+      let result = await AddNewRoom(newRoom)
+      if (result)
+      {
+        Alert.alert("You have successfully added a new room")
+        navigation.goBack()
+        setMyRooms([...myRooms,newRoom])
+      }
+   
+
 }
 
 const handleCategory = (name: string) => {
     setCategory(name)
     console.log(name);
+   
 }
   return (
  
@@ -34,15 +58,15 @@ const handleCategory = (name: string) => {
          <TitleComponent title="My New Room" />
          <View style={[styles.contentContainer]}>
          <WhiteSubTitleComponent title="Name" />
-        <InputFieldComponent holder="enter new room" hide={false} onChangeText={(e: string)=>setNewSpace(e)} />
+        <InputFieldComponent maxLength={10} holder="enter new room" hide={false} onChangeText={(e: string)=>setRoomName(e)} />
         <WhiteSubTitleComponent title="Select Icon" />
         <View style={styles.iconsContainer}>
         {
             icons.map((icon, idx)=> {
                 return (
-            <Pressable style={styles.iconContainer} key={idx} onPress={()=>handleCategory(icon.Name)} >
+            <TouchableHighlight  activeOpacity={1} underlayColor="#A3A0B3" style={[styles.iconContainer ]} key={idx} onPress={()=>handleCategory(icon.Name)} >
             <Image style={styles.iconSize} source={icon.Link} />
-            </Pressable>
+            </TouchableHighlight>
             )
             })
         }

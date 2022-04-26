@@ -2,6 +2,9 @@ import INewUser from '../Interfaces/INewUser';
 import IUserLogin from '../Interfaces/IUserLogin'
 import INewName from '../Interfaces/INewName'
 import ISelectedTask from '../Interfaces/ISelectedTask';
+import IRoom from '../Interfaces/IRoom';
+import { ISpace } from '../Interfaces/ISpace';
+import IChild from '../Interfaces/IChild';
 
 let link = "https://scrubbyapi.azurewebsites.net"
 
@@ -65,6 +68,62 @@ async function UpdatePassword(newPassword: IUserLogin) {
         },
         //might be wrong
         body: JSON.stringify(newPassword)
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data = await res.json();
+    console.log(data)
+   return data;
+}
+
+async function AddNewRoom(room: IRoom) {
+    let res= await fetch(`${link}/spaceInfo/AddNewSpace`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        //might be wrong
+        body: JSON.stringify(room)
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data = await res.json();
+    console.log(data)
+   return data;
+}
+async function AddChild(child: IChild) {
+    let res= await fetch(`${link}/Dependent/AddDependent`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        //might be wrong
+        body: JSON.stringify(child)
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data = await res.json();
+    console.log(data)
+   return data;
+}
+
+async function AddNewSpace(space: ISpace) {
+    let res= await fetch(`${link}/SpaceCollection/CreateSpaceCollection`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        //might be wrong
+        body: JSON.stringify(space)
     });
     if(!res.ok)
     {
@@ -142,5 +201,6 @@ async function AddSelectedTask(newSelectedTask: ISelectedTask) {
 }
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, UpdatePassword, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask }
+
+export {UserLogin, CreateAccount, UpdateName, DeleteUser,AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, GetSpacesByCollectionID, AddNewSpace, AddSelectedTask }
 

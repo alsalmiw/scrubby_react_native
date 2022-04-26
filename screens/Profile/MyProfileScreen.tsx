@@ -123,13 +123,13 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       setUserData(user)
       let result = await GetSpaceCollectionByUserId(user.id);
       let children = await GetDependantByUserId(user.id);
-      console.log(result)
+      console.log(children)
       if (result.length != 0) {
         setNewSpace([...result])
         setMySpaces(result)
       }
       if (children.length != 0) {
-        setChildData(...children)
+        setChildData(children)
       }
 
     }
@@ -223,15 +223,19 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       {/* <UnderlinedHeaderComponent titleOne="Kids" titleTwo=""></UnderlinedHeaderComponent> */}
 
       <View style={styles.thirdRow}>
-        <FlatList data={testDummyArr}
+        <FlatList 
+        
+        data={childData}
           renderItem={({ item, index }) => {
             return (
               <View>
-                {index === 0 ? <AddItemButtonComponent onPress={handleAddChild}>
+                <AddItemButtonComponent onPress={handleAddChild}>
                   <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
-                </AddItemButtonComponent> : <AddItemButtonComponent onPress={displayProfileStuff}>
+                </AddItemButtonComponent> 
+
+                {childData.length>0 ? <AddItemButtonComponent onPress={displayProfileStuff}>
                   <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />
-                </AddItemButtonComponent>}
+                </AddItemButtonComponent>: null}
               </View>
 
             )

@@ -140,7 +140,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   return (
 
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
 
 
 
@@ -247,7 +247,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
         />
       </View>
 
-    </ScrollView>
+    </View>
 
 
 

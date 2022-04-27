@@ -22,7 +22,7 @@ export default function UseUser(){
     const [savedUsername, setSavedUsername] = useState('username')
     const [savedPassword, setSavedPassword] = useState('password')
     const [seeAll, setSeeAll] = useState(false)
-    const [isChildFree, setIsChildFree] = useState(true)
+    const [isChildFree, setIsChildFree] = useState(false)
     const [userData, setUserData] = useState<IUserData[]>([])
     const [childData, setChildData] = useState([])
     const [mySpaces, setMySpaces] =useState<newSpace[]>([])

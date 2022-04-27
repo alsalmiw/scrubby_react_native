@@ -1,15 +1,18 @@
-import React, { FC, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import { StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
+import UserContext from "../../context/UserContext";
 
 interface IInputType{
     onChangeText: Function;
     holder: string;
     hide: boolean;
+    value:string;
 }
 
 
 const InputFieldComponent: FC<IInputType> = (props) => {
+    const {searchUser, setSearchUser} = useContext(UserContext)
  
     const handleOnChange = (e: string) => {
         props.onChangeText(e)
@@ -20,7 +23,7 @@ const InputFieldComponent: FC<IInputType> = (props) => {
             
             <View style={styles.SectionStyle}>
                 <TextInput
-                    value={""}
+                    value={searchUser}
                     autoComplete='off'
                     style={styles.inputUsername}
                     placeholder={props.holder}

@@ -2,6 +2,7 @@ import INewUser from '../Interfaces/INewUser';
 import IUserLogin from '../Interfaces/IUserLogin'
 import INewName from '../Interfaces/INewName'
 import ISelectedTask from '../Interfaces/ISelectedTask';
+import IInviteUser from '../Interfaces/IInviteUser';
 
 let link = "https://scrubbyapi.azurewebsites.net"
 
@@ -134,6 +135,29 @@ async function AddSelectedTask(newSelectedTask: ISelectedTask) {
     console.log(data)
 }
 
+async function AllInvitesByInvitedUsername(username:string){
+    let res = await fetch(`${link}/InviteUsers/AllInvitesByInvitedUsername/${username}`);
+    let data = await res.json();
+    return data;
+}
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, UpdatePassword, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask }
+async function InviteUser(newUser: IInviteUser) {
+    let res= await fetch(`${link}/InviteUsers/InviteUser`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({newUser})
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data = await res.json();
+    console.log(data)
+}
+
+
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, UpdatePassword, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser }
 

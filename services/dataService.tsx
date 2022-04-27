@@ -184,13 +184,14 @@ async function GetAllSpaceItems(){
 }
 
 
-async function AddSelectedTask(newSelectedTask: ISelectedTask) {
+async function AddSelectedTask(newSelectedTask: any) {
+    
     let res= await fetch(`${link}/SelectedTask/AddSelectedTask`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({newSelectedTask})
+        body: JSON.stringify(newSelectedTask)
     });
     if(!res.ok)
     {

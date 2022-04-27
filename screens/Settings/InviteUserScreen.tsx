@@ -44,9 +44,12 @@ const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
             console.log(invitedUser);
             Alert.alert("Congratulations", `Invite has been sent to ${e}`, [{ text: "Okay", style: "cancel", onPress: () => handleGoBack() }]);
         }
-        else{
+        else if(!invitedUser){
             Alert.alert("Error", `User ${e} is not found`, [{ text: "Cancel", style: "cancel"  }]);
-            console.log(typeof invitedUser);
+            console.log(invitedUser);
+        }
+        else{
+            Alert.alert("Error", `User ${e} is already invited`, [{ text: "Cancel", style: "cancel"  }]);
         }
 
     }

@@ -9,19 +9,20 @@ import { AllInvitesByInvitedUsername, InviteUser } from "../../services/dataServ
 
 import RootStackParamList from '../../types/INavigateSettings'
 
-import TwoFullButtonComponent from "../TwoFullButtonComponent";
-import InputFieldComponent from "./InputFieldComponent";
+import TwoFullButtonComponent from "../../components/TwoFullButtonComponent";
+import InputFieldComponent from "../../components/AddEdit/InputFieldComponent";
 
 
 import IInviteUser from '../../Interfaces/IInviteUser';
-type Props = NativeStackScreenProps<RootStackParamList, 'RedeemCoins'>
+type Props = NativeStackScreenProps<RootStackParamList, 'InviteUser'>
 
 
 
-const InviteUserComponent: FC<Props> = ({ navigation, route }) => {
+const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
     const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor, greenColor } = useContext(ThemeContext);
-    // const [searchUser, setSearchUser] = useState("");
-    const {searchUser, setSearchUser, userData} = useContext(UserContext)
+     const [searchUser, setSearchUser] = useState("");
+    //  const [invitedUser, setInvitedUser] = useState(true);
+    const { userData} = useContext(UserContext)
 
     const handleGoBack = () => {
         navigation.navigate('ManageInvites')
@@ -34,22 +35,23 @@ const InviteUserComponent: FC<Props> = ({ navigation, route }) => {
             IsAccepted:false,
             IsDeleted:false
         }
-        console.log(inviteUser);
-        console.log(userData.id);
-        let invitedUser:any = await InviteUser(inviteUser)
-        
-        if(invitedUser === true)
+        console.log(inviteUser)
+        console.log(e);
+        let invitedUser:boolean =  await InviteUser(inviteUser)
+        if(invitedUser)
         {
+            console.log('hi');
+            console.log(invitedUser);
+            Alert.alert("Congratulations", `Invite has been sent to ${e}`, [{ text: "Okay", style: "cancel", onPress: () => handleGoBack() }]);
+        }
+        else if(!invitedUser){
+            Alert.alert("Error", `User ${e} is not found`, [{ text: "Cancel", style: "cancel"  }]);
             console.log(invitedUser);
         }
-        else if(!inviteUser){
-            Alert.alert("Error", `User ${e} does not exist`, [{ text: "Cancel", style: "cancel" }]);
+        else{
+            Alert.alert("Error", `User ${e} is already invited`, [{ text: "Cancel", style: "cancel"  }]);
         }
-        
 
-        setSearchUser("")
-        // console.log(searchUser)
-        // handleGoBack();
     }
 
     return (
@@ -65,7 +67,7 @@ const InviteUserComponent: FC<Props> = ({ navigation, route }) => {
                     </View>
 
                     <View style={{ flex: 0.1, flexDirection: 'row', justifyContent: 'center' }}>
-                        <InputFieldComponent value={searchUser}  holder="Username" hide={false} onChangeText={(e:string) => setSearchUser(e)} />
+                        <InputFieldComponent maxLength={40} value={''} holder="Username" hide={false} onChangeText={(e:string) => setSearchUser(e)} />
                     </View>
                 </View>
                 </TouchableWithoutFeedback>
@@ -79,4 +81,4 @@ const InviteUserComponent: FC<Props> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
 
 })
-export default InviteUserComponent
+export default InviteUserScreen

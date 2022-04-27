@@ -24,9 +24,9 @@ const InputFieldComponent: FC<IInputType> = (props) => {
             
             <View style={styles.SectionStyle}>
                 <TextInput
-                    // value={""}
+                     value={props.value}
                     maxLength={props.maxLength}
-                    value={searchUser}
+                    // value={searchUser}
                     autoComplete='off'
                     style={styles.inputUsername}
                     placeholder={props.holder}

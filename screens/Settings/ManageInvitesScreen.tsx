@@ -37,12 +37,12 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
         </View>
 
         <UnderlinedOneHeaderComponent titleFirst={'Invited'} />
-        <View style={{flex:0.4, flexDirection:'row', flexWrap:'wrap'}}>
-
-          <AddItemButtonComponent onPress={() => {handleToInviteUser(), console.log('hihi')}} >
+        <View style={{flex:0.4, flexDirection:'row', flexWrap:'wrap', alignItems:'flex-start'}}>
+          <View style={{justifyContent:'flex-start'}}>
+          <AddItemButtonComponent onPress={() => {handleToInviteUser()}} >
             <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
           </AddItemButtonComponent>
-
+          </View>
         </View>
 
         <UnderlinedOneHeaderComponent titleFirst='Request' />

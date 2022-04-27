@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { StyleSheet, Switch, Text, View } from "react-native"
 import { ThemeContext } from "../../context/ThemeContext";
 import UserContext from "../../context/UserContext";
-import {ChildFreeSwitch} from '../../services/dataService'
+import {ChildFreeSwitch} from  '../../services/dataService'
 
 const ChildFreeBoolComponent = ()=>{
     useEffect(()=>{

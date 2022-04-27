@@ -19,6 +19,10 @@ import HeaderComponent from '../../components/HeaderComponent';
 import FullButtonComponent from '../../components/FullButtonComponent';
 import { ThemeContext } from '../../context/ThemeContext';
 import { AddSelectedTask, GetAllSpaceItems } from '../../services/dataService';
+import RootStackParamList from '../../types/INavigateProfile'
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+
+
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 //
@@ -30,7 +34,10 @@ interface taskInfo {
   UserId:number;
 }
 
-const AddItemsScreen: FC = () => {
+type Props = NativeStackScreenProps<RootStackParamList, 'MyProfile'>
+
+
+const AddItemsScreen: FC<Props> = ({navigation}) => {
   const { seeAll, setSeeAll, task, setTask,allTask, setAllTask, addTask, setAddTask, userData } = useContext(UserContext)
 
   let r = Math.floor(Math.random() * 7)
@@ -44,7 +51,8 @@ const AddItemsScreen: FC = () => {
 
 
   useEffect(() => {
-    fetchSpaceInfo();
+    console.log(fetchSpaceInfo());
+    
     
 
   }, [])
@@ -60,6 +68,15 @@ const AddItemsScreen: FC = () => {
   }
   const AddItems = (name: string) => {
     setTask(allTask.filter((aTask:taskInfo) => aTask.tags.includes(name.toLowerCase())))
+  }
+
+  const handleSelectedTasks = async () => {
+    console.log(addTask);
+    await AddSelectedTask(addTask);
+    //let result = await AddSelectedTask(addTask);
+    //console.log(result);
+    navigation.navigate('AddedItems')
+    
   }
 
   return (
@@ -145,7 +162,8 @@ const AddItemsScreen: FC = () => {
 
 
       </View >
-      <FullButtonComponent onPress={() => {AddSelectedTask(addTask), console.log(AddSelectedTask(addTask)) }} color={purpleColor}>
+      <FullButtonComponent onPress={handleSelectedTasks} color={purpleColor}>
+      {/* AddSelectedTask(addTask), console.log(AddSelectedTask(addTask) */}
         <Text>Done</Text>
       </FullButtonComponent>
     </>

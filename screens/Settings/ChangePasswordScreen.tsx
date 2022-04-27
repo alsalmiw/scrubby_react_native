@@ -51,9 +51,9 @@ const ChangePasswordScreen: FC<Props> = ({navigation, route})=> {
         <TitleComponent title="Change Password" />
         <FontAwesome name='lock' size={100} style={{marginRight: 10, color: 'white', marginBottom:10}} />
         <WhiteSubTitleComponent title="New Password" />
-        <InputFieldComponent holder="new password" hide={true} onChangeText={(e: string)=>setNewPassword(e)} />
+        <InputFieldComponent value={""} maxLength={20} holder="new password" hide={true} onChangeText={(e: string)=>setNewPassword(e)} />
         <WhiteSubTitleComponent title="Repeat New Password" />
-        <InputFieldComponent holder="new password" hide={true} onChangeText={(e: string)=>setRepeatNewPassword(e)} />
+        <InputFieldComponent  value={""} maxLength={20} holder="new password" hide={true} onChangeText={(e: string)=>setRepeatNewPassword(e)} />
         <FullButtonComponent onPress={handleSave} color={yellowColor}>
           <Text>Save</Text>
         </FullButtonComponent>

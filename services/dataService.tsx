@@ -224,7 +224,7 @@ async function InviteUser(newUser: IInviteUser) {
     }
     let data:boolean = await res.json();
     console.log(data)
-    return data
+    return data;
    
 }
 

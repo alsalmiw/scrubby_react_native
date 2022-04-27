@@ -21,6 +21,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'InviteUser'>
 const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
     const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor, greenColor } = useContext(ThemeContext);
      const [searchUser, setSearchUser] = useState("");
+    //  const [invitedUser, setInvitedUser] = useState(true);
     const { userData} = useContext(UserContext)
 
     const handleGoBack = () => {
@@ -35,7 +36,8 @@ const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
             IsDeleted:false
         }
         console.log(inviteUser)
-        let invitedUser:boolean =   await InviteUser(inviteUser)
+        console.log(e);
+        let invitedUser:boolean =  await InviteUser(inviteUser)
         if(invitedUser)
         {
             console.log('hi');
@@ -44,7 +46,7 @@ const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
         }
         else{
             Alert.alert("Error", `User ${e} is not found`, [{ text: "Cancel", style: "cancel"  }]);
-            console.log(invitedUser);
+            console.log(typeof invitedUser);
         }
 
     }

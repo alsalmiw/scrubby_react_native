@@ -43,7 +43,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
             console.log(result)
         }
 
-        else Alert.alert("Error", 'This username is already taken. Please choose another name', [{ text: "Cancel", style: "cancel" }])
+        else Alert.alert("Error", 'Invalid Username or Password', [{ text: "Cancel", style: "cancel" }])
 
     }
 

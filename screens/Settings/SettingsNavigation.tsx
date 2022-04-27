@@ -8,6 +8,7 @@ import ChangePasswordScreen from './ChangePasswordScreen';
 import RedeemCoinsScreen from './RedeemCoinsScreen';
 import ScoreBoardScreen from '../ScoreBoardScreen'
 import AddNewSpaceScreen from '../Profile/AddNewSpaceScreen';
+import InviteUserScreen from './InviteUserScreen';
 
 
 
@@ -24,6 +25,7 @@ const SettingsNavigation: FC = ()=> {
           <Tab.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="ScoreBoard" component={ScoreBoardScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="RedeemCoins" component={RedeemCoinsScreen} options={{ headerShown: false }}/>
+          <Tab.Screen name="InviteUser" component={InviteUserScreen} options={{ headerShown: false }}/>
         </Tab.Navigator>
   );
 }

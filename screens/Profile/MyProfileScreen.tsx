@@ -73,7 +73,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   }
 
   const handleAddNewRoomNavigation = () => {
-    navigation.navigate('AddNewSpace');
+    navigation.navigate('AddItems');
   }
 
   const handleGoToSpaceRooms = async(space:any)=> {

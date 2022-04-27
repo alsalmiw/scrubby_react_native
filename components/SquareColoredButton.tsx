@@ -36,15 +36,13 @@ const SquareColoredButton: FC<Props> =(props) => {
 }
 
 const styles = StyleSheet.create({
-       container: {
-            width:80,
-            height: 80,
-            padding: 2,
-            borderRadius:10,
-            margin: 12,
-            justifyContent: 'center',
-            alignItems: 'center'
-        },
+    container: {
+        width:80,
+        height: 80,
+        padding: 10,
+        borderRadius:5,
+        margin: 3,
+    },
     })
 
 export default SquareColoredButton

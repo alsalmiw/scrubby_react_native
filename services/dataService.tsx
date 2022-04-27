@@ -1,9 +1,11 @@
 import INewUser from '../Interfaces/INewUser';
 import IUserLogin from '../Interfaces/IUserLogin'
 import INewName from '../Interfaces/INewName'
+import ISelectedTask from '../Interfaces/ISelectedTask';
 import IRoom from '../Interfaces/IRoom';
 import { ISpace } from '../Interfaces/ISpace';
 import IChild from '../Interfaces/IChild';
+import IInviteUser from '../Interfaces/IInviteUser';
 
 let link = "https://scrubbyapi.azurewebsites.net"
 
@@ -199,5 +201,49 @@ async function GetAllSpaceItems(){
     return data;
 }
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser,AddNewRoom,ChildFreeSwitch, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, GetSpacesByCollectionID, AddNewSpace }
+
+async function AddSelectedTask(newSelectedTask: ISelectedTask) {
+    let res= await fetch(`${link}/SelectedTask/AddSelectedTask`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({newSelectedTask})
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data = await res.json();
+    console.log(data)
+}
+
+async function AllInvitesByInvitedUsername(username:string){
+    let res = await fetch(`${link}/InviteUsers/AllInvitesByInvitedUsername/${username}`);
+    let data = await res.json();
+    return data;
+}
+
+
+
+async function InviteUser(newUser: IInviteUser) {
+    let res= await fetch(`${link}/InviteUsers/InviteUser`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({newUser})
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data = await res.json();
+    console.log(data)
+}
+
+
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, }
 

@@ -7,6 +7,7 @@ type RootStackParamList = {
     ScoreBoard: undefined
     RedeemCoins: undefined
     login: undefined
+    InviteUser: undefined
   }
 
   

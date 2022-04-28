@@ -33,9 +33,7 @@ const handleLogOut = () => {
   navigation.navigate('login')
 }
 
-const handleNone = () => {
 
-}
 
   return (
 
@@ -54,7 +52,7 @@ const handleNone = () => {
                   <FontAwesome name={'group'} size={25} style={{marginRight: 10, color: fuchsiaColor}} />
                 </SettingsLinkComponent>
 
-                <SettingsLinkComponent linkName='Child Free' onPress={()=>handleNone()} >
+                <SettingsLinkComponent linkName='Child Free' onPress={undefined} >
                  <ChildFreeBoolComponent/>
                 </SettingsLinkComponent>
 

@@ -12,7 +12,7 @@ import FullButtonComponent from '../../components/FullButtonComponent';
 import { ThemeContext } from '../../context/ThemeContext';
 import AddItemButtonComponent from '../../components/AddItemButtonComponent';
 import { Entypo } from '@expo/vector-icons';
-
+//
 
 
 
@@ -32,21 +32,23 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   return (
     <>
       <View style={styles.container}>
-        <View style={{flex:0.1,}}>
+        <View >
           <HeaderComponent title='MANAGE INVIATIONS' />
         </View>
 
+        <View style={{alignItems:'center'}}>
         <UnderlinedOneHeaderComponent titleFirst={'Invited'} />
-        <View style={{flex:0.4, flexDirection:'row', flexWrap:'wrap', alignItems:'flex-start'}}>
-          <View style={{justifyContent:'flex-start'}}>
+        </View>
+        
+        <View style={{ flexDirection:'row', flexWrap:'wrap', alignItems:'flex-start', }}>
           <AddItemButtonComponent onPress={() => {handleToInviteUser()}} >
             <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
           </AddItemButtonComponent>
-          </View>
         </View>
-
+        <View style={{alignItems:'center'}}>
         <UnderlinedOneHeaderComponent titleFirst='Request' />
-        <View style={{flex:0.4,}}></View>
+        </View>
+        
 
 
       </View>
@@ -60,10 +62,10 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'center',
     paddingTop: StatusBar.currentHeight,
-    // position:'absolute'
+     position:'absolute'
     
 
   },

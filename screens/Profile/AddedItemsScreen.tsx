@@ -9,6 +9,8 @@ import SquareColoredButton from '../../components/SquareColoredButton';
 import { Dimensions } from 'react-native';
 import { ThemeContext } from '../../context/ThemeContext';
 import { Entypo } from '@expo/vector-icons';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import RootStackParamList from '../../types/INavigateProfile'
 
 
 interface taskInfo {
@@ -17,24 +19,50 @@ interface taskInfo {
   name: string;
   tags: string;
   UserId: number;
+  color: number;
+
 }
 
 
-const AddedItemsScreen: FC = () => {
 
-  const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData } = useContext(UserContext)
+type Props = NativeStackScreenProps<RootStackParamList, 'MyProfile'>
+
+
+const AddedItemsScreen: FC<Props> = ({navigation}) => {
+
+  const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData, rState, setRState } = useContext(UserContext)
 
   const { lilacColor } = useContext(ThemeContext)
   const windowWidth = Dimensions.get('window').width * 0.25;
+  
 
 
+  // let r = Math.floor(Math.random() * 7)
+  //const [rState, setRState] = useState(Math.floor(Math.random() * 7));
 
-  let r = Math.floor(Math.random() * 7)
+  //superAddTask = addTask
 
-  const handleDisplayIcon = () => {
+
+  //const [addTaskLength, setAddTaskLength] = useState(8);
+  //console.log(`The random number of r is ${rState}`);
+  //This is my dumb test
+  //Need to know why color of boxes stays the same when i delete an item
+
+  const handleNavigate = () => {
     console.log('Hello World');
+    navigation.navigate("AddItems");
   }
 
+  const handleDeleteItem = (id:number) => {
+
+    setAddTask((currentTasks: any) => {
+
+      return currentTasks.filter((task:any, x:number) => x !== id)
+      
+    });
+  
+  }
+  
   return (
     <View style={styles.container}>
       {/* This header component use font size 25, later must change to percentage based on device width */}
@@ -45,17 +73,18 @@ const AddedItemsScreen: FC = () => {
 
 
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: '2%' }}>
-        <View>
-          <AddItemButtonComponent onPress={handleDisplayIcon}>
+       
+          <AddItemButtonComponent onPress={handleNavigate}>
             <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
           </AddItemButtonComponent>
-        </View>
+        
         {
 
           addTask.map((colorBtn: taskInfo, x: number) => {
+            console.log(colorBtn);
             return (
               <View>
-                <SquareColoredButton key={x} idx={r + x} onPress={() => { colorBtn.UserId = userData.id, addTask.push(colorBtn), console.log(addTask) }} >
+                <SquareColoredButton key={colorBtn.id} idx={colorBtn.color}  onPress={handleDeleteItem.bind(this, x)} >
                   <Entypo name="minus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
                   <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>{colorBtn.name}</Text>
                 </SquareColoredButton>
@@ -80,3 +109,5 @@ const styles = StyleSheet.create({
 });
 
 export default AddedItemsScreen
+
+// onPress={() => { colorBtn.UserId = userData.id, addTask.push(colorBtn), console.log(addTask)

@@ -8,6 +8,7 @@ type RootStackParamList = {
     RedeemCoins: undefined
     login: undefined
     InviteUser: undefined
+    AcceptRequest:undefined
   }
 
   

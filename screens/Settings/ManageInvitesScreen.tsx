@@ -1,10 +1,8 @@
 // import { StatusBar } from 'expo-status-bar';
-import { Component, FC, useContext, useEffect, useState } from 'react';
+import {  FC, useContext, useEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ScrollView, StyleSheet, Text, View, StatusBar, Dimensions, Pressable } from 'react-native';
-import CoinsPointsDisplayContainer from '../../components/Profile/CoinsPointsDisplayContainer'
-import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
-import AddPhotoComponent from '../../components/AddPhotoComponent';
+import {  StyleSheet, Text, View, StatusBar, Dimensions, Pressable } from 'react-native';
+
 import RootStackParamList from '../../types/INavigateSettings'
 import HeaderComponent from '../../components/HeaderComponent';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
@@ -12,20 +10,20 @@ import FullButtonComponent from '../../components/FullButtonComponent';
 import { ThemeContext } from '../../context/ThemeContext';
 import AddItemButtonComponent from '../../components/AddItemButtonComponent';
 import { Entypo } from '@expo/vector-icons';
-import { GetAllInvitesByID, GetAllRequest, GetUserByID } from '../../services/dataService';
+import { GetAllInvitesByID, GetAllRequest} from '../../services/dataService';
 import UserContext from '../../context/UserContext';
 ///
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ManageInvites'>
 
 const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
-  const { fuchsiaColor, lilacColor, lightLilacColor, blueColor } = useContext(ThemeContext);
-  const { userData } = useContext(UserContext)
-  const [allInvites, setAllInvites] = useState<any>([])
-  const [allRequestName, setAllRequestName] = useState<any>([])
+  const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor } = useContext(ThemeContext);
+  const { userData, allRequestName, setAllRequestName, allInvites, setAllInvites } = useContext(UserContext)
+  // const [allInvites, setAllInvites] = useState<any>([])
+  // const [allRequestName, setAllRequestName] = useState<any>([])
 
   const windowWidth = Dimensions.get('window').width * 0.25;
 
@@ -37,6 +35,8 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   const handleToInviteUser = () => {
     navigation.navigate('InviteUser')
   }
+
+
 
   const fetchGetAllInvitesById = async () => {
     let data: any = await GetAllInvitesByID(userData.id)
@@ -52,18 +52,9 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
     }
   }
 
-
-
-
   useEffect(() => {
     fetchGetAllInvitesById()
     fetchGetAllRequest()
-    console.log(allRequestName)
-    //handleGetUserById()
-    // console.log(allInvites)
-    // console.log(allRequest)
-    // console.log(userData)
-
   }, [])
 
   return (
@@ -82,6 +73,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
             <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
           </AddItemButtonComponent>
           {
+            allInvites !=null ?
             allInvites.map((person: any, idx:number) => {
 
               return (
@@ -91,6 +83,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
 
               )
             })
+            :null
 
           }
         </View>
@@ -98,24 +91,25 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
         <View style={{ alignItems: 'center' }}>
           <UnderlinedOneHeaderComponent titleFirst='Request' />
         </View>
-        <View>
-          {/* {
-            name.map((request:any, idx:number) =>{
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', }}>
+          {
+            allRequestName != null?
+            allRequestName.map((request:any, idx:number) =>{
               return(
-                
-                <Pressable key={idx} style={{padding:10}} onPress={()=>{console.log(request.username)}}>
+                <Pressable key={idx} style={{padding:10}} onPress={()=>{console.log(request), AsyncStorage.setItem("Invitee", request.username), console.log(userData) , navigation.navigate("AcceptRequest")}}>
                 <Text>{request.username}</Text>
                 </Pressable>
               )
             })
-          } */}
+            : null
+          }
         </View>
 
 
 
 
       </View>
-      <FullButtonComponent onPress={() => handleBackToSettings()} color={blueColor}>
+      <FullButtonComponent onPress={() => handleBackToSettings()} color={purpleColor}>
         <Text>Back</Text>
       </FullButtonComponent>
     </>

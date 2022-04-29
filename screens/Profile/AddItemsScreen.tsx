@@ -32,15 +32,18 @@ interface taskInfo {
   name:string;
   tags:string;
   UserId:number;
+  color: number;
 }
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MyProfile'>
 
 
 const AddItemsScreen: FC<Props> = ({navigation}) => {
-  const { seeAll, setSeeAll, task, setTask,allTask, setAllTask, addTask, setAddTask, userData } = useContext(UserContext)
+  const { seeAll, setSeeAll, task, setTask,allTask, setAllTask, addTask, setAddTask, userData, rState, setRState } = useContext(UserContext)
 
-  let r = Math.floor(Math.random() * 7)
+  //let r = Math.floor(Math.random() * 7)
+  
+  
 
   const { purpleColor } = useContext(ThemeContext)
 
@@ -147,7 +150,7 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
               {
                 task.map((colorBtn:taskInfo, x:number) => {
                   return (
-                  <SquareColoredButton key={x} idx={r+x} onPress={() => { colorBtn.UserId= userData.id , addTask.push(colorBtn) , console.log(addTask)} } >
+                  <SquareColoredButton key={x} idx={rState+x} onPress={() => { colorBtn.UserId= userData.id , addTask.push({...colorBtn, 'color': (rState + x)}) , console.log(addTask)} } >
                     <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
                     <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>{colorBtn.name}</Text>
                   </SquareColoredButton>

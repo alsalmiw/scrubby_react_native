@@ -85,7 +85,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
             allInvites.map((person: any, idx:number) => {
 
               return (
-                <Pressable key={idx}  style={{padding:10, backgroundColor:'red'}} onPress={()=>{console.log(person.invitedUsername)}}>
+                <Pressable key={idx}  style={{padding:10, backgroundColor:'red'}} onPress={()=>{console.log(person)}}>
                 <Text>{person.invitedUsername}</Text>
                 </Pressable>
 

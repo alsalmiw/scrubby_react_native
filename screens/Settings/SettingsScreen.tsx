@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { FC, useContext } from 'react';
+import { FC, useContext, useEffect } from 'react';
 import { StyleSheet, View} from 'react-native';
 import SettingsLinkComponent from '../../components/Settings/SettingsLinkComponent';
 import { FontAwesome, FontAwesome5  } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import RootStackParamList from '../../types/INavigateSettings'
 import { ThemeContext } from '../../context/ThemeContext';
 import ChildFreeBoolComponent from '../../components/Settings/ChildFreeBoolComponent'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getLocalStorageInfo} from '../../services/localStorage'
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>
@@ -16,14 +17,23 @@ const SettingsScreen: FC<Props> = ({navigation})=> {
   const {orangeColor, blueColor, fuchsiaColor, violetColor, greenColor, yellowColor, purpleColor} = useContext(ThemeContext)
   //const navigation = useNavigation();
 
+  useEffect(() => {
+    // console.log(savedUsername)
+   
+    // getLocalStorageInfo()
+
+  }, [])
+
+  const localStorage =async()=>{
+  await getLocalStorageInfo()
+  }
+
 const handleLogOut = () => {
   AsyncStorage.removeItem("Token");
   navigation.navigate('login')
 }
 
-const handleNone = () => {
 
-}
 
   return (
 
@@ -42,7 +52,7 @@ const handleNone = () => {
                   <FontAwesome name={'group'} size={25} style={{marginRight: 10, color: fuchsiaColor}} />
                 </SettingsLinkComponent>
 
-                <SettingsLinkComponent linkName='Child Free' onPress={()=>handleNone()} >
+                <SettingsLinkComponent linkName='Child Free' onPress={undefined} >
                  <ChildFreeBoolComponent/>
                 </SettingsLinkComponent>
 

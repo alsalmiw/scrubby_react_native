@@ -58,7 +58,7 @@ const handleCategory = (name: string) => {
          <TitleComponent title="My New Room" />
          <View style={[styles.contentContainer]}>
          <WhiteSubTitleComponent title="Name" />
-        <InputFieldComponent maxLength={10} holder="enter new room" hide={false} onChangeText={(e: string)=>setRoomName(e)} />
+        <InputFieldComponent value={''} maxLength={10} holder="enter new room" hide={false} onChangeText={(e: string)=>setRoomName(e)} />
         <WhiteSubTitleComponent title="Select Icon" />
         <View style={styles.iconsContainer}>
         {

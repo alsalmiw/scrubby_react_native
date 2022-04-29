@@ -8,6 +8,7 @@ interface TitleType{
     titleOne: string;
     titleTwo: any;
     titleThree: any;
+
 }
 
 const UnderlinedHeaderComponent: FC<TitleType> =({titleOne, titleTwo, titleThree}) => {
@@ -32,13 +33,16 @@ const UnderlinedHeaderComponent: FC<TitleType> =({titleOne, titleTwo, titleThree
 
 const styles = StyleSheet.create({
         mainHeader: {
+            
             fontSize:20,
             fontWeight: "bold", 
         }, 
         headerContainer:{
+            flex:1,
             width:'95%',
             flexDirection: "row",
             justifyContent: "space-between",
+           
             borderBottomWidth:1,
         }
     })

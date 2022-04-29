@@ -7,7 +7,7 @@ import UnderlinedHeaderComponent from "../../components/UnderlinedHeaderComponen
 import UnderlinedOneHeaderComponent from "../../components/UnderlinedOneHeaderComponent";
 import { ThemeContext } from "../../context/ThemeContext";
 import RootStackParamList from "../../types/INavigateSettings";
-//
+///
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserContext from "../../context/UserContext";
 
@@ -16,7 +16,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AcceptRequest'>
 
 const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
     const { purpleColor } = useContext(ThemeContext)
-    const {allInvites, setAllInvites} =useContext(UserContext)
+    const {allInvites, setAllInvites,  allRequestName, setAllRequestName} =useContext(UserContext)
     const [Name, setName] = useState("")
     const handleAcceptBtn =() =>{
         Alert.alert("Congratulation", '... can now invite you to share a space with you', [{ text: "Cancel", style: "cancel",  onPress: () =>navigation.navigate("ManageInvites") }  ])
@@ -28,15 +28,15 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
             setName(displayName)
         }
     }
-    // const removeInvitee = () =>{
-    //     if(Name == allInvites.username)
-    //     {
-
-    //     }
-    // }
+    const removeInvitee = () =>{
+        if(Name == allInvites.username)
+        {
+            allRequestName.filter((person:any)=>person.username != Name)
+        }
+    }
     useEffect(() =>{
         handleGetLocalName()
-        console.log(allInvites)
+        console.log(allRequestName.length)
 
     },[])
 

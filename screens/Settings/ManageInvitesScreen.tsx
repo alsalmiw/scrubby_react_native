@@ -13,7 +13,7 @@ import { Entypo } from '@expo/vector-icons';
 import { GetAllInvitesByID, GetAllRequest} from '../../services/dataService';
 import UserContext from '../../context/UserContext';
 ///
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -21,9 +21,9 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ManageInvites'>
 
 const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor } = useContext(ThemeContext);
-  const { userData } = useContext(UserContext)
-  const [allInvites, setAllInvites] = useState<any>([])
-  const [allRequestName, setAllRequestName] = useState<any>([])
+  const { userData, allRequestName, setAllRequestName, allInvites, setAllInvites } = useContext(UserContext)
+  // const [allInvites, setAllInvites] = useState<any>([])
+  // const [allRequestName, setAllRequestName] = useState<any>([])
 
   const windowWidth = Dimensions.get('window').width * 0.25;
 
@@ -35,6 +35,8 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   const handleToInviteUser = () => {
     navigation.navigate('InviteUser')
   }
+
+
 
   const fetchGetAllInvitesById = async () => {
     let data: any = await GetAllInvitesByID(userData.id)
@@ -71,6 +73,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
             <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
           </AddItemButtonComponent>
           {
+            allInvites !=null ?
             allInvites.map((person: any, idx:number) => {
 
               return (
@@ -80,6 +83,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
 
               )
             })
+            :null
 
           }
         </View>
@@ -89,14 +93,15 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
         </View>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', }}>
           {
+            allRequestName != null?
             allRequestName.map((request:any, idx:number) =>{
               return(
-                
-                <Pressable key={idx} style={{padding:10}} onPress={()=>{console.log(request.username), navigation.navigate("AcceptRequest")}}>
+                <Pressable key={idx} style={{padding:10}} onPress={()=>{console.log(request), AsyncStorage.setItem("Invitee", request.username), console.log(userData) , navigation.navigate("AcceptRequest")}}>
                 <Text>{request.username}</Text>
                 </Pressable>
               )
             })
+            : null
           }
         </View>
 

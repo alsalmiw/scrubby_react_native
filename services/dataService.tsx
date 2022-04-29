@@ -235,16 +235,12 @@ async function GetAllInvitesByID(userId:string){
     return data;
 }
 async function GetAllRequest(userName:string){
-    let res = await fetch(`${link}/InviteUsers/AllInvitesByInvitedUsername/${userName}`)
-    let data = await res.json();
-    return data
-}
-async function GetUserByID(id:number){
-    let res = await fetch(`${link}/user/GetPublicUserInfoByID/${id}`)
+    let res = await fetch(`${link}/InviteUsers/GetAllUserInfoInviteRequests/${userName}`)
     let data = await res.json();
     return data
 }
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, GetAllInvitesByID, GetAllRequest, GetUserByID }
+
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, GetAllInvitesByID, GetAllRequest }
 

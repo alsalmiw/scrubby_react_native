@@ -240,7 +240,28 @@ async function GetAllRequest(userName:string){
     return data
 }
 
+async function AcceptInvite(userId:number, invitedUsername:string){
+    let res= await fetch(`${link}/InviteUsers/AcceptInvite/${userId}/${invitedUsername}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        //
+        body: JSON.stringify({})
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    console.log(data)
+    return data;
+}
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, GetAllInvitesByID, GetAllRequest }
+
+
+
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, GetAllInvitesByID, GetAllRequest, AcceptInvite }
 

@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
   roomsContainer:{
     flex: 1,
     flexDirection: 'row',
+    flexWrap: 'wrap'
     
   },
   iconSize:{

@@ -31,11 +31,13 @@ export default function UseUser(){
     const [mySpaces, setMySpaces] =useState<newSpace[]>([])
     const [mySpace, setMySpace] =useState<ISpace[]>([])
     const [newSpace, setNewSpace] = useState<ISpace[]>([]);
+    const [allRequestName, setAllRequestName] = useState<any>([])
+    const [allInvites, setAllInvites] = useState<any>([])
     // const [myRooms, setMyRooms] = useState<myRooms[]>([])
     const [task, setTask] = useState([]);
     const [allTask, setAllTask] = useState([])
     const [addTask, setAddTask] = useState([])
-    const [searchUser, setSearchUser] = useState("")
+    const [rState, setRState] = useState(Math.floor(Math.random() * 7));
 
     const [myRooms, setMyRooms] = useState({
         id: 0,
@@ -44,5 +46,8 @@ export default function UseUser(){
         collectionId: 0,
     })
 
-    return{username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask, mySpace, setMySpace, childrenData, setChildrenData}
+   
+    return{username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask, mySpace, setMySpace, rState, setRState, allRequestName, setAllRequestName, allInvites, setAllInvites, setChildrenData, childrenData, setNewSpace}
+
+    
 }

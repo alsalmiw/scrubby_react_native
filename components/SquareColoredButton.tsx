@@ -23,7 +23,7 @@ const SquareColoredButton: FC<Props> =(props) => {
         let index =0
         let colors = [orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor]
         index = props.idx % colors.length
-        console.log(index)
+        console.log(`This is the index ${index}`)
         setBgColor(colors[index]) 
     }
 

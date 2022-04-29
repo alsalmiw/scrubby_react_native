@@ -5,7 +5,7 @@ import { ThemeContext } from "../../context/ThemeContext";
 import UserContext from "../../context/UserContext";
 import { AllInvitesByInvitedUsername, InviteUser } from "../../services/dataService";
 
-
+///
 
 import RootStackParamList from '../../types/INavigateSettings'
 
@@ -20,37 +20,41 @@ type Props = NativeStackScreenProps<RootStackParamList, 'InviteUser'>
 
 const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
     const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor, greenColor } = useContext(ThemeContext);
-     const [searchUser, setSearchUser] = useState("");
+    const [searchUser, setSearchUser] = useState("");
     //  const [invitedUser, setInvitedUser] = useState(true);
-    const { userData} = useContext(UserContext)
+    const { userData } = useContext(UserContext)
 
     const handleGoBack = () => {
         navigation.navigate('ManageInvites')
     }
-    const handleAdd = async(e: string) => {
-        let inviteUser:IInviteUser = {
-            Id:0,
+    const handleAdd = async (e: string) => {
+        let inviteUser: IInviteUser = {
+            Id: 0,
             UserId: userData.id,
-            InvitedUsername:e,
-            IsAccepted:false,
-            IsDeleted:false
+            InvitedUsername: e,
+            IsAccepted: false,
+            IsDeleted: false
         }
         console.log(inviteUser)
-        console.log(e);
-        let invitedUser:boolean =  await InviteUser(inviteUser)
-        if(invitedUser)
-        {
-            console.log('hi');
-            console.log(invitedUser);
-            Alert.alert("Congratulations", `Invite has been sent to ${e}`, [{ text: "Okay", style: "cancel", onPress: () => handleGoBack() }]);
+        console.log(userData);
+        if (userData.username === e) {
+            Alert.alert("Error", `You can't invite yourself`, [{ text: "Cancel", style: "cancel" }]);
         }
-        else if(!invitedUser){
-            Alert.alert("Error", `User ${e} is not found`, [{ text: "Cancel", style: "cancel"  }]);
-            console.log(invitedUser);
+        else {
+            let invitedUser: boolean = await InviteUser(inviteUser)
+
+            if (invitedUser) {
+                console.log('hi');
+                console.log(invitedUser);
+                Alert.alert("Congratulations", `Invite has been sent to ${e}`, [{ text: "Okay", style: "cancel", onPress: () => handleGoBack() }]);
+            }
+            else if (!invitedUser) {
+                Alert.alert("Error", `User ${e} is not found or is already invited`, [{ text: "Cancel", style: "cancel" }]);
+                console.log(invitedUser);
+            }
         }
-        else{
-            Alert.alert("Error", `User ${e} is already invited`, [{ text: "Cancel", style: "cancel"  }]);
-        }
+
+
 
     }
 
@@ -67,12 +71,12 @@ const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
                     </View>
 
                     <View style={{ flex: 0.1, flexDirection: 'row', justifyContent: 'center' }}>
-                        <InputFieldComponent maxLength={40} value={''} holder="Username" hide={false} onChangeText={(e:string) => setSearchUser(e)} />
+                        <InputFieldComponent maxLength={40} value={''} holder="Username" hide={false} onChangeText={(e: string) => setSearchUser(e)} />
                     </View>
                 </View>
-                </TouchableWithoutFeedback>
-                <TwoFullButtonComponent text1="Back" text2="Add" color={purpleColor} onAcceptPress={() => handleAdd(searchUser)} onBackPress={() => handleGoBack()}></TwoFullButtonComponent>
-            
+            </TouchableWithoutFeedback>
+            <TwoFullButtonComponent text1="Back" text2="Add" color={purpleColor} onAcceptPress={() => handleAdd(searchUser)} onBackPress={() => handleGoBack()}></TwoFullButtonComponent>
+
         </>
 
     );

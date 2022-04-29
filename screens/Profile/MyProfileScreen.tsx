@@ -30,6 +30,7 @@ import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderCo
 import UserContext from '../../context/UserContext';
 import { ISpace } from '../../Interfaces/ISpace';
 import IChild from '../../Interfaces/IChild';
+import AvatarComponent from '../../components/AvatarComponent';
 
 const windowWidth = Dimensions.get('window').width * 0.33;
 
@@ -105,7 +106,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     }
 
     let user = await GetUserByUsername(savedUsername)
-    console.log('user id is ' + user.id);
+    console.log(user);
     // console.log(user)
     if (user.length != 0) {
       setUserData(user)
@@ -138,7 +139,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
       <HeaderComponent title="MY PROFILE"></HeaderComponent>
       <View style={styles.firstRow}>
-        <AddPhotoComponent />
+        <AvatarComponent onPress={undefined} imageSource={userData.photo} />
         <View style={styles.nameAndCoinContainer}>
 
           <UserNameComponent name={savedUsername}></UserNameComponent>

@@ -7,20 +7,51 @@ import UnderlinedHeaderComponent from "../../components/UnderlinedHeaderComponen
 import UnderlinedOneHeaderComponent from "../../components/UnderlinedOneHeaderComponent";
 import { ThemeContext } from "../../context/ThemeContext";
 import RootStackParamList from "../../types/INavigateSettings";
-///
+////
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserContext from "../../context/UserContext";
+import { AcceptInvite, GetUserByUsername } from "../../services/dataService";
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AcceptRequest'>
 
 const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
-    const { purpleColor } = useContext(ThemeContext)
-    const {allInvites, setAllInvites,  allRequestName, setAllRequestName} =useContext(UserContext)
-    const [Name, setName] = useState("")
-    const handleAcceptBtn =() =>{
-        Alert.alert("Congratulation", '... can now invite you to share a space with you', [{ text: "Cancel", style: "cancel",  onPress: () =>navigation.navigate("ManageInvites") }  ])
+
+    interface IPerson {
+        coins: number,
+        id: number,
+        isDeleted: boolean,
+        name: string,
+        photo: string,
+        points: number,
+        username: string,
     }
+
+    const { purpleColor } = useContext(ThemeContext)
+    const {allInvites, setAllInvites,  allRequestName, setAllRequestName, userData} =useContext(UserContext)
+    const [Name, setName] = useState("")
+    const [person, setPerson] = useState<any>({})
+
+
+    const handleAcceptBtn = async() =>{
+        await handleGetLocalNameInfo()
+        console.log(person)
+         //let accept = await AcceptInvite(person.id, userData.username)
+        // console.log(accept)
+         //removeInvitee()
+        
+        Alert.alert("Congratulation",   `${person.username} can now invite you to share a space with you`, [{ text: "Cancel", style: "cancel",  onPress: () =>navigation.navigate("ManageInvites") }  ])
+    }
+
+    const handleGetLocalNameInfo =async ()=>{
+        let displayPerson = await GetUserByUsername(Name);
+        if(displayPerson != null)
+        {
+            setPerson(displayPerson);
+        }
+       
+    }
+
     const handleGetLocalName = async() =>{
         let displayName:any = await AsyncStorage.getItem('Invitee')
         if (displayName.length != 0)
@@ -35,8 +66,12 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
         }
     }
     useEffect(() =>{
-        handleGetLocalName()
-        console.log(allRequestName.length)
+        const handleGetName = async() =>{
+            await handleGetLocalName()
+            await handleGetLocalNameInfo()
+        }
+        handleGetName()
+        console.log(userData)
 
     },[])
 

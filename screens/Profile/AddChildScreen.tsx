@@ -58,11 +58,11 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
         <AddPhotoComponent />
         <View>
         <WhiteSubTitleComponent title="Name" />
-        <InputFieldComponent maxLength={20} holder="enter your name" hide={false} onChangeText={(e: string)=>setNewChildName(e)} />
+        <InputFieldComponent value={''} maxLength={20} holder="enter your name" hide={false} onChangeText={(e: string)=>setNewChildName(e)} />
         </View>
         <View>
         <WhiteSubTitleComponent title="Age" />
-        <InputFieldComponent maxLength={20} holder="enter your childs age" hide={false} onChangeText={(e: number)=>setNewChildAge(e)} />
+        <InputFieldComponent value={''} maxLength={20} holder="enter your childs age" hide={false} onChangeText={(e: number)=>setNewChildAge(e)} />
         {/* <FullButtonComponent onPress={handleSave} color={blueColor}>
           <Text>Save</Text>
         </FullButtonComponent> */}

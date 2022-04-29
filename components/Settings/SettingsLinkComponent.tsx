@@ -7,7 +7,7 @@ import {useNavigation} from "@react-navigation/native"
 interface TitleType{
     linkName: string;
     children: ReactNode
-    onPress: Function;
+    onPress: Function | undefined;
 }
 
 const SettingsLinkComponent: FC<TitleType> =(props) => {
@@ -15,7 +15,12 @@ const SettingsLinkComponent: FC<TitleType> =(props) => {
 
 
     const handleLink = () => {
-        props.onPress()
+
+        if(props.onPress)
+        {
+             props.onPress()
+        }
+       
     }
 
     return(

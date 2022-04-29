@@ -153,6 +153,24 @@ async function DeleteUser(id:number) {
     console.log(data)
 }
 
+async function ChildFreeSwitch(id:number) {
+    let res= await fetch(`${link}/User/ChildFreeBool/${id}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({})
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data = await res.json();
+    console.log(data)
+    return data;
+}
+
 async function GetSpaceCollectionByUserId(UserId: number) {
     let res = await fetch(`${link}/SpaceCollection/GetSpaceCollectionByUserId/${UserId}`);
     let data = await res.json();
@@ -242,5 +260,6 @@ async function GetAllRequest(userName:string){
 
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, GetAllInvitesByID, GetAllRequest }
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, GetAllInvitesByID, GetAllRequest, ChildFreeSwitch }
+
 

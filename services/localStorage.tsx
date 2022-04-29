@@ -18,9 +18,9 @@ async function getLocalStorageInfo () {
     if (data.length!=0)
     {
       setUserData(data)
-    let result = await GetSpaceCollectionByUserId(data.id);
-    let children = await GetDependantByUserId(data.id);
-    console.log(children)
+      let result = await GetSpaceCollectionByUserId(data.id);
+      let children = await GetDependantByUserId(data.id);
+      console.log(children)
     if(result.length!=0){
         setMySpaces([result])
     }

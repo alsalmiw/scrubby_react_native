@@ -12,6 +12,7 @@ import ChildFreeBoolComponent from "../components/Settings/ChildFreeBoolComponen
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import PhotoComponent from "../components/PhotoComponent"
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import avatars from '../types/IAvatars'
 
 type RootStackParamList ={
     login:undefined,
@@ -24,12 +25,15 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
 
     const [login, setLogin] = useState(true);
     const { username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword } = useContext(UserContext)
+    let avR = Math.floor(Math.random() * 9)
 
     const addUser = async () => {
         let userData: INewUser = {
             Id: 0,
             Username: username,
-            Password: password
+            Password: password, 
+           
+
         }
         console.log(userData)
         setSavedUsername(username);
@@ -41,6 +45,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
             AsyncStorage.setItem("Username", username);
             navigation.navigate('Nav')
             console.log(result)
+            
         }
 
         else Alert.alert("Error", 'Invalid Username or Password', [{ text: "Cancel", style: "cancel" }])

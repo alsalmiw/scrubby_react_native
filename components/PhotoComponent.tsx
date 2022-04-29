@@ -12,7 +12,7 @@ const PhotoComponent:FC =(props) =>{
             <View >
                 <Pressable>
 
-                {props.children}
+                <Image source={{ }} style={{ width: 200, height: 200 }} />
 
                 </Pressable>
 

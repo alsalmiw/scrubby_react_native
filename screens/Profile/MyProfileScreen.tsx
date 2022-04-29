@@ -29,6 +29,8 @@ import TaskSpaceRowCheck from '../../components/TaskSpaceRowCheck';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 import UserContext from '../../context/UserContext';
 import { ISpace } from '../../Interfaces/ISpace';
+import IChild from '../../Interfaces/IChild';
+import AvatarComponent from '../../components/AvatarComponent';
 
 const windowWidth = Dimensions.get('window').width * 0.33;
 
@@ -44,7 +46,7 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, userData, setUserData, childData, setChildData, myRooms, setMyRooms,setMySpace, setMySpaces, mySpaces} = useContext(UserContext)
+  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms,setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData} = useContext(UserContext)
 
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
@@ -52,25 +54,12 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
 
   let r = Math.floor(Math.random() * 7)
-  let Id = 4;
-
-  let testDummyArr = [
-    { name: 'plus', id: '0' },
-    { name: 'pic', id: '1' },
-    { name: 'pic', id: '2' },
-    { name: 'pic', id: '3' },
-    { name: 'pic', id: '4' },
-    { name: 'pic', id: '5' },
-  ]
 
   const handleAddChild = () => {
     console.log('Plus Icon Works');
     navigation.navigate('AddChild')
   }
 
-  const displayProfileStuff = () => {
-    console.log('Profile Image Stuff');
-  }
 
   const handleAddNewRoomNavigation = () => {
     navigation.navigate('AddItems');
@@ -117,7 +106,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     }
 
     let user = await GetUserByUsername(savedUsername)
-    console.log('user id is ' + user.id);
+    console.log(user);
     // console.log(user)
     if (user.length != 0) {
       setUserData(user)
@@ -129,40 +118,28 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
         setMySpaces(result)
       }
       if (children.length != 0) {
-        setChildData(children)
+        console.log(children.length);
+        setChildrenData(children)
+        console.log("after");
       }
 
     }
 
   }
 
- 
+  const handleGoToChildProfile=(child:object)=> {
+    console.log(child)
+   setChildData(child)
+    navigation.navigate('ChildTasks')
+  }
 
   return (
 
     <ScrollView style={styles.container}>
 
-
-
-      {/* <CoinsPointsDisplayContainer coins="200" points="10,000" />
-        {arr.map((title, idx) => {
-          return (
-           <TaskSpaceRowComponent key={idx} idx={idx+r}>
-          <Text>{title}</Text>
-          <Text>Icon</Text>
-          <Text>{idx+2}</Text>
-        </TaskSpaceRowComponent>
-          )
-        })}
-        */}
-
-      {/* <Text>MyProfile</Text>
-        
-    </View> */}
-
       <HeaderComponent title="MY PROFILE"></HeaderComponent>
       <View style={styles.firstRow}>
-        <AddPhotoComponent />
+        <AvatarComponent onPress={undefined} imageSource={userData.photo} />
         <View style={styles.nameAndCoinContainer}>
 
           <UserNameComponent name={savedUsername}></UserNameComponent>
@@ -173,7 +150,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       </View>
 
 
-      {/* <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo=""></UnderlinedHeaderComponent> */}
+      <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo="" titleThree=""/>
       <Pressable style={styles.secondRow} onPress={handleAddNewRoomNavigation}>
         <AddItemButtonComponent onPress={handleAddNewRoomNavigation}>
           <Entypo name="squared-plus" size={50} color={lilacColor} />
@@ -183,8 +160,6 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
         </View>
       </Pressable>
       <View style={styles.newSpaceContainer}>
-        {/* Make this a component for check marks */}
-        {/* For now I have a key with random numbers, this will be switched out with something else */}
 
         {mySpaces.map((space:ISpace, idx:number) =>
           <TaskSpaceRowTrash
@@ -197,56 +172,37 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
         )}
 
-        {/* <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} />
-        <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} />
-        <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} /> */}
-
-
-        {/* Make this a component for the trash  */}
-        {/* <TaskSpaceRowComponent idx={r} onPress={handleAddNewRoomNavigation}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={styles.textStyle}>Hello World</Text>
-            <TaskSpaceRowIconComponent>
-              <Feather name="trash-2" size={24} color={bgColor} />
-              
-            </TaskSpaceRowIconComponent>
-          </View>
-        </TaskSpaceRowComponent> */}
-
-        {/* <TaskSpaceRowTrash idx={r} onPress={handleAddNewRoomNavigation} /> */}
-
 
       </View>
+{
+                !isChildFree? 
+                <>
+                          <UnderlinedHeaderComponent titleOne="Kids" titleTwo="" titleThree=""/>
+                            <View style={styles.thirdRow}>
+                                
+                                      <AddItemButtonComponent onPress={handleAddChild}>
+                                        <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
+                                      </AddItemButtonComponent> 
 
+                                      {childrenData.length!=0 ? 
+                                      childrenData.map((child:object, idx:number)=>{
+                                        return(
+                                      //     <AddItemButtonComponent key={idx} onPress={()=>handleGoToChildProfile(child)}>
+                                      //   <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />
+                                      // </AddItemButtonComponent>
+                                        <AvatarComponent onPress={undefined} imageSource={userData.photo} />
+                                        )
 
+                                      })
+                                      
+                                    : null}
+                              
+                            </View>
 
-      {/* <UnderlinedHeaderComponent titleOne="Kids" titleTwo=""></UnderlinedHeaderComponent> */}
-
-      <View style={styles.thirdRow}>
-        <FlatList 
-        
-        data={childData}
-          renderItem={({ item, index }) => {
-            return (
-              <View>
-                <AddItemButtonComponent onPress={handleAddChild}>
-                  <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
-                </AddItemButtonComponent> 
-
-                {childData.length>0 ? <AddItemButtonComponent onPress={displayProfileStuff}>
-                  <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />
-                </AddItemButtonComponent>: null}
-              </View>
-
-            )
-          }}
-
-          numColumns={3}
-          keyExtractor={item => item.id}
-          alwaysBounceVertical={false}
-        />
-      </View>
-
+                </>
+                :null
+              }
+    
     </ScrollView>
 
 
@@ -299,7 +255,9 @@ const styles = StyleSheet.create({
   },
 
   thirdRow: {
-    flex: 1
+    flex: 1,
+    flexDirection: 'row',
+   flexWrap: 'wrap'
   },
   textStyle: {
     fontSize: 20,

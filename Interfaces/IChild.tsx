@@ -6,5 +6,5 @@ export default interface IChild{
     DependentPhoto: string;
     DependentCoins: number;
     DependentPoints: number;
-    isDeleted:boolean;
+    IsDeleted:boolean;
 }

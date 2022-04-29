@@ -5,7 +5,7 @@ import { ScrollView, StyleSheet, Text, View, StatusBar, Pressable, Image, FlatLi
 
 import icons from '../../types/Icons';
 
-import Line from '../../components/AddEdit/LineComponent';
+// import Line from '../../components/AddEdit/LineComponent';
 import UnderlinedHeaderComponent from '../../components/UnderlinedHeaderComponent';
 import UserContext from '../../context/UserContext';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';

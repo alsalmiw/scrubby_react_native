@@ -5,7 +5,7 @@ import { ThemeContext } from "../../context/ThemeContext";
 import UserContext from "../../context/UserContext";
 import { AllInvitesByInvitedUsername, InviteUser } from "../../services/dataService";
 
-//
+///
 
 import RootStackParamList from '../../types/INavigateSettings'
 

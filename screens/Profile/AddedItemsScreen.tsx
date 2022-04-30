@@ -10,7 +10,9 @@ import { Dimensions } from 'react-native';
 import { ThemeContext } from '../../context/ThemeContext';
 import { Entypo } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import RootStackParamList from '../../types/INavigateProfile'
+import RootStackParamList from '../../types/INavigateProfile';
+import FullButtonComponent from '../../components/FullButtonComponent';
+import { AddSelectedTask } from '../../services/dataService'
 
 
 interface taskInfo {
@@ -20,7 +22,15 @@ interface taskInfo {
   tags: string;
   UserId: number;
   color: number;
+}
 
+interface noColorTaskInfo {
+  description: string;
+  id: number;
+  name: string;
+  tags: string;
+  UserId: number;
+  color?: number
 }
 
 
@@ -32,25 +42,46 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
 
   const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData, rState, setRState } = useContext(UserContext)
 
-  const { lilacColor } = useContext(ThemeContext)
+  const { lilacColor, purpleColor } = useContext(ThemeContext)
   const windowWidth = Dimensions.get('window').width * 0.25;
   
-
-
-  // let r = Math.floor(Math.random() * 7)
-  //const [rState, setRState] = useState(Math.floor(Math.random() * 7));
-
-  //superAddTask = addTask
-
-
-  //const [addTaskLength, setAddTaskLength] = useState(8);
-  //console.log(`The random number of r is ${rState}`);
-  //This is my dumb test
-  //Need to know why color of boxes stays the same when i delete an item
 
   const handleNavigate = () => {
     console.log('Hello World');
     navigation.navigate("AddItems");
+  }
+  const handleNavigateDone = async () => {
+    //console.log('This is the done button');
+    console.log(addTask);
+
+    let newAddTask: noColorTaskInfo[] = [...addTask];
+   
+    //await AddSelectedTask(addTask)
+
+    //I need to copy addTask to another variable
+    //Then i need to get that new variable and loop through each object and delete the color property
+    //Then with the newly formatted object without color property, send it to AddSelectedTask(newAddTask)
+    //Then i must set the addTask to empty 
+
+    console.log('This is the new add task array of object');
+    console.log(newAddTask);
+
+    newAddTask.forEach((task: noColorTaskInfo) => {
+      delete task.color;
+    })
+
+    console.log('This is the deleted color new Add Task');
+    console.log(newAddTask);
+
+    //Now i just send newAddTask to the addSelectedTask
+    await AddSelectedTask(newAddTask)
+
+    //I am assuming
+    setAddTask([])
+
+
+    //This is just a default location, need to ask where this exactly goes
+    navigation.navigate("MyProfile")
   }
 
   const handleDeleteItem = (id:number) => {
@@ -94,6 +125,10 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
           })
         }
       </View>
+
+        <FullButtonComponent onPress={handleNavigateDone} color={purpleColor}>
+          <Text>Done</Text>
+        </FullButtonComponent>
 
 
 

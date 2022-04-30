@@ -83,7 +83,7 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
           addTask.map((colorBtn: taskInfo, x: number) => {
             console.log(colorBtn);
             return (
-              <View>
+              <View key={x}>
                 <SquareColoredButton key={colorBtn.id} idx={colorBtn.color}  onPress={handleDeleteItem.bind(this, x)} >
                   <Entypo name="minus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
                   <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>{colorBtn.name}</Text>

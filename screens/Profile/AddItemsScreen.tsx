@@ -100,8 +100,8 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
                     {
                       icons.map((icon, idx) => {
                         return (
-                          <View style={styles.categories}>
-                            <Pressable key={idx} onPress={() => AddItems(icons[idx].Name) }>
+                          <View key={idx} style={styles.categories}>
+                            <Pressable  onPress={() => AddItems(icons[idx].Name) }>
                               <View style={{ alignItems: 'center' }}>
                                 <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                               </View>
@@ -122,8 +122,8 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
                   {
                     icons.map((icon, idx) => {
                       return (
-                        <View style={styles.categories2}>
-                          <Pressable key={idx} onPress={() => AddItems(icons[idx].Name)}>
+                        <View key={idx} style={styles.categories2}>
+                          <Pressable  onPress={() => AddItems(icons[idx].Name)}>
                             <View style={{ alignItems: 'center' }}>
                               <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                             </View>

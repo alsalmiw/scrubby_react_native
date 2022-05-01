@@ -47,7 +47,7 @@ const AddNewSpaceScreen: FC<Props> = ({navigation, route})=> {
          <TitleComponent title="My New Space" />
          <View>
          <WhiteSubTitleComponent title="Name" />
-        <InputFieldComponent maxLength={15} holder="enter new space" hide={false} onChangeText={(e: string)=>setNewSpace(e)} />
+        <InputFieldComponent value="name" maxLength={15} holder="enter new space" hide={false} onChangeText={(e: string)=>setNewSpace(e)} />
         </View>
        <TwoFullButtonComponent text1="Back" text2="Add" color={greenColor} onAcceptPress={()=>handleAddSpace()} onBackPress={()=>navigation.goBack()}/>
     </View>

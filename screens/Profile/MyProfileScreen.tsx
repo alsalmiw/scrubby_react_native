@@ -15,7 +15,7 @@ import UseTheme from '../../hooks/use-theme';
 // import { GetUserById } from '../../services/dataService';
 //
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetSpacesByCollectionID } from '../../services/dataService';
+import { GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetSpacesByCollectionID, GetSelectedTasksByUserID } from '../../services/dataService';
 
 
 //This is just testing
@@ -46,7 +46,7 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms,setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData} = useContext(UserContext)
+  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms,setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks} = useContext(UserContext)
 
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
@@ -112,6 +112,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       setUserData(user)
       let result = await GetSpaceCollectionByUserId(user.id);
       let children = await GetDependantByUserId(user.id);
+      //let usersTasks = await GetSelectedTasksByUserID(user.id)
       console.log(children)
       if (result.length != 0) {
         setNewSpace([...result])
@@ -122,6 +123,11 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
         setChildrenData(children)
         console.log("after");
       }
+    //   if(usersTasks.length!= 0)
+    // {
+    //   setUsersAddedTasks (usersTasks)
+    //   console.log(usersTasks)
+    // }
 
     }
 

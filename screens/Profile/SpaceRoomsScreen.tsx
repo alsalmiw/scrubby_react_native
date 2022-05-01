@@ -14,6 +14,7 @@ import UserContext from '../../context/UserContext';
 import { Entypo } from '@expo/vector-icons';
 import { ThemeContext } from '../../context/ThemeContext';
 import iconsMap from '../../types/IconsMap'
+import {GetSelectedTasksByUserID, GetAllTasks} from '../../services/dataService'
 
 
 
@@ -21,19 +22,31 @@ type Props = NativeStackScreenProps <RootStackParamList, 'Rooms'>
 
 const SpaceRoomsScreen: FC<Props> = ({navigation})=> {
   const { bgColor, lilacColor } = useContext(ThemeContext)
-  const { username, newSpace, setNewSpace, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, mySpace, setMySpace} = useContext(UserContext)
+  const { setUsersAddedTasks, usersAddedTasks, userData,  myRooms, setMyRooms, mySpace, setMySpace, myRoom, setMyRoom, tasksAPI, setTasksAPI, setRoomTasks} = useContext(UserContext)
 
   const windowWidth = Dimensions.get('window').width * 0.25;
 
   useEffect(() => {
    
     console.log(myRooms)
+    GetAllTasksByUserID()
  
    }, [])
  
    let r = Math.floor(Math.random() * 7)
 
-
+   const GetAllTasksByUserID =async () => {
+        
+    let usersTasks = await GetSelectedTasksByUserID(userData.id)
+    if(usersTasks.length!= 0)
+    {     
+      console.log(usersTasks)
+      setUsersAddedTasks (usersTasks)
+     
+ 
+    }
+   
+  }
   
   return (
     <View style={styles.container}>
@@ -51,7 +64,7 @@ const SpaceRoomsScreen: FC<Props> = ({navigation})=> {
     myRooms.length!=0?
       myRooms.map((room:any, idx:number) => {
         return(
-        <SquareColoredButton key={idx} idx={r+idx} onPress={() =>navigation.navigate('AddedItems')}>
+        <SquareColoredButton key={idx} idx={r+idx} onPress={() => {navigation.navigate('AddedTasks'); setMyRoom(room)}}>
           <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
         <Text style={[{color:"#FFF"}]}>{room.spaceName}</Text>
         </SquareColoredButton>

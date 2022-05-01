@@ -21,6 +21,7 @@ interface taskInfo {
   name: string;
   tags: string;
   UserId: number;
+  spaceId: number;
   color: number;
 }
 
@@ -30,12 +31,13 @@ interface noColorTaskInfo {
   name: string;
   tags: string;
   UserId: number;
+  spaceId: number;
   color?: number
 }
 
 
 
-type Props = NativeStackScreenProps<RootStackParamList, 'MyProfile'>
+type Props = NativeStackScreenProps<RootStackParamList, 'AddedItems'>
 
 
 const AddedItemsScreen: FC<Props> = ({navigation}) => {
@@ -51,6 +53,7 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
     navigation.navigate("AddItems");
   }
   const handleNavigateDone = async () => {
+    navigation.navigate("AddedTasks");
     //console.log('This is the done button');
     console.log(addTask);
 
@@ -74,7 +77,8 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
     console.log(newAddTask);
 
     //Now i just send newAddTask to the addSelectedTask
-    await AddSelectedTask(newAddTask)
+    let result = await AddSelectedTask(newAddTask)
+    console.log(result)
 
     //I am assuming
     setAddTask([])

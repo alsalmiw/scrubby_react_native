@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { FC, useContext, useEffect, useState } from "react";
-import { StyleSheet, Text, StatusBar, View, Alert } from "react-native";
+import { StyleSheet, Text, StatusBar, View, Alert, Pressable } from "react-native";
 import HeaderComponent from "../../components/HeaderComponent";
 import TwoFullButtonComponent from "../../components/TwoFullButtonComponent";
 import UnderlinedHeaderComponent from "../../components/UnderlinedHeaderComponent";
@@ -11,6 +11,8 @@ import RootStackParamList from "../../types/INavigateSettings";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserContext from "../../context/UserContext";
 import { AcceptInvite, GetUserByUsername } from "../../services/dataService";
+
+import { FontAwesome } from '@expo/vector-icons';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AcceptRequest'>
@@ -54,9 +56,9 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
         }
 
     }
-    const removeInvitee = () =>{
-
-            setAllRequestName(allRequestName.filter((person:IPerson)=>person.username != Name))
+    const removeInvitee = () => {
+        
+        setAllRequestName(allRequestName.filter((person: IPerson) => person.username != Name))
     }
     const handleGetName = async () => {
         // await handleGetLocalName()
@@ -74,8 +76,13 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
                 <View>
                     <HeaderComponent title={"ADD TO MY SPACE"}></HeaderComponent>
                 </View>
-                <View>
+                <View style={{ flexDirection: 'row', paddingLeft: 20 }}>
                     <Text>{Name}</Text>
+                    <Pressable>
+                        <FontAwesome name="trash-o" size={24} style={{ paddingLeft: 20 }} color="gray" />
+                        <Text>Delete User</Text>
+                    </Pressable>
+
                 </View>
                 <View style={styles.underlineContainer}>
                     <UnderlinedOneHeaderComponent titleFirst="Action" />

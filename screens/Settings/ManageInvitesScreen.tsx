@@ -10,7 +10,7 @@ import FullButtonComponent from '../../components/FullButtonComponent';
 import { ThemeContext } from '../../context/ThemeContext';
 import AddItemButtonComponent from '../../components/AddItemButtonComponent';
 import { Entypo } from '@expo/vector-icons';
-import { GetAllInvitesByID, GetAllRequest} from '../../services/dataService';
+import { GetAllInvitesByID, GetInvitationByUsername} from '../../services/dataService';
 import UserContext from '../../context/UserContext';
 ///
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -38,23 +38,29 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
 
 
 
-  const fetchGetAllInvitesById = async () => {
-    let data: any = await GetAllInvitesByID(userData.id)
-    if (data.length != 0) {
-      setAllInvites(data);
-    }
-  }
 
-  const fetchGetAllRequest = async ()=>{
-    let data:any = await GetAllRequest(userData.username)
-    if (data.length != 0) {
-      setAllRequestName(data);
+  const fetchGetInvitesAndRequest = async ()=>{
+    
+    let data:any = await GetInvitationByUsername(userData.username)
+    console.log(data)
+    if(data != null)
+    {
+      //check if they accepted
+      // setAllInvites(data.sentInvites)
+      data.sentInvites.filter((Invited:any)=> Invited.isAccepted == false ? setAllInvites(data.sentInvites) : null )
+      //check if they accepted
+      data.recievedInvites.filter((Inviter:any)=> Inviter.isAccepted == false ? setAllRequestName(data.recievedInvites) : null )
+      //setAllRequestName(data.recievedInvites);
     }
+
+
   }
 
   useEffect(() => {
-    fetchGetAllInvitesById()
-    fetchGetAllRequest()
+    fetchGetInvitesAndRequest()
+    console.log(allRequestName.length)
+    console.log(allRequestName.length)
+
   }, [])
 
   return (
@@ -96,8 +102,8 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
             allRequestName != null?
             allRequestName.map((request:any, idx:number) =>{
               return(
-                <Pressable key={idx} style={{padding:10}} onPress={()=>{console.log(request), AsyncStorage.setItem("Invitee", request.username), console.log(userData) , navigation.navigate("AcceptRequest")}}>
-                <Text>{request.username}</Text>
+                <Pressable key={idx} style={{padding:10}} onPress={()=>{ AsyncStorage.setItem("Invitee", request.username), console.log(userData) , navigation.navigate("AcceptRequest")}}>
+                <Text>{request.inviterUsername}</Text>
                 </Pressable>
               )
             })

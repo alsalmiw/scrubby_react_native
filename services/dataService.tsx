@@ -252,9 +252,15 @@ async function GetAllInvitesByID(userId:string){
     let data = await res.json();
     return data;
 }
-async function GetAllRequest(userName:string){
-    let res = await fetch(`${link}/InviteUsers/GetAllUserInfoInviteRequests/${userName}`)
+// async function GetAllRequest(userName:string){
+//     let res = await fetch(`${link}/InviteUsers/GetAllUserInfoInviteRequests/${userName}`)
+//     let data = await res.json();
+//     return data
+// }
+async function GetInvitationByUsername(username:string){
+    let res = await fetch(`${link}/InviteUsers/GetInvitationsByUsername/${username}`)
     let data = await res.json();
+    console.log(data)
     return data
 }
 
@@ -277,11 +283,30 @@ async function AcceptInvite(userId:number, invitedUsername:string){
     return data;
 }
 
+async function DeleteInvite(userId:number, invitedUsername:string){
+    let res= await fetch(`${link}/InviteUsers/AcceptInvite/${userId}/${invitedUsername}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        //
+        body: JSON.stringify({})
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    console.log(data)
+    return data;
+}
 
 
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, GetAllInvitesByID, GetAllRequest, AcceptInvite, ChildFreeSwitch }
+
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, GetAllInvitesByID, GetInvitationByUsername, AcceptInvite, ChildFreeSwitch, DeleteInvite }
 
 
 

@@ -61,8 +61,8 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   }
 
 
-  const handleAddNewRoomNavigation = () => {
-    navigation.navigate('AddItems');
+  const handleAddNewSpaceNavigation = () => {
+    navigation.navigate('AddNewSpace');
   }
 
   const handleGoToSpaceRooms = async(space:any)=> {
@@ -157,8 +157,8 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
 
       <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo="" titleThree=""/>
-      <Pressable style={styles.secondRow} onPress={handleAddNewRoomNavigation}>
-        <AddItemButtonComponent onPress={handleAddNewRoomNavigation}>
+      <Pressable style={styles.secondRow} onPress={handleAddNewSpaceNavigation}>
+        <AddItemButtonComponent onPress={handleAddNewSpaceNavigation}>
           <Entypo name="squared-plus" size={50} color={lilacColor} />
         </AddItemButtonComponent>
         <View style={styles.userNameContainer}>

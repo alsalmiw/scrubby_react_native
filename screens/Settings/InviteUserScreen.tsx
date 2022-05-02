@@ -30,7 +30,7 @@ const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
     const handleAdd = async (e: string) => {
         let inviteUser: IInviteUser = {
             Id: 0,
-            UserId: userData.id,
+            InviterId: userData.id,
             InvitedUsername: e,
             IsAccepted: false,
             IsDeleted: false

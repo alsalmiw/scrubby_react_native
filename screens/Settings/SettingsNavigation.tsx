@@ -10,6 +10,7 @@ import ScoreBoardScreen from '../ScoreBoardScreen'
 import AddNewSpaceScreen from '../Profile/AddNewSpaceScreen';
 import InviteUserScreen from './InviteUserScreen';
 import AcceptRequestScreen from './AcceptRequestScreen';
+import InviteUserPendingScreen from './InviteUserPendingScreen';
 
 
 
@@ -28,6 +29,7 @@ const SettingsNavigation: FC = ()=> {
           <Tab.Screen name="RedeemCoins" component={RedeemCoinsScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="InviteUser" component={InviteUserScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="AcceptRequest" component={AcceptRequestScreen} options={{ headerShown: false }}/>
+          <Tab.Screen name="InviteUserPending" component={InviteUserPendingScreen} options={{headerShown: false}} />
         </Tab.Navigator>
   );
 }

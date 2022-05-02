@@ -14,6 +14,7 @@ import { GetAllInvitesByID, GetAllRequest} from '../../services/dataService';
 import UserContext from '../../context/UserContext';
 ///
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import InviteUserScreen from './InviteUserScreen';
 
 
 
@@ -34,6 +35,11 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   }
   const handleToInviteUser = () => {
     navigation.navigate('InviteUser')
+  }
+
+  const handleToInviteUserPending = () => {
+    console.log(allInvites[0])
+    navigation.navigate('InviteUserPending');
   }
 
 
@@ -77,8 +83,8 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
             allInvites.map((person: any, idx:number) => {
 
               return (
-                <Pressable key={idx}  style={{padding:10, backgroundColor:'red'}} onPress={()=>{console.log(person)}}>
-                <Text>{person.invitedUsername}</Text>
+                <Pressable key={idx}  style={{padding:10, backgroundColor:'red'}} onPress={handleToInviteUserPending}>
+                  <Text>{person.invitedUsername}</Text>
                 </Pressable>
 
               )

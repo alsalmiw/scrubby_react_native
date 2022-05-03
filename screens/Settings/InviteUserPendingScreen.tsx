@@ -13,16 +13,26 @@ import AvatarComponent from '../../components/AvatarComponent';
 import UserNameComponent from '../../components/UserNameComponent';
 import { black } from 'react-native-paper/lib/typescript/styles/colors';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
+import FullButtonComponent from '../../components/FullButtonComponent';
+
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'InviteUserPending'>
 
-const InviteUserPendingScreen:FC<Props> = () => {
+const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
 
     const { purpleColor } = useContext(ThemeContext)
     const {allInvites, setAllInvites,  allRequestName, setAllRequestName, userData} =useContext(UserContext)
 
-    console.log()
+    const handleNavigateBack = () => {
+        navigation.navigate('ManageInvites');
+    }
+
+    const handleDeleteUser = () => {
+        console.log('This item is fake deleted');
+    }
+
+    console.log(allInvites)
 
     return (
         <View style={styles.container}>
@@ -32,7 +42,7 @@ const InviteUserPendingScreen:FC<Props> = () => {
                 <View style={styles.insideFirstRowContainer1}>
                     <UserNameComponent name="Obama McLean"></UserNameComponent>
                     <View style={styles.insideFirstRowContainer2}>
-                        <Feather name="trash-2" size={40} color='black' />
+                        <Feather name="trash-2" size={40} color='black' onPress={handleDeleteUser}/>
                         <UserNameComponent name="Delete User"></UserNameComponent>
                     </View>
                 </View>
@@ -44,6 +54,10 @@ const InviteUserPendingScreen:FC<Props> = () => {
                     <UserNameComponent name="This user has not accepted your invitation yet to share responsibilities."></UserNameComponent>
                 </View>
             </View>
+
+            <FullButtonComponent onPress={handleNavigateBack} color={purpleColor}>
+                <Text>Back</Text>
+            </FullButtonComponent>
             
 
         </View>

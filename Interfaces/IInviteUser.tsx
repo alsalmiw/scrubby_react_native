@@ -1,6 +1,6 @@
 export default interface IInviteUser{
     Id: number;
-    UserId: number,
+    InviterId: number,
     InvitedUsername: string,
     IsAccepted: boolean,
     IsDeleted: boolean,

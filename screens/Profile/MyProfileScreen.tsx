@@ -196,7 +196,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
                                       //     <AddItemButtonComponent key={idx} onPress={()=>handleGoToChildProfile(child)}>
                                       //   <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />
                                       // </AddItemButtonComponent>
-                                        <AvatarComponent key={idx} onPress={undefined} imageSource={userData.photo} />
+                                        <AvatarComponent key={idx} onPress={()=>console.log(child)} imageSource={userData.photo} />
                                         )
 
                                       })

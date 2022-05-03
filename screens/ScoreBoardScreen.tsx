@@ -1,18 +1,25 @@
 // import { StatusBar } from 'expo-status-bar';
-import { FC, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import { ScrollView, StyleSheet, Text, View, StatusBar } from 'react-native';
 
 import RootStackParamList from '../types/INavigateSettings'
 import HeaderComponent from '../components/HeaderComponent';
+import FullButtonComponent from '../components/FullButtonComponent';
+import { ThemeContext } from '../context/ThemeContext';
 
 type Props = NativeStackScreenProps <RootStackParamList, 'ScoreBoard'>
 
 const ScoreBoardScreen: FC<Props> = ({navigation, route})=> {
+  const { purpleColor} = useContext(ThemeContext)
   
+  const handleGoBack = ()=>{
+    navigation.navigate("Settings")
+  }
+
   
   return (
- 
+ <>
     <View style={styles.container}>
         
         <HeaderComponent title='SCORE BOARD'/>
@@ -21,7 +28,8 @@ const ScoreBoardScreen: FC<Props> = ({navigation, route})=> {
         </View>
         
     </View>
-
+    <FullButtonComponent color={purpleColor} onPress={()=>handleGoBack()} >Back</FullButtonComponent>
+    </>
     
   );
 }

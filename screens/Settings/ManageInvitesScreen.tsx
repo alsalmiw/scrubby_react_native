@@ -10,7 +10,7 @@ import FullButtonComponent from '../../components/FullButtonComponent';
 import { ThemeContext } from '../../context/ThemeContext';
 import AddItemButtonComponent from '../../components/AddItemButtonComponent';
 import { Entypo } from '@expo/vector-icons';
-import { GetAllInvitesByID, GetAllRequest} from '../../services/dataService';
+import { GetInvitationByUsername} from '../../services/dataService';
 import UserContext from '../../context/UserContext';
 ///
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -22,8 +22,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ManageInvites'>
 const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor } = useContext(ThemeContext);
   const { userData, allRequestName, setAllRequestName, allInvites, setAllInvites } = useContext(UserContext)
-  // const [allInvites, setAllInvites] = useState<any>([])
-  // const [allRequestName, setAllRequestName] = useState<any>([])
+
 
   const windowWidth = Dimensions.get('window').width * 0.25;
 
@@ -38,23 +37,25 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
 
 
 
-  const fetchGetAllInvitesById = async () => {
-    let data: any = await GetAllInvitesByID(userData.id)
-    if (data.length != 0) {
-      setAllInvites(data);
-    }
-  }
 
-  const fetchGetAllRequest = async ()=>{
-    let data:any = await GetAllRequest(userData.username)
-    if (data.length != 0) {
-      setAllRequestName(data);
+  const fetchGetInvitesAndRequest = async ()=>{
+    
+    let data:any = await GetInvitationByUsername(userData.username)
+    //console.log(data)
+    if(data != null)
+    {
+      setAllInvites(data.sentInvites.filter((Invited:any)=> (Invited.isAccepted == false && Invited.isDeleted == false)))
+      setAllRequestName( data.recievedInvites.filter((Inviter:any)=> (Inviter.isAccepted == false  && Inviter.isDeleted == false)))
     }
+
+
   }
 
   useEffect(() => {
-    fetchGetAllInvitesById()
-    fetchGetAllRequest()
+    fetchGetInvitesAndRequest()
+    console.log(allInvites)
+
+
   }, [])
 
   return (
@@ -96,8 +97,8 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
             allRequestName != null?
             allRequestName.map((request:any, idx:number) =>{
               return(
-                <Pressable key={idx} style={{padding:10}} onPress={()=>{console.log(request), AsyncStorage.setItem("Invitee", request.username), console.log(userData) , navigation.navigate("AcceptRequest")}}>
-                <Text>{request.username}</Text>
+                <Pressable key={idx} style={{padding:10}} onPress={()=>{ AsyncStorage.setItem("Inviter", request.inviterUsername), AsyncStorage.setItem("InviterFullName", request.inviterFullname), console.log(userData) , navigation.navigate("AcceptRequest")}}>
+                <Text>{request.inviterUsername}</Text>
                 </Pressable>
               )
             })

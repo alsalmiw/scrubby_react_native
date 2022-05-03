@@ -7,7 +7,7 @@ import UnderlinedHeaderComponent from "../../components/UnderlinedHeaderComponen
 import UnderlinedOneHeaderComponent from "../../components/UnderlinedOneHeaderComponent";
 import { ThemeContext } from "../../context/ThemeContext";
 import RootStackParamList from "../../types/INavigateSettings";
-////
+/////
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserContext from "../../context/UserContext";
 import { AcceptInvite, GetUserByUsername } from "../../services/dataService";
@@ -46,22 +46,25 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
     }
 
     const handleGetLocalNameInfo = async () => {
-        let displayName: any = await AsyncStorage.getItem('Invitee')
-        if (displayName.length != 0) {
-            setName(displayName)
+        let displayFullName: any = await AsyncStorage.getItem('InviterFullName')
+        //console.log(displayFullName)
+        if (displayFullName.length != 0) {
+            setName(displayFullName)
         }
-        let displayPerson = await GetUserByUsername(displayName);
+        let displayPersonName: any = await AsyncStorage.getItem('Inviter')
+        let displayPerson = await GetUserByUsername(displayPersonName);
         if (displayPerson != null) {
             setPerson(displayPerson);
         }
 
     }
     const removeInvitee = () => {
-        
+        //call delete fetch here 
         setAllRequestName(allRequestName.filter((person: IPerson) => person.username != Name))
+
     }
     const handleGetName = async () => {
-        // await handleGetLocalName()
+
         await handleGetLocalNameInfo()
     }
     useEffect(() => {

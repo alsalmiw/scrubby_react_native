@@ -10,7 +10,7 @@ import FullButtonComponent from '../../components/FullButtonComponent';
 import { ThemeContext } from '../../context/ThemeContext';
 import AddItemButtonComponent from '../../components/AddItemButtonComponent';
 import { Entypo } from '@expo/vector-icons';
-import { GetAllInvitesByID, GetInvitationByUsername} from '../../services/dataService';
+import { GetInvitationByUsername} from '../../services/dataService';
 import UserContext from '../../context/UserContext';
 ///
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -22,8 +22,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ManageInvites'>
 const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor } = useContext(ThemeContext);
   const { userData, allRequestName, setAllRequestName, allInvites, setAllInvites } = useContext(UserContext)
-  // const [allInvites, setAllInvites] = useState<any>([])
-  // const [allRequestName, setAllRequestName] = useState<any>([])
+
 
   const windowWidth = Dimensions.get('window').width * 0.25;
 
@@ -47,9 +46,11 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
     {
       //check if they accepted
       // setAllInvites(data.sentInvites)
-      data.sentInvites.filter((Invited:any)=> Invited.isAccepted == false ? setAllInvites(data.sentInvites) : null )
+      setAllInvites(data.sentInvites.filter((Invited:any)=> (Invited.isAccepted == false && Invited.isDeleted == false)))
+      //data.sentInvites.filter((Invited:any)=> (Invited.isAccepted == false && Invited.isDeleted == false) ? setAllInvites(data.sentInvites) : null )
       //check if they accepted
-      data.recievedInvites.filter((Inviter:any)=> Inviter.isAccepted == false ? setAllRequestName(data.recievedInvites) : null )
+      setAllRequestName( data.recievedInvites.filter((Inviter:any)=> (Inviter.isAccepted == false  && Inviter.isDeleted == false)))
+      //data.recievedInvites.filter((Inviter:any)=> (Inviter.isAccepted == false  && Inviter.isDeleted == false) ? setAllRequestName(data.sentInvites) : null )
       //setAllRequestName(data.recievedInvites);
     }
 
@@ -59,7 +60,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   useEffect(() => {
     fetchGetInvitesAndRequest()
     console.log(allRequestName.length)
-    console.log(allRequestName.length)
+
 
   }, [])
 
@@ -102,7 +103,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
             allRequestName != null?
             allRequestName.map((request:any, idx:number) =>{
               return(
-                <Pressable key={idx} style={{padding:10}} onPress={()=>{ AsyncStorage.setItem("Invitee", request.username), console.log(userData) , navigation.navigate("AcceptRequest")}}>
+                <Pressable key={idx} style={{padding:10}} onPress={()=>{ AsyncStorage.setItem("Inviter", request.inviterUsername), AsyncStorage.setItem("InviterFullName", request.inviterFullname), console.log(userData) , navigation.navigate("AcceptRequest")}}>
                 <Text>{request.inviterUsername}</Text>
                 </Pressable>
               )

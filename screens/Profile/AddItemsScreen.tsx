@@ -32,14 +32,15 @@ interface taskInfo {
   name:string;
   tags:string;
   UserId:number;
+  spaceId: number;
   color: number;
 }
 
-type Props = NativeStackScreenProps<RootStackParamList, 'MyProfile'>
+type Props = NativeStackScreenProps<RootStackParamList, 'AddItems'>
 
 
 const AddItemsScreen: FC<Props> = ({navigation}) => {
-  const { seeAll, setSeeAll, task, setTask,allTask, setAllTask, addTask, setAddTask, userData, rState, setRState } = useContext(UserContext)
+  const { seeAll, setSeeAll, task, setTask,allTask, setAllTask, addTask, setAddTask, userData, rState, setRState, myRoom } = useContext(UserContext)
 
   //let r = Math.floor(Math.random() * 7)
   
@@ -77,8 +78,8 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
     console.log(addTask);
 
     //await AddSelectedTask(addTask);
-    //let result = await AddSelectedTask(addTask);
-    //console.log(result);
+    // let result = await AddSelectedTask(addTask);
+    // console.log(result);
     navigation.navigate('AddedItems')
     
   }
@@ -87,7 +88,7 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
     <>
       <View style={styles.container}>
         <View style={styles.headTitle}>
-          <HeaderComponent title='MASTER BATHROOM ITEMS'> </HeaderComponent>
+          <HeaderComponent title={myRoom.spaceName}> </HeaderComponent>
         </View>
         <View style={styles.underlineContainer}>
           <UnderlinedHeaderComponent titleOne={'Add Items from Categories'} titleTwo={'see all'} titleThree={'see less'} />
@@ -101,8 +102,8 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
                     {
                       icons.map((icon, idx) => {
                         return (
-                          <View style={styles.categories}>
-                            <Pressable key={idx} onPress={() => AddItems(icons[idx].Name) }>
+                          <View key={idx} style={styles.categories}>
+                            <Pressable  onPress={() => AddItems(icons[idx].Name) }>
                               <View style={{ alignItems: 'center' }}>
                                 <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                               </View>
@@ -123,8 +124,8 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
                   {
                     icons.map((icon, idx) => {
                       return (
-                        <View style={styles.categories2}>
-                          <Pressable key={idx} onPress={() => AddItems(icons[idx].Name)}>
+                        <View key={idx} style={styles.categories2}>
+                          <Pressable  onPress={() => AddItems(icons[idx].Name)}>
                             <View style={{ alignItems: 'center' }}>
                               <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                             </View>
@@ -151,7 +152,7 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
               {
                 task.map((colorBtn:taskInfo, x:number) => {
                   return (
-                  <SquareColoredButton key={x} idx={rState+x} onPress={() => { colorBtn.UserId= userData.id , addTask.push({...colorBtn, 'color': (rState + x)}) , console.log(addTask)} } >
+                  <SquareColoredButton key={x} idx={rState+x} onPress={() => { colorBtn.UserId= userData.id , addTask.push({...colorBtn, 'color': (rState + x), 'spaceId':myRoom.id}) , console.log(addTask)} } >
                     <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
                     <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>{colorBtn.name}</Text>
                   </SquareColoredButton>

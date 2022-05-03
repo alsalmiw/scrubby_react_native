@@ -2,6 +2,7 @@ import {useState} from "react"
 import { ISpace } from "../Interfaces/ISpace"
 import IUserData from "../Interfaces/IUserData"
 import IChild from "../Interfaces/IChild"
+import ITask from "../Interfaces/ITask"
 
 export default function UseUser(){
 
@@ -11,7 +12,7 @@ export default function UseUser(){
         isDeleted: boolean,
         userId: number
     }
-    interface myRooms{
+    interface IRoom{
         id: number,
         spaceName: string,
         spaceCategory: string,
@@ -26,6 +27,7 @@ export default function UseUser(){
     const [seeAll, setSeeAll] = useState(false)
     const [isChildFree, setIsChildFree] = useState(false)
     const [userData, setUserData] = useState<IUserData[]>([])
+    const [fullUserInfo, setFullUserInfo] = useState([])
     const [childData, setChildData] = useState<IChild[]>([])
     const [childrenData, setChildrenData] = useState<IChild[]>([])
     const [mySpaces, setMySpaces] =useState<newSpace[]>([])
@@ -38,16 +40,15 @@ export default function UseUser(){
     const [allTask, setAllTask] = useState([])
     const [addTask, setAddTask] = useState([])
     const [rState, setRState] = useState(Math.floor(Math.random() * 7));
+    const [usersAddedTasks, setUsersAddedTasks] = useState([])
 
-    const [myRooms, setMyRooms] = useState({
-        id: 0,
-        spaceNamne: "",
-        spaceCategory: "",
-        collectionId: 0,
-    })
+    const [myRooms, setMyRooms] = useState<IRoom[]>([])
+    const [tasksAPI, setTasksAPI] = useState([])
+    const [myRoom, setMyRoom] = useState<IRoom>()
+    const [roomTasks, setRoomTasks]=useState<ITask[]>([]);
 
    
-    return{username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask, mySpace, setMySpace, rState, setRState, allRequestName, setAllRequestName, allInvites, setAllInvites, setChildrenData, childrenData, setNewSpace}
+    return{username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask, mySpace, setMySpace, rState, setRState, allRequestName, setAllRequestName, allInvites, setAllInvites, setChildrenData, childrenData, setNewSpace, usersAddedTasks, setUsersAddedTasks, myRoom, setMyRoom, tasksAPI, setTasksAPI, roomTasks, setRoomTasks, fullUserInfo, setFullUserInfo}
 
     
 }

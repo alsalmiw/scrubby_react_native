@@ -274,6 +274,18 @@ async function AcceptInvite(userId:number, invitedUsername:string){
     return data;
 }
 
+async function GetSelectedTasksByUserID(Id:number){
+    let res = await fetch(`${link}/SelectedTask/GetSelectedTaskByUserId/${Id}`)
+    let data = await res.json();
+    return data
+}
+
+async function GetAllTasks(){
+    let res = await fetch(`${link}/TasksInfoStaticAPI/GetAllTasks`)
+    let data = await res.json();
+    return data
+}
+
 async function DeleteInvite(userId:number, invitedUsername:string){
     let res= await fetch(`${link}/InviteUsers/AcceptInvite/${userId}/${invitedUsername}`, {
         method: "POST",
@@ -291,13 +303,20 @@ async function DeleteInvite(userId:number, invitedUsername:string){
     let data:boolean = await res.json();
     console.log(data)
     return data;
+
+}
+async function GetUserData(username:string){
+    let res = await fetch(`${link}/User/GetUserData/${username}`)
+    let data = await res.json();
+    return data
+}
+
+async function GetTasksByRoomId(roomId:number){
+    let res = await fetch(`${link}/SelectedTask/GetTasksBySpaceId/${roomId}`)
+    let data = await res.json();
+    return data
 }
 
 
 
-
-
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, GetInvitationByUsername, AcceptInvite, ChildFreeSwitch, DeleteInvite }
-
-
-
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId, GetUserData}

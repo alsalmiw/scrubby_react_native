@@ -21,6 +21,7 @@ interface taskInfo {
   name: string;
   tags: string;
   UserId: number;
+  spaceId: number;
   color: number;
 }
 
@@ -30,12 +31,13 @@ interface noColorTaskInfo {
   name: string;
   tags: string;
   UserId: number;
+  spaceId: number;
   color?: number
 }
 
 
 
-type Props = NativeStackScreenProps<RootStackParamList, 'MyProfile'>
+type Props = NativeStackScreenProps<RootStackParamList, 'AddedItems'>
 
 
 const AddedItemsScreen: FC<Props> = ({navigation}) => {
@@ -51,6 +53,7 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
     navigation.navigate("AddItems");
   }
   const handleNavigateDone = async () => {
+    navigation.navigate("AddedTasks");
     //console.log('This is the done button');
     console.log(addTask);
 
@@ -74,7 +77,8 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
     console.log(newAddTask);
 
     //Now i just send newAddTask to the addSelectedTask
-    await AddSelectedTask(newAddTask)
+    let result = await AddSelectedTask(newAddTask)
+    console.log(result)
 
     //I am assuming
     setAddTask([])
@@ -114,7 +118,7 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
           addTask.map((colorBtn: taskInfo, x: number) => {
             console.log(colorBtn);
             return (
-              <View>
+              <View key={x}>
                 <SquareColoredButton key={colorBtn.id} idx={colorBtn.color}  onPress={handleDeleteItem.bind(this, x)} >
                   <Entypo name="minus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
                   <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>{colorBtn.name}</Text>

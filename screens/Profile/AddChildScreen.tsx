@@ -34,7 +34,7 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
         DependentPhoto: "none",
         DependentCoins: 0,
         DependentPoints: 0,
-        isDeleted: false,
+        IsDeleted: false,
     }
     console.log(newChildData);
     let result = await AddChild(newChildData)

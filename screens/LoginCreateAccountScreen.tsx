@@ -6,7 +6,7 @@ import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentL
 import UserContext from "../context/UserContext"
 import INewUser from "../Interfaces/INewUser"
 import IUserLogin from "../Interfaces/IUserLogin"
-import { CreateAccount, UserLogin } from "../services/dataService"
+import { CreateAccount, GetUserData, UserLogin } from "../services/dataService"
 import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
 import ChildFreeBoolComponent from "../components/Settings/ChildFreeBoolComponent"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
@@ -24,7 +24,7 @@ type RootStackParamList ={
 const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
 
     const [login, setLogin] = useState(true);
-    const { username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword } = useContext(UserContext)
+    const { username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo } = useContext(UserContext)
     let avR = Math.floor(Math.random() * 9)
 
     const addUser = async () => {
@@ -43,6 +43,11 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
         if (result) {
             AsyncStorage.setItem("Token", result.token);
             AsyncStorage.setItem("Username", username);
+            let user = await GetUserData(username)
+            if(user.length > 0) {
+                setFullUserInfo(user)
+                console.log(user)
+            }
             navigation.navigate('Nav')
             console.log(result)
             
@@ -65,6 +70,11 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
         if (result.token != null) {
             AsyncStorage.setItem("Token", result.token);
             AsyncStorage.setItem("Username", username);
+            let user = await GetUserData(username)
+            if(user) {
+                setFullUserInfo(user)
+                console.log(user)
+            }
             console.log(result)
             navigation.navigate('Nav')
         }

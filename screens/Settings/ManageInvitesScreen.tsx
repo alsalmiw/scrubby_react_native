@@ -38,7 +38,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   }
 
   const handleToInviteUserPending = () => {
-    console.log(allInvites[0])
+    console.log(allInvites)
     navigation.navigate('InviteUserPending');
   }
 

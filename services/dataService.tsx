@@ -295,9 +295,16 @@ async function GetUserData(username:string){
     return data
 }
 
+async function GetTasksByRoomId(roomId:number){
+    let res = await fetch(`${link}/SelectedTask/GetTasksBySpaceId/${roomId}`)
+    let data = await res.json();
+    return data
+}
 
 
-export {UserLogin, GetUserData, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, GetAllInvitesByID, GetAllRequest, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks }
+
+
+export {UserLogin, GetTasksByRoomId, GetUserData, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, GetAllInvitesByID, GetAllRequest, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks }
 
 
 

@@ -2,6 +2,7 @@ import {useState} from "react"
 import { ISpace } from "../Interfaces/ISpace"
 import IUserData from "../Interfaces/IUserData"
 import IChild from "../Interfaces/IChild"
+import ITask from "../Interfaces/ITask"
 
 export default function UseUser(){
 
@@ -44,7 +45,7 @@ export default function UseUser(){
     const [myRooms, setMyRooms] = useState<IRoom[]>([])
     const [tasksAPI, setTasksAPI] = useState([])
     const [myRoom, setMyRoom] = useState<IRoom>()
-    const [roomTasks, setRoomTasks]=useState([]);
+    const [roomTasks, setRoomTasks]=useState<ITask[]>([]);
 
    
     return{username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask, mySpace, setMySpace, rState, setRState, allRequestName, setAllRequestName, allInvites, setAllInvites, setChildrenData, childrenData, setNewSpace, usersAddedTasks, setUsersAddedTasks, myRoom, setMyRoom, tasksAPI, setTasksAPI, roomTasks, setRoomTasks, fullUserInfo, setFullUserInfo}

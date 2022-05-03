@@ -1,8 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 const ScheduleScreen: FC = ()=> {
+
+  
+  useEffect(() => {
+    // console.log(savedUsername)
+    GetUserInfoByUsername();
+
+
+  }, [])
+
+  const GetUserInfoByUsername =() => {
+
+  }
+  
   return (
     
    

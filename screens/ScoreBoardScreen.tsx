@@ -4,6 +4,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import { ScrollView, StyleSheet, Text, View, StatusBar } from 'react-native';
 
 import RootStackParamList from '../types/INavigateSettings'
+import HeaderComponent from '../components/HeaderComponent';
 
 type Props = NativeStackScreenProps <RootStackParamList, 'ScoreBoard'>
 
@@ -14,7 +15,10 @@ const ScoreBoardScreen: FC<Props> = ({navigation, route})=> {
  
     <View style={styles.container}>
         
-        <Text>Score Board</Text>
+        <HeaderComponent title='SCORE BOARD'/>
+        <View>
+          <Text> Participants</Text>
+        </View>
         
     </View>
 
@@ -25,8 +29,6 @@ const ScoreBoardScreen: FC<Props> = ({navigation, route})=> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
     paddingTop: StatusBar.currentHeight
   },
 });

@@ -41,17 +41,11 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   const fetchGetInvitesAndRequest = async ()=>{
     
     let data:any = await GetInvitationByUsername(userData.username)
-    console.log(data)
+    //console.log(data)
     if(data != null)
     {
-      //check if they accepted
-      // setAllInvites(data.sentInvites)
       setAllInvites(data.sentInvites.filter((Invited:any)=> (Invited.isAccepted == false && Invited.isDeleted == false)))
-      //data.sentInvites.filter((Invited:any)=> (Invited.isAccepted == false && Invited.isDeleted == false) ? setAllInvites(data.sentInvites) : null )
-      //check if they accepted
       setAllRequestName( data.recievedInvites.filter((Inviter:any)=> (Inviter.isAccepted == false  && Inviter.isDeleted == false)))
-      //data.recievedInvites.filter((Inviter:any)=> (Inviter.isAccepted == false  && Inviter.isDeleted == false) ? setAllRequestName(data.sentInvites) : null )
-      //setAllRequestName(data.recievedInvites);
     }
 
 
@@ -59,7 +53,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchGetInvitesAndRequest()
-    console.log(allRequestName.length)
+    console.log(allInvites)
 
 
   }, [])

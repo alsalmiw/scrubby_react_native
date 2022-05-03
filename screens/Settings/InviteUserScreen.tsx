@@ -41,12 +41,10 @@ const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
             Alert.alert("Error", `You can't invite yourself`, [{ text: "Cancel", style: "cancel" }]);
         }
         else {
-            //fetch to invite user
             let invitedUser: boolean = await InviteUser(inviteUser)
 
             if (invitedUser) {
-                console.log(invitedUser);
-                allInvites.push(e)
+                setAllInvites([...allInvites , inviteUser])
                 Alert.alert("Congratulations", `Invite has been sent to ${e}`, [{ text: "Okay", style: "cancel", onPress: () => handleGoBack() }]);
             }
             else if (!invitedUser) {

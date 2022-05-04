@@ -54,7 +54,7 @@ const ChangePasswordScreen: FC<Props> = ({navigation, route})=> {
         <InputFieldComponent value={""} maxLength={20} holder="new password" hide={true} onChangeText={(e: string)=>setNewPassword(e)} />
         <WhiteSubTitleComponent title="Repeat New Password" />
         <InputFieldComponent  value={""} maxLength={20} holder="new password" hide={true} onChangeText={(e: string)=>setRepeatNewPassword(e)} />
-        <FullButtonComponent onPress={handleSave} color={yellowColor}>
+        <FullButtonComponent radius={0} onPress={handleSave} color={yellowColor}>
           <Text>Save</Text>
         </FullButtonComponent>
     </View>

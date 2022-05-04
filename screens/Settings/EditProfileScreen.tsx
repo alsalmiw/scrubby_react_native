@@ -45,7 +45,7 @@ const EditProfileScreen: FC<Props> = ({navigation, route})=> {
         <AddPhotoComponent />
         <WhiteSubTitleComponent title="Name" />
         <InputFieldComponent maxLength={20} value={""} holder="enter your name" hide={false} onChangeText={(e: string)=>setNewName(e)} />
-        <FullButtonComponent onPress={handleSave} color={blueColor}>
+        <FullButtonComponent radius={0} onPress={handleSave} color={blueColor}>
           <Text>Save</Text>
         </FullButtonComponent>
 

@@ -22,7 +22,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ManageInvites'>
 
 const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor } = useContext(ThemeContext);
-  const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh } = useContext(UserContext)
+  const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh, acceptedInvitations, setAcceptedInvitations } = useContext(UserContext)
 
 
   const windowWidth = Dimensions.get('window').width * 0.25;
@@ -38,16 +38,9 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
 
   const handleToInviteUserPending = async (person: any) => {
 
-     
     AsyncStorage.setItem('Invited', person.invitedUsername)
-     
-    
-
-    //console.log(result);
-    
-    
-   
     navigation.navigate('InviteUserPending');
+
   }
 
 
@@ -60,7 +53,8 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
     if(data != null)
     {
       setInvited(data.sentInvites.filter((Invited:any)=> (Invited.isAccepted == false && Invited.isDeleted == false)))
-      setInviters( data.recievedInvites.filter((Inviter:any)=> (Inviter.isAccepted == false  && Inviter.isDeleted == false)))
+      setInviters( data.recievedInvites.filter((Inviter:any)=> (Inviter.isAccepted == false  && Inviter.isDeleted == false)));
+      setAcceptedInvitations( data.recievedInvites.filter((Inviter:any) => (Inviter.isAccepted == true && Inviter.isDeleted == false)))
     }
 
 
@@ -113,6 +107,35 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
             inviters.map((request:any, idx:number) =>{
               return(
                 <Pressable key={idx} style={{padding:10}} onPress={()=>{ AsyncStorage.setItem("Inviter", request.inviterUsername), AsyncStorage.setItem("InviterFullName", request.inviterFullname), console.log(userData) , navigation.navigate("AcceptRequest")}}>
+                <Text>{request.inviterUsername}</Text>
+                </Pressable>
+              )
+            })
+            : null
+          }
+        </View>
+
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', }}>
+          {
+            inviters != null?
+            inviters.map((request:any, idx:number) =>{
+              return(
+                <Pressable key={idx} style={{padding:10}} onPress={()=>{ AsyncStorage.setItem("Inviter", request.inviterUsername), AsyncStorage.setItem("InviterFullName", request.inviterFullname), console.log(userData) , navigation.navigate("AcceptRequest")}}>
+                <Text>{request.inviterUsername}</Text>
+                </Pressable>
+              )
+            })
+            : null
+          }
+        </View>
+
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', marginTop: '10%'}}>
+          <UnderlinedOneHeaderComponent titleFirst='Accepted Requests'></UnderlinedOneHeaderComponent>
+          {
+            acceptedInvitations != null?
+            acceptedInvitations.map((request:any, idx:number) =>{
+              return(
+                <Pressable key={idx} style={{padding:10}} onPress={()=>{ AsyncStorage.setItem("Inviter", request.inviterUsername), AsyncStorage.setItem("InviterFullName", request.inviterFullname), console.log(userData) , navigation.navigate("AcceptedInvitation")}}>
                 <Text>{request.inviterUsername}</Text>
                 </Pressable>
               )

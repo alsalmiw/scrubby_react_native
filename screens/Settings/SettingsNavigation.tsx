@@ -12,6 +12,8 @@ import InviteUserScreen from './InviteUserScreen';
 import AcceptRequestScreen from './AcceptRequestScreen';
 import InviteUserPendingScreen from './InviteUserPendingScreen';
 
+import AcceptedInvitationScreen from './AcceptedInvitationScreen';
+
 
 
 const Tab = createNativeStackNavigator<RootStackParamList>();
@@ -30,6 +32,7 @@ const SettingsNavigation: FC = ()=> {
           <Tab.Screen name="InviteUser" component={InviteUserScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="AcceptRequest" component={AcceptRequestScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="InviteUserPending" component={InviteUserPendingScreen} options={{headerShown: false}} />
+          <Tab.Screen name="AcceptedInvitation" component={AcceptedInvitationScreen} options={{headerShown: false}} />
         </Tab.Navigator>
   );
 }

@@ -26,17 +26,31 @@ type Props = NativeStackScreenProps<RootStackParamList, 'InviteUserPending'>
 const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
 
     const { purpleColor } = useContext(ThemeContext)
-    const {allInvites, setAllInvites,  allRequestName, setAllRequestName, userData} =useContext(UserContext)
-    const [name, setName] = useState<string | null>("");
+    const {invited, setInvited, allRequestName, setAllRequestName, userData, refresh, setRefresh} =useContext(UserContext)
+    const [fullName, setFullName] = useState<string | null>("");
 
     const showName = async() => {
-        let invited = await AsyncStorage.getItem('Invited');
-        AsyncStorage.setItem('Inviter', userData.username);
-        let inviter = await AsyncStorage.getItem('Inviter');
+         let invitedUserFromAsyncStorage = await AsyncStorage.getItem('Invited');
+    //     AsyncStorage.setItem('Inviter', userData.username);
+    //     let inviter = await AsyncStorage.getItem('Inviter');
 
-       // console.log(inviter);
-       console.log(userData)
-        setName(invited);
+         console.log(invited);
+    //    console.log(userData)
+    //     setName(invited);
+
+        invited.forEach((person: any) => {
+            if (person.invitedUsername === invitedUserFromAsyncStorage) {
+                
+                if (person.invitedFullname === null) {
+                    setFullName(person.invitedUsername)
+                } else {
+                    setFullName(person.invitedFullname)
+                }
+                
+            }
+        });
+
+
     }
 
     const handleNavigateBack = () => {
@@ -48,25 +62,38 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
 
 
         //console.log(testArray.filter((element: any) => element.invitedFullname !== name));
-        setAllInvites((currentInvites:any) => currentInvites.filter((person: any) => {
+        // setAllInvites((currentInvites:any) => currentInvites.filter((person: any) => {
 
-            if (person.invitedUsername) {
+        //     if (person.invitedUsername) {
                 
-                const callDeleteUser = async () => {
-                    let result = await DeleteInvite(userData.id, person.invitedUsername);
+        //         const callDeleteUser = async () => {
+        //             let result = await DeleteInvite(userData.id, person.invitedUsername);
                    
-                }
-                callDeleteUser();
+        //         }
+        //         callDeleteUser();
 
-                return person.invitedFullname !== name
-            } else {
-                return person.invitedUsername !== name
-            }
+        //         return person.invitedFullname !== name
+        //     } else {
+        //         return person.invitedUsername !== name
+        //     }
 
             
             
-        }))
+        // }))
 
+        // let testArray = invited;
+        // let invitedUserFromAsyncStorage = await AsyncStorage.getItem('Invited');
+
+        // console.log(testArray.filter((invitee: any) => invitee.invitedUsername !== invitedUserFromAsyncStorage));
+
+        let invitedUserToBeDeleted = await AsyncStorage.getItem('Invited');
+        
+        const DeleteInviteFetch = async() => {
+            await DeleteInvite(userData.id, invitedUserToBeDeleted!);
+            setRefresh((prevRefresh:boolean) => prevRefresh = true)
+        }
+        
+        DeleteInviteFetch();
         
 
         navigation.navigate('ManageInvites');
@@ -108,7 +135,7 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
             <View style={styles.firstRowContainer}>
                 <AvatarComponent onPress={undefined} imageSource={userData}/>
                 <View style={styles.insideFirstRowContainer1}>
-                    <UserNameComponent name={name}></UserNameComponent>
+                    <UserNameComponent name={fullName}></UserNameComponent>
                     <View style={styles.insideFirstRowContainer2}>
                         <Feather name="trash-2" size={40} color='black' onPress={handleDisplayAlert}/>
                         <UserNameComponent name="Delete User"></UserNameComponent>
@@ -123,7 +150,7 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
                 </View>
             </View>
 
-            <FullButtonComponent onPress={handleNavigateBack} color={purpleColor}>
+            <FullButtonComponent  radius={0} onPress={handleNavigateBack} color={purpleColor}>
                 <Text>Back</Text>
             </FullButtonComponent>
             

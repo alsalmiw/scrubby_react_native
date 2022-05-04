@@ -37,22 +37,11 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   }
 
   const handleToInviteUserPending = async (person: any) => {
-    console.log('This is all the invites')
-    console.log(allInvites)
 
-  
-
-    if (person.invitedFullname !== null) {
-      AsyncStorage.setItem('Invited', person.invitedFullname)
      
-      
-    } else {
-      AsyncStorage.setItem('Invited', person.invitedUsername)
+    AsyncStorage.setItem('Invited', person.invitedUsername)
      
-    }
-
-    console.log('This is the invited name')
-    let result = await AsyncStorage.getItem('Invited');
+    
 
     //console.log(result);
     

@@ -1,6 +1,6 @@
 import {  FC, useContext, useEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import {  StyleSheet, Text, View, StatusBar, Dimensions, Pressable } from 'react-native';
+import {  StyleSheet, Text, View, StatusBar, Dimensions, Pressable, Alert } from 'react-native';
 import { ThemeContext } from '../../context/ThemeContext';
 import UserContext from '../../context/UserContext';
 
@@ -14,6 +14,10 @@ import UserNameComponent from '../../components/UserNameComponent';
 import { black } from 'react-native-paper/lib/typescript/styles/colors';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 import FullButtonComponent from '../../components/FullButtonComponent';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { DeleteInvite } from '../../services/dataService';
+
+
 
 
 
@@ -23,16 +27,75 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
 
     const { purpleColor } = useContext(ThemeContext)
     const {allInvites, setAllInvites,  allRequestName, setAllRequestName, userData} =useContext(UserContext)
+    const [name, setName] = useState<string | null>("");
+
+    const showName = async() => {
+        let dumbName = await AsyncStorage.getItem('Invited');
+        console.log(dumbName);
+        setName(dumbName);
+    }
 
     const handleNavigateBack = () => {
         navigation.navigate('ManageInvites');
     }
 
-    const handleDeleteUser = () => {
-        console.log('This item is fake deleted');
+    const handleDeleteUser = async () => {
+        
+
+
+        //console.log(testArray.filter((element: any) => element.invitedFullname !== name));
+        setAllInvites((prevInvited:any) => prevInvited.filter((person: any) => {
+
+            if (person.invitedUsername) {
+                
+                const callDeleteUser = async () => {
+                   await DeleteInvite(person.invitedId, person.invitedUsername);
+                }
+                callDeleteUser();
+
+                return person.invitedFullname !== name
+            } else {
+                return person.invitedUsername !== name
+            }
+
+
+            
+        }))
+
+        
+
+        navigation.navigate('ManageInvites');
+
+        
     }
 
-    console.log(allInvites)
+    const handleDisplayAlert = () => {
+        console.log('This item is fake deleted');
+        Alert.alert('Warning', 'This action will result in deleting the user and all of their chores will be saved as unassigned. Are you sure you want to delete user?',[ {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "Delete", onPress: handleDeleteUser , style: "destructive" }
+        ]);
+
+
+        
+        
+    }
+
+    
+
+    useEffect(()=> {
+        showName()
+    }, [])
+
+    
+
+
+    
+
+    
 
     return (
         <View style={styles.container}>
@@ -40,9 +103,9 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
             <View style={styles.firstRowContainer}>
                 <AvatarComponent onPress={undefined} imageSource={userData}/>
                 <View style={styles.insideFirstRowContainer1}>
-                    <UserNameComponent name="Obama McLean"></UserNameComponent>
+                    <UserNameComponent name={name}></UserNameComponent>
                     <View style={styles.insideFirstRowContainer2}>
-                        <Feather name="trash-2" size={40} color='black' onPress={handleDeleteUser}/>
+                        <Feather name="trash-2" size={40} color='black' onPress={handleDisplayAlert}/>
                         <UserNameComponent name="Delete User"></UserNameComponent>
                     </View>
                 </View>

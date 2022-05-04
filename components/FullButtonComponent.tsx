@@ -9,7 +9,7 @@ const FullButtonComponent: FC<IButtonStandard> = (props) => {
     }
 
     return (
-        <View style={[styles.buttonOuterContainer, {backgroundColor:props.color}]}>
+        <View style={[styles.buttonOuterContainer, {backgroundColor:props.color}, {borderRadius:props.radius}]}>
             <Pressable
                 style={styles.buttonInnerContainer}
                 onPress={buttonHandler}

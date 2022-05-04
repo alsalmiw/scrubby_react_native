@@ -28,7 +28,7 @@ const ScoreBoardScreen: FC<Props> = ({navigation, route})=> {
         </View>
         
     </View>
-    <FullButtonComponent color={purpleColor} onPress={()=>handleGoBack()} >Back</FullButtonComponent>
+    <FullButtonComponent radius={0} color={purpleColor} onPress={()=>handleGoBack()} >Back</FullButtonComponent>
     </>
     
   );

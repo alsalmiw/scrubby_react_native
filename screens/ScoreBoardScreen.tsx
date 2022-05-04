@@ -8,11 +8,12 @@ import HeaderComponent from '../components/HeaderComponent';
 import FullButtonComponent from '../components/FullButtonComponent';
 import { ThemeContext } from '../context/ThemeContext';
 import UserContext from '../context/UserContext';
+import { FontAwesome } from '@expo/vector-icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ScoreBoard'>
 
 const ScoreBoardScreen: FC<Props> = ({ navigation, route }) => {
-  const { purpleColor } = useContext(ThemeContext)
+  const { purpleColor, yellowColor } = useContext(ThemeContext)
   const { scoreBoardList } = useContext(UserContext)
 
   const handleGoBack = () => {
@@ -30,28 +31,31 @@ const ScoreBoardScreen: FC<Props> = ({ navigation, route }) => {
       <View style={styles.container}>
 
         <HeaderComponent title='SCORE BOARD' />
-        <View style={{ marginBottom: 10, paddingLeft: 10 }}>
-          <Text> Participants</Text>
-
+        <View style={{ marginBottom: 40}}>
+          <Text style={{fontSize:30}}> {scoreBoardList.length} Participants</Text>
         </View>
 
         {
           scoreBoardList.sort((a: any, b: any) => b.points - a.points).map((people: any, idx: number) => {
             return (
-              <View key={idx} style={{ flexDirection: 'row', marginBottom: 10, justifyContent: 'space-between' }}>
+              <View key={idx} style={{ flexDirection: 'row', marginBottom: 10, justifyContent: 'space-between',  }}>
                 <View style={{ flexDirection: 'row', paddingRight: 10, paddingLeft: 10, alignItems: 'flex-start' }}>
                   <View style={{paddingRight:10}}>
-                    <Text>{idx + 1}</Text>
+                    <Text style={{fontSize:20}}>{idx + 1}</Text>
                   </View>
                   {/* missing image */}
                   <View style={{paddingRight:10}}>
-                    <Text>{people.name}</Text>
+                    <Text style={{fontSize:20}}>{people.name}</Text>
                   </View>
 
 
                 </View>
-                <View style={{ alignItems: 'flex-end', paddingRight: 10 }}>
-                  <Text>{people.points}</Text>
+                <View style={{ alignItems: 'flex-end', paddingRight: 10, flexDirection: 'row' }}>
+                  <View style={{paddingRight:10}}><FontAwesome size={25} name="star" color={yellowColor} /></View>
+                  <View style={{paddingRight:10}}>
+                  <Text style={{fontSize:20}}>{people.points}</Text>
+                  </View>
+                  
                 </View>
 
 

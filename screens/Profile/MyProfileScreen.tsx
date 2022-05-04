@@ -150,7 +150,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
           <UserNameComponent name={savedUsername}></UserNameComponent>
           <View style={styles.coinContainer}>
-            <CoinsPointsDisplayContainer coins={`${childData.dependentCoins}`} points="39"></CoinsPointsDisplayContainer>
+            <CoinsPointsDisplayContainer coins={`${userData.coins}`} points={userData.points}></CoinsPointsDisplayContainer>
           </View>
         </View>
       </View>

@@ -42,8 +42,6 @@ const SpaceRoomsScreen: FC<Props> = ({navigation})=> {
     {     
       console.log(usersTasks)
       setUsersAddedTasks (usersTasks)
-     
- 
     }
    
   }

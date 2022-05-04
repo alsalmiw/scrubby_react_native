@@ -10,7 +10,7 @@ import FullButtonComponent from '../../components/FullButtonComponent';
 import { ThemeContext } from '../../context/ThemeContext';
 import AddItemButtonComponent from '../../components/AddItemButtonComponent';
 import { Entypo } from '@expo/vector-icons';
-import { GetInvitationByUsername} from '../../services/dataService';
+import { AllInvitesByInvitedUsername, GetInvitationByUsername} from '../../services/dataService';
 import UserContext from '../../context/UserContext';
 ///
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -44,8 +44,11 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
 
     if (person.invitedFullname !== null) {
       AsyncStorage.setItem('Invited', person.invitedFullname)
+     
+      
     } else {
       AsyncStorage.setItem('Invited', person.invitedUsername)
+     
     }
 
     console.log('This is the invited name')

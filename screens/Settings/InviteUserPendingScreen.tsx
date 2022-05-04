@@ -30,26 +30,31 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
     const [name, setName] = useState<string | null>("");
 
     const showName = async() => {
-        let dumbName = await AsyncStorage.getItem('Invited');
-        console.log(dumbName);
-        setName(dumbName);
+        let invited = await AsyncStorage.getItem('Invited');
+        AsyncStorage.setItem('Inviter', userData.username);
+        let inviter = await AsyncStorage.getItem('Inviter');
+
+       // console.log(inviter);
+       console.log(userData)
+        setName(invited);
     }
 
     const handleNavigateBack = () => {
         navigation.navigate('ManageInvites');
     }
 
-    const handleDeleteUser = async () => {
+    const handleDeleteInvite = async () => {
         
 
 
         //console.log(testArray.filter((element: any) => element.invitedFullname !== name));
-        setAllInvites((prevInvited:any) => prevInvited.filter((person: any) => {
+        setAllInvites((currentInvites:any) => currentInvites.filter((person: any) => {
 
             if (person.invitedUsername) {
                 
                 const callDeleteUser = async () => {
-                   await DeleteInvite(person.invitedId, person.invitedUsername);
+                    let result = await DeleteInvite(userData.id, person.invitedUsername);
+                   
                 }
                 callDeleteUser();
 
@@ -58,7 +63,7 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
                 return person.invitedUsername !== name
             }
 
-
+            
             
         }))
 
@@ -76,7 +81,7 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
             onPress: () => console.log("Cancel Pressed"),
             style: "cancel"
           },
-          { text: "Delete", onPress: handleDeleteUser , style: "destructive" }
+          { text: "Delete", onPress: handleDeleteInvite , style: "destructive" }
         ]);
 
 

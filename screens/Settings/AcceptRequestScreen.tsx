@@ -30,7 +30,7 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
     }
 
     const { purpleColor } = useContext(ThemeContext)
-    const { allInvites, setAllInvites, allRequestName, setAllRequestName, userData } = useContext(UserContext)
+    const { allInvites, setAllInvites, inviters, setInviters, userData } = useContext(UserContext)
     const [Name, setName] = useState("")
     const [person, setPerson] = useState<any>({})
 
@@ -40,7 +40,7 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
         let accept = await AcceptInvite(person.id, userData.username)
         console.log(accept)
         removeInvitee()
-        console.log(allRequestName)
+        console.log(inviters)
 
         Alert.alert("Congratulation", `${person.username} can now share a space with you`, [{ text: "Cancel", style: "cancel", onPress: () => navigation.navigate("ManageInvites") }])
     }
@@ -60,7 +60,7 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
     }
     const removeInvitee = () => {
         //call delete fetch here 
-        setAllRequestName(allRequestName.filter((person: IPerson) => person.username != Name))
+        setInviters(inviters.filter((person: IPerson) => person.username != Name))
 
     }
     const handleGetName = async () => {

@@ -167,7 +167,7 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
 
 
       </View >
-      <FullButtonComponent onPress={handleSelectedTasks} color={purpleColor}>
+      <FullButtonComponent radius={0} onPress={handleSelectedTasks} color={purpleColor}>
       {/* AddSelectedTask(addTask), console.log(AddSelectedTask(addTask) */}
         <Text>Done</Text>
       </FullButtonComponent>

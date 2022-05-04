@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
             fontWeight: "bold", 
         }, 
         headerContainer:{
-            width:'95%',
+            width:'100%',
             flexDirection: "row",
             justifyContent: "space-between",
             borderBottomWidth:1,

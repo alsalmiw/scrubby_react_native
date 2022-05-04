@@ -247,6 +247,44 @@ async function InviteUser(newUser: IInviteUser) {
    
 }
 
+async function RedeemCoinsUser(newAmount:any) {
+    let res= await fetch(`${link}/User/NewCoinAmount`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newAmount)
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    console.log(data)
+    return data;
+   
+}
+
+async function RedeemCoinsChild(newAmount:any) {
+    let res= await fetch(`${link}/Dependent/NewCoinAmount`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newAmount)
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    console.log(data)
+    return data;
+   
+}
+
 
 async function GetInvitationByUsername(username:string){
     let res = await fetch(`${link}/InviteUsers/GetInvitationsByUsername/${username}`)
@@ -304,12 +342,20 @@ async function DeleteInvite(userId:number, invitedUsername:string){
     console.log('This is inside data service')
     console.log(data)
     return data;
+
+}
+async function GetUserData(username:string){
+    let res = await fetch(`${link}/User/GetUserData/${username}`)
+    let data = await res.json();
+    return data
+}
+
+async function GetTasksByRoomId(roomId:number){
+    let res = await fetch(`${link}/SelectedTask/GetTasksBySpaceId/${roomId}`)
+    let data = await res.json();
+    return data
 }
 
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite  }
-
-
-
-
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId, GetUserData, RedeemCoinsUser, RedeemCoinsChild}

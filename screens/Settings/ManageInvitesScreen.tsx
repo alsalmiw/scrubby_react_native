@@ -22,7 +22,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ManageInvites'>
 
 const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor } = useContext(ThemeContext);
-  const { userData, allRequestName, setAllRequestName, allInvites, setAllInvites } = useContext(UserContext)
+  const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh } = useContext(UserContext)
 
 
   const windowWidth = Dimensions.get('window').width * 0.25;
@@ -70,8 +70,8 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
     //console.log(data)
     if(data != null)
     {
-      setAllInvites(data.sentInvites.filter((Invited:any)=> (Invited.isAccepted == false && Invited.isDeleted == false)))
-      setAllRequestName( data.recievedInvites.filter((Inviter:any)=> (Inviter.isAccepted == false  && Inviter.isDeleted == false)))
+      setInvited(data.sentInvites.filter((Invited:any)=> (Invited.isAccepted == false && Invited.isDeleted == false)))
+      setInviters( data.recievedInvites.filter((Inviter:any)=> (Inviter.isAccepted == false  && Inviter.isDeleted == false)))
     }
 
 
@@ -79,10 +79,10 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchGetInvitesAndRequest()
-    console.log(allInvites)
+    console.log(invited)
+    setRefresh(false)
 
-
-  }, [])
+  }, [refresh])
 
   return (
     <>
@@ -100,8 +100,8 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
             <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
           </AddItemButtonComponent>
           {
-            allInvites !=null ?
-            allInvites.map((person: any, idx:number) => {
+            invited !=null ?
+            invited.map((person: any, idx:number) => {
 
               return (
                 <Pressable key={idx}  style={{padding:10, backgroundColor:'red'}} onPress={handleToInviteUserPending.bind(this, person)}>
@@ -120,8 +120,8 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
         </View>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', }}>
           {
-            allRequestName != null?
-            allRequestName.map((request:any, idx:number) =>{
+            inviters != null?
+            inviters.map((request:any, idx:number) =>{
               return(
                 <Pressable key={idx} style={{padding:10}} onPress={()=>{ AsyncStorage.setItem("Inviter", request.inviterUsername), AsyncStorage.setItem("InviterFullName", request.inviterFullname), console.log(userData) , navigation.navigate("AcceptRequest")}}>
                 <Text>{request.inviterUsername}</Text>
@@ -136,7 +136,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
 
 
       </View>
-      <FullButtonComponent onPress={() => handleBackToSettings()} color={purpleColor}>
+      <FullButtonComponent radius={0} onPress={() => handleBackToSettings()} color={purpleColor}>
         <Text>Back</Text>
       </FullButtonComponent>
     </>

@@ -10,8 +10,10 @@ import RootStackParamList from '../../types/INavigateProfile'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import UserContext from '../../context/UserContext';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
-import { GetAllTasks } from '../../services/dataService';
+import { GetAllTasks, GetTasksByRoomId } from '../../services/dataService';
 import FullButtonComponent from '../../components/FullButtonComponent';
+import ITask from '../../Interfaces/ITask';
+import TaskRowFullInfoComponent from '../../components/TaskRowFullInfoComponent';
 
 
 
@@ -31,19 +33,25 @@ const AddedTasksScreen: FC<Props> = ({navigation})=> {
      
   
     }, [])
-let r = Math.floor(Math.random() * 7)
-    const displayAddIcon = () => {
+
+      let r = Math.floor(Math.random() * 7)
+
+     const displayAddIcon = () => {
         console.log('Plus Icon Works');
         navigation.navigate('AddItems')
       }
+
       const displayTasks = async() => {
-          let tasks = await GetAllTasks()
-          if(tasks.length != 0)
+          let tasks = await GetTasksByRoomId(myRoom.id)
+          console.log(myRoom.id)
+          console.log(tasks)
+
+          if(tasks)
           {
-            setTasksAPI(tasks)
+            setRoomTasks(tasks)
             console.log(tasks)
           }
-         setRoomTasks(usersAddedTasks.filter((task:any) => task.spaceId == myRoom.id))
+        
          
           
 
@@ -69,16 +77,18 @@ let r = Math.floor(Math.random() * 7)
 
     {/*//map all items here} */}
     {
-      roomTasks.map((task:object, idx:number)=>{
+      roomTasks.map((task:ITask, idx:number)=>{
         return(
 
-          <TaskSpaceRowComponent key={idx} idx={r+idx} onPress={()=>{displayTaskInfo(); console.log(task)}}>
-          <Text>djufh</Text>
-          <View>
-          <FontAwesome5 name={'coins'} size={25} style={{marginRight: 10, color: "#FFF"}} />
-          <Text>10 coins</Text>
-          </View>
-          </TaskSpaceRowComponent>
+
+          <TaskRowFullInfoComponent r={r} key={idx} idx={idx} task={task} />
+          // <TaskSpaceRowComponent key={idx} idx={r+idx} onPress={()=>{displayTaskInfo(); console.log(task)}}>
+          // <Text>{task.tasks.name}</Text>
+          // <View>
+          // <FontAwesome5 name={'coins'} size={25} style={{marginRight: 10, color: "#FFF"}} />
+          // <Text>10 coins</Text>
+          // </View>
+          // </TaskSpaceRowComponent>
         )
       })
     }

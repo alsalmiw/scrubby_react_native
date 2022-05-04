@@ -30,6 +30,7 @@ const SettingsScreen: FC<Props> = ({navigation})=> {
 
 const handleLogOut = () => {
   AsyncStorage.removeItem("Token");
+  AsyncStorage.removeItem("username");
   navigation.navigate('login')
 }
 

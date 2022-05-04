@@ -61,8 +61,8 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   }
 
 
-  const handleAddNewRoomNavigation = () => {
-    navigation.navigate('AddItems');
+  const handleAddNewSpaceNavigation = () => {
+    navigation.navigate('AddNewSpace');
   }
 
   const handleGoToSpaceRooms = async(space:any)=> {
@@ -150,15 +150,15 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
           <UserNameComponent name={savedUsername}></UserNameComponent>
           <View style={styles.coinContainer}>
-            <CoinsPointsDisplayContainer coins={`${childData.dependentCoins}`} points="39"></CoinsPointsDisplayContainer>
+            <CoinsPointsDisplayContainer coins={`${userData.coins}`} points={userData.points}></CoinsPointsDisplayContainer>
           </View>
         </View>
       </View>
 
 
       <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo="" titleThree=""/>
-      <Pressable style={styles.secondRow} onPress={handleAddNewRoomNavigation}>
-        <AddItemButtonComponent onPress={handleAddNewRoomNavigation}>
+      <Pressable style={styles.secondRow} onPress={handleAddNewSpaceNavigation}>
+        <AddItemButtonComponent onPress={handleAddNewSpaceNavigation}>
           <Entypo name="squared-plus" size={50} color={lilacColor} />
         </AddItemButtonComponent>
         <View style={styles.userNameContainer}>
@@ -196,7 +196,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
                                       //     <AddItemButtonComponent key={idx} onPress={()=>handleGoToChildProfile(child)}>
                                       //   <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />
                                       // </AddItemButtonComponent>
-                                        <AvatarComponent key={idx} onPress={undefined} imageSource={userData.photo} />
+                                        <AvatarComponent key={idx} onPress={()=>console.log(child)} imageSource={userData.photo} />
                                         )
 
                                       })

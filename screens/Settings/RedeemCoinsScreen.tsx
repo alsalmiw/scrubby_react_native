@@ -13,7 +13,7 @@ import FullButtonComponent from '../../components/FullButtonComponent';
 import { ThemeContext } from '../../context/ThemeContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'RedeemCoins'>
-
+//
 const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
 
 

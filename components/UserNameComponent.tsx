@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import {ThemeContext} from "../context/ThemeContext"
 
 interface NameType{
-    name: string;
+    name: string | null;
 }
 
 const UserNameComponent: FC<NameType> =({name}) => {

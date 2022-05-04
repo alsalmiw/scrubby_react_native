@@ -287,7 +287,7 @@ async function GetAllTasks(){
 }
 
 async function DeleteInvite(userId:number, invitedUsername:string){
-    let res= await fetch(`${link}/InviteUsers/AcceptInvite/${userId}/${invitedUsername}`, {
+    let res= await fetch(`${link}/InviteUsers/DeleteInvite/${userId}/${invitedUsername}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -301,6 +301,7 @@ async function DeleteInvite(userId:number, invitedUsername:string){
         throw new Error (message)
     }
     let data:boolean = await res.json();
+    console.log('This is inside data service')
     console.log(data)
     return data;
 }

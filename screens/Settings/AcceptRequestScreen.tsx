@@ -41,7 +41,6 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
         await handleGetLocalNameInfo()
         let accept = await AcceptInvite(person.id, userData.username)
         setRefresh(true)
-
         Alert.alert("Congratulation", `${person.username} can now share a space with you`, [{ text: "Cancel", style: "cancel", onPress: () => navigation.navigate("ManageInvites") }])
     }
 

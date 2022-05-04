@@ -22,7 +22,7 @@ const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
     const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor, greenColor } = useContext(ThemeContext);
     const [searchUser, setSearchUser] = useState("");
     //  const [invitedUser, setInvitedUser] = useState(true);
-    const { userData, allInvites, setAllInvites, } = useContext(UserContext)
+    const { userData, invited, setInvited, refresh, setRefresh } = useContext(UserContext)
 
     const handleGoBack = () => {
         navigation.navigate('ManageInvites')
@@ -45,8 +45,8 @@ const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
             let invitedUser: boolean = await InviteUser(inviteUser)
 
             if (invitedUser) {
-                setAllInvites([...allInvites , inviteUser])
-                
+                setInvited([...invited , inviteUser])
+                setRefresh(true)
                 Alert.alert("Congratulations", `Invite has been sent to ${e}`, [{ text: "Okay", style: "cancel", onPress: () => handleGoBack() }]);
             }
             else if (!invitedUser) {

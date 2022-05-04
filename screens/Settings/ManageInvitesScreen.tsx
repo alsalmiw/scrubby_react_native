@@ -21,7 +21,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ManageInvites'>
 
 const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor } = useContext(ThemeContext);
-  const { userData, inviters, setInviters, invited, setInvited } = useContext(UserContext)
+  const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh } = useContext(UserContext)
 
 
   const windowWidth = Dimensions.get('window').width * 0.25;
@@ -54,9 +54,9 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   useEffect(() => {
     fetchGetInvitesAndRequest()
     console.log(invited)
+    setRefresh(false)
 
-
-  }, [])
+  }, [refresh])
 
   return (
     <>

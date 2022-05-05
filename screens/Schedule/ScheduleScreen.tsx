@@ -8,7 +8,7 @@ import UserContext from '../../context/UserContext';
 
 
 const ScheduleScreen: FC = ()=> {
-  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildData , setScoreBoardList, setInviters, setInvited } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations } = useContext(UserContext)
   
   useEffect(() => {
     // console.log(savedUsername)
@@ -32,8 +32,8 @@ const ScheduleScreen: FC = ()=> {
         setScoreBoardList(userInfo.scoreBoard)
         setInvited(userInfo.invitations.sentInvites.filter((Invited:any)=> (Invited.isAccepted == false && Invited.isDeleted == false)))
         setInviters( userInfo.invitations.recievedInvites.filter((Inviter:any)=> (Inviter.isAccepted == false  && Inviter.isDeleted == false)))
-
-
+        setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited:any)=> (Invited.isAccepted == true && Invited.isDeleted == false)))
+       
 
 
       }

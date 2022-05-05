@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
+//
 
-
-export default interface IRedeemCoins{
+export default interface IRedeemCoinsChild{
     DependentCoins:number,
     Id:number
     

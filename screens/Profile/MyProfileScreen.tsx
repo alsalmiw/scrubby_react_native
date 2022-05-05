@@ -191,7 +191,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
                                       </AddItemButtonComponent> 
 
                                       {childrenData.length!=0 ? 
-                                      childrenData.map((child:object, idx:number)=>{
+                                      childrenData.map((child:object, idx:number)=>{ 
                                         return(
                                       //     <AddItemButtonComponent key={idx} onPress={()=>handleGoToChildProfile(child)}>
                                       //   <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />

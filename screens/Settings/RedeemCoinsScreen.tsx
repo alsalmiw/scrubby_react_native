@@ -14,14 +14,14 @@ import { ThemeContext } from '../../context/ThemeContext';
 import IRedeemCoins from '../../Interfaces/IRedeemCoins';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'RedeemCoins'>
-////
+/////
 const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
 
 
 
   const { orangeColor, purpleColor } = useContext(ThemeContext)
 
-  const { userData } = useContext(UserContext)
+  const { userData, seeAll, setSeeAll } = useContext(UserContext)
   const [redeemCoins, setRedeemCoins] = useState<any>(0)
   const [remainingCoins, setRemainingCoins] = useState<any>(userData.coins)
   const [refreshCoins, setRefreshCoins] = useState(true)
@@ -79,6 +79,17 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
           <View style={styles.underlineContainer}>
             <UnderlinedHeaderComponent titleOne={'Select Member'} titleTwo={'see all'} titleThree={'see less'} />
           </View>
+          <>
+          {/* {
+            seeAll?
+            <>
+            <View></View>
+            
+            
+            </>
+
+          } */}
+          </>
 
 
           <View style={styles.underlineContainer}>

@@ -32,8 +32,6 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
             Id: 0,
             Username: username,
             Password: password, 
-           
-
         }
         console.log(userData)
         setSavedUsername(username);
@@ -53,7 +51,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
             
         }
 
-        else Alert.alert("Error", 'Invalid Username or Password', [{ text: "Cancel", style: "cancel" }])
+        else Alert.alert("Error", 'Invalid Username or Password.', [{ text: "Cancel", style: "cancel" }])
 
     }
 
@@ -79,31 +77,39 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
             navigation.navigate('Nav')
         }
         else{
-            Alert.alert("Error", 'Incorrect Username or Password', [{ text: "Cancel", style: "cancel" }])
+            Alert.alert("Error", 'Incorrect Username or Password.', [{ text: "Cancel", style: "cancel" }])
             console.log('fail')
         }
 
         
     }
-    // check if username/ password is filled out
+
     const checkTextInput = () => {
+        let regi = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g
+        let space = /[ ]/
         if (login) {
             if (!username.trim()) {
-                Alert.alert("Error", 'Please Enter username', [{ text: "Cancel", style: "cancel" }]);
+                Alert.alert("Error", 'Please Enter username.', [{ text: "Cancel", style: "cancel" }]);
                 return;
             }
             if (!password.trim()) {
-                Alert.alert("Error", 'Please Enter password', [{ text: "Cancel", style: "cancel" }]);
+                Alert.alert("Error", 'Please Enter password.', [{ text: "Cancel", style: "cancel" }]);
+                return;
+            }
+            if (regi.test(username)){
+                Alert.alert("Error", 'Username can not contains special characters or spaces.', [{ text: "Cancel", style: "cancel" }]);
+                return;
+            }
+            if (space.test(password)){
+                Alert.alert("Error", 'Password can not contains any space.', [{ text: "Cancel", style: "cancel" }]);
                 return;
             }
             else {
                 addUser();
-                //console.log(savedUsername);
                 setPassword("");
                 setUsername("");
             }
         }
-        //need to display error if password is wrong 
         else if (!login) {
             if (!username.trim()) {
                 Alert.alert("Error", 'Please Enter username login', [{ text: "Cancel", style: "cancel" }]);

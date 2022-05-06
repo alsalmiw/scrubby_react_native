@@ -6,6 +6,10 @@ import IRoom from '../Interfaces/IRoom';
 import { ISpace } from '../Interfaces/ISpace';
 import IChild from '../Interfaces/IChild';
 import IInviteUser from '../Interfaces/IInviteUser';
+import IUserData from '../Interfaces/IUserData';
+import IRedeemCoins from '../Interfaces/IRedeemCoins';
+import IRedeemCoinsChild from '../Interfaces/IRedeemChildCoins';
+
 
 let link = "https://scrubbyapi.azurewebsites.net"
 
@@ -347,7 +351,6 @@ async function DeleteInvite(userId:number, invitedUsername:string){
     console.log('This is inside data service')
     console.log(data)
     return data;
-
 }
 async function GetUserData(username:string){
     let res = await fetch(`${link}/User/GetUserData/${username}`)
@@ -366,8 +369,48 @@ async function GetSharedSpacesById(id:number){
     let data = await res.json();
     return data
 }
+//add post for new coin amount
+async function NewCoinAmountDependent(Dependent:IRedeemCoinsChild)
+{
+    let res= await fetch(`${link}/Dependent/NewCoinAmount`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        //
+        body: JSON.stringify({Dependent})
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    console.log(data)
+    return data;
+}
+
+async function NewCoinAmountNotDependent(User:IRedeemCoins)
+{
+    let res= await fetch(`${link}/User/NewCoinAmount`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        //
+        body: JSON.stringify(User)
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    console.log(data)
+    return data;
+}
 
 
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId, GetUserData, RedeemCoinsUser, RedeemCoinsChild, GetSharedSpacesById, DeleteInvitation}
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId, GetUserData, RedeemCoinsUser, RedeemCoinsChild, GetSharedSpacesById, DeleteInvitation, NewCoinAmountDependent, NewCoinAmountNotDependent}

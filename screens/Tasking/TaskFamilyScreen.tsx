@@ -28,6 +28,7 @@ const TaskFamilyScreen: FC<Props> = ({navigation})=> {
 
   useEffect(() => {
     setTaskUser(userData)
+    //setTaskUser(userData)/
   }, [])
 
   let r = Math.floor(Math.random() * 7)

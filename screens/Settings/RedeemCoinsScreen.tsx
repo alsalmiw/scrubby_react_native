@@ -1,7 +1,7 @@
 // import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { StyleSheet, Text, View, StatusBar, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TouchableWithoutFeedback, Keyboard, Alert, ScrollView } from 'react-native';
 
 import RootStackParamList from '../../types/INavigateSettings'
 import HeaderComponent from '../../components/HeaderComponent';
@@ -11,40 +11,119 @@ import UserContext from '../../context/UserContext';
 import InputFieldComponent from '../../components/AddEdit/InputFieldComponent';
 import FullButtonComponent from '../../components/FullButtonComponent';
 import { ThemeContext } from '../../context/ThemeContext';
+import IRedeemCoins from '../../Interfaces/IRedeemCoins';
+import IRedeemCoinsChild from '../../Interfaces/IRedeemChildCoins';
+import AvatarComponent from '../../components/AvatarComponent';
+import { GetDependantByUserId, GetUserByUsername, NewCoinAmountDependent, NewCoinAmountNotDependent } from '../../services/dataService';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'RedeemCoins'>
-
+//////
 const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
 
 
 
   const { orangeColor, purpleColor } = useContext(ThemeContext)
 
-  const { userData } = useContext(UserContext)
-  const [redeemCoins, setRedeemCoins] = useState("")
-  const [remainingCoins, setRemainingCoins] = useState<number>()
+  const { userData, setUserData, setChildrenData, childrenData, seeAll, setSeeAll, childData, savedUsername } = useContext(UserContext)
+  const [redeemCoins, setRedeemCoins] = useState<any>()
+  const [remainingCoins, setRemainingCoins] = useState<any>()
   const [refreshCoins, setRefreshCoins] = useState(true)
+  const [aChild, setAChild] = useState<any>()
+  const [childRedeem, setChildRedeem] = useState<boolean>(false)
+  const [userCoins, setUserCoins] = useState(userData.coins)
+
+
+
 
   const handleGoBack = () => {
     navigation.navigate("Settings")
   }
-  const handleRedeem = () => {
+  let leftover: any;
+  const quickMath = async () => {
+    !childRedeem ?
+      (
+        leftover = (Number(userCoins) - Number(redeemCoins)),
+        setRemainingCoins(leftover)
 
-    if (redeemCoins > userData.coins) {
-      Alert.alert("Sorry", `${userData.username} does not have ${redeemCoins} coins to redeem. Try Again `, [{ text: "Okay", style: "cancel", onPress: () => handleGoBack() }]);
-    }
-    else if (redeemCoins <= userData.coins) {
-      setRemainingCoins((Number(userData.coins) - Number(redeemCoins)))
-      //need to send to the back
-      setRefreshCoins(true)
-      Alert.alert("Sorry", `${userData.username}  have redeemed ${redeemCoins} coins. You have ${redeemCoins} coins left`, [{ text: "Okay", style: "cancel", onPress: () => console.log('hi') }]);
-    }
+      )
+      :
+      (
+        leftover = (Number(aChild.dependentCoins) - Number(redeemCoins)),
+        setRemainingCoins(leftover)
+
+      )
 
   }
 
+
+
+
+
+
+  const handleRedeem = () => {
+    let regi = /[a-zA-Z]/;
+    let regiStuff = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g
+    if (redeemCoins <= 0 || regi.test(redeemCoins) || regiStuff.test(redeemCoins)) {
+      Alert.alert("Can't Redeem", `Invalid amount. Try Again.`, [{ text: "Okay", style: "cancel", }]);
+    }
+    else if (redeemCoins > remainingCoins) {
+      Alert.alert("Sorry", `${userData.username} does not have ${redeemCoins} coins to redeem. Try Again.`, [{ text: "Okay", style: "cancel", }]);
+    }
+    else if (redeemCoins <= remainingCoins) {
+      quickMath()
+      let userRedeem: IRedeemCoins = {
+
+        Id: userData.id,
+        Coins: leftover,
+      }
+      console.log(userRedeem)
+      const newAmount = async (userRedeem: IRedeemCoins) => {
+        await NewCoinAmountNotDependent(userRedeem)
+      }
+      newAmount(userRedeem)
+      setUserCoins(leftover)
+      Alert.alert("Success", `${userData.username} have redeemed ${redeemCoins} coins.`, [{ text: "Okay", style: "cancel", onPress: () => {setUserCoins(leftover)} }]);
+
+    }
+  }
+  const handleRedeemChild = () => {
+    let regi = /[a-zA-Z]/;
+    let regiStuff = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g
+    if (redeemCoins <= 0 || regi.test(redeemCoins) || regiStuff.test(redeemCoins)) {
+      Alert.alert("Can't Redeem", `Invalid amount. Try Again.`, [{ text: "Okay", style: "cancel", }]);
+    }
+    else if (redeemCoins > remainingCoins) {
+      Alert.alert("Sorry", `${aChild.dependentName} does not have ${redeemCoins} coins to redeem. Try Again.`, [{ text: "Okay", style: "cancel", }]);
+    }
+    else if (redeemCoins <= remainingCoins) {
+      quickMath()
+      let childRedeem: IRedeemCoinsChild = {
+        DependentCoins: remainingCoins,
+        Id: aChild.id
+      }
+      NewCoinAmountDependent(childRedeem)
+      //need to send to the back
+      
+      Alert.alert("Success", `${aChild.dependentName} have redeemed ${redeemCoins} coins.`, [{ text: "Okay", style: "cancel", onPress: () => { setRefreshCoins(true) } }]);
+    }
+  }
+  const getUserandChild = async () => {
+    let user = await GetUserByUsername(savedUsername);
+    if (user.length != 0) {
+      setUserData(user)
+      let children = await GetDependantByUserId(user.id);
+      if (children.length != 0) {
+        setChildrenData(children)
+      }
+    }
+  }
+
   useEffect(() => {
-    console.log(userData)
-    console.log('ji')
+
+    getUserandChild()
+    setUserCoins(userData.coins)
+    setRedeemCoins(0)
+    quickMath()
     setRefreshCoins(false)
 
   }, [refreshCoins])
@@ -61,25 +140,71 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
           <View style={styles.underlineContainer}>
             <UnderlinedHeaderComponent titleOne={'Select Member'} titleTwo={'see all'} titleThree={'see less'} />
           </View>
+          <>
+            {
+              seeAll ?
+                <>
+                  <View >
+                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                      <AvatarComponent onPress={() => { setChildRedeem(false), setRefreshCoins(true) }} imageSource={userData.photo} />
+                      {childData.map((child: any, idx: number) => {
+                        return (
+                          <AvatarComponent key={idx} onPress={() => { setAChild(child), setRefreshCoins(true), setChildRedeem(true) }} imageSource={child.DependentPhoto} />
+                        )
+                      })}
+                    </ScrollView>
+                  </View>
+
+
+                </>
+                :
+                <>
+                  <View style={{ opacity: 10, flexDirection: 'row', flexWrap: 'wrap' }}>
+                    <AvatarComponent onPress={() => { setChildRedeem(false), setRefreshCoins(true) }} imageSource={userData.photo} />
+                    {childrenData.map((child: any, idx: number) => {
+                      return (
+                        <AvatarComponent key={idx} onPress={() => { setAChild(child), setRefreshCoins(true), setChildRedeem(true) }} imageSource={child.DependentPhoto} />
+                      )
+                    })}
+                  </View>
+                </>
+
+            }
+          </>
 
 
           <View style={styles.underlineContainer}>
             <UnderlinedOneHeaderComponent titleFirst={'Redeem'} />
           </View>
 
-          <View style={{ flex: 0.1, marginTop: 10, paddingLeft: 10, paddingRight: 10 }}>
-            <Text> {userData.username} has a total of {userData.coins} coins. Enter the value of coins you would like to redeem:</Text>
-          </View>
+          {
+            !childRedeem ?
+              <View style={{ flex: 0.1, marginTop: 10, paddingLeft: 10, paddingRight: 10 }}>
+                <Text> {userData.username} has a total of {userCoins} coins. Enter the value of coins you would like to redeem:</Text>
+              </View>
+              :
+              <View style={{ flex: 0.1, marginTop: 10, paddingLeft: 10, paddingRight: 10 }}>
+                <Text> {aChild.dependentName} has a total of {aChild.dependentCoins} coins. Enter the value of coins you would like to redeem:</Text>
+              </View>
+          }
+
 
           <View style={{ flex: 0.2, flexDirection: 'row', justifyContent: 'center' }}>
 
-            <InputFieldComponent maxLength={80} value={''} holder="Redeem Coins" hide={false} onChangeText={(e: string) => setRedeemCoins(e)} />
+            <InputFieldComponent maxLength={80} value={String(redeemCoins)} holder="Redeem Coins" hide={false} onChangeText={(e: string) => setRedeemCoins(e)} />
 
           </View>
+          {
+            !childRedeem ?
+              <View style={{ flex: 0.1, marginLeft: 40, marginRight: 40, justifyContent: 'center' }}>
+                <FullButtonComponent color={orangeColor} radius={15} onPress={() => { handleRedeem(), console.log('adult') }}><Text> Redeem </Text></FullButtonComponent>
+              </View>
+              :
+              <View style={{ flex: 0.1, marginLeft: 40, marginRight: 40, justifyContent: 'center' }}>
+                <FullButtonComponent color={orangeColor} radius={15} onPress={() => { handleRedeemChild() }}><Text> Redeem </Text></FullButtonComponent>
+              </View>
+          }
 
-          <View style={{ flex: 0.1, marginLeft: 40, marginRight: 40, justifyContent: 'center' }}>
-            <FullButtonComponent color={orangeColor} radius={15} onPress={() => console.log(redeemCoins)}><Text> Redeem </Text></FullButtonComponent>
-          </View>
 
         </View>
       </TouchableWithoutFeedback>

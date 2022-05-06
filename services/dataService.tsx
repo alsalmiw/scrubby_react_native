@@ -7,6 +7,9 @@ import { ISpace } from '../Interfaces/ISpace';
 import IChild from '../Interfaces/IChild';
 import IInviteUser from '../Interfaces/IInviteUser';
 import IUserData from '../Interfaces/IUserData';
+import IRedeemCoins from '../Interfaces/IRedeemCoins';
+import IRedeemCoinsChild from '../Interfaces/IRedeemChildCoins';
+
 
 let link = "https://scrubbyapi.azurewebsites.net"
 
@@ -367,7 +370,7 @@ async function GetSharedSpacesById(id:number){
     return data
 }
 //add post for new coin amount
-async function NewCoinAmountDependent(Dependent:IChild)
+async function NewCoinAmountDependent(Dependent:IRedeemCoinsChild)
 {
     let res= await fetch(`${link}/Dependent/NewCoinAmount`, {
         method: "POST",
@@ -387,7 +390,7 @@ async function NewCoinAmountDependent(Dependent:IChild)
     return data;
 }
 
-async function NewCoinAmountNotDependent(User:IUserData)
+async function NewCoinAmountNotDependent(User:IRedeemCoins)
 {
     let res= await fetch(`${link}/User/NewCoinAmount`, {
         method: "POST",
@@ -395,7 +398,7 @@ async function NewCoinAmountNotDependent(User:IUserData)
             "Content-Type": "application/json"
         },
         //
-        body: JSON.stringify({User})
+        body: JSON.stringify(User)
     });
     if(!res.ok)
     {

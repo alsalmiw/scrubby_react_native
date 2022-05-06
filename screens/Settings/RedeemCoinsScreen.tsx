@@ -97,7 +97,7 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
         await NewCoinAmountDependent(childRedeem)
       }
       newAmountChild(childRedeem)
-      setChildCoin(leftover)
+      //setChildCoin(leftover)
       //need to send to the back
 
       Alert.alert("Success", `${aChild.dependentName} have redeemed ${redeemCoins} coins.`, [{ text: "Okay", style: "cancel", onPress: () => { setRefreshCoins(true) } }]);

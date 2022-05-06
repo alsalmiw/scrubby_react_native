@@ -8,9 +8,9 @@ import HeaderComponent from '../../components/HeaderComponent';
 import FullButtonComponent from '../../components/FullButtonComponent';
 
 
-type Props = NativeStackScreenProps <RootStackParamList, 'ApproveTasks'>
+type Props = NativeStackScreenProps <RootStackParamList, 'TaskMember'>
 
-const ApproveTasksScreen: FC<Props> = ({navigation, route})=> {
+const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
   const { purpleColor} = useContext(ThemeContext)
   
   const handleGoBack = ()=>{
@@ -22,9 +22,9 @@ const ApproveTasksScreen: FC<Props> = ({navigation, route})=> {
  <>
     <View style={styles.container}>
         
-        <HeaderComponent title='Approve Tasks'/>
+        <HeaderComponent title='Tasks Family'/>
         <View>
-          <Text> Approve Tasks</Text>
+          <Text> Task Member</Text>
         </View>
         
     </View>
@@ -41,4 +41,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ApproveTasksScreen
+export default TaskMemberScreen

@@ -10,7 +10,7 @@ import RootStackParamList from "../../types/INavigateSettings";
 /////
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserContext from "../../context/UserContext";
-import { AcceptInvite, GetUserByUsername } from "../../services/dataService";
+import { AcceptInvite, DeleteInvite, GetUserByUsername } from "../../services/dataService";
 
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -29,8 +29,10 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
         username: string,
     }
 
+
     const { purpleColor } = useContext(ThemeContext)
-    const { allInvites, setAllInvites, inviters, setInviters, userData } = useContext(UserContext)
+    const { inviters, setInviters, userData, refresh, setRefresh } = useContext(UserContext)
+    const [fullName, setFullName] = useState("")
     const [Name, setName] = useState("")
     const [person, setPerson] = useState<any>({})
 
@@ -38,29 +40,31 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
     const handleAcceptBtn = async () => {
         await handleGetLocalNameInfo()
         let accept = await AcceptInvite(person.id, userData.username)
-        console.log(accept)
-        removeInvitee()
-        console.log(inviters)
-
+        setRefresh(true)
         Alert.alert("Congratulation", `${person.username} can now share a space with you`, [{ text: "Cancel", style: "cancel", onPress: () => navigation.navigate("ManageInvites") }])
     }
 
     const handleGetLocalNameInfo = async () => {
         let displayFullName: any = await AsyncStorage.getItem('InviterFullName')
-        //console.log(displayFullName)
         if (displayFullName.length != 0) {
-            setName(displayFullName)
+            setFullName(displayFullName)
         }
         let displayPersonName: any = await AsyncStorage.getItem('Inviter')
         let displayPerson = await GetUserByUsername(displayPersonName);
         if (displayPerson != null) {
+            console.log(displayPerson)
+            setName(displayPersonName)
             setPerson(displayPerson);
         }
 
     }
     const removeInvitee = () => {
         //call delete fetch here 
+        DeleteInvite( userData.id, person.username)
+
+        //do I even need this code
         setInviters(inviters.filter((person: IPerson) => person.username != Name))
+        setRefresh(true)
 
     }
     const handleGetName = async () => {
@@ -69,7 +73,7 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
     }
     useEffect(() => {
         handleGetName()
-        console.log(userData)
+
 
     }, [])
 
@@ -80,8 +84,11 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
                     <HeaderComponent title={"ADD TO MY SPACE"}></HeaderComponent>
                 </View>
                 <View style={{ flexDirection: 'row', paddingLeft: 20 }}>
-                    <Text>{Name}</Text>
-                    <Pressable>
+                    {
+                        fullName != null ? <Text>{fullName}</Text> : <Text>{Name}</Text>
+                    }
+
+                    <Pressable onPress={() => removeInvitee()}>
                         <FontAwesome name="trash-o" size={24} style={{ paddingLeft: 20 }} color="gray" />
                         <Text>Delete User</Text>
                     </Pressable>

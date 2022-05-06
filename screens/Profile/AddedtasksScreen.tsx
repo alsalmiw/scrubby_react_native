@@ -96,7 +96,7 @@ const AddedTasksScreen: FC<Props> = ({navigation})=> {
     
     
    </ScrollView>
-<FullButtonComponent onPress={()=>navigation.goBack()} color={purpleColor}>
+<FullButtonComponent radius ={0} onPress={()=>navigation.goBack()} color={purpleColor}>
       {/* AddSelectedTask(addTask), console.log(AddSelectedTask(addTask) */}
         <Text>Back</Text>
       </FullButtonComponent>

@@ -9,6 +9,7 @@ import SettingsNavigation from '../screens/Settings/SettingsNavigation';
 import TaskFamilyScreen from '../screens/Tasking/TaskFamilyScreen'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import ProfileNavigation from '../screens/Profile/ProfileNavigation';
+import TaskingNavigation from '../screens/Tasking/TaskingNavigation';
 
 type RootStackParamList ={
   Nav: undefined,
@@ -50,7 +51,7 @@ const MyTabs: FC = () =>{
       />
       <Tab.Screen
         name="Tasking"
-        component={TaskFamilyScreen}
+        component={TaskingNavigation}
         options={{
           headerShown: false,
           tabBarLabel: 'Tasking',

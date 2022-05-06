@@ -79,7 +79,7 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
 
     //await AddSelectedTask(addTask);
     // let result = await AddSelectedTask(addTask);
-    // console.log(result);
+    // console.log(result);//
     navigation.navigate('AddedItems')
     
   }

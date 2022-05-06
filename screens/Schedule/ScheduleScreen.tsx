@@ -8,7 +8,7 @@ import UserContext from '../../context/UserContext';
 
 
 const ScheduleScreen: FC = ()=> {
-  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations } = useContext(UserContext)
   
   useEffect(() => {
     // console.log(savedUsername)
@@ -26,7 +26,7 @@ const ScheduleScreen: FC = ()=> {
       let userInfo = await GetUserData(username)
 
       if(userInfo.length!=0) {
-        setChildData(userInfo.children)
+        setChildrenData(userInfo.children)
         setMySpaces(userInfo.spaces)
         setUserData(userInfo.userInfo)
         setScoreBoardList(userInfo.scoreBoard)
@@ -37,7 +37,6 @@ const ScheduleScreen: FC = ()=> {
 
 
       }
-
 
     }
     

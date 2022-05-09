@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GetUserData } from '../../services/dataService';
 import UserContext from '../../context/UserContext';
+import ReactNativeCalendar from '../../components/ReactNativeCalendar';
 
 
 
@@ -48,7 +49,8 @@ const ScheduleScreen: FC = ()=> {
     
  
     <View style={styles.container}>
-        <Text>My Schedule Page</Text>
+   
+        <ReactNativeCalendar/>
     </View>
 
     
@@ -57,10 +59,8 @@ const ScheduleScreen: FC = ()=> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  
+  paddingTop:60
   },
 });
 

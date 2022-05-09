@@ -22,7 +22,7 @@ type Props = NativeStackScreenProps <RootStackParamList, 'TaskFamily'>
 const TaskFamilyScreen: FC<Props> = ({navigation})=> {
 
   const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor, greenColor } = useContext(ThemeContext);
-  const { mySpaces, userData, childData, childrenData, acceptedInvitations , taskUser, setTaskUser, mySpace, setMySpace} = useContext(UserContext)
+  const { mySpaces, userData, childData, childrenData, acceptedInvitations , taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser} = useContext(UserContext)
 
   const [isInvited, setIsInvited] = useState(false)
 
@@ -38,33 +38,51 @@ const TaskFamilyScreen: FC<Props> = ({navigation})=> {
     setMySpace(space)
     // fetchSpace(space.id)
     navigation.navigate('TaskMember')
+    console.log(selectedUser)
     
   }
 
-  const handleGoToTaskMember = (member:any)=> {
+  const handleGoToTaskUser = (user:any)=> {
+    let member = {
+      id: user.id,
+      fullName: user.name,
+      isChild: false
+    }
+    setSelectedUser(member)
     console.log( member)
     console.log( mySpaces)
-    setTaskUser(member)
+    setTaskUser(user)
     setIsInvited(false)
     
   }
 
-  const handleGoToTaskInivtedMember = async(member:any)=> {
-    console.log( member)
-    setTaskUser(member)
-    setIsInvited(true)
-
-   
+  const handleGoToTaskChild = (child:any)=> {
+    let member = {
+      id: child.id,
+      fullName: child.dependentName,
+      isChild: true
+    }
+    setSelectedUser(member)
+    console.log( child)
+    console.log( mySpaces)
+    setTaskUser(child)
+    setIsInvited(false)
+    
   }
- 
-  //   const fetchSpace = async(id: number) =>{
-  //   let space = await GetSpacesByCollectionID(id)
-  //   if(space.length>0){
-  //     setMySpace(space)
-  //   }
-  // } 
 
+  const handleGoToTaskInivtedMember = async(user:any)=> {
+    let member = {
+      id: user.invitedId,
+      fullName: user.invitedFullname,
+      isChild: false
+    }
+    setSelectedUser(member)
+    console.log( member)
+    console.log( user)
 
+    setTaskUser(user)
+    setIsInvited(true)
+  }
 
   return (
     
@@ -74,12 +92,12 @@ const TaskFamilyScreen: FC<Props> = ({navigation})=> {
             <UnderlinedHeaderComponent titleOne={'Select Member'} titleTwo={'see all'} titleThree={'see less'} />
           </View>
     <View style={styles.selectMemberCon}>
-    <AvatarComponent onPress={()=> handleGoToTaskMember(userData)} imageSource={userData.photo} />
+    <AvatarComponent onPress={()=> handleGoToTaskUser(userData)} imageSource={userData.photo} />
 
     {childrenData.map((child:any, idx:number)=> {
       return(
         childrenData.length>0?
-        <AvatarComponent key={idx} onPress={()=> handleGoToTaskMember(child)} imageSource={child.DependentPhoto} />
+        <AvatarComponent key={idx} onPress={()=> handleGoToTaskChild(child)} imageSource={child.DependentPhoto} />
         : null
       )
     })}

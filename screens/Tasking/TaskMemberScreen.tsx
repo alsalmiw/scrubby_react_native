@@ -13,22 +13,26 @@ import UnderlinedHeaderComponent from '../../components/UnderlinedHeaderComponen
 import UserContext from '../../context/UserContext';
 import SquareColoredButton from '../../components/SquareColoredButton';
 import iconsMap from '../../types/IconsMap';
+import TaskRowTaskInfoComponent from '../../components/TaskRowTaskInfoComponent';
+import ModalComponent from '../../components/ModalComponent';
+
 
 
 type Props = NativeStackScreenProps <RootStackParamList, 'TaskMember'>
 
 const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
   const { purpleColor} = useContext(ThemeContext)
-  const { seeAll, setSeeAll,  mySpace} = useContext(UserContext)
+  const { seeAll, setSeeAll,  mySpace, taskUser, isChild, setIsChild, selectedUser, setSelectedUser, setMyRoom} = useContext(UserContext)
 
   const [tasks, setTasks] = useState([])
 
   useEffect(() => {
     setSeeAll(true)
-    
-    console.log(mySpace)
+    console.log(selectedUser.fullName)
+    //console.log(mySpace)
 
   }, [])
+
   let r = Math.floor(Math.random() * 7)
   
   const handleGoBack = ()=>{
@@ -41,7 +45,7 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
 
       mySpace.rooms.map((room:any, idx:number) => {
         return(
-        <SquareColoredButton key={idx} idx={r+idx} onPress={() => setTasks(room.tasks) }>
+        <SquareColoredButton key={idx} idx={r+idx} onPress={() => {setTasks(room.tasks), setMyRoom(room)} }>
           <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
         <Text style={[{color:"#FFF"}]}>{room.spaceName}</Text>
         </SquareColoredButton>
@@ -58,7 +62,7 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
         <View style={styles.firstRowContainer}>
                 <AvatarComponent onPress={undefined} imageSource={"photo"}/>
                 <View style={styles.insideFirstRowContainer1}>
-                    <UserNameComponent name={"full name"}></UserNameComponent>
+                    <UserNameComponent name={selectedUser.fullName}/>
                  
                 </View>
             </View>
@@ -94,9 +98,19 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
         </View>
             {/* </View> */}
 
-          
+          <View>
+            {
+              tasks.length>0?
+              tasks.map((task: any, idx: number) =>   
+          <TaskRowTaskInfoComponent r={r} key={idx} idx={idx} task={task} />
+                
+                
+                )
+              : null
+            }
+          </View>
 
-        
+       
     </View>
     <FullButtonComponent radius={0} color={purpleColor} onPress={()=>handleGoBack()} >Back</FullButtonComponent>
     </>

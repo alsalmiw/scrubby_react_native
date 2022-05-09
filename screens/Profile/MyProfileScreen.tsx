@@ -92,7 +92,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   useEffect(() => {
     // console.log(savedUsername)
-    AsyncGetSpaceCollectionById();
+    //AsyncGetSpaceCollectionById();
 
 
   }, [])
@@ -111,18 +111,18 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     if (user.length != 0) {
       setUserData(user)
       let result = await GetSpaceCollectionByUserId(user.id);
-      let children = await GetDependantByUserId(user.id);
+      // let children = await GetDependantByUserId(user.id);
       //let usersTasks = await GetSelectedTasksByUserID(user.id)
-      console.log(children)
+      //console.log(children)
       if (result.length != 0) {
         setNewSpace([...result])
         setMySpaces(result)
       }
-      if (children.length != 0) {
-        console.log(children.length);
-        setChildrenData(children)
-        console.log("after");
-      }
+      // if (children.length != 0) {
+      //   console.log(children.length);
+      //   setChildrenData(children)
+      //   console.log("after");
+      // }
     //   if(usersTasks.length!= 0)
     // {
     //   setUsersAddedTasks (usersTasks)

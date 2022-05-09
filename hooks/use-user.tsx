@@ -19,7 +19,11 @@ export default function UseUser(){
         spaceCategory: string,
         collectionId: number,
     }
-   
+   interface ISelectedUser {
+       id: number,
+       fullName: string,
+       isChild:boolean
+   }
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -27,6 +31,7 @@ export default function UseUser(){
     const [savedPassword, setSavedPassword] = useState('password')
     const [seeAll, setSeeAll] = useState(false)
     const [isChildFree, setIsChildFree] = useState(false)
+    const [isChild, setIsChild] = useState(false)
     const [userData, setUserData] = useState<IUserData[]>([])
     const [fullUserInfo, setFullUserInfo] = useState([])
     const [childData, setChildData] = useState<IChild[]>([])
@@ -51,12 +56,15 @@ export default function UseUser(){
     const [roomTasks, setRoomTasks]=useState<ITask[]>([]);
     const [scoreBoardList, setScoreBoardList]=useState<IScoreBoard[]>([]);
     const [refresh, setRefresh] = useState<boolean>()
+    const [selectedUser, setSelectedUser] = useState<ISelectedUser>()
+    const [modalVisible, setModalVisible] = useState(false);
+    const [scheduleTask, setScheduleTask]= useState()
    
     // return{username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask, mySpace, setMySpace, rState, setRState, allRequestName, setAllRequestName, allInvites, setAllInvites, setChildrenData, childrenData, setNewSpace, usersAddedTasks, setUsersAddedTasks, myRoom, setMyRoom, tasksAPI, setTasksAPI, roomTasks, setRoomTasks, fullUserInfo, setFullUserInfo, scoreBoardList, setScoreBoardList}
 
 
    
-    return{username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask, mySpace, setMySpace, rState, setRState, invited, setInvited, inviters, setInviters, setChildrenData, childrenData, setNewSpace, usersAddedTasks, setUsersAddedTasks, myRoom, setMyRoom, tasksAPI, setTasksAPI, roomTasks, setRoomTasks, fullUserInfo, setFullUserInfo, refresh, setRefresh, scoreBoardList, setScoreBoardList, acceptedInvitations, setAcceptedInvitations, taskUser, setTaskUser}
+    return{username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask, mySpace, setMySpace, rState, setRState, invited, setInvited, inviters, setInviters, setChildrenData, childrenData, setNewSpace, usersAddedTasks, setUsersAddedTasks, myRoom, setMyRoom, tasksAPI, setTasksAPI, roomTasks, setRoomTasks, fullUserInfo, setFullUserInfo, refresh, setRefresh, scoreBoardList, setScoreBoardList, acceptedInvitations, setAcceptedInvitations, taskUser, setTaskUser, isChild, setIsChild, selectedUser, setSelectedUser, modalVisible, setModalVisible, scheduleTask, setScheduleTask}
 
     
 }

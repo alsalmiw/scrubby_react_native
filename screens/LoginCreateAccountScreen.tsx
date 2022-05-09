@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from "react"
+import { FC, useContext, useEffect, useState } from "react"
 import { Alert, Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native"
 import { Button } from "react-native-paper"
 import {Keyboard, TouchableWithoutFeedback} from 'react-native'
@@ -24,8 +24,13 @@ type RootStackParamList ={
 const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
 
     const [login, setLogin] = useState(true);
-    const { username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo } = useContext(UserContext)
+    const { setModalVisible,username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo } = useContext(UserContext)
+
     let avR = Math.floor(Math.random() * 9)
+
+    useEffect(() => {
+       
+    }, [])
 
     const addUser = async () => {
         let userData: INewUser = {

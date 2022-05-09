@@ -410,7 +410,7 @@ async function NewCoinAmountNotDependent(User:IRedeemCoins)
     return data;
 }
 
-async function AddUserAssignedTasks(assignedTasks: any[])
+async function AddUserAssignedTasks(assignedTasks: any)
 {
     let res= await fetch(`${link}/AssignedTasksUsers/AddUserAssignedTasks`, {
         method: "POST",
@@ -418,7 +418,7 @@ async function AddUserAssignedTasks(assignedTasks: any[])
             "Content-Type": "application/json"
         },
         //
-        body: JSON.stringify([assignedTasks])
+        body: JSON.stringify(assignedTasks)
     });
     if(!res.ok)
     {

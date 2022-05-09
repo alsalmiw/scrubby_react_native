@@ -81,9 +81,9 @@ const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r}) => {
                               scheduledTasksArr.push(scheduledTaskUser)
 
                       }
-      
-                      let result = await AddUserAssignedTasks(scheduledTasksArr)
                       console.log(scheduledTasksArr)
+                      let result = await AddUserAssignedTasks(scheduledTasksArr)
+                      
             }
             
             else{

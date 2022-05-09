@@ -30,6 +30,7 @@ export default function UseUser(){
     const [userData, setUserData] = useState<IUserData[]>([])
     const [fullUserInfo, setFullUserInfo] = useState([])
     const [childData, setChildData] = useState<IChild[]>([])
+    const [childPage, setChildPage] = useState<IChild>([])
     const [childrenData, setChildrenData] = useState<IChild[]>([])
     const [mySpaces, setMySpaces] =useState<newSpace[]>([])
     const [mySpace, setMySpace] =useState<ISpace[]>([])
@@ -53,13 +54,9 @@ export default function UseUser(){
     const [scoreBoardList, setScoreBoardList]=useState<IScoreBoard[]>([]);
     const [refresh, setRefresh] = useState<boolean>()
     const [spinnerOn, setSpinnerOn] = useState<boolean>()
- 
-   
-    // return{username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask, mySpace, setMySpace, rState, setRState, allRequestName, setAllRequestName, allInvites, setAllInvites, setChildrenData, childrenData, setNewSpace, usersAddedTasks, setUsersAddedTasks, myRoom, setMyRoom, tasksAPI, setTasksAPI, roomTasks, setRoomTasks, fullUserInfo, setFullUserInfo, scoreBoardList, setScoreBoardList}
 
 
-   
-    return{username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask, mySpace, setMySpace, rState, setRState, invited, setInvited, inviters, setInviters, setChildrenData, childrenData, setNewSpace, usersAddedTasks, setUsersAddedTasks, myRoom, setMyRoom, tasksAPI, setTasksAPI, roomTasks, setRoomTasks, fullUserInfo, setFullUserInfo, refresh, setRefresh, scoreBoardList, setScoreBoardList, acceptedInvitations, setAcceptedInvitations, taskUser, setTaskUser, spinnerOn, setSpinnerOn,}
+    return{username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask, mySpace, setMySpace, rState, setRState, invited, setInvited, inviters, setInviters, setChildrenData, childrenData, setNewSpace, usersAddedTasks, setUsersAddedTasks, myRoom, setMyRoom, tasksAPI, setTasksAPI, roomTasks, setRoomTasks, fullUserInfo, setFullUserInfo, refresh, setRefresh, scoreBoardList, setScoreBoardList, acceptedInvitations, setAcceptedInvitations, taskUser, setTaskUser, spinnerOn, setSpinnerOn, childPage, setChildPage}
 
     
 }

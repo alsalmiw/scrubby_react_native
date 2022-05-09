@@ -378,7 +378,7 @@ async function NewCoinAmountDependent(Dependent:IRedeemCoinsChild)
             "Content-Type": "application/json"
         },
         //
-        body: JSON.stringify({Dependent})
+        body: JSON.stringify(Dependent)
     });
     if(!res.ok)
     {
@@ -387,6 +387,7 @@ async function NewCoinAmountDependent(Dependent:IRedeemCoinsChild)
     }
     let data:boolean = await res.json();
     console.log(data)
+    console.log('hi')
     return data;
 }
 

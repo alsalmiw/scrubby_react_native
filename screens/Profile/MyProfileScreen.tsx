@@ -46,7 +46,7 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms,setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks} = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setSpinnerOn, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms,setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks} = useContext(UserContext)
 
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
@@ -92,6 +92,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   useEffect(() => {
     // console.log(savedUsername)
+    setSpinnerOn(false)
     AsyncGetSpaceCollectionById();
 
 

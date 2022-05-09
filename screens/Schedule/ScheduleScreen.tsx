@@ -8,7 +8,7 @@ import UserContext from '../../context/UserContext';
 
 
 const ScheduleScreen: FC = ()=> {
-  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn } = useContext(UserContext)
   
   useEffect(() => {
     // console.log(savedUsername)
@@ -42,6 +42,9 @@ const ScheduleScreen: FC = ()=> {
     }
     
   }
+  useEffect(()=>{
+    setSpinnerOn(false)
+  }, [])
   
   return (
     

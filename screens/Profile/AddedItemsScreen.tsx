@@ -130,7 +130,7 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
         }
       </View>
 
-        <FullButtonComponent onPress={handleNavigateDone} color={purpleColor}>
+        <FullButtonComponent radius={0} onPress={handleNavigateDone} color={purpleColor}>
           <Text>Done</Text>
         </FullButtonComponent>
 

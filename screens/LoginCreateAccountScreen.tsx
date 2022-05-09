@@ -1,5 +1,6 @@
 import { FC, useContext, useEffect, useState } from "react"
 import { ActivityIndicator, Alert, Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native"
+
 import { Button } from "react-native-paper"
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentLogin"
@@ -26,9 +27,14 @@ type Props = NativeStackScreenProps<RootStackParamList, 'login'>
 const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
     const [login, setLogin] = useState(true);
-    const { username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, spinnerOn, setSpinnerOn } = useContext(UserContext)
+    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, spinnerOn, setSpinnerOn } = useContext(UserContext)
     const { yellowColor, greenColor } = useContext(ThemeContext)
+
     let avR = Math.floor(Math.random() * 9)
+
+    useEffect(() => {
+       
+    }, [])
 
     const addUser = async () => {
         let userData: INewUser = {

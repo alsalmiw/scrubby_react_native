@@ -4,11 +4,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GetUserData } from '../../services/dataService';
 import UserContext from '../../context/UserContext';
+import ReactNativeCalendar from '../../components/ReactNativeCalendar';
 
 
 
 const ScheduleScreen: FC = ()=> {
-  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn } = useContext(UserContext)
   
   useEffect(() => {
     // console.log(savedUsername)
@@ -26,7 +27,7 @@ const ScheduleScreen: FC = ()=> {
       let userInfo = await GetUserData(username)
 
       if(userInfo.length!=0) {
-        setChildData(userInfo.children)
+        setChildrenData(userInfo.children)
         setMySpaces(userInfo.spaces)
         setUserData(userInfo.userInfo)
         setScoreBoardList(userInfo.scoreBoard)
@@ -37,7 +38,6 @@ const ScheduleScreen: FC = ()=> {
 
 
       }
-
 
     }
     
@@ -52,7 +52,8 @@ const ScheduleScreen: FC = ()=> {
     
  
     <View style={styles.container}>
-        <Text>My Schedule Page</Text>
+   
+        <ReactNativeCalendar/>
     </View>
 
     
@@ -61,10 +62,8 @@ const ScheduleScreen: FC = ()=> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  
+  paddingTop:60
   },
 });
 

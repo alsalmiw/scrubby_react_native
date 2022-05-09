@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import LoginAndCreateAccountScreen from './screens/LoginCreateAccountScreen';
 import { FC, useContext, useEffect } from 'react';
 import ChildTasksScreen from './screens/Profile/ChildTasksScreen';
+import ModelComponent from './components/ModalComponent'
 // import RootStackParamList from './types/INavigateProfile'
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -55,6 +56,8 @@ const App: FC =()=> {
 
          </Stack.Navigator>
          {/* <AddItemsScreen /> */}
+         
+
       </ThemeProvider>
 
     </UserProvider>

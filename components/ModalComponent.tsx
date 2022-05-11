@@ -2,11 +2,12 @@ import React, { FC, useContext, useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import UserContext from "../context/UserContext";
 import { FontAwesome5 } from '@expo/vector-icons';
-//
-const ModalComponent:FC<any> = ({children}) => {
+import { AntDesign } from '@expo/vector-icons';
+///
+const ModalComponent: FC<any> = ({ children }) => {
 
-  const { modalVisible, setModalVisible} = useContext(UserContext)
- 
+  const { modalVisible, setModalVisible } = useContext(UserContext)
+
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -19,22 +20,26 @@ const ModalComponent:FC<any> = ({children}) => {
         }}
       >
         <View style={styles.centeredView}>
+
           <View style={styles.modalView}>
-            
-            
+            <View style={{ flex:0, width:'120%', flexDirection:'row', justifyContent: 'flex-end', alignItems:'flex-end', marginTop:0, paddingTop:0, paddingRight:10,}}>
+              <Pressable
+                style={[styles.button,]}
+                onPress={() => { setModalVisible(!modalVisible), console.log('yes') }}
+              >
+                <AntDesign name="close" size={35} color="black" />
+              </Pressable>
+            </View>
+
+
+
             {children}
-            
-            <Pressable
-              style={[styles.button, styles.buttonClose,]}
-              onPress={() => {setModalVisible(!modalVisible), console.log('yes')}}
-            >
-              <FontAwesome5 name="unlock" size={24} color="black" />
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
+
+
           </View>
         </View>
       </Modal>
-     
+
     </View>
   );
 };
@@ -44,7 +49,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  
+
   },
   modalView: {
     margin: 20,
@@ -52,6 +57,7 @@ const styles = StyleSheet.create({
     height: "80%",
     backgroundColor: "white",
     borderRadius: 0,
+    paddingTop:10,
     padding: 35,
     alignItems: "center",
     shadowColor: "#000",
@@ -64,7 +70,6 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   button: {
-    backgroundColor:'blue',
     borderRadius: 20,
     padding: 10,
     elevation: 2
@@ -72,9 +77,7 @@ const styles = StyleSheet.create({
   buttonOpen: {
     backgroundColor: "#F194FF",
   },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
+
   textStyle: {
     color: "white",
     fontWeight: "bold",

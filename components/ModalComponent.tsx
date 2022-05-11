@@ -1,7 +1,8 @@
 import React, { FC, useContext, useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import UserContext from "../context/UserContext";
-
+import { FontAwesome5 } from '@expo/vector-icons';
+//
 const ModalComponent:FC<any> = ({children}) => {
 
   const { modalVisible, setModalVisible} = useContext(UserContext)
@@ -24,9 +25,10 @@ const ModalComponent:FC<any> = ({children}) => {
             {children}
             
             <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
+              style={[styles.button, styles.buttonClose,]}
+              onPress={() => {setModalVisible(!modalVisible), console.log('yes')}}
             >
+              <FontAwesome5 name="unlock" size={24} color="black" />
               <Text style={styles.textStyle}>Hide Modal</Text>
             </Pressable>
           </View>
@@ -62,6 +64,7 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   button: {
+    backgroundColor:'blue',
     borderRadius: 20,
     padding: 10,
     elevation: 2

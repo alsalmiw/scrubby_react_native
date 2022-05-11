@@ -33,7 +33,7 @@ const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r}) => {
 
    
     const [dates, setDates] = React.useState<Date[] | undefined>();
-    const [datePicker, setDatePicker] = React.useState<string | undefined>(new Date().toDateString());
+    const [datePicker, setDatePicker] = React.useState<string | undefined>('09-10-2022');
 
     const [storedDates, setStoredDates] = useState<any[]>([])
     const [open, setOpen] = React.useState(false);
@@ -169,10 +169,6 @@ let sendDates=[] as any
                 <UserNameComponent name={'End Date'} />
             </View>
 
-            </View>
-            <View>
-            <Button title="Calendar" onPress={() => setOpen(true)} />
-  
             </View>
               <View>
                  <DatePicker

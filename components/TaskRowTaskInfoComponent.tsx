@@ -33,7 +33,7 @@ const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r}) => {
 
    
     const [dates, setDates] = React.useState<Date[] | undefined>();
-    const [datePicker, setDatePicker] = React.useState<string | undefined>();
+    const [datePicker, setDatePicker] = React.useState<string | undefined>(new Date().toDateString());
 
     const [storedDates, setStoredDates] = useState<any[]>([])
     const [open, setOpen] = React.useState(false);
@@ -141,9 +141,9 @@ let sendDates=[] as any
 
 
     const displayTaskInfo =()=> {
-        // setModalVisible(true)
+        setModalVisible(true)
         setScheduleTask(task)
-        setOpen(true) 
+       // setOpen(true) 
         allDate.push(dates)
         console.log(allDate)
 
@@ -260,9 +260,9 @@ let sendDates=[] as any
       />
         
         </PaperProvider>
-    {/* <ModalComponent>
+    <ModalComponent>
         <ModalContent />
-     </ModalComponent> */}
+     </ModalComponent>
     </>
   )
 }

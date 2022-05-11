@@ -13,6 +13,7 @@ import UnderlinedOneHeaderComponent from './UnderlinedOneHeaderComponent';
 import UserNameComponent from './UserNameComponent';
 import ReactNativeCalendar from './ReactNativeCalendar';
 import { AddChildAssignedTasks, AddUserAssignedTasks } from '../services/dataService';
+import { getDate } from 'date-fns';
   registerTranslation('en', en)
   registerTranslation('en-GB', enGB)
 
@@ -31,11 +32,28 @@ const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r}) => {
 
    
     const [dates, setDates] = React.useState<Date[] | undefined>();
-    const [arrDates, setArrDates] = useState<any[]>([])
+    const [storedDates, setStoredDates] = useState<any[]>([])
     const [open, setOpen] = React.useState(false);
 
     const [isAdded, setIsAdded]= useState(false)
-    let newArr=[] as any
+    let datesArr=[] as any
+
+    useEffect(() => {
+     //console.log(task.id, myRoom.id, selectedUser.id, selectedUser.isChild)
+     let tasksByUser = myRoom.tasksAssigned.filter((assignedTask:any) => assignedTask.assignedTaskId == task.id && assignedTask.userId == selectedUser.id && assignedTask.isChild == selectedUser.isChild) 
+     let getDates = [] as any
+     tasksByUser.map((tasks:any)=> getDates.push(tasks.dateScheduled))
+
+     let datesData = getDates.map((date:string)=>{
+      let dateF = new Date(date)
+        return dateF
+     })
+
+    
+     setDates(datesData)
+     setStoredDates(datesData)
+    }, [])
+    
 
     const onDismiss = React.useCallback(() => {
       setOpen(false);
@@ -43,21 +61,27 @@ const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r}) => {
      
     }, [setOpen]);
   
-
+let allDate =[] as any
+let sendDates=[] as any
     const onConfirm = React.useCallback((params) => {
       setOpen(false);
       setDates(params.dates);
-     
-      newArr=params.dates?.map((date:any)=> date.toISOString().slice(0,10)) as any[];
+     allDate.push(params.dates)
       let date = new Date
-      //console.log(params.dates)
-      //console.log(date.toLocaleString().split(','))
-      //console.log(task)
-      setArrDates(newArr)
-      
+       console.log(storedDates)
+       console.log(params.dates)
+      let allDatesArr=[ ] as any[]
+      params.dates.toString().split(',').filter((date:any)=> !storedDates.toString().split(',').includes(date)? allDatesArr.push(date):null )
+      storedDates.toString().split(',').filter((date:any)=> !params.dates.toString().split(',').includes(date)? allDatesArr.push(date):null )
+     
+      console.log(allDatesArr)
+
+      sendDates= allDatesArr.map((date:string) => {
+        let dateF = new Date(date)
+        return dateF.toISOString()
+      })
+     
       sendScheduledTasks()
-      setIsAdded(true)
-      
         
     }, []);
     
@@ -66,13 +90,13 @@ const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r}) => {
 
             if(!selectedUser.isChild)
             {
-                  for(let i=0; i < newArr.length; i++) {
+                  for(let i=0; i < sendDates.length; i++) {
                           let scheduledTaskUser = {
                                       Id:0,
                                       UserId: selectedUser.id,
                                       SpaceId: myRoom.id,
                                       AssignedTaskId: task.id,
-                                      DateCreated: newArr[i],
+                                      DateCreated: sendDates[i],
                                       DateCompleted: "none",
                                       IsCompleted: false,
                                       IsDeleted: false,
@@ -88,13 +112,13 @@ const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r}) => {
             
             else{
       
-              for(let i=0; i < newArr.length; i++) {
+              for(let i=0; i < sendDates.length; i++) {
                   let scheduledTaskUser = {
                               Id:0,
                               ChildId: selectedUser.id,
                               SpaceId: myRoom.id,
                               SelectedTaskId: task.id,
-                              DateCreated: newArr[i],
+                              DateCreated: sendDates[i],
                               DateCompleted: "none",
                               IsCompleted: false,
                               IsDeleted: false,
@@ -117,6 +141,9 @@ const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r}) => {
         // setModalVisible(true)
         setScheduleTask(task)
         setOpen(true) 
+        allDate.push(dates)
+        console.log(allDate)
+
        
     }
   

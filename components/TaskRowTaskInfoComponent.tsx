@@ -13,6 +13,7 @@ import UnderlinedOneHeaderComponent from './UnderlinedOneHeaderComponent';
 import UserNameComponent from './UserNameComponent';
 import ReactNativeCalendar from './ReactNativeCalendar';
 import { AddChildAssignedTasks, AddUserAssignedTasks } from '../services/dataService';
+import DatePicker from 'react-native-datepicker';
 import { getDate } from 'date-fns';
   registerTranslation('en', en)
   registerTranslation('en-GB', enGB)
@@ -32,6 +33,8 @@ const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r}) => {
 
    
     const [dates, setDates] = React.useState<Date[] | undefined>();
+    const [datePicker, setDatePicker] = React.useState<string | undefined>();
+
     const [storedDates, setStoredDates] = useState<any[]>([])
     const [open, setOpen] = React.useState(false);
 
@@ -147,69 +150,62 @@ let sendDates=[] as any
        
     }
   
-    // const ModalContent = () => {
+    const ModalContent = () => {
 
+        return(
+            <>
+            <View>
+            <Text>{task.task.name}</Text>
+            </View>
+            <View>
+                <UnderlinedOneHeaderComponent titleFirst={'Repeat'} />
+            </View>
+            <View>
+            <UnderlinedOneHeaderComponent titleFirst={'Dates'} />
+            <View>
+                <UserNameComponent name={'Start Date'} />
+            </View>
+            <View>
+                <UserNameComponent name={'End Date'} />
+            </View>
 
-    //     const theme = { ...DefaultTheme,
-    //         colors: {
-    //         ...DefaultTheme.colors,
-    //         primary: blueColor,
-    //         accent: lightLilacColor,
-            
-    //       }, }
-
-    //     return(
-    //         <>
-    //         <View>
-    //         <Text>{task.task.name}</Text>
-    //         </View>
-    //         <View>
-    //             <UnderlinedOneHeaderComponent titleFirst={'Repeat'} />
-    //         </View>
-    //         <View>
-    //         <UnderlinedOneHeaderComponent titleFirst={'Dates'} />
-    //         <View>
-    //             <UserNameComponent name={'Start Date'} />
-    //         </View>
-    //         <View>
-    //             <UserNameComponent name={'End Date'} />
-    //         </View>
-
-    //         </View>
-    //         <View>
-    //         <Button title="Calendar" onPress={() => setOpen(true)} />
-           
-    //     <PaperProvider theme={theme}>
-        
-      
-    //   <DatePickerModal
-        
-    //     locale="en"
-    //     mode="multiple"
-    //     visible={open}
-    //     onDismiss={onDismiss}
-    //     dates={dates}
-    //     onConfirm={onConfirm}
-    
-    //     // moreLabel="More"
-    //     validRange={{
-    //       startDate: new Date(),  // optional
-    //       //endDate: new Date(2023, 1, 2), // optional
-    //     }}
-    //     // saveLabel="Save" // optional
-    //     //uppercase={false} // optional, default is true
-    //     // label="Select period" // optional
-    //     // startLabel="From" // optional
-    //     // endLabel="To" // optional
-    //     // animationType="slide" // optional, default is slide on ios/android and none on web
-    //   />
-        
-    //     </PaperProvider>
-    //         </View>
+            </View>
+            <View>
+            <Button title="Calendar" onPress={() => setOpen(true)} />
+  
+            </View>
+              <View>
+                 <DatePicker
+          style={styles.datePickerStyle}
+          date={datePicker} //initial date from state
+          mode="date" //The enum of date, datetime and time
+          placeholder="select date"
+          format="DD-MM-YYYY"
+          minDate="01-01-2016"
+          maxDate="01-01-2019"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              //display: 'none',
+              position: 'absolute',
+              left: 0,
+              top: 4,
+              marginLeft: 0,
+            },
+            dateInput: {
+              marginLeft: 36,
+            },
+          }}
+          onDateChange={(date) => {
+            setDatePicker(date);
+          }}
+        />
+              </View>
           
-    //       </>
-    //     )
-    // }
+          </>
+        )
+    }
     const theme = { ...DefaultTheme,
         colors: {
         ...DefaultTheme.colors,
@@ -290,7 +286,11 @@ const styles = StyleSheet.create({
         calendar:{
             width: "50%",
             height: "50%",
-        }
+        },
+        datePickerStyle: {
+          width: 200,
+          marginTop: 20,
+        },
         
        
 

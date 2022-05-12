@@ -17,8 +17,8 @@ const ChildLockModalComponent: FC = ({}) => {
     const [checkPassCode, setCheckPassCode] = useState<boolean>()
     const { setModalVisible, childPage } = useContext(UserContext)
     const { blueColor } = useContext(ThemeContext)
-    
-    const navigation = useNavigation<any>();
+
+    const navigation = useNavigation();
 
     const navToChildLockScreen = () => {
         if (childPassCode != null) navigation.navigate("MyProfile"), console.log('navigate'), setModalVisible(false)

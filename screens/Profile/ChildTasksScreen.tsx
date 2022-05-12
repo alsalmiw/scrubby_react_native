@@ -14,6 +14,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import SquareColoredButton from '../../components/SquareColoredButton';
 import iconsMap from '../../types/IconsMap';
 import ChildLockModalComponent from '../../components/Modal/ChildLockModalComponent';
+import { GetTasksByRoomId } from '../../services/dataService';
 
 
 
@@ -22,12 +23,29 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 const ChildTasksScreen: FC<Props> = ({navigation}) => {
   const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, setModalVisible } = useContext(UserContext)
 
+
+  const [childTasks, setChildTasks]= useState<object>([])
   let newArr = ['bed', 'bathroom', 'kitchen']
   let r = Math.floor(Math.random() * 7)
 
+  //
+  // const getChildTask = async ()=>{
+  //   let childTask = await GetTasksByRoomId(childPage.childScheduledTasks.spaceId)
+  //   console.log(childTask)
+  //   setChildTasks(childTask);
+  // }
+  // const getAllChildRoom = ()=>{
+  //   let newArr:any =[];
+  //   let newArr2:any = [];
+  //   childPage.childScheduledTasks.map((space:any)=> newArr.push(space.spaceId) && newArr2.push(space.assignedTaskId)  ) 
+  //   console.log(newArr)
+  //   console.log(newArr2)
+  // }
+
   useEffect(() => {
     console.log(childPage)
-    
+    // getAllChildRoom()
+    // getChildTask();
   }, [])
 
 
@@ -56,7 +74,7 @@ const ChildTasksScreen: FC<Props> = ({navigation}) => {
             
 
             <View style={styles.coinContainer}>
-              <CoinsPointsDisplayContainer coins={childPage.dependentCoins} points='100' ></CoinsPointsDisplayContainer>
+              <CoinsPointsDisplayContainer coins={childPage.dependentCoins} points={childPage.dependentPoints} ></CoinsPointsDisplayContainer>
             </View>
 
 
@@ -84,6 +102,9 @@ const ChildTasksScreen: FC<Props> = ({navigation}) => {
           <UnderlinedOneHeaderComponent titleFirst={'Tasks'}></UnderlinedOneHeaderComponent>
 
         </View>
+        <ScrollView>
+          {/* task */}
+        </ScrollView>
 
 
 

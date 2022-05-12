@@ -3,6 +3,7 @@ type RootStackParamList = {
     MyProfile: undefined
     AddedItems: undefined
     ChildTasks: undefined
+    LockedChildTasks:undefined
     AddNewSpace: undefined
     AddNewRoom: undefined
     AddItems: undefined

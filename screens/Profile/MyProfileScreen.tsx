@@ -13,7 +13,7 @@ import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
 import RootStackParamList from '../../types/INavigateProfile'
 import UseTheme from '../../hooks/use-theme';
 // import { GetUserById } from '../../services/dataService';
-//
+///
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetSpacesByCollectionID, GetSelectedTasksByUserID } from '../../services/dataService';
 
@@ -46,7 +46,7 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms,setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks} = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setSpinnerOn, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms,setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage} = useContext(UserContext)
 
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
@@ -92,7 +92,9 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   useEffect(() => {
     // console.log(savedUsername)
+    setSpinnerOn(false)
     AsyncGetSpaceCollectionById();
+    //AsyncGetSpaceCollectionById();
 
 
   }, [])
@@ -111,18 +113,18 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     if (user.length != 0) {
       setUserData(user)
       let result = await GetSpaceCollectionByUserId(user.id);
-      let children = await GetDependantByUserId(user.id);
+      // let children = await GetDependantByUserId(user.id);
       //let usersTasks = await GetSelectedTasksByUserID(user.id)
-      console.log(children)
+      //console.log(children)
       if (result.length != 0) {
         setNewSpace([...result])
         setMySpaces(result)
       }
-      if (children.length != 0) {
-        console.log(children.length);
-        setChildrenData(children)
-        console.log("after");
-      }
+      // if (children.length != 0) {
+      //   console.log(children.length);
+      //   setChildrenData(children)
+      //   console.log("after");
+      // }
     //   if(usersTasks.length!= 0)
     // {
     //   setUsersAddedTasks (usersTasks)
@@ -133,9 +135,10 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   }
 
-  const handleGoToChildProfile=(child:object)=> {
+  const handleGoToChildProfile=(child:any)=> {
     console.log(child)
-   setChildData(child)
+    setChildPage(child)
+   //setChildData(child)
     navigation.navigate('ChildTasks')
   }
 
@@ -196,7 +199,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
                                       //     <AddItemButtonComponent key={idx} onPress={()=>handleGoToChildProfile(child)}>
                                       //   <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />
                                       // </AddItemButtonComponent>
-                                        <AvatarComponent key={idx} onPress={()=>console.log(child)} imageSource={userData.photo} />
+                                        <AvatarComponent key={idx} onPress={()=> {console.log(child), handleGoToChildProfile(child) }} imageSource={userData.photo} />
                                         )
 
                                       })

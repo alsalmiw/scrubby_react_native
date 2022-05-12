@@ -234,6 +234,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: "space-between",
     paddingLeft: 10,
+    paddingRight:10
   },
   rest3: {
 

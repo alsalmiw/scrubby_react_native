@@ -1,7 +1,8 @@
-import { FC, useContext, useState } from "react"
-import { Alert, Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native"
+import { FC, useContext, useEffect, useState } from "react"
+import { ActivityIndicator, Alert, Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native"
+
 import { Button } from "react-native-paper"
-import {Keyboard, TouchableWithoutFeedback} from 'react-native'
+import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentLogin"
 import UserContext from "../context/UserContext"
 import INewUser from "../Interfaces/INewUser"
@@ -13,25 +14,33 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import PhotoComponent from "../components/PhotoComponent"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import avatars from '../types/IAvatars'
+import FullButtonComponent from "../components/FullButtonComponent"
+import { ThemeContext } from "../context/ThemeContext"
 
-type RootStackParamList ={
-    login:undefined,
+type RootStackParamList = {
+    login: undefined,
     Nav: undefined,
-  }
+}
 
-  type Props = NativeStackScreenProps<RootStackParamList, 'login'>
+type Props = NativeStackScreenProps<RootStackParamList, 'login'>
 
-const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
+const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
     const [login, setLogin] = useState(true);
-    const { username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo } = useContext(UserContext)
+    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, spinnerOn, setSpinnerOn } = useContext(UserContext)
+    const { yellowColor, greenColor } = useContext(ThemeContext)
+
     let avR = Math.floor(Math.random() * 9)
+
+    useEffect(() => {
+       
+    }, [])
 
     const addUser = async () => {
         let userData: INewUser = {
             Id: 0,
             Username: username,
-            Password: password, 
+            Password: password,
         }
         console.log(userData)
         setSavedUsername(username);
@@ -42,13 +51,13 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
             AsyncStorage.setItem("Token", result.token);
             AsyncStorage.setItem("Username", username);
             let user = await GetUserData(username)
-            if(user.length > 0) {
+            if (user.length > 0) {
                 setFullUserInfo(user)
                 console.log(user)
             }
             navigation.navigate('Nav')
             console.log(result)
-            
+
         }
 
         else Alert.alert("Error", 'Invalid Username or Password.', [{ text: "Cancel", style: "cancel" }])
@@ -69,24 +78,22 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
             AsyncStorage.setItem("Token", result.token);
             AsyncStorage.setItem("Username", username);
             let user = await GetUserData(username)
-            if(user) {
+            if (user) {
                 setFullUserInfo(user)
                 console.log(user)
             }
             console.log(result)
             navigation.navigate('Nav')
         }
-        else{
+        else {
             Alert.alert("Error", 'Incorrect Username or Password.', [{ text: "Cancel", style: "cancel" }])
             console.log('fail')
         }
-
-        
     }
-
     const checkTextInput = () => {
         let regi = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g
         let space = /[ ]/
+
         if (login) {
             if (!username.trim()) {
                 Alert.alert("Error", 'Please Enter username.', [{ text: "Cancel", style: "cancel" }]);
@@ -96,11 +103,11 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
                 Alert.alert("Error", 'Please Enter password.', [{ text: "Cancel", style: "cancel" }]);
                 return;
             }
-            if (regi.test(username)){
+            if (regi.test(username)) {
                 Alert.alert("Error", 'Username can not contains special characters or spaces.', [{ text: "Cancel", style: "cancel" }]);
                 return;
             }
-            if (space.test(password)){
+            if (space.test(password)) {
                 Alert.alert("Error", 'Password can not contains any space.', [{ text: "Cancel", style: "cancel" }]);
                 return;
             }
@@ -119,20 +126,15 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
                 Alert.alert("Error", 'Please Enter password login', [{ text: "Cancel", style: "cancel" }]);
                 return;
             }
+
             else {
+                setSpinnerOn(true);
                 userLogin();
-                //console.log(savedUsername);
                 setPassword("");
                 setUsername("");
             }
         }
-
     };
-
-    // send to edit profile page when creating account
-    //send to home page when login 
-
-
 
     return (
 
@@ -148,24 +150,21 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
                                 <View style={styles.inputPosition}>
                                     <InputFieldComponentLogin />
                                 </View>
+                                {
+                                    spinnerOn ?
+                                        <SafeAreaView>
+                                            <ActivityIndicator color={greenColor} size="large" />
+                                        </SafeAreaView>
+                                        :
+                                        null
+                                }
 
                                 <View>
                                     <Text style={styles.loginTxt}>Already have an account. <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: 'blue' }}>Login here.</Text></Text>
                                 </View>
                             </View>
-                            <View style={{ flex: 0.2, alignItems: 'center' }}>
-                                <Pressable style={styles.loginBtn} onPress={() => {
-                                    checkTextInput();
-
-
-                                }}>
-
-
-                                    <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white', padding: 10 }}>
-                                        Create Account
-                                    </Text>
-
-                                </Pressable>
+                            <View style={styles.btnStyle}>
+                                <FullButtonComponent radius={15} color={yellowColor} onPress={() => checkTextInput()} > <Text>Create Account</Text></FullButtonComponent>
 
                             </View>
                         </View>
@@ -179,19 +178,22 @@ const LoginAndCreateAccountScreen: FC<Props> = ({navigation, route}) => {
                                 <View style={styles.inputPosition}>
                                     <InputFieldComponentLogin />
                                 </View>
+                                {
+                                    spinnerOn ?
+                                        <SafeAreaView>
+                                            <ActivityIndicator color={greenColor} size="large" />
+                                        </SafeAreaView>
+                                        :
+                                        null
+                                }
 
                                 <View>
                                     <Text style={styles.loginTxt}>New here? <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: 'blue' }}>Create an Account</Text></Text>
                                 </View>
+
                             </View>
-                            <View style={{ flex: 0.2, alignItems: 'center' }}>
-                                <Pressable style={styles.loginBtn} onPress={() => checkTextInput()}>
-
-                                    <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white', padding: 10 }}>
-                                        Login
-                                    </Text>
-
-                                </Pressable>
+                            <View style={styles.btnStyle}>
+                                <FullButtonComponent radius={15} color={yellowColor} onPress={() => checkTextInput()} > <Text>Login</Text></FullButtonComponent>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
@@ -234,14 +236,25 @@ const styles = StyleSheet.create({
     },
     inputPosition: {
         alignItems: 'center',
-        marginTop: 25
+        marginTop: 25,
+        marginBottom: 10,
+        paddingBottom: 0
     },
     loginContent: {
         flex: 0.8,
         alignItems: "center",
         justifyContent: "center",
-        marginTop: 10
+        marginTop: 10,
+        marginBottom: 0
     },
+    btnStyle: {
+        alignItems: 'center',
+        marginLeft: 40,
+        marginRight: 40,
+        marginBottom: 100,
+        marginTop: 0,
+
+    }
 
 
 })

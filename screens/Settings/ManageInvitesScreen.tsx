@@ -136,6 +136,8 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
         
 
           {/* <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', }}>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', }}>
+            
           {
             inviters != null?
             inviters.map((request:any, idx:number) =>{

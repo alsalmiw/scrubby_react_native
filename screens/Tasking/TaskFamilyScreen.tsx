@@ -13,6 +13,7 @@ import IChild from '../../Interfaces/IChild';
 import IInviteUser from '../../Interfaces/IInviteUser';
 import { ISpace } from '../../Interfaces/ISpace';
 import {GetSharedSpacesById, GetSpacesByCollectionID} from '../../services/dataService';
+import { ISpaceArr } from '../../Interfaces/ISpaceArr';
 
 
 type Props = NativeStackScreenProps <RootStackParamList, 'TaskFamily'>
@@ -21,52 +22,67 @@ type Props = NativeStackScreenProps <RootStackParamList, 'TaskFamily'>
 const TaskFamilyScreen: FC<Props> = ({navigation})=> {
 
   const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor, greenColor } = useContext(ThemeContext);
-  const { mySpaces, userData, childData, acceptedInvitations , taskUser, setTaskUser, mySpace, setMySpace} = useContext(UserContext)
+  const { mySpaces, userData, childData, childrenData, acceptedInvitations , taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser} = useContext(UserContext)
 
   const [isInvited, setIsInvited] = useState(false)
 
   useEffect(() => {
-    //setTaskUser(userData)
+    setTaskUser(userData)
+    //setTaskUser(userData)/
   }, [])
 
   let r = Math.floor(Math.random() * 7)
 
-  const handleGoToSpaceRooms = async(space:any)=> {
+  const handleGoToSpaceRooms = (space:any)=> {
     console.log("collection id is "+space.id)
-    fetchSpace(space.id)
+    setMySpace(space)
+    // fetchSpace(space.id)
     navigation.navigate('TaskMember')
+    console.log(selectedUser)
     
   }
 
-  const handleGoToTaskMember = (member:any)=> {
+  const handleGoToTaskUser = (user:any)=> {
+    let member = {
+      id: user.id,
+      fullName: user.name,
+      isChild: false
+    }
+    setSelectedUser(member)
     console.log( member)
-    setTaskUser(member)
+    console.log( mySpaces)
+    setTaskUser(user)
+    setIsInvited(false)
     
   }
 
-  const fetchSpace = async(id: number) =>{
-    let space = await GetSpacesByCollectionID(id)
-    if(space.length>0){
-      setMySpace(space)
+  const handleGoToTaskChild = (child:any)=> {
+    let member = {
+      id: child.id,
+      fullName: child.dependentName,
+      isChild: true
     }
-  } 
-  const fetchSharedSpace = async(id: number) => 
-  {
-    let space = await GetSharedSpacesById(id)
-    if(space.length>0){
-      return space;
-    }
+    setSelectedUser(member)
+    console.log( child)
+    console.log( mySpaces)
+    setTaskUser(child)
+    setIsInvited(false)
+    
   }
 
-
-  const handleGoToTaskInivtedMember = async(member:any)=> {
+  const handleGoToTaskInivtedMember = async(user:any)=> {
+    let member = {
+      id: user.invitedId,
+      fullName: user.invitedFullname,
+      isChild: false
+    }
+    setSelectedUser(member)
     console.log( member)
-    setTaskUser(member)
-   
-  }
- 
-  
+    console.log( user)
 
+    setTaskUser(user)
+    setIsInvited(true)
+  }
 
   return (
     
@@ -76,17 +92,20 @@ const TaskFamilyScreen: FC<Props> = ({navigation})=> {
             <UnderlinedHeaderComponent titleOne={'Select Member'} titleTwo={'see all'} titleThree={'see less'} />
           </View>
     <View style={styles.selectMemberCon}>
-    <AvatarComponent onPress={()=> handleGoToTaskMember(userData)} imageSource={userData.photo} />
-    {childData.map((child:any, idx:number)=> {
+    <AvatarComponent onPress={()=> handleGoToTaskUser(userData)} imageSource={userData.photo} />
+
+    {childrenData.map((child:any, idx:number)=> {
       return(
-        <AvatarComponent key={idx} onPress={()=> handleGoToTaskMember(child)} imageSource={child.DependentPhoto} />
+        childrenData.length>0?
+        <AvatarComponent key={idx} onPress={()=> handleGoToTaskChild(child)} imageSource={child.DependentPhoto} />
+        : null
       )
     })}
     {acceptedInvitations.map((person:any, idx:number)=> {
       return(
-        
+        acceptedInvitations.length > 0?
         <AvatarComponent key={idx} onPress={()=> handleGoToTaskInivtedMember(person)} imageSource={person.invitedPhoto} />
-        
+        : null
       )
     })}
 
@@ -98,7 +117,8 @@ const TaskFamilyScreen: FC<Props> = ({navigation})=> {
 
         {
         !isInvited?
-        mySpaces.map((space:ISpace, idx:number) =>
+       ( mySpaces.length > 0 ?
+        mySpaces.map((space:any, idx:number) =>
           <TaskSpaceRowComponent
             idx={r+idx}
             key={idx}
@@ -106,8 +126,26 @@ const TaskFamilyScreen: FC<Props> = ({navigation})=> {
           >
             <Text style={styles.spaceFont}>{space.collectionName}</Text>
           </TaskSpaceRowComponent>
+          
         )
-        :null
+        :null )
+        : 
+        ( mySpaces.length > 0 ?
+        mySpaces.map((space:any, idx:number)=>space.sharedWith.map((shared: any)=>
+          shared.invitedId == taskUser.invitedId?     
+             <TaskSpaceRowComponent
+            idx={r+idx}
+            key={idx}
+            onPress={()=>handleGoToSpaceRooms(space)}
+          >
+            <Text style={styles.spaceFont}>{space.collectionName}</Text>
+          </TaskSpaceRowComponent>
+              
+          : null
+        
+        ))
+        :null)
+      
         }
 
       </View>

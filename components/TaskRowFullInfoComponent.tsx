@@ -35,11 +35,8 @@ const TaskRowFullInfoComponent: FC<taskProp> = ({task, idx, r}) => {
     <View style={[ {display:showTask? "flex": "none", padding: 10}]}>
     <Text style={[styles.taskInfo ]}>Description: {task.task.description}</Text>
     <Text style={[styles.taskInfo ]}>Item: {task.item.name}</Text>
+    {/* <Text style={[styles.taskInfo ]}>Points: {task.item.points}</Text> */}
 
-    <View style={styles.flexrow}>
-        <Text style={[styles.taskInfo ]}>Date Added: {task.dateCreated}</Text>
-        <Text style={[styles.taskInfo ]}>Date End: {task.dateCompleted}</Text>
-    </View>
     </View>
     </View>
   )

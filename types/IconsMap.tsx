@@ -4,7 +4,7 @@ const iconsMap = new Map([
     ['Bedroom', require('../image/bed.png')],
     ['Kitchen', require('../image/kitchen.png')],
     ['Office', require('../image/officedesk.png')],
-    ['LivingRoom', require('../image/livingroom.png')],
+    ['Living room', require('../image/livingroom.png')],
     ['Yard', require('../image/fence.png')],
     ['Laundry',require('../image/laundryroom.png')],
 ])

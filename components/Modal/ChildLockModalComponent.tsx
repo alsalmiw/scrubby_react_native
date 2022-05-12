@@ -7,22 +7,26 @@ import FullButtonComponent from "../FullButtonComponent";
 import { ThemeContext } from "../../context/ThemeContext";
 import ModalComponent from "../ModalComponent";
 import UserContext from "../../context/UserContext";
-//// need backend fetch to update passcode
+//// need backend fetch to update passcode/
+import { useNavigation } from '@react-navigation/native';
 
 
-const ChildLockModalComponent: FC = () => {
+
+const ChildLockModalComponent: FC = ({}) => {
     const [childPassCode, setChildPassCode] = useState<any>()
     const [checkPassCode, setCheckPassCode] = useState<boolean>()
     const { setModalVisible, childPage } = useContext(UserContext)
     const { blueColor } = useContext(ThemeContext)
+    
+    const navigation = useNavigation<any>();
 
     const navToChildLockScreen = () => {
-        if (childPassCode != null) console.log('navigate'), setModalVisible(false)
+        if (childPassCode != null) navigation.navigate("MyProfile"), console.log('navigate'), setModalVisible(false)
         else Alert.alert("Error", 'Please fill in entry field', [{ text: "Cancel", style: "cancel" }]);
 
     }
     const navToChildUnlockScreen = () =>{
-        if (childPassCode != null) console.log('navigate'), setModalVisible(false)
+        if (childPassCode != null) navigation.navigate("ChildTasks"), setModalVisible(false)
         else Alert.alert("Error", 'Please fill in entry field', [{ text: "Cancel", style: "cancel" }]);
     }
 

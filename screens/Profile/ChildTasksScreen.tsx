@@ -19,7 +19,7 @@ import ChildLockModalComponent from '../../components/Modal/ChildLockModalCompon
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
-const ChildTasksScreen: FC<Props> = () => {
+const ChildTasksScreen: FC<Props> = ({navigation}) => {
   const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, setModalVisible } = useContext(UserContext)
 
   let newArr = ['bed', 'bathroom', 'kitchen']
@@ -27,6 +27,7 @@ const ChildTasksScreen: FC<Props> = () => {
 
   useEffect(() => {
     console.log(childPage)
+    
   }, [])
 
 

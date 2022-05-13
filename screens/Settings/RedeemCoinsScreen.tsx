@@ -154,7 +154,7 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
                 </>
                 :
                 <>
-                  <View style={{ opacity: 10, flexDirection: 'row', flexWrap: 'wrap' }}>
+                  <View style={styles.childIconView}>
                     <AvatarComponent onPress={() => { setChildRedeem(false), setRefreshCoins(true) }} imageSource={userData.photo} />
                     {childrenData.map((child: any, idx: number) => {
                       return (
@@ -178,7 +178,7 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
                 <Text> {aChild.dependentName} has a total of {childCoin} coins. Enter the value of coins you would like to redeem:</Text>
               </View>
           }
-          <View style={{ flex: 0.2, flexDirection: 'row', justifyContent: 'center' }}>
+          <View style={styles.redeemInput}>
             <InputFieldComponent maxLength={80} value={""} holder="Redeem Coins" hide={false} onChangeText={(e: string) => setRedeemCoins(e)} />
           </View>
           {
@@ -221,6 +221,16 @@ const styles = StyleSheet.create({
     flex: 0.1,
     marginLeft: 40,
     marginRight: 40,
+    justifyContent: 'center'
+  },
+  childIconView: {
+    opacity: 10,
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
+  redeemInput: {
+    flex: 0.2,
+    flexDirection: 'row',
     justifyContent: 'center'
   }
 });

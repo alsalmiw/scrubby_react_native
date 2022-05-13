@@ -67,19 +67,18 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
           </View>
-          <View style={styles.unlockedIcon}>
-            <Pressable onPress={() => { setModalVisible(true) }}>
+          <View style={styles.unlockIconView}>
+            <Pressable onPress={() => { setModalVisible(true), console.log('ll') }}>
               <FontAwesome5 name="unlock" size={40} color="black" />
             </Pressable>
-            {/* <ChildLockModalComponent /> */}
-            <TaskInfoModalComponent />
+            <ChildLockModalComponent />
           </View>
 
 
 
         </View>
 
-        <View style={styles.underlinedView}>
+        <View style={styles.underLineView}>
           <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -87,7 +86,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
         </ScrollView>
 
-        <View style={styles.underlinedView}>
+        <View style={styles.underLineView}>
           <UnderlinedOneHeaderComponent titleFirst={'Tasks'}></UnderlinedOneHeaderComponent>
         </View>
         <ScrollView>
@@ -128,20 +127,20 @@ const styles = StyleSheet.create({
   buttonSize: {
     width: 50, height: 50
   },
-  underlinedView: {
+  underLineView: {
     paddingLeft: 10,
     paddingRight: 10,
     justifyContent: 'center'
   },
-  unlockedIcon: {
+  unlockIconView: {
     flex: 0,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    upaddingTop: 10,
+    paddingTop: 10,
     paddingRight: 10,
     marginTop: 10,
     height: 100
-  }
+  },
 });
 
 export default ChildTasksScreen

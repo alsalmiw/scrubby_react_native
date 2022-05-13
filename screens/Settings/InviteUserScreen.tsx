@@ -21,7 +21,6 @@ type Props = NativeStackScreenProps<RootStackParamList, 'InviteUser'>
 const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
     const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor, greenColor } = useContext(ThemeContext);
     const [searchUser, setSearchUser] = useState("");
-    //  const [invitedUser, setInvitedUser] = useState(true);
     const { userData, invited, setInvited, refresh, setRefresh } = useContext(UserContext)
 
     const handleGoBack = () => {
@@ -45,7 +44,7 @@ const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
             let invitedUser: boolean = await InviteUser(inviteUser)
 
             if (invitedUser) {
-                setInvited([...invited , inviteUser])
+                setInvited([...invited, inviteUser])
                 setRefresh(true)
                 Alert.alert("Congratulations", `Invite has been sent to ${e}`, [{ text: "Okay", style: "cancel", onPress: () => handleGoBack() }]);
             }
@@ -63,15 +62,15 @@ const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
         <>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={{ flex: 1, backgroundColor: greenColor }}>
-                    <View style={{ flex: 0.6, flexDirection: 'row', justifyContent: 'center', display: 'flex' }}>
-                        <Text style={{ fontSize: 30, color: 'white', padding: 10, marginTop: 50 }}>Invite a User</Text>
+                    <View style={styles.inviteuserContainder}>
+                        <Text style={styles.inviteUserText}>Invite a User</Text>
                     </View>
 
                     <View style={{ flex: 0, flexDirection: 'row', justifyContent: "flex-start" }}>
-                        <Text style={{ fontSize: 20, color: 'white', paddingLeft: 40, fontWeight: 'bold' }} >Username</Text>
+                        <Text style={styles.usernameText} >Username</Text>
                     </View>
 
-                    <View style={{ flex: 0.1, flexDirection: 'row', justifyContent: 'center' }}>
+                    <View style={styles.inputContainer}>
                         <InputFieldComponent maxLength={40} value={''} holder="Username" hide={false} onChangeText={(e: string) => setSearchUser(e)} />
                     </View>
                 </View>
@@ -84,6 +83,28 @@ const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
 }
 
 const styles = StyleSheet.create({
-
+    inviteuserContainder: {
+        flex: 0.6,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        display: 'flex'
+    },
+    usernameText: {
+        fontSize: 20,
+        color: 'white',
+        paddingLeft: 40,
+        fontWeight: 'bold'
+    },
+    inviteUserText: {
+        fontSize: 30,
+        color: 'white',
+        padding: 10,
+        marginTop: 50
+    },
+    inputContainer: {
+        flex: 0.1,
+        flexDirection: 'row',
+        justifyContent: 'center'
+    }
 })
 export default InviteUserScreen

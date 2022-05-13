@@ -44,15 +44,8 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
 
   //let r = Math.floor(Math.random() * 7)
   
-  
 
   const { purpleColor } = useContext(ThemeContext)
-
-  // const [task, setTask] = useState<taskInfo[]>([]);
-  // const [allTask, setAllTask] = useState<taskInfo[]>([])
-  // const [addTask, setAddTask] = useState<taskInfo[]>([])
-
-
 
   useEffect(() => {
     console.log(fetchSpaceInfo());
@@ -68,18 +61,12 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
     }
 
 
-
   }
   const AddItems = (name: string) => {
     setTask(allTask.filter((aTask:taskInfo) => aTask.tags.includes(name.toLowerCase())))
   }
 
   const handleSelectedTasks = async () => {
-    console.log(addTask);
-
-    //await AddSelectedTask(addTask);
-    // let result = await AddSelectedTask(addTask);
-    // console.log(result);//
     navigation.navigate('AddedItems')
     
   }
@@ -168,7 +155,6 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
 
       </View >
       <FullButtonComponent radius={0} onPress={handleSelectedTasks} color={purpleColor}>
-      {/* AddSelectedTask(addTask), console.log(AddSelectedTask(addTask) */}
         <Text>Done</Text>
       </FullButtonComponent>
     </>

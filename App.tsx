@@ -13,11 +13,12 @@ import ModelComponent from './components/ModalComponent'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import AddItemsScreen from './screens/Profile/AddItemsScreen';
+import LockChildTasksScreen from './screens/Profile/LockedChildTasksScreen';
 
 type RootStackParamList ={
   login:undefined,
   Nav: undefined,
-  Child: undefined,
+  LockedChildTasks: undefined,
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -50,12 +51,11 @@ const App: FC =()=> {
             component={NavigationComponent} 
             options={{headerShown: false}} />
             
-              <Stack.Screen name="Child" 
-            component={ChildTasksScreen} 
+              <Stack.Screen name="LockedChildTasks" 
+            component={LockChildTasksScreen} 
             options={{headerShown: false}} />
 
          </Stack.Navigator>
-         {/* <AddItemsScreen /> */}
          
 
       </ThemeProvider>

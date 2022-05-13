@@ -34,7 +34,7 @@ const TaskInfoModalComponent: FC = () => {
 
 
             </ModalComponent>
-            <Text>Hi</Text>
+
         </View>
 
     )

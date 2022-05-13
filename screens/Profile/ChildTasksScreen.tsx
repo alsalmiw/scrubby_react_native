@@ -71,7 +71,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
             <Pressable onPress={() => { setModalVisible(true), console.log('ll') }}>
               <FontAwesome5 name="unlock" size={40} color="black" />
             </Pressable>
-            <ChildLockModalComponent />
+            {/* <ChildLockModalComponent /> */}
+            <TaskInfoModalComponent />
           </View>
 
 

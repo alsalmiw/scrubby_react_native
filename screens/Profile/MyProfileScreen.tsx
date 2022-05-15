@@ -93,7 +93,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   useEffect(() => {
     // console.log(savedUsername)
     setSpinnerOn(false)
-    AsyncGetSpaceCollectionById();
+    //AsyncGetSpaceCollectionById();
     //AsyncGetSpaceCollectionById();
 
 

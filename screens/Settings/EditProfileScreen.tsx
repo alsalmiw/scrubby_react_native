@@ -2,7 +2,7 @@
 import { FC, useContext, useState } from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
-import AddPhotoComponent from '../../components/AddPhotoComponent';
+import {AddPhotoComponent} from '../../components/AddPhotoComponent';
 import RootStackParamList from '../../types/INavigateSettings'
 import InputFieldComponent from '../../components/AddEdit/InputFieldComponent'
 import TitleComponent from '../../components/AddEdit/TitleComponent'

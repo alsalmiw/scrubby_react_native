@@ -10,15 +10,18 @@ import UserNameComponent from '../../components/UserNameComponent';
 import { ThemeContext } from '../../context/ThemeContext';
 import UnderlinedHeaderComponent from '../../components/UnderlinedHeaderComponent';
 import UnderlinedTwoHeaderComponent from '../../components/UnderlinedTwoHeaderComponent';
+import ModalComponent from '../../components/ModalComponent';
+import ButtonModalComponent from '../../components/Modal/ButtonModalComponent';
 
 
 
-const ScheduleScreen: FC = ()=> {
-  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn } = useContext(UserContext)
-  const {secondaryTextColor, lightLilacColor} = useContext(ThemeContext)
+const ScheduleScreen: FC = () => {
+  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn } = useContext(UserContext)
+  const { secondaryTextColor, lightLilacColor } = useContext(ThemeContext)
 
-  const [dayTasks, setDayTasks] = useState()
-  
+  const [dayTasks, setDayTasks] = useState();
+
+
   useEffect(() => {
     // console.log(savedUsername)
     GetUserInfoByUsername();
@@ -26,62 +29,61 @@ const ScheduleScreen: FC = ()=> {
 
   }, [])
 
-  const GetUserInfoByUsername = async() => {
-  
-    let username:any= await AsyncStorage.getItem("Username");
-    if(username) {
+  const GetUserInfoByUsername = async () => {
+
+    let username: any = await AsyncStorage.getItem("Username");
+    if (username) {
       setSavedUsername(username)
       console.log(username)
       let userInfo = await GetUserData(username)
 
-      if(userInfo.length!=0) {
+      if (userInfo.length != 0) {
         setChildrenData(userInfo.children)
         setMySpaces(userInfo.spaces)
         setUserData(userInfo.userInfo)
         setScoreBoardList(userInfo.scoreBoard)
-        setInvited(userInfo.invitations.sentInvites.filter((Invited:any)=> (Invited.isAccepted == false && Invited.isDeleted == false)))
-        setInviters( userInfo.invitations.recievedInvites.filter((Inviter:any)=> (Inviter.isAccepted == false  && Inviter.isDeleted == false)))
-        setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited:any)=> (Invited.isAccepted == true && Invited.isDeleted == false)))
-      
+        setInvited(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
+        setInviters(userInfo.invitations.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
+        setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
+
       }
 
     }
-    
+
   }
-  useEffect(()=>{
+  useEffect(() => {
     setSpinnerOn(false)
   }, [])
-  
+
   return (
-    
-   
-    
- 
     <View style={styles.container}>
-   <HeaderComponent title="My Schedule"/>
-   <Text style={[styles.mainHeader, {color:secondaryTextColor}]}>House</Text>
-  <View style={styles.rowHeader}>
-  <UnderlinedTwoHeaderComponent titleFirst={"This Week"} titleTwo={'Next Week'} />
-</View>
-  {/* <ReactNativeCalendar/> */}
+      <HeaderComponent title="My Schedule" />
+      <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>House</Text>
+      <View style={styles.rowHeader}>
+        <UnderlinedTwoHeaderComponent titleFirst={"This Week"} titleTwo={'Next Week'} />
+      </View>
+      {/* <ReactNativeCalendar/> */}
+      <ModalComponent>
+        
+      </ModalComponent>
     </View>
 
-    
+
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-  paddingTop:60
+    paddingTop: 60
   },
   mainHeader: {
-    fontSize:25,
-    fontWeight: "bold", 
-},
-rowHeader:{
-  
-  flexDirection: 'row',
-}
+    fontSize: 25,
+    fontWeight: "bold",
+  },
+  rowHeader: {
+
+    flexDirection: 'row',
+  }
 
 });
 

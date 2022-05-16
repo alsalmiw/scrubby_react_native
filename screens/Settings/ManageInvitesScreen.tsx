@@ -124,7 +124,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
             inviters != null?
             inviters.map((request:any, idx:number) =>{
               return(
-                <Pressable key={idx} style={{padding:10}} onPress={()=>{ AsyncStorage.setItem("Inviter", request.inviterUsername), AsyncStorage.setItem("InviterFullName", request.inviterFullname), console.log(userData) , navigation.navigate("AcceptRequest")}}>
+                <Pressable key={idx} style={{padding:10}} onPress={()=>{ AsyncStorage.setItem("Inviter", request.inviterUsername), request.inviterFullname !== null ? AsyncStorage.setItem("InviterFullName", request.inviterFullname) : AsyncStorage.setItem("InviterFullName", request.inviterUsername), console.log(request) , navigation.navigate("AcceptRequest")}}>
                 <Text>{request.inviterUsername}</Text>
                 </Pressable>
               )

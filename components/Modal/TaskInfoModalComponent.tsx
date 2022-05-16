@@ -1,21 +1,32 @@
-import { FC } from "react"
+import { FC, useContext } from "react"
 import { StyleSheet, Text, View } from "react-native"
 import HeaderComponent from "../HeaderComponent"
 import ModalComponent from "../ModalComponent"
 import CoinsPointsDisplayContainer from "../Profile/CoinsPointsDisplayContainer"
 import UnderlinedOneHeaderComponent from "../UnderlinedOneHeaderComponent"
 
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+import { ThemeContext } from "../../context/ThemeContext"
+
 
 const TaskInfoModalComponent: FC = () => {
+    const { yellowColor } = useContext(ThemeContext)
 
 
     return (
 
         <View>
             <ModalComponent>
-                <View>
-                    <HeaderComponent title={"Organized Bed"} />
-                    <CoinsPointsDisplayContainer coins="10 coins" points="10 points" />
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 0, paddingTop: 0 }}>
+                    <Text style={{ fontSize: 30 }}>Organized Bed</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end',  }}>
+                        <View>
+                            <Text> <FontAwesome5 name="coins" color={yellowColor} /> 10 coins</Text>
+                            <Text> <FontAwesome name="star" color={yellowColor} /> 10 points</Text>
+                        </View>
+
+                    </View>
+
                 </View>
 
 

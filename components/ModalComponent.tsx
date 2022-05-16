@@ -22,7 +22,7 @@ const ModalComponent: FC<any> = ({ children }) => {
         <View style={styles.centeredView}>
 
           <View style={styles.modalView}>
-            <View style={{ flex:0, width:'120%', flexDirection:'row', justifyContent: 'flex-end', alignItems:'flex-end', marginTop:0, paddingTop:0, paddingRight:10,}}>
+            <View style={styles.pressableView}>
               <Pressable
                 style={[styles.button,]}
                 onPress={() => { setModalVisible(!modalVisible), console.log('yes') }}
@@ -57,9 +57,9 @@ const styles = StyleSheet.create({
     height: "80%",
     backgroundColor: "white",
     borderRadius: 0,
-    paddingTop:10,
-    padding: 35,
-    alignItems: "center",
+    paddingTop: 10,
+    padding: 10,
+    // alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -86,6 +86,16 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
+  },
+  pressableView: {
+    flex: 0,
+    width: '120%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    marginTop: 0,
+    paddingTop: 0,
+    paddingRight: "20%",
   }
 });
 

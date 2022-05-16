@@ -23,16 +23,21 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, setModalVisible } = useContext(UserContext)
+  const [childRooms, setChildRooms] = useState<any>([])
 
 
-  const [childTasks, setChildTasks] = useState<object>([])
+  const [childTasks, setChildTasks] = useState<any>([])
   let newArr = ['bed', 'bathroom', 'kitchen']
   let r = Math.floor(Math.random() * 7)
 
-
+  const ChildRooms = () => {
+    setChildRooms(childPage.scheduledTasks);
+  }
 
   useEffect(() => {
-    console.log(childPage)
+    console.log('bye')
+    console.log(childPage.scheduledTasks)
+    ChildRooms();
 
   }, [])
 
@@ -47,7 +52,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
           <HeaderComponent title='My Tasks'></HeaderComponent>
         </View>
 
-        <View style={{ flexDirection: 'row', }}>
+        <View style={{ flexDirection: 'row' }}>
           <View style={styles.firstRow}>
             <AvatarComponent onPress={() => console.log('hi')} imageSource={userData.photo} />
           </View>
@@ -84,6 +89,24 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {/* <ShowRooms /> */}
+          {childRooms != null ?
+            childRooms.map((room: any) => {
+
+              return (
+
+                room.rooms.map((roomName: any, x: number) => {
+                  return (
+                    // <Text>{roomName.spaceCategory}</Text>
+                    <SquareColoredButton key={x} idx={x + rState} onPress={() => { setChildTasks(roomName.tasksAssigned), console.log(roomName.tasksAssigned) }}>
+                      <Text>{roomName.spaceCategory}</Text>
+                    </SquareColoredButton>
+                  )
+                }
+                )
+              )
+            })
+            : null
+          }
 
         </ScrollView>
 
@@ -92,6 +115,16 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         </View>
         <ScrollView>
           {/* task */}
+          {
+            childTasks != null ?
+              childTasks.map((taskName: any) => {
+                
+                return (
+                    <Text>{taskName.task.name}</Text>
+                )
+              })
+              : null
+          }
         </ScrollView>
 
 

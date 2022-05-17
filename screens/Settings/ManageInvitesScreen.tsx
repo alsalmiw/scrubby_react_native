@@ -30,7 +30,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
 
 
   const handleBackToSettings = () => {
-    navigation.navigate('Settings')
+    navigation.navigate('SettingsScreen')
   }
   const handleToInviteUser = () => {
     navigation.navigate('InviteUser')

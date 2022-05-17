@@ -1,6 +1,6 @@
 
 type RootStackParamList = { 
-    Settings: undefined
+    SettingsScreen: undefined
     EditProfile: undefined
     ManageInvites: undefined
     ChangePassword: undefined

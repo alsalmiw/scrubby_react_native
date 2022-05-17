@@ -15,7 +15,6 @@ const SquareColoredButton: FC<Props> =(props) => {
 
   useEffect(()=> {
       selectColor()
-    console.log(props.idx)
 },[])
 
     const selectColor = () => {

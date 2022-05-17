@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, Pressable, StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GetUserData } from '../../services/dataService';
 import UserContext from '../../context/UserContext';
@@ -10,28 +10,128 @@ import UserNameComponent from '../../components/UserNameComponent';
 import { ThemeContext } from '../../context/ThemeContext';
 import UnderlinedHeaderComponent from '../../components/UnderlinedHeaderComponent';
 import UnderlinedTwoHeaderComponent from '../../components/UnderlinedTwoHeaderComponent';
+import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
+import SquareColoredButton from '../../components/SquareColoredButton';
+import iconsMap from '../../types/IconsMap';
+import TaskRowTaskInfoComponent from '../../components/TaskRowTaskInfoComponent';
+import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import RootStackParamList from '../../types/INavigationSchedule'
 
 
 
-const ScheduleScreen: FC = ()=> {
-  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn } = useContext(UserContext)
-  const {secondaryTextColor, lightLilacColor} = useContext(ThemeContext)
+
+type Props = NativeStackScreenProps<RootStackParamList, 'ScheduleScreen'>
+
+
+const ScheduleScreen: FC <Props> = ({navigation})=> {
+  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace } = useContext(UserContext)
+  const {secondaryTextColor, lightLilacColor, lilacColor} = useContext(ThemeContext)
 
   const [dayTasks, setDayTasks] = useState()
+  const [scheduledDates, setScheduledDates] =useState<any[]>([])
+  const [scheduledRooms, setScheduledRooms] =useState<any[]>([])
+  const [activeDate, setActiveDate] =useState<boolean>(false)
+  const [scheduledTasks, setScheduledTasks] =useState<any[]>([])
+  const [r, setR]= useState<number>(Math.floor(Math.random() * 7))
+  const [selectedRoom, setSelectedRoom] = useState<any>()
+
+
+
+  
+
   
   useEffect(() => {
-    // console.log(savedUsername)
     GetUserInfoByUsername();
+    setSpinnerOn(false)
+    GetTaskDates()
 
 
   }, [])
 
+  const GetTaskDates = () => {
+    let today = new Date();
+    var todayDate = new Date(today.getFullYear(),today.getMonth(),today.getDate());
+    var nextDay = new Date(+todayDate);
+    
+    let nextFiftyDays = [] as any
+    nextFiftyDays.push(todayDate.toISOString())
+
+    
+    for(let i =1; i < 10; i++)
+    {
+      let endDate = nextDay.getDate() + 1;
+          nextDay.setDate(endDate);
+          nextFiftyDays.push(nextDay.toISOString());
+
+    }
+    console.log(nextFiftyDays)
+    let nextTasks = defaultSpace.rooms.map((room:any) => room.tasksAssigned.filter((task:any) => nextFiftyDays.includes(task.dateScheduled)))
+    setScheduledTasks(nextTasks)
+   console.log(nextTasks)
+  let datesArr=[] as any
+  
+
+   nextTasks.map((task:any) =>task.map((taskone:any)=> datesArr.push(taskone.dateScheduled)))
+   datesArr = Array.from(new Set(datesArr.sort()))
+   setScheduledDates(datesArr.map((date:any)=> {
+    let dateF = new Date(date)
+    return dateF.toString()
+   }))
+   console.log(datesArr[0])
+   getRoomsbyDate(datesArr[0])
+  }
+
+  const getRoomsbyDate = (date:any) =>{
+
+    let taskedDate = new Date(date).toISOString()
+    // console.log("Date Chosen :  ================================================================================================= ")
+    // console.log(taskedDate)
+  //   console.log("Next Tasks Are :  ================================================================================================= ")
+  // //  let tasks= scheduledTasks.map((task:any) => task.filter((taskone:any)=>taskone.dateScheduled == taskedDate)).flat()
+  // //   console.log(tasks.flat())
+  let roomArr = [] as any;
+  let taskArr = [] as any;
+  defaultSpace.rooms.map((room: any) => {
+    let tempArr = []as any;
+    let tempRoomArr = []as any;
+    room.tasksAssigned.map((task:any) => {
+      if (task.dateScheduled == taskedDate) {
+        tempArr.push(task);
+
+        if (tempRoomArr.length == 0) {
+          tempRoomArr.push(room);
+        }
+      }
+    });
+
+    if (tempArr.length != 0) {
+      taskArr.push(tempArr);
+    }
+    roomArr.push(...tempRoomArr);
+  });
+  let rooms = [] as any;
+  roomArr.map((room:any, idx:number) => {
+    rooms.push({id:room.id, spaceName:room.spaceName, spaceCategory:room.spaceCategory, todaysTasks: taskArr[idx] });
+  });
+  setScheduledRooms(rooms)
+  setSelectedRoom(rooms[0])
+  //  console.log("Tasked Rooms :  ================================================================================================= ")
+  //   console.log("taskedRooms")
+  //   //setScheduledRooms("mom")
+  }
+
+  const displayTaskModel = () => {
+    console.log("display model")
+  }
+  
   const GetUserInfoByUsername = async() => {
   
     let username:any= await AsyncStorage.getItem("Username");
     if(username) {
       setSavedUsername(username)
-      console.log(username)
+      //console.log(username)
       let userInfo = await GetUserData(username)
 
       if(userInfo.length!=0) {
@@ -42,15 +142,16 @@ const ScheduleScreen: FC = ()=> {
         setInvited(userInfo.invitations.sentInvites.filter((Invited:any)=> (Invited.isAccepted == false && Invited.isDeleted == false)))
         setInviters( userInfo.invitations.recievedInvites.filter((Inviter:any)=> (Inviter.isAccepted == false  && Inviter.isDeleted == false)))
         setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited:any)=> (Invited.isAccepted == true && Invited.isDeleted == false)))
+        //setDefaultSpace(userInfo.mySchedule[1])
+  
       
       }
 
     }
-    
+
+ 
   }
-  useEffect(()=>{
-    setSpinnerOn(false)
-  }, [])
+  
   
   return (
     
@@ -59,11 +160,89 @@ const ScheduleScreen: FC = ()=> {
  
     <View style={styles.container}>
    <HeaderComponent title="My Schedule"/>
-   <Text style={[styles.mainHeader, {color:secondaryTextColor}]}>House</Text>
+   <View style={[styles.flexrow]}>
+   <Text style={[styles.mainHeader, {color:secondaryTextColor}]}>{defaultSpace.collectionName}</Text>
+  < Pressable style={[styles.paddingL]} onPress={()=> navigation.navigate("DefaultOptions")}>
+   <MaterialCommunityIcons name="home-import-outline" size={30} color="#000"/>
+  </Pressable>
+
+   </View>
+
   <View style={styles.rowHeader}>
-  <UnderlinedTwoHeaderComponent titleFirst={"This Week"} titleTwo={'Next Week'} />
+  <UnderlinedOneHeaderComponent titleFirst={"Tasked Dates"}  />
 </View>
   {/* <ReactNativeCalendar/> */}
+    
+    <ScrollView horizontal style={styles.datesContainer} showsHorizontalScrollIndicator={false}>
+     {  scheduledDates.length>0?
+     scheduledDates.map((date:string, idx:number)=> {
+
+        return(
+        <Pressable key={idx} style={styles.dateBtn} onPress={()=>getRoomsbyDate(date)}>
+      <Text style={styles.dateText}>{date.slice(0,3)}</Text> 
+      <View style={styles.dash}></View>
+      <Text style={styles.dateText}>{date.slice(8,10)}</Text> 
+       </Pressable>
+        )
+
+      })
+      : 
+      <Text>Your Schedule is Empty for the next ten days.</Text>
+    
+    }
+    
+ </ScrollView>
+    <View>
+    <UnderlinedOneHeaderComponent titleFirst={"My Rooms"}  />
+    </View>
+    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+    {
+      scheduledRooms.map((room:any, idx:number)=>{
+
+        return(
+          <SquareColoredButton key={idx} idx={r+idx} onPress={() => setSelectedRoom(room) }>
+            <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
+          <Text style={[{color:"#FFF"}]}>{room.spaceName}</Text>
+          </SquareColoredButton>
+          )
+
+      })
+    }
+
+    </ScrollView>
+    <View>
+    <UnderlinedOneHeaderComponent titleFirst={"My Tasks"}  />
+      </View>
+      <View>
+      {
+        selectedRoom!=null?
+        selectedRoom.todaysTasks.map((taskInfo:any, idx:number)=>{
+          return(
+
+          //<Text key={idx}>{taskInfo.task.name}  {taskInfo.item.name}</Text>
+            //<TaskRowTaskInfoComponent r={r} key={idx} idx={idx} task={taskInfo} />
+            <TaskSpaceRowComponent key={idx} idx={r+idx} onPress={()=>displayTaskModel()}>
+            <View style={[styles.taskContainer, styles.flexrow]}>
+              <Text style={[styles.text ]}>{taskInfo.task.name} {taskInfo.item.name}</Text>
+              <View style={[styles.flexrow]}>
+                
+              <Text style={[styles.text, ]}>{taskInfo.task.coins} coins</Text>
+              </View>
+            </View>
+          </TaskSpaceRowComponent>
+
+          )
+        })
+        :null
+      }
+      </View>
+
+ {/* <Button
+  onPress={() =>console.log(scheduledDates)}
+  title="Learn More"
+  color="#841584"
+  accessibilityLabel="Learn more about this purple button"
+/> */}
     </View>
 
     
@@ -72,15 +251,61 @@ const ScheduleScreen: FC = ()=> {
 
 const styles = StyleSheet.create({
   container: {
-  paddingTop:60
+  paddingTop:20
+  },
+  taskContainer:{
+    padding: 10,
   },
   mainHeader: {
     fontSize:25,
     fontWeight: "bold", 
 },
 rowHeader:{
-  
+  paddingTop:10,
   flexDirection: 'row',
+}, 
+dateBtn: {
+  width:80,
+  height: 100,
+  borderWidth: 2,
+  borderColor:"#000000",
+  borderRadius:10,
+  margin:10,
+  marginRight:5,
+  padding:10,
+  justifyContent: "center",
+  alignItems: "center",
+},
+dash:{
+  width:"80%",
+  borderWidth: 1,
+  borderColor:"#000000",
+  margin: 20,
+},
+dateText: {
+  fontSize:20
+},
+datesContainer:{
+
+  flexDirection: "row",
+  
+}, 
+buttonSize: {
+  width:50, height:50
+},
+flexrow: {
+  flexDirection: "row"
+},
+text: {
+  color:"#FFF", 
+  fontWeight: 'bold', 
+  fontSize: 20
+}, 
+taskInfo: {
+  fontSize: 20,
+},
+paddingL:{
+  paddingLeft:10,
 }
 
 });

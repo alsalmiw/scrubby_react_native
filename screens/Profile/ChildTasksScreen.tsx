@@ -122,7 +122,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                         <Image style={styles.buttonSize} source={iconsMap.get(roomWithTask.spaceCategory)} />
                       </View>
                       <View style={styles.sqrBtn}>
-                        <Text style={{ color: 'white', flexShrink: 1, fontSize: 13 }}>{roomWithTask.spaceCategory}</Text>
+                        <Text style={styles.sqrTxt}>{roomWithTask.spaceCategory}</Text>
                       </View>
                     </SquareColoredButton>
                   </View>
@@ -235,6 +235,11 @@ const styles = StyleSheet.create({
     paddingLeft: "2.5%",
     marginTop: 5,
     marginBottom: 5
+  },
+  sqrTxt:{
+    color: 'white', 
+    flexShrink: 1, 
+    fontSize: 13 
   }
 });
 

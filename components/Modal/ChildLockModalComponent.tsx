@@ -23,7 +23,7 @@ const ChildLockModalComponent: FC = ({ }) => {
     const navigation = useNavigation<any>();
 
     const navToChildLockScreen = () => {
-        if (childPassCode != null && String(childPassCode).length ==5) {
+        if (childPassCode != null && String(childPassCode).length == 5) {
             setCheckPassCode(false);
             Alert.alert("Success", `Your passcode is ${childPassCode}`, [{ text: "Ok", style: "cancel" }]);
             navigation.navigate("LockedChildTasks");
@@ -66,7 +66,7 @@ const ChildLockModalComponent: FC = ({ }) => {
                                     <Text>Create a 5 digit code</Text>
                                 </View>
 
-                                <View style={{ flex: 0.8, flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10, }}>
+                                <View style={styles.codeInput}>
                                     <CodeInput
 
                                         keyboardType="numeric"
@@ -81,7 +81,7 @@ const ChildLockModalComponent: FC = ({ }) => {
                                         codeInputStyle={{ borderWidth: 1.5 }}
                                     />
                                 </View>
-                                <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center', padding: 50 }}>
+                                <View style={styles.codeInputBtn}>
                                     <FullButtonComponent color={blueColor} radius={10} onPress={() => { updatePasscode(), navToChildLockScreen() }}> <Text>Lock</Text></FullButtonComponent>
                                 </View>
                             </>
@@ -91,7 +91,7 @@ const ChildLockModalComponent: FC = ({ }) => {
                                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                                     <Text>Enter your 5 digit code</Text>
                                 </View>
-                                <View style={{ flex: 0.8, flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10, }}>
+                                <View style={styles.codeInput}>
                                     <CodeInput
 
                                         keyboardType="numeric"
@@ -106,7 +106,7 @@ const ChildLockModalComponent: FC = ({ }) => {
                                         codeInputStyle={{ borderWidth: 1.5 }}
                                     />
                                 </View>
-                                <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center', padding: 50 }}>
+                                <View style={styles.codeInputBtn}>
                                     <FullButtonComponent color={blueColor} radius={10} onPress={() => { console.log(childPassCode), navToChildUnlockScreen() }}> <Text>Unlock</Text></FullButtonComponent>
                                 </View>
 
@@ -130,6 +130,18 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         textAlign: "center",
         fontSize: 20
+    },
+    codeInput: {
+        flex: 0.8,
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        marginTop: 10,
+    },
+    codeInputBtn: {
+        flex: 0,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        padding: 50
     }
 });
 

@@ -2,13 +2,12 @@
 import { FC, useContext, useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View, StatusBar, FlatList, Pressable } from 'react-native';
 import CoinsPointsDisplayContainer from '../../components/Profile/CoinsPointsDisplayContainer'
-import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
-import AddPhotoComponent from '../../components/AddPhotoComponent';
+
 import HeaderComponent from '../../components/HeaderComponent';
 import UserNameComponent from '../../components/UserNameComponent';
 import UnderlinedHeaderComponent from '../../components/UnderlinedHeaderComponent';
 import AddItemButtonComponent from '../../components/AddItemButtonComponent';
-import TaskSpaceRowIconComponent from '../../components/TaskSpaceRowIconComponent';
+
 import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
 import RootStackParamList from '../../types/INavigateProfile'
 import UseTheme from '../../hooks/use-theme';
@@ -25,8 +24,6 @@ import { Entypo } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { ThemeContext } from '../../context/ThemeContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import TaskSpaceRowCheck from '../../components/TaskSpaceRowCheck';
-import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 import UserContext from '../../context/UserContext';
 import { ISpace } from '../../Interfaces/ISpace';
 import IChild from '../../Interfaces/IChild';
@@ -189,7 +186,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
                           <UnderlinedHeaderComponent titleOne="Kids" titleTwo="" titleThree=""/>
                             <View style={styles.thirdRow}>
                                 
-                                      <AddItemButtonComponent onPress={handleAddChild}>
+                                      <AddItemButtonComponent  onPress={handleAddChild}>
                                         <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
                                       </AddItemButtonComponent> 
 

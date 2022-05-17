@@ -104,8 +104,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                 room.rooms.filter((roomName: any, x: number) => roomName.tasksAssigned.length != 0
                 ).map((roomWithTask: any, x: number) => {
 
-                  return (<View style={styles.sqrBtn}>
-                    <SquareColoredButton key={x + 1} idx={x + rState + 1} onPress={() => { console.log(roomWithTask), setChildTasks(roomWithTask.tasksAssigned), setSpace(room.collectionName), setLocation(roomWithTask.spaceName) }}>
+                  return (<View key={x} style={styles.sqrBtn}>
+                    <SquareColoredButton idx={x + rState + 1} onPress={() => { console.log(roomWithTask), setChildTasks(roomWithTask.tasksAssigned), setSpace(room.collectionName), setLocation(roomWithTask.spaceName) }}>
                       <View style={styles.sqrBtn}>
                         <Image style={styles.buttonSize} source={iconsMap.get(roomWithTask.spaceCategory)} />
                       </View>
@@ -136,7 +136,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
                 return (
-                  <TaskSpaceRowComponent key={x + 1} idx={x} onPress={() => { setTaskModal(true), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name) }}>
+                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => { setTaskModal(true), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name) }}>
 
                     <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}</Text>
 

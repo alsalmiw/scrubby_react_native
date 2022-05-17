@@ -9,7 +9,17 @@ import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { ThemeContext } from "../../context/ThemeContext"
 
 
-const TaskInfoModalComponent: FC = () => {
+interface ITaskInfoModal{
+    headerTitle: string;
+    Space: string;
+    Location: string;
+    Instruction: string;
+    coins:string;
+    points:string;
+
+}
+
+const TaskInfoModalComponent: FC<ITaskInfoModal> = ({headerTitle, Space, Location, Instruction, coins, points}) => {
     const { yellowColor } = useContext(ThemeContext)
 
 
@@ -18,11 +28,11 @@ const TaskInfoModalComponent: FC = () => {
         <View>
             <ModalComponent>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 0, paddingTop: 0 }}>
-                    <Text style={{ fontSize: 30 }}>Organized Bed</Text>
+                    <Text style={{ fontSize: 30 }}>{headerTitle}</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-end',  }}>
                         <View>
-                            <Text> <FontAwesome5 name="coins" color={yellowColor} /> 10 coins</Text>
-                            <Text> <FontAwesome name="star" color={yellowColor} /> 10 points</Text>
+                            <Text> <FontAwesome5 name="coins" color={yellowColor} /> {coins} coins</Text>
+                            <Text> <FontAwesome name="star" color={yellowColor} /> {points} points</Text>
                         </View>
 
                     </View>
@@ -32,16 +42,19 @@ const TaskInfoModalComponent: FC = () => {
 
                 <View style={styles.underlinedView}>
                     <UnderlinedOneHeaderComponent titleFirst={'Space'}></UnderlinedOneHeaderComponent>
+                    <Text>{Space}</Text>
                 </View>
+                
                 <View style={styles.underlinedView}>
                     <UnderlinedOneHeaderComponent titleFirst={'Location'}></UnderlinedOneHeaderComponent>
+                    <Text>{Location}</Text>
                 </View>
+                
                 <View style={styles.underlinedView}>
                     <UnderlinedOneHeaderComponent titleFirst={'Instructions'}></UnderlinedOneHeaderComponent>
+                    <Text>{Instruction}</Text>
                 </View>
-                <View style={styles.underlinedView}>
-                    <UnderlinedOneHeaderComponent titleFirst={'Products'}></UnderlinedOneHeaderComponent>
-                </View>
+                
 
 
             </ModalComponent>

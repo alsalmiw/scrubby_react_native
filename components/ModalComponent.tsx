@@ -3,29 +3,30 @@ import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import UserContext from "../context/UserContext";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-///
+/// do on press logic
 const ModalComponent: FC<any> = ({ children }) => {
 
-  const { modalVisible, setModalVisible } = useContext(UserContext)
+  const { modalVisible, setModalVisible, taskModal, setTaskModal } = useContext(UserContext)
 
   return (
     <View style={styles.centeredView}>
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
+        visible={modalVisible || taskModal}
         onRequestClose={() => {
           Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
+          setModalVisible(!modalVisible || !taskModal);
         }}
       >
         <View style={styles.centeredView}>
 
           <View style={styles.modalView}>
             <View style={styles.pressableView}>
+
               <Pressable
                 style={[styles.button,]}
-                onPress={() => { setModalVisible(!modalVisible), console.log('yes') }}
+                onPress={() => { modalVisible == true ? setModalVisible(!modalVisible): taskModal == true ? setTaskModal(!taskModal) : null, console.log('yes') }}
               >
                 <AntDesign name="close" size={35} color="black" />
               </Pressable>

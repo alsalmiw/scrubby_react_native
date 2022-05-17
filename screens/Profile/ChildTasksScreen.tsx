@@ -17,13 +17,24 @@ import ChildLockModalComponent from '../../components/Modal/ChildLockModalCompon
 import { GetTasksByRoomId } from '../../services/dataService';
 import TaskInfoModalComponent from '../../components/Modal/TaskInfoModalComponent';
 
+import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
+
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, setModalVisible } = useContext(UserContext)
+  const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal } = useContext(UserContext)
   const [childRooms, setChildRooms] = useState<any>([])
+
+  const [todayDate, setTodayDate] = useState<any>()
+
+  const [space, setSpace] = useState<any>()
+  const [location, setLocation] = useState<any>()
+  const [coin, setCoin] = useState<any>()
+  const [insturction, setInstruction] = useState<any>()
+  const [title, setTitle] = useState<any>()
+
 
 
   const [childTasks, setChildTasks] = useState<any>([])
@@ -34,9 +45,29 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     setChildRooms(childPage.scheduledTasks);
   }
 
+  const getDate = () => {
+    var isoDate = new Date().toISOString()
+    console.log(isoDate)
+    setTodayDate(isoDate)
+  }
+
+  const childLock = () => {
+
+
+  }
+
+
+  // const taskModal = (head:string, one:string, two:string, three:string, coin:string, point:string) =>{
+  //   {console.log('work')}
+  //   <TaskInfoModalComponent headerTitle={head} underLineOne={one} underLineTwo ={two} underLineThree={three} coins={coin} points={point} />
+
+  // }
+
   useEffect(() => {
-    console.log('bye')
+    console.log("________________________________________")
     console.log(childPage.scheduledTasks)
+    console.log("________________________________________")
+    getDate();
     ChildRooms();
 
   }, [])
@@ -76,8 +107,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
             <Pressable onPress={() => { setModalVisible(true), console.log('ll') }}>
               <FontAwesome5 name="unlock" size={40} color="black" />
             </Pressable>
-            {/* <ChildLockModalComponent /> */}
-            <TaskInfoModalComponent />
+
+            {/* <TaskInfoModalComponent /> */}
           </View>
 
 
@@ -88,21 +119,22 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
           <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {/* <ShowRooms /> */}
           {childRooms != null ?
             childRooms.map((room: any) => {
-
+              // missing logic to display task not completed and today and future task.
               return (
 
-                room.rooms.map((roomName: any, x: number) => {
+                room.rooms.filter((roomName: any, x: number) => roomName.tasksAssigned.length != 0
+                ).map((roomWithTask: any, x: number) => {
+
                   return (
-                    // <Text>{roomName.spaceCategory}</Text>
-                    <SquareColoredButton key={x} idx={x + rState} onPress={() => { setChildTasks(roomName.tasksAssigned), console.log(roomName.tasksAssigned) }}>
-                      <Text>{roomName.spaceCategory}</Text>
+                    <SquareColoredButton key={x} idx={x + rState + 1} onPress={() => { setChildTasks(roomWithTask.tasksAssigned), setSpace(room.collectionName), setLocation(roomWithTask.spaceName), console.log("-----------------------") }}>
+                      <Text style={{ color: 'white' }}>{roomWithTask.spaceCategory}</Text>
                     </SquareColoredButton>
                   )
-                }
-                )
+                })
+
+
               )
             })
             : null
@@ -117,15 +149,28 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
           {/* task */}
           {
             childTasks != null ?
-              childTasks.map((taskName: any) => {
-                
+              childTasks.map((taskName: any, x: number) => {
+                console.log(taskName)
+
                 return (
-                    <Text>{taskName.task.name}</Text>
+                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => { setTaskModal(true), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name) }}>
+                    <Text style={{ color: 'white' }}>{taskName.task.name}</Text>
+
+                  </TaskSpaceRowComponent>
+
+
+
+
                 )
               })
               : null
           }
         </ScrollView>
+
+        {modalVisible == true ?
+          <ChildLockModalComponent /> : taskModal == true ?
+            <TaskInfoModalComponent headerTitle={title} Space={space} Location={location} Instruction={insturction} coins={coin} points={coin} />
+            : null}
 
 
 

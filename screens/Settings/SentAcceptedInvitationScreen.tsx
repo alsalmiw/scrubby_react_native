@@ -19,6 +19,14 @@ import { DeleteInvite } from '../../services/dataService';
 import TaskSpaceRowIconComponent from '../../components/TaskSpaceRowIconComponent';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
+import TaskSpaceRowCheck from '../../components/TaskSpaceRowCheck';
+import SquareColoredButton from '../../components/SquareColoredButton';
+import SquareWhiteButton from '../../components/SquareWhiteButton';
+import TaskSpaceRowPlus from '../../components/TaskSpaceRowPlus';
+import  ISharedSpace  from '../../Interfaces/ISharedSpace';
+import { CreateSharedSpaces } from '../../services/dataService';
+import { ISpace } from '../../Interfaces/ISpace';
+
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SentAcceptedInvitation'>
@@ -28,8 +36,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
     const [fullName, setFullName] = useState<string>("");
     const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor } = useContext(ThemeContext);
     const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh, acceptedInvitations, setAcceptedInvitations, rState, mySpaces, setMySpaces, sentAcceptedInvitations, setSentAcceptedInvitations } = useContext(UserContext)
-    const [bgColor, setBgColor]= useState('')
-
+    
     let r = Math.floor(Math.random() * 7)
 
     const handleDisplayFullName = async () => {
@@ -53,8 +60,40 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
 
     }
 
-    const handleDisplayAlert = () => {
-        console.log('Hello There')
+    const handleDisplayAlert = async (space: ISpace | string ) => {
+        console.log('Hello There');
+        console.log(space);
+        console.log(await AsyncStorage.getItem('Invited'));
+
+        //This will be how we add create shared Space
+        /* 
+            let newSharedSpace:ISharedSpace = {
+                id:0, 
+                invitedUsername: peter or get it from local storage or something,
+                collectionId: space.id,
+                isDeleted: false,
+                isAccepted: true
+            }
+            console.log(newSharedSpace)
+
+            let result = await CreateSharedSpaces(newSharedSpace)
+            if (result)
+            {
+                Alert.alert("You have successfully added a new shared space")
+               
+                //dont know what to save it too, do it later
+                
+            }
+
+            console.log(result);
+
+        */
+
+    }
+
+    const handleNavigateBack = () => {
+        navigation.navigate('ManageInvites');
+        setRefresh(true);
     }
 
     useEffect(() => {
@@ -69,7 +108,8 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
                 <View style={styles.insideFirstRowContainer1}>
                     <UserNameComponent name={fullName}></UserNameComponent>
                     <View style={styles.insideFirstRowContainer2}>
-                        <Feather name="trash-2" size={40} color='black' onPress={handleDisplayAlert} />
+                        {/* The hello there is just a test, i will remove later when done adding changes */}
+                        <Feather name="trash-2" size={40} color='black' onPress={handleDisplayAlert.bind(this, "Hello There")} />
                         <UserNameComponent name="Delete User"></UserNameComponent>
                     </View>
                 </View>
@@ -79,9 +119,26 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
                 <UnderlinedOneHeaderComponent titleFirst='Add To'></UnderlinedOneHeaderComponent>
                 <View style={styles.insideSecondRowContainer1}>
                     
+
+                    {
+                        mySpaces.map((space:ISpace, idx:number) =>
+                        <TaskSpaceRowPlus
+                          idx={rState+idx}
+                          key={idx}
+                          onPress={handleDisplayAlert.bind(this, space)}
+                        >
+                          {space.collectionName}
+                        </TaskSpaceRowPlus>
+              
+                      )
+                    }
                 </View>
-                <UnderlinedOneHeaderComponent titleFirst='You Are Added To'></UnderlinedOneHeaderComponent>
+                
             </View>
+
+            <FullButtonComponent onPress={handleNavigateBack} radius={0} color={purpleColor}>
+                <Text>Back</Text>
+            </FullButtonComponent>
         </View>
     )
 

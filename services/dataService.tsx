@@ -9,6 +9,7 @@ import IInviteUser from '../Interfaces/IInviteUser';
 import IUserData from '../Interfaces/IUserData';
 import IRedeemCoins from '../Interfaces/IRedeemCoins';
 import IRedeemCoinsChild from '../Interfaces/IRedeemChildCoins';
+import ISharedSpace from '../Interfaces/ISharedSpace';
 
 
 let link = "https://scrubbyapi.azurewebsites.net"
@@ -369,6 +370,25 @@ async function GetSharedSpacesById(id:number){
     let data = await res.json();
     return data
 }
+
+async function CreateSharedSpaces(sharedSpace: ISharedSpace) {
+    let res= await fetch(`${link}/SharedSpaces/CreateSharedSpaces`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        //might be wrong
+        body: JSON.stringify(sharedSpace)
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data = await res.json();
+    console.log(data)
+   return data;
+}
 //add post for new coin amount
 async function NewCoinAmountDependent(Dependent:IRedeemCoinsChild)
 {
@@ -455,4 +475,4 @@ async function AddChildAssignedTasks(assignedTasks: any[])
 
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId, GetUserData, RedeemCoinsUser, RedeemCoinsChild, GetSharedSpacesById, DeleteInvitation, NewCoinAmountDependent, NewCoinAmountNotDependent, AddChildAssignedTasks, AddUserAssignedTasks }
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId, GetUserData, RedeemCoinsUser, RedeemCoinsChild, GetSharedSpacesById, CreateSharedSpaces, DeleteInvitation, NewCoinAmountDependent, NewCoinAmountNotDependent, AddChildAssignedTasks, AddUserAssignedTasks }

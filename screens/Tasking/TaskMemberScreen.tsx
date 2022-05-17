@@ -112,7 +112,7 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
 
        
     </View>
-    <FullButtonComponent radius={0} color={purpleColor} onPress={()=>handleGoBack()} >Back</FullButtonComponent>
+    <FullButtonComponent radius={0} color={purpleColor} onPress={()=>navigation.goBack()} >Back</FullButtonComponent>
     </>
     
   );

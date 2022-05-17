@@ -47,6 +47,9 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   }
 
   useEffect(() => {
+    console.log("=======================================================================")
+    console.log(childPage)
+    console.log("========================================================================")
     ChildRooms();
 
   }, [])

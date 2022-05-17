@@ -9,16 +9,18 @@ import { FC, useContext, useEffect } from 'react';
 import ChildTasksScreen from './screens/Profile/ChildTasksScreen';
 import ModelComponent from './components/ModalComponent'
 // import RootStackParamList from './types/INavigateProfile'
+import RootStackParamList from './types/INavigation'
+
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import AddItemsScreen from './screens/Profile/AddItemsScreen';
 
-type RootStackParamList ={
-  login:undefined,
-  Nav: undefined,
-  Child: undefined,
-}
+// type RootStackParamList ={
+//   login:undefined,
+//   Nav: undefined,
+//   Child: undefined,
+// }
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

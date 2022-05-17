@@ -17,7 +17,8 @@ import TaskRowTaskInfoComponent from '../../components/TaskRowTaskInfoComponent'
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import RootStackParamList from '../../types/INavigationSchedule'
+import RootStackParamList from '../../types/INavigation'
+import ScheduleDateBtnComponent from '../../components/ScheduleDateBtnComponent';
 
 
 
@@ -43,9 +44,12 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
 
   
   useEffect(() => {
+    
     GetUserInfoByUsername();
     setSpinnerOn(false)
-    GetTaskDates()
+      GetTaskDates()
+   
+    
 
 
   }, [])
@@ -156,9 +160,10 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
   return (
     
    
+    <ScrollView>
+  
     
- 
-    <View style={styles.container}>
+   <View style={styles.container}>
    <HeaderComponent title="My Schedule"/>
    <View style={[styles.flexrow]}>
    <Text style={[styles.mainHeader, {color:secondaryTextColor}]}>{defaultSpace.collectionName}</Text>
@@ -178,11 +183,12 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
      scheduledDates.map((date:string, idx:number)=> {
 
         return(
-        <Pressable key={idx} style={styles.dateBtn} onPress={()=>getRoomsbyDate(date)}>
-      <Text style={styles.dateText}>{date.slice(0,3)}</Text> 
-      <View style={styles.dash}></View>
-      <Text style={styles.dateText}>{date.slice(8,10)}</Text> 
-       </Pressable>
+      //   <Pressable key={idx} style={[styles.dateBtn, {borderColor:"black"}]} onPress={()=>getRoomsbyDate(date)}>
+      // <Text style={styles.dateText}>{date.slice(0,3)}</Text> 
+      // <View style={styles.dash}></View>
+      // <Text style={styles.dateText}>{date.slice(8,10)}</Text> 
+      //  </Pressable>
+       <ScheduleDateBtnComponent key={idx} idx={idx} date={date} onPress={()=>getRoomsbyDate(date)}/>
         )
 
       })
@@ -245,7 +251,8 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
 /> */}
     </View>
 
-    
+
+    </ScrollView>
   );
 }
 

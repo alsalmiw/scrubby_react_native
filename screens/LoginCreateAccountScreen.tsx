@@ -16,11 +16,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import avatars from '../types/IAvatars'
 import FullButtonComponent from "../components/FullButtonComponent"
 import { ThemeContext } from "../context/ThemeContext"
+import RootStackParamList from '../types/INavigation'
 
-type RootStackParamList = {
-    login: undefined,
-    Nav: undefined,
-}
+
+// type RootStackParamList = {
+//     login: undefined,
+//     Nav: undefined,
+// }
 
 type Props = NativeStackScreenProps<RootStackParamList, 'login'>
 
@@ -47,7 +49,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
         setSavedPassword(password);
 
         let result = await CreateAccount(userData);
-        if (result) {
+        if (result.token!= null) {
             AsyncStorage.setItem("Token", result.token);
             AsyncStorage.setItem("Username", username);
             // let user = await GetUserData(username)
@@ -56,12 +58,12 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             //     console.log(user)
             // }
             
-            navigation.navigate('Nav')
+            navigation.navigate('Nav', {screen:"Profile"})
             console.log(result)
 
         }
 
-        else Alert.alert("Error", 'Invalid Username or Password.', [{ text: "Cancel", style: "cancel" }])
+        else{ Alert.alert("Error", 'Invalid Username or Password.', [{ text: "Cancel", style: "cancel" }])}
 
     }
 
@@ -83,9 +85,20 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             //     setFullUserInfo(user)
             //     console.log(user)
             // }
-            let defaultSpace = await GetUserDefaultSchedule(username)
-            setDefaultSpace(defaultSpace)
-            navigation.navigate('Nav')
+            let defaultCollection = await GetUserDefaultSchedule(username)
+            if(defaultCollection.length != 0) 
+            {
+                setDefaultSpace(defaultCollection)
+                navigation.navigate('Nav', {screen:"Schedule"})
+            }else{
+                navigation.navigate('Nav', {screen:"Profile"})
+
+            }
+            //console.log(typeof defaultCollection)
+                //
+
+            
+            
         }
         else {
             Alert.alert("Error", 'Incorrect Username or Password.', [{ text: "Cancel", style: "cancel" }])

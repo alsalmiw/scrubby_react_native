@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { FC, useContext, useEffect } from "react";
-import { Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StatusBar, StyleSheet, Text, View, Image } from "react-native";
 import AvatarComponent from "../../components/AvatarComponent";
 import HeaderComponent from "../../components/HeaderComponent";
 import ChildLockModalComponent from "../../components/Modal/ChildLockModalComponent";
@@ -11,13 +11,16 @@ import RootStackParamList from "../../types/INavigateProfile";
 
 import { FontAwesome5 } from '@expo/vector-icons';
 import UnderlinedHeaderComponent from "../../components/UnderlinedHeaderComponent";
+import SquareColoredButton from "../../components/SquareColoredButton";
 
+import iconsMap from '../../types/IconsMap';
+//
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LockedChildTasks'>
 
 const LockChildTasksScreen: FC = () => {
 
-    const { userData, childPage, setModalVisible } = useContext(UserContext);
+    const { userData, childPage, setModalVisible, childRooms, setChildRooms, rState } = useContext(UserContext);
 
     useEffect(() => {
         console.log(childPage)
@@ -38,7 +41,7 @@ const LockChildTasksScreen: FC = () => {
 
 
                     <View style={styles.nameAndCoinContainer}>
-                        <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'space-evenly', }}>
+                        <View style={styles.childName}>
                             <Text style={{ fontSize: 20 }}>{childPage.dependentName}</Text>
                         </View>
 
@@ -51,9 +54,9 @@ const LockChildTasksScreen: FC = () => {
 
 
                     </View>
-                    <View style={{ flex: 0, alignItems: 'flex-start', justifyContent: 'flex-start', paddingTop: 10, paddingRight: 10, marginTop: 10, height: 100 }}>
-                        <Pressable onPress={() => { setModalVisible(true), console.log('ll') }}>
-                            <FontAwesome5 name="lock" size={40} color="black" />
+                    <View style={styles.lockStyle}>
+                        <Pressable onPress={() => { setModalVisible(true) }}>
+                            <FontAwesome5 name="lock" size={40} color="grey" />
                         </Pressable>
                         <ChildLockModalComponent />
                     </View>
@@ -62,23 +65,48 @@ const LockChildTasksScreen: FC = () => {
 
                 </View>
 
-                <View style={{ paddingLeft: 10, paddingRight: 10, justifyContent: 'center' }}>
+                <View style={styles.underLineStyle}>
                     <UnderlinedOneHeaderComponent titleFirst={"My Rooms"} ></UnderlinedOneHeaderComponent>
-                   
+
                 </View>
-                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                    {/* <ShowRooms /> */}
+                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
+                    {childRooms != null ?
+                        childRooms.map((room: any) => {
+                            // missing logic to display task not completed and today and future task.
+                            return (
+
+                                room.rooms.filter((roomName: any, x: number) => roomName.tasksAssigned.length != 0
+                                ).map((roomWithTask: any, x: number) => {
+                                    // fix on press. refer back to child task screen
+                                    return (<View style={styles.sqrBtn}>
+                                        <SquareColoredButton key={x + 1} idx={x + rState + 1} onPress={() => { console.log(roomWithTask) }}>
+                                            <View style={styles.sqrBtn}>
+                                                <Image style={styles.buttonSize} source={iconsMap.get(roomWithTask.spaceCategory)} />
+                                            </View>
+                                            <View style={styles.sqrBtn}>
+                                                <Text style={styles.sqrTxt}>{roomWithTask.spaceCategory}</Text>
+                                            </View>
+                                        </SquareColoredButton>
+                                    </View>
+                                    )
+                                })
+
+
+                            )
+                        })
+                        : null
+                    }
 
                 </ScrollView>
 
-                <View style={{ paddingLeft: 10, paddingRight: 10, justifyContent: 'center' }}>
+                <View style={styles.underLineStyle}>
                     <UnderlinedOneHeaderComponent titleFirst={'Remaining Tasks'}></UnderlinedOneHeaderComponent>
 
                 </View>
                 <ScrollView>
                     {/* task */}
                 </ScrollView>
-                <View style={{ paddingLeft: 10, paddingRight: 10, justifyContent: 'center' }}>
+                <View style={styles.underLineStyle}>
                     <UnderlinedOneHeaderComponent titleFirst={'Completed Tasks'}></UnderlinedOneHeaderComponent>
                 </View>
 
@@ -116,6 +144,40 @@ const styles = StyleSheet.create({
     buttonSize: {
         width: 50, height: 50
     },
+    underLineStyle: {
+        paddingLeft: 10,
+        paddingRight: 10,
+        justifyContent: 'center'
+    },
+    myRoomScrollView: {
+        paddingLeft: "2.5%",
+        paddingRight: "2.5%",
+        marginTop: "2%",
+        marginBottom: "2%"
+    },
+    sqrBtn: {
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    lockStyle: {
+        flex: 0,
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        paddingTop: 10,
+        paddingRight: 10,
+        marginTop: 10,
+        height: 100
+    },
+    sqrTxt: {
+        color: 'white',
+        flexShrink: 1,
+        fontSize: 13
+    },
+    childName: {
+        flex: 0,
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+    }
 });
 
 export default LockChildTasksScreen;

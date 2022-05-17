@@ -76,6 +76,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
         let result = await UserLogin(userLoginData);
         if (result.token != null) {
+            setSpinnerOn(true);
             AsyncStorage.setItem("Token", result.token);
             AsyncStorage.setItem("Username", username);
             // let user = await GetUserData(username)
@@ -85,6 +86,13 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             // }
             let defaultSpace = await GetUserDefaultSchedule(username)
             setDefaultSpace(defaultSpace)
+            let user = await GetUserData(username)
+            if (user) {
+                setFullUserInfo(user)
+                console.log(user)
+            }
+            console.log(result)
+            
             navigation.navigate('Nav')
         }
         else {
@@ -106,11 +114,11 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
                 return;
             }
             if (regi.test(username)) {
-                Alert.alert("Error", 'Username can not contains special characters or spaces.', [{ text: "Cancel", style: "cancel" }]);
+                Alert.alert("Error", 'Username can not contains special characters or space(s).', [{ text: "Cancel", style: "cancel" }]);
                 return;
             }
             if (space.test(password)) {
-                Alert.alert("Error", 'Password can not contains any space.', [{ text: "Cancel", style: "cancel" }]);
+                Alert.alert("Error", 'Password can not contains any space(s).', [{ text: "Cancel", style: "cancel" }]);
                 return;
             }
             else {
@@ -130,7 +138,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             }
 
             else {
-                setSpinnerOn(true);
+                
                 userLogin();
                 setPassword("");
                 setUsername("");

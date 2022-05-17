@@ -14,28 +14,35 @@ import { UpdateChildPassCode } from "../../services/dataService";
 
 
 
-const ChildLockModalComponent: FC = ({}) => {
+const ChildLockModalComponent: FC = ({ }) => {
 
     const { setModalVisible, childPage, checkPassCode, setCheckPassCode, childPassCode, setChildPassCode } = useContext(UserContext)
     const { blueColor } = useContext(ThemeContext)
-    const [newCode, setNewCode]= useState<number>()
+    const [newCode, setNewCode] = useState<number>()
 
     const navigation = useNavigation<any>();
 
     const navToChildLockScreen = () => {
-        if (childPassCode != null ) setCheckPassCode(false), navigation.navigate("LockedChildTasks"), setModalVisible(false)
-        else Alert.alert("Error", 'Please fill in entry field', [{ text: "Cancel", style: "cancel" }]);
+        if (childPassCode != null && String(childPassCode).length == 5) {
+            setCheckPassCode(false);
+            Alert.alert("Success", `Your passcode is ${childPassCode}`, [{ text: "Ok", style: "cancel" }]);
+            navigation.navigate("LockedChildTasks");
+            setModalVisible(false)
+        }
+        else {
+            Alert.alert("Error", 'Please fill in entry field', [{ text: "Cancel", style: "cancel" }]);
+        }
 
     }
-    const navToChildUnlockScreen = () =>{
-        if (newCode != null && newCode == childPassCode)  setCheckPassCode(true), setChildPassCode(0), navigation.navigate("ChildTasks"), setModalVisible(false)
+    const navToChildUnlockScreen = () => {
+        if (newCode != null && newCode == childPassCode) setCheckPassCode(true), setChildPassCode(0), navigation.navigate("ChildTasks"), setModalVisible(false)
         else Alert.alert("Error", 'Passcode wrong. Try Again.', [{ text: "Cancel", style: "cancel" }]);
     }
 
-    const updatePasscode = async () =>{
-        let childinfo: IChildPassCode ={
-            Id:childPage.id,
-            DependentPassCode:childPassCode,
+    const updatePasscode = async () => {
+        let childinfo: IChildPassCode = {
+            Id: childPage.id,
+            DependentPassCode: childPassCode,
         }
         console.log(childinfo)
         await UpdateChildPassCode(childinfo)
@@ -55,10 +62,13 @@ const ChildLockModalComponent: FC = ({}) => {
                     {
                         checkPassCode ?
                             <>
-                                <Text>Create a 5 digit code</Text>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10, }}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                    <Text>Create a 5 digit code</Text>
+                                </View>
+
+                                <View style={styles.codeInput}>
                                     <CodeInput
-                                        secureTextEntry
+
                                         keyboardType="numeric"
                                         activeColor='grey'
                                         inactiveColor='grey'
@@ -66,20 +76,24 @@ const ChildLockModalComponent: FC = ({}) => {
                                         ignoreCase={true}
                                         inputPosition='center'
                                         size={50}
-                                        onFulfill={(e: number) => { setChildPassCode(Number(e)) }}
+                                        onFulfill={(e: number) => { console.log(e), setChildPassCode((e)) }}
                                         containerStyle={{ marginTop: 30 }}
                                         codeInputStyle={{ borderWidth: 1.5 }}
                                     />
                                 </View>
-                                <FullButtonComponent color={blueColor} radius={10} onPress={() => { updatePasscode(), navToChildLockScreen() }}> <Text>Lock</Text></FullButtonComponent>
+                                <View style={styles.codeInputBtn}>
+                                    <FullButtonComponent color={blueColor} radius={10} onPress={() => { updatePasscode(), navToChildLockScreen() }}> <Text>Lock</Text></FullButtonComponent>
+                                </View>
                             </>
                             :
                             <>
-                            {/* havent test out logic yet */}
-                                <Text>Enter your 5 digit code</Text>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10, }}>
+                                {/* havent test out logic yet */}
+                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                    <Text>Enter your 5 digit code</Text>
+                                </View>
+                                <View style={styles.codeInput}>
                                     <CodeInput
-                                        secureTextEntry
+
                                         keyboardType="numeric"
                                         activeColor='grey'
                                         inactiveColor='grey'
@@ -92,14 +106,12 @@ const ChildLockModalComponent: FC = ({}) => {
                                         codeInputStyle={{ borderWidth: 1.5 }}
                                     />
                                 </View>
-                                <FullButtonComponent color={blueColor} radius={10} onPress={() => { console.log(childPassCode), navToChildUnlockScreen() }}> <Text>Unlock</Text></FullButtonComponent>
+                                <View style={styles.codeInputBtn}>
+                                    <FullButtonComponent color={blueColor} radius={10} onPress={() => { console.log(childPassCode), navToChildUnlockScreen() }}> <Text>Unlock</Text></FullButtonComponent>
+                                </View>
+
                             </>
                     }
-
-
-
-
-
 
                 </ModalComponent>
             </View>
@@ -118,6 +130,18 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         textAlign: "center",
         fontSize: 20
+    },
+    codeInput: {
+        flex: 0.8,
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        marginTop: 10,
+    },
+    codeInputBtn: {
+        flex: 0,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        padding: 50
     }
 });
 

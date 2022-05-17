@@ -85,7 +85,6 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             // }
             let defaultSpace = await GetUserDefaultSchedule(username)
             setDefaultSpace(defaultSpace)
-           //console.log(result)
             navigation.navigate('Nav')
         }
         else {

@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getLocalStorageInfo} from '../../services/localStorage'
 
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>
+type Props = NativeStackScreenProps<RootStackParamList, 'SettingsScreen'>
 
 const SettingsScreen: FC<Props> = ({navigation})=> {
   const {orangeColor, blueColor, fuchsiaColor, violetColor, greenColor, yellowColor, purpleColor} = useContext(ThemeContext)

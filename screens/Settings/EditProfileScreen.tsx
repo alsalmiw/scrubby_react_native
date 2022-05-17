@@ -30,7 +30,7 @@ const EditProfileScreen: FC<Props> = ({navigation, route})=> {
     let result = await UpdateName(data)
     if(result) {
       alert("You have successfully updated your name")
-      navigation.navigate('Settings')
+      navigation.navigate('SettingsScreen')
     }
   }
 

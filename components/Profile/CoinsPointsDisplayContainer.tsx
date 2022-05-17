@@ -24,7 +24,7 @@ const CoinsPointsDisplayContainer: FC<NameType> =({coins, points}) => {
 
 const styles = StyleSheet.create({
     coinsDisplayContainer: {
-            width: '30%',
+            width: '40%',
             borderWidth:2,
             borderRadius:5,
         },

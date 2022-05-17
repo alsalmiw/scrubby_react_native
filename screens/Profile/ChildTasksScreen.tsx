@@ -26,7 +26,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildRooms } = useContext(UserContext)
-  // const [childRooms, setChildRooms] = useState<any>([])
+
 
   // const [todayDate, setTodayDate] = useState<any>()
 
@@ -46,19 +46,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     setChildRooms(childPage.scheduledTasks);
   }
 
-  // const getDate = () => {
-  //   var isoDate = new Date().toISOString()
-  //   // console.log(isoDate)
-  //   setTodayDate(isoDate)
-  // }
-
-
-
   useEffect(() => {
-    console.log("________________________________________")
-    // console.log(childPage.scheduledTasks)
-    console.log("________________________________________")
-    // getDate();
     ChildRooms();
 
   }, [])

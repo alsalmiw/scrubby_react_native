@@ -14,7 +14,7 @@ import UnderlinedHeaderComponent from "../../components/UnderlinedHeaderComponen
 import SquareColoredButton from "../../components/SquareColoredButton";
 
 import iconsMap from '../../types/IconsMap';
-
+//
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LockedChildTasks'>
 

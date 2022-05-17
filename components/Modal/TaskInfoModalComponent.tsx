@@ -10,12 +10,12 @@ import { ThemeContext } from "../../context/ThemeContext"
 
 
 interface ITaskInfoModal{
-    headerTitle: string;
-    Space: string;
-    Location: string;
-    Instruction: string;
-    coins:string;
-    points:string;
+    headerTitle: String;
+    Space: String;
+    Location: String;
+    Instruction: String;
+    coins:String;
+    points:String;
 
 }
 
@@ -27,7 +27,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({headerTitle, Space, Locatio
 
         <View>
             <ModalComponent>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 0, paddingTop: 0 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 0, paddingTop: 0, marginBottom:'10%', paddingRight: 10,  paddingLeft: 10 }}>
                     <Text style={{ fontSize: 30 }}>{headerTitle}</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-end',  }}>
                         <View>
@@ -42,17 +42,23 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({headerTitle, Space, Locatio
 
                 <View style={styles.underlinedView}>
                     <UnderlinedOneHeaderComponent titleFirst={'Space'}></UnderlinedOneHeaderComponent>
+                    <View style={{flexDirection:'row', flexWrap:'wrap'}}>
                     <Text>{Space}</Text>
+                    </View>
                 </View>
                 
                 <View style={styles.underlinedView}>
                     <UnderlinedOneHeaderComponent titleFirst={'Location'}></UnderlinedOneHeaderComponent>
+                    <View style={{flexDirection:'row', flexWrap:'wrap'}}>
                     <Text>{Location}</Text>
+                    </View>
                 </View>
                 
                 <View style={styles.underlinedView}>
                     <UnderlinedOneHeaderComponent titleFirst={'Instructions'}></UnderlinedOneHeaderComponent>
-                    <Text>{Instruction}</Text>
+                    <View style={{flexDirection:'row', flexWrap:'wrap'}}>
+                    <Text>{Instruction}+ sdaddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddwwwwwwwwwwwwwwwwwwwwww</Text>
+                    </View>
                 </View>
                 
 
@@ -68,7 +74,10 @@ const styles = StyleSheet.create({
     underlinedView: {
         paddingLeft: 10,
         paddingRight: 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginBottom:'5%',
+
+        
     }
 });
 export default TaskInfoModalComponent

@@ -21,19 +21,20 @@ import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 
 
 
+
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal } = useContext(UserContext)
-  const [childRooms, setChildRooms] = useState<any>([])
+  const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildRooms } = useContext(UserContext)
+  // const [childRooms, setChildRooms] = useState<any>([])
 
-  const [todayDate, setTodayDate] = useState<any>()
+  // const [todayDate, setTodayDate] = useState<any>()
 
-  const [space, setSpace] = useState<any>()
-  const [location, setLocation] = useState<any>()
-  const [coin, setCoin] = useState<any>()
-  const [insturction, setInstruction] = useState<any>()
-  const [title, setTitle] = useState<any>()
+  const [space, setSpace] = useState<String>("")
+  const [location, setLocation] = useState<String>("")
+  const [coin, setCoin] = useState<String>("")
+  const [insturction, setInstruction] = useState<String>("")
+  const [title, setTitle] = useState<String>("")
 
 
 
@@ -45,29 +46,19 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     setChildRooms(childPage.scheduledTasks);
   }
 
-  const getDate = () => {
-    var isoDate = new Date().toISOString()
-    console.log(isoDate)
-    setTodayDate(isoDate)
-  }
-
-  const childLock = () => {
-
-
-  }
-
-
-  // const taskModal = (head:string, one:string, two:string, three:string, coin:string, point:string) =>{
-  //   {console.log('work')}
-  //   <TaskInfoModalComponent headerTitle={head} underLineOne={one} underLineTwo ={two} underLineThree={three} coins={coin} points={point} />
-
+  // const getDate = () => {
+  //   var isoDate = new Date().toISOString()
+  //   // console.log(isoDate)
+  //   setTodayDate(isoDate)
   // }
+
+
 
   useEffect(() => {
     console.log("________________________________________")
-    console.log(childPage.scheduledTasks)
+    // console.log(childPage.scheduledTasks)
     console.log("________________________________________")
-    getDate();
+    // getDate();
     ChildRooms();
 
   }, [])
@@ -90,7 +81,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
           <View style={styles.nameAndCoinContainer}>
-            <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'space-evenly', }}>
+            <View style={styles.childName}>
               <Text style={{ fontSize: 20 }}>{childPage.dependentName}</Text>
             </View>
 
@@ -104,11 +95,9 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
           </View>
           <View style={styles.unlockIconView}>
-            <Pressable onPress={() => { setModalVisible(true), console.log('ll') }}>
-              <FontAwesome5 name="unlock" size={40} color="black" />
+            <Pressable onPress={() => { setModalVisible(true) }}>
+              <FontAwesome5 name="unlock" size={40} color="grey" />
             </Pressable>
-
-            {/* <TaskInfoModalComponent /> */}
           </View>
 
 
@@ -118,7 +107,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         <View style={styles.underLineView}>
           <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
         </View>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
           {childRooms != null ?
             childRooms.map((room: any) => {
               // missing logic to display task not completed and today and future task.
@@ -127,10 +116,16 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                 room.rooms.filter((roomName: any, x: number) => roomName.tasksAssigned.length != 0
                 ).map((roomWithTask: any, x: number) => {
 
-                  return (
-                    <SquareColoredButton key={x} idx={x + rState + 1} onPress={() => { setChildTasks(roomWithTask.tasksAssigned), setSpace(room.collectionName), setLocation(roomWithTask.spaceName), console.log("-----------------------") }}>
-                      <Text style={{ color: 'white' }}>{roomWithTask.spaceCategory}</Text>
+                  return (<View style={styles.sqrBtn}>
+                    <SquareColoredButton key={x + 1} idx={x + rState + 1} onPress={() => { console.log(roomWithTask), setChildTasks(roomWithTask.tasksAssigned), setSpace(room.collectionName), setLocation(roomWithTask.spaceName) }}>
+                      <View style={styles.sqrBtn}>
+                        <Image style={styles.buttonSize} source={iconsMap.get(roomWithTask.spaceCategory)} />
+                      </View>
+                      <View style={styles.sqrBtn}>
+                        <Text style={{ color: 'white', flexShrink: 1, fontSize: 13 }}>{roomWithTask.spaceCategory}</Text>
+                      </View>
                     </SquareColoredButton>
+                  </View>
                   )
                 })
 
@@ -145,16 +140,17 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         <View style={styles.underLineView}>
           <UnderlinedOneHeaderComponent titleFirst={'Tasks'}></UnderlinedOneHeaderComponent>
         </View>
-        <ScrollView>
-          {/* task */}
+        <ScrollView style={styles.taskStyle}>
+
           {
             childTasks != null ?
               childTasks.map((taskName: any, x: number) => {
-                console.log(taskName)
+
 
                 return (
-                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => { setTaskModal(true), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name) }}>
-                    <Text style={{ color: 'white' }}>{taskName.task.name}</Text>
+                  <TaskSpaceRowComponent key={x + 1} idx={x} onPress={() => { setTaskModal(true), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name) }}>
+
+                    <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}</Text>
 
                   </TaskSpaceRowComponent>
 
@@ -220,6 +216,26 @@ const styles = StyleSheet.create({
     marginTop: 10,
     height: 100
   },
+  myRoomScrollView: {
+    paddingLeft: "2.5%",
+    paddingRight: "2.5%",
+    marginTop: "2%",
+    marginBottom: "2%"
+  },
+  childName: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  sqrBtn: {
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  taskStyle: {
+    paddingLeft: "2.5%",
+    marginTop: 5,
+    marginBottom: 5
+  }
 });
 
 export default ChildTasksScreen

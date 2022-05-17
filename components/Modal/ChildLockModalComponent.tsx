@@ -23,9 +23,9 @@ const ChildLockModalComponent: FC = ({ }) => {
     const navigation = useNavigation<any>();
 
     const navToChildLockScreen = () => {
-        if (childPassCode != null) {
+        if (childPassCode != null && String(childPassCode).length ==5) {
             setCheckPassCode(false);
-            Alert.alert("Success", `Your passcode is ${childPassCode}`, [{ text: "Cancel", style: "cancel" }]);
+            Alert.alert("Success", `Your passcode is ${childPassCode}`, [{ text: "Ok", style: "cancel" }]);
             navigation.navigate("LockedChildTasks");
             setModalVisible(false)
         }
@@ -76,7 +76,7 @@ const ChildLockModalComponent: FC = ({ }) => {
                                         ignoreCase={true}
                                         inputPosition='center'
                                         size={50}
-                                        onFulfill={(e: number) => { setChildPassCode(Number(e)) }}
+                                        onFulfill={(e: number) => { console.log(e), setChildPassCode((e)) }}
                                         containerStyle={{ marginTop: 30 }}
                                         codeInputStyle={{ borderWidth: 1.5 }}
                                     />
@@ -112,11 +112,6 @@ const ChildLockModalComponent: FC = ({ }) => {
 
                             </>
                     }
-
-
-
-
-
 
                 </ModalComponent>
             </View>

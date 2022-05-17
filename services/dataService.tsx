@@ -367,8 +367,15 @@ async function GetTasksByRoomId(roomId:number){
 
 async function GetUserDefaultSchedule(username:string){
     let res = await fetch(`${link}/DefaultCollection/UserDefaultSchedule/${username}`)
-    let data = await res.json();
-    return data
+    // let data = await res.json();
+    // return data
+    console.log(res.status)
+    let data = []
+    if(res.status === 200)
+    {
+        data= await res.json();
+    }
+    return data;
 }
 
 async function GetSharedSpacesById(id:number){

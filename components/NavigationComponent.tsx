@@ -11,10 +11,12 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import ProfileNavigation from '../screens/Profile/ProfileNavigation';
 import TaskingNavigation from '../screens/Tasking/TaskingNavigation';
 import ScheduleNavigation from '../screens/Schedule/ScheduleNavigation';
+import RootStackParamList from '../types/INavigation'
 
-type RootStackParamList ={
-  Nav: undefined,
-}
+
+// type RootStackParamList ={
+//   Nav: undefined,
+// }
 type Props = NativeStackScreenProps<RootStackParamList, 'Nav'>
 
 const Tab = createBottomTabNavigator();

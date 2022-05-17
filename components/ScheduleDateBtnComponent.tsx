@@ -5,7 +5,7 @@ import {ThemeContext} from "../context/ThemeContext"
 
 interface Props {
    onPress:Function
-    Date: string [],
+    date: string,
     idx: number
    
 }
@@ -35,11 +35,11 @@ const ScheduleDateBtnComponent: FC<Props> =(props) => {
 
 
     return(
-        <Pressable style={styles.dateBtn} onPress={()=>setDateTasks()}>
+        <Pressable style={[styles.dateBtn, {borderColor:bgColor}]} onPress={()=>setDateTasks()}>
    
-      <Text style={[styles.dateText]}>Day</Text> 
+      <Text style={[styles.dateText]}>{props.date.slice(0,3)}</Text> 
       <View style={[styles.dash]}></View>
-      <Text style={[styles.dateText]}>Date</Text> 
+      <Text style={[styles.dateText]}>{props.date.slice(8,10)}</Text> 
 
     </Pressable>
 
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         width:80,
         height: 100,
         borderWidth: 2,
-        borderColor:"#000000",
+       // borderColor:"#000000",
         borderRadius:10,
         margin:10,
         marginRight:5,

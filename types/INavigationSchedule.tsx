@@ -1,6 +1,7 @@
 type RootStackParamList = { 
     ScheduleScreen:undefined, 
     DefaultOptions:undefined,
+    MyProfile:undefined,
    }
  
    

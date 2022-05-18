@@ -203,7 +203,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                 return (
                   // <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval) }}>
-                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log(taskName.isCompleted), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted?true:false)  }}>
+                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log(taskName.isCompleted), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName), taskName.isRequestedApproval && taskName.isCompleted==false?setRequestedApproval(true):setRequestedApproval(false)  }}>
 
                     <View style={{flexDirection:'row', justifyContent:'space-between'}}>
                     <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name} 

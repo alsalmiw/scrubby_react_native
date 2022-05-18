@@ -60,6 +60,7 @@ const TaskFamilyScreen: FC<Props> = ({navigation})=> {
     let member = {
       id: child.id,
       fullName: child.dependentName,
+      Photo:child.dependentPhoto,
       isChild: true
     }
     setSelectedUser(member)
@@ -74,6 +75,7 @@ const TaskFamilyScreen: FC<Props> = ({navigation})=> {
     let member = {
       id: user.invitedId,
       fullName: user.invitedFullname,
+      Photo: user.invitedPhoto,
       isChild: false
     }
     setSelectedUser(member)
@@ -94,20 +96,30 @@ const TaskFamilyScreen: FC<Props> = ({navigation})=> {
     <View style={styles.selectMemberCon}>
     <AvatarComponent onPress={()=> handleGoToTaskUser(userData)} imageSource={userData.photo} />
 
-    {childrenData.map((child:any, idx:number)=> {
+    { childrenData.length>0?
+    childrenData.map((child:any, idx:number)=> {
       return(
-        childrenData.length>0?
+       
         <AvatarComponent key={idx} onPress={()=> handleGoToTaskChild(child)} imageSource={child.dependentPhoto} />
-        : null
+        
       )
-    })}
-    {acceptedInvitations.map((person:any, idx:number)=> {
-      return(
-        acceptedInvitations.length > 0?
+    }): null}
+
+    {
+    acceptedInvitations.length > 0?
+    acceptedInvitations.map((person:any, idx:number)=> { 
+     return mySpaces.map((space:any, idx:number)=> space.sharedWith.map((shared: any)=> 
+          shared.invitedId == person.invitedId?  
+      
+        
         <AvatarComponent key={idx} onPress={()=> handleGoToTaskInivtedMember(person)} imageSource={person.invitedPhoto} />
-        : null
-      )
-    })}
+        
+      
+      :null
+    ))
+    })
+    : null
+    }
 
     </View>
     <UnderlinedHeaderComponent titleOne={'My Spaces'} titleTwo={''} titleThree={''} />

@@ -60,7 +60,7 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
         
         <HeaderComponent title='Task Family Member'/>
         <View style={styles.firstRowContainer}>
-                <AvatarComponent onPress={undefined} imageSource={"photo"}/>
+                <AvatarComponent onPress={undefined} imageSource={selectedUser.Photo}/>
                 <View style={styles.insideFirstRowContainer1}>
                     <UserNameComponent name={selectedUser.fullName}/>
                  

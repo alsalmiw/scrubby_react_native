@@ -38,6 +38,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   const [selectedTask, setSelectedTask]=useState<any[]>([])
 
   const [childScheduleTasks, setChildScheduleTasks] = useState<any>([])
+  const [requestedApproval, setRequestedApproval] = useState<boolean>(false)
 
   const [childScheduleRooms, setChildScheduleRooms] = useState<any>()
   const [childSelectedRoom, setChildSelectedRoom] = useState<any>()
@@ -191,7 +192,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
                 return (
-                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName) }}>
+                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval) }}>
 
                     <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}</Text>
 
@@ -208,7 +209,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
         {modalVisible == true ?
           <ChildLockModalComponent /> : taskModal == true ?
-            <TaskInfoModalComponent  Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={false}/>
+            <TaskInfoModalComponent  Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval}/>
             : null}
 
 

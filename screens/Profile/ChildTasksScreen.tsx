@@ -36,6 +36,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   const [insturction, setInstruction] = useState<String>("")
   const [title, setTitle] = useState<String>("")
 
+  const [childScheduleTasks, setChildScheduleTasks] = useState<any>([])
+
 
 
   const [childTasks, setChildTasks] = useState<any>([])
@@ -46,11 +48,38 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     setChildRooms(childPage.scheduledTasks);
   }
 
+  const childTaskDate = () =>{
+    let today = new Date();
+    var todayDate = new Date(today.getFullYear(),today.getMonth(),today.getDate());
+    var nextDay = new Date(+todayDate);
+
+    let sevenDays = [] as any
+    sevenDays.push(todayDate.toISOString())
+
+    
+    for(let i =1; i < 7; i++)
+    {
+      let endDate = nextDay.getDate() + 1;
+          nextDay.setDate(endDate);
+          sevenDays.push(nextDay.toISOString());
+
+    }
+    console.log(sevenDays)
+    console.log(childRooms)
+    // let nextTasks = childPage.rooms.map((room:any) => room.tasksAssigned.filter((task:any) => sevenDays.includes(task.dateScheduled)))
+    // setChildScheduleTasks(nextTasks)
+
+    // console.log(nextTasks)
+  }
+
+
   useEffect(() => {
-    console.log("=======================================================================")
-    console.log(childPage)
-    console.log("========================================================================")
     ChildRooms();
+    console.log("=======================================================================++")
+    // console.log(childPage)
+    console.log("=====================+===================================================")
+
+    childTaskDate();
 
   }, [])
 
@@ -100,11 +129,11 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
           {childRooms != null ?
-            childRooms.map((room: any) => {
+            childRooms.map((collection: any) => {
               // missing logic to display task not completed and today and future task.
               return (
 
-                room.rooms.filter((roomName: any, x: number) => roomName.tasksAssigned.length != 0
+                collection.rooms.filter((roomName: any, x: number) => roomName.tasksAssigned.length != 0
                 ).map((roomWithTask: any, x: number) => {
 
                   return (<View key={x} style={styles.sqrBtn}>

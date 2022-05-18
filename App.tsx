@@ -13,7 +13,8 @@ import ModelComponent from './components/ModalComponent'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import AddItemsScreen from './screens/Profile/AddItemsScreen';
-import LockChildTasksScreen from './screens/Profile/LockedChildTasksScreen';
+// import LockChildTasksScreen from './screens/Profile/LockedChildTasksScreen';
+import LockChildTasksScreen from './screens/Profile/LockedChildTasksScreen'
 
 type RootStackParamList ={
   login:undefined,

@@ -210,10 +210,12 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                     </Text>
                     {
-                      taskName.isCompleted == true ?
+                      taskName.isCompleted == true?
                       <AntDesign name="checksquare" size={30} color="white" />
                       :
+                      taskName.isRequestedApproval == true && taskName.isCompleted == false?
                       <Ionicons name="time-sharp" size={30} color="white" />
+                      :null
                     }
                     </View>
 

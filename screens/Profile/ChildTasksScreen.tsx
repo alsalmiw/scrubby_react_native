@@ -20,6 +20,7 @@ import TaskInfoModalComponent from '../../components/Modal/TaskInfoModalComponen
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
@@ -202,8 +203,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
                 return (
-                  // <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval) }}>
-                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName), taskName.isRequestedApproval && taskName.isCompleted==false?setRequestedApproval(true):setRequestedApproval(false)  }}>
+
+                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted?true:false)  }}>
 
                     <View style={{flexDirection:'row', justifyContent:'space-between'}}>
                     <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name} 
@@ -215,7 +216,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                       :
                       taskName.isRequestedApproval && !taskName.isCompleted?
                       <Ionicons name="time-sharp" size={30} color="white" />
-                      :null
+                      :
+                      <MaterialCommunityIcons name="checkbox-blank" size={30} color="white" />
                     }
                     </View>
 

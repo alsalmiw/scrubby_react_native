@@ -7,32 +7,42 @@ import UnderlinedOneHeaderComponent from "../UnderlinedOneHeaderComponent"
 
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { ThemeContext } from "../../context/ThemeContext"
+import FullButtonComponent from "../FullButtonComponent"
+import ButtonModalComponent from "./ButtonModalComponent"
 
 
 interface ITaskInfoModal {
-    headerTitle: String;
+    
     Space: String;
     Location: String;
-    Instruction: String;
-    coins: String;
-    points: String;
+    task: any;
+    isChild: boolean;
+    taskedInfo:any
 
 }
 
-const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ headerTitle, Space, Location, Instruction, coins, points }) => {
-    const { yellowColor } = useContext(ThemeContext)
+const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild, taskedInfo }) => {
+    const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
+
+    const SubmitTaskForCompletion =()=> {
+
+    }
 
 
     return (
 
         <View>
             <ModalComponent>
+                <View style={styles.modalContainer}>
+                <View>
                 <View style={styles.modalHead}>
-                    <Text style={{ fontSize: 30 }}>{headerTitle}</Text>
+                    <View style={styles.headerWidth}>
+                    <Text style={[styles.mainHeader, {color:secondaryTextColor}]}>{task.task.name + " " + task.item.name}</Text>
+                    </View>
                     <View style={styles.coinStart}>
                         <View>
-                            <Text> <FontAwesome5 name="coins" color={yellowColor} /> {coins} coins</Text>
-                            <Text> <FontAwesome name="star" color={yellowColor} /> {points} points</Text>
+                            <Text> <FontAwesome5 name="coins" color={yellowColor} /> {task.task.coins} coins</Text>
+                            <Text> <FontAwesome name="star" color={yellowColor} /> {task.task.coins} points</Text>
                         </View>
 
                     </View>
@@ -57,12 +67,18 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ headerTitle, Space, Locati
                 <View style={styles.underlinedView}>
                     <UnderlinedOneHeaderComponent titleFirst={'Instructions'}></UnderlinedOneHeaderComponent>
                     <View style={styles.txtRap}>
-                        <Text>{Instruction}+ sdadddddddddddddddddddddddddddddddddddddddddddddddddd</Text>
+                        <Text>{task.task.description}+ sdadddddddddddddddddddddddddddddddddddddddddddddddddd</Text>
                     </View>
+                </View>
+                </View>
+                <View>
+                    <ButtonModalComponent onPress={()=> SubmitTaskForCompletion()}>
+                        <Text>Completed</Text>
+                        </ButtonModalComponent>
                 </View>
 
 
-
+                </View>
             </ModalComponent>
 
         </View>
@@ -76,6 +92,10 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         justifyContent: 'center',
         marginBottom: '5%',
+    },
+    modalContainer:{
+        height:"90%",
+        justifyContent: 'space-between',
     },
     modalHead: {
         flexDirection: 'row',
@@ -93,6 +113,13 @@ const styles = StyleSheet.create({
     coinStart: {
         flexDirection: 'row',
         justifyContent: 'flex-end'
+    },  mainHeader: {
+        fontSize:20,
+        fontWeight: "bold", 
+        textTransform:"uppercase"
+    },
+    headerWidth:{
+        width: "70%"
     }
 });
 export default TaskInfoModalComponent

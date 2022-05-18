@@ -35,6 +35,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   const [coin, setCoin] = useState<String>("")
   const [insturction, setInstruction] = useState<String>("")
   const [title, setTitle] = useState<String>("")
+  const [selectedTask, setSelectedTask]=useState<any[]>([])
 
 
 
@@ -136,7 +137,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
                 return (
-                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => { setTaskModal(true), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name) }}>
+                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => { setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name) }}>
 
                     <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}</Text>
 
@@ -153,7 +154,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
         {modalVisible == true ?
           <ChildLockModalComponent /> : taskModal == true ?
-            <TaskInfoModalComponent headerTitle={title} Space={space} Location={location} Instruction={insturction} coins={coin} points={coin} />
+            <TaskInfoModalComponent  Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} />
             : null}
 
 

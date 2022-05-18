@@ -149,14 +149,7 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
  
   }
   
-  const ModalContent = ()=> {
-    return(
-      <>
-      <TaskInfoModalComponent headerTitle={taskInfo.task.name + ' ' + taskInfo.item.name} Space={defaultSpace.collectionName} Location={selectedRoom.spaceName} Instruction={taskInfo.task.description} coins={taskInfo.task.coins} points={taskInfo.task.coins} />
 
-      </>
-    )
-  }
   
   return (
     
@@ -246,7 +239,7 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
    {
      taskInfo!=null?
    
-   <TaskInfoModalComponent headerTitle={taskInfo.task.name + ' ' + taskInfo.item.name} Space={defaultSpace.collectionName} Location={selectedRoom.spaceName} Instruction={taskInfo.task.description} coins={taskInfo.task.coins} points={taskInfo.task.coins} />
+   <TaskInfoModalComponent Space={defaultSpace.collectionName} Location={selectedRoom.spaceName} task={taskInfo} isChild={false} taskedInfo={userData}/>
 
    : null
    }

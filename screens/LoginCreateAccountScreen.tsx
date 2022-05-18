@@ -64,7 +64,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             // if (user.length > 0) {
             //     setFullUserInfo(user)
             //     console.log(user)
-            // }
+            // }/
             
            
             // console.log(result)

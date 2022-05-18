@@ -13,10 +13,11 @@ import UnderlinedTwoHeaderComponent from '../../components/UnderlinedTwoHeaderCo
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 import SquareColoredButton from '../../components/SquareColoredButton';
 import iconsMap from '../../types/IconsMap';
-import TaskRowTaskInfoComponent from '../../components/TaskRowTaskInfoComponent';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+
+///
 import RootStackParamList from '../../types/INavigation'
 import ScheduleDateBtnComponent from '../../components/ScheduleDateBtnComponent';
 import ModalComponent from '../../components/ModalComponent';

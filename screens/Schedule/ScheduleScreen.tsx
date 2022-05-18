@@ -240,7 +240,7 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
    {
      taskInfo!=null?
    
-   <TaskInfoModalComponent Space={defaultSpace.collectionName} Location={selectedRoom.spaceName} task={taskInfo} isChild={false} taskedInfo={userData}/>
+   <TaskInfoModalComponent Space={defaultSpace.collectionName} Location={selectedRoom.spaceName} task={taskInfo} isChild={false} taskedInfo={userData} isButton={true}/>
 
    : null
    }

@@ -208,7 +208,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
         {modalVisible == true ?
           <ChildLockModalComponent /> : taskModal == true ?
-            <TaskInfoModalComponent  Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} />
+            <TaskInfoModalComponent  Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={false}/>
             : null}
 
 

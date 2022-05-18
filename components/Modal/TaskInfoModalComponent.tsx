@@ -9,6 +9,8 @@ import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { ThemeContext } from "../../context/ThemeContext"
 import FullButtonComponent from "../FullButtonComponent"
 import ButtonModalComponent from "./ButtonModalComponent"
+import { UpdateUserTaskToCompleted, SubmitTaskChildApproval, ApproveTaskForCompletionChild } from "../../services/dataService"
+
 
 
 interface ITaskInfoModal {
@@ -17,15 +19,28 @@ interface ITaskInfoModal {
     Location: String;
     task: any;
     isChild: boolean;
-    taskedInfo:any
+    taskedInfo:any;
+    isButton: boolean;
 
 }
 
-const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild, taskedInfo }) => {
+const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild, taskedInfo, isButton }) => {
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
-    const SubmitTaskForCompletion =()=> {
+    const SubmitTaskForCompletion =async()=> {
+            if(!isChild){
+              let result =  await UpdateUserTaskToCompleted(task.id)
+                //sibmit task for completion
 
+            }else{
+                    //submit task for approval
+               let result= await SubmitTaskChildApproval(task.id)
+                    
+            }
+    }
+
+    const ApproveSubmittedTask = async()=> {
+        let result = await ApproveTaskForCompletionChild(task.id)
     }
 
 
@@ -72,9 +87,25 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                 </View>
                 </View>
                 <View>
-                    <ButtonModalComponent onPress={()=> SubmitTaskForCompletion()}>
-                        <Text>Completed</Text>
+                    {
+                        isButton?
+                        !task.isRequestedApproval?
+                            <ButtonModalComponent onPress={()=> SubmitTaskForCompletion()}>
+                            <Text>Completed</Text>
+                            </ButtonModalComponent>
+                        :
+
+
+                        <ButtonModalComponent onPress={()=> ApproveSubmittedTask()}>
+                         <Text>Approve</Text>
                         </ButtonModalComponent>
+                        : null
+                    }
+                   
+
+                       
+
+
                 </View>
 
 

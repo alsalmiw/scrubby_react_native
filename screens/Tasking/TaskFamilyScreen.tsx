@@ -46,6 +46,7 @@ const TaskFamilyScreen: FC<Props> = ({navigation})=> {
     let member = {
       id: user.id,
       fullName: user.name,
+      Photo:user.photo,
       isChild: false
     }
     setSelectedUser(member)

@@ -17,11 +17,12 @@ interface ITaskInfoModal {
     Location: String;
     task: any;
     isChild: boolean;
-    taskedInfo:any
+    taskedInfo:any;
+
 
 }
 
-const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild, taskedInfo }) => {
+const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild, taskedInfo}) => {
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
     const SubmitTaskForCompletion =()=> {
@@ -48,6 +49,12 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                     </View>
 
                 </View>
+                {/* <View>
+                    <Text>
+                    {Status} Hellow
+                    </Text>
+
+                </View> */}
 
 
                 <View style={styles.underlinedView}>

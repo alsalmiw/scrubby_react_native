@@ -69,8 +69,6 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     let nextTasks = childDefaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => sevenDays.includes(task.dateScheduled)))
     setChildScheduleTasks(nextTasks)
 
-
-
     let roomArr = [] as any;
     let taskArr = [] as any;
     childDefaultSpace.rooms.map((room: any) => {
@@ -96,6 +94,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     });
     setChildScheduleRooms(rooms)
     setChildSelectedRoom(rooms[0])
+    setSpace(rooms[0].spaceName);
   }
 
 
@@ -107,6 +106,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     console.log("=====================+===================================================")
 
     childTaskDate();
+    
 
   }, [])
 
@@ -123,7 +123,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.firstRow}>
-            <AvatarComponent onPress={() => {console.log("-----------------------------------------"), console.log(childSelectedRoom), console.log("-----------------------------------------")}} imageSource={userData.photo} />
+            <AvatarComponent onPress={() => {console.log(childScheduleRooms)}} imageSource={userData.photo} />
           </View>
 
 
@@ -162,7 +162,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
               //fix space name and location
               return (
                 <View key={x} style={styles.sqrBtn}>
-                  <SquareColoredButton idx={x + rState + 1} onPress={() => { console.log(room), setChildTasks(room.tasksAssigned), setSpace(childScheduleRooms.collectionName), setLocation(room.spaceName) }}>
+                  <SquareColoredButton idx={x + rState + 1} onPress={() => { setChildSelectedRoom(room), setSpace(room.spaceName) }}>
                     <View style={styles.sqrBtn}>
                       <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
                     </View>
@@ -191,7 +191,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
                 return (
-                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => { setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name) }}>
+                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName) }}>
 
                     <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}</Text>
 

@@ -5,10 +5,9 @@ import {ThemeContext} from "../context/ThemeContext"
 import * as ImagePicker from 'expo-image-picker';
 
 
-
-const AddPhotoComponent: FC =() => {
+const AddPhotoComponent = () => {
     const {lilacColor} = useContext(ThemeContext)
-    const [image, setImage] = useState({});
+    const [image, setImage] = useState('');
     const [hasGalleryPermission, setHasGalleryPermission] =useState(false);
 
     useEffect(()=>{
@@ -24,42 +23,46 @@ const AddPhotoComponent: FC =() => {
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
-            quality: 0,
+            quality: 1,
           });
       
-          console.log(result);
-      
+          //console.log(result);
+          let imgType=''
+          let fileName =''
           if (!result.cancelled) {
             setImage(result.uri);
             console.log(result.uri)
-
+            imgType = result.uri.split('.')[1]
+            console.log(imgType);
+            fileName = result.uri.replace(/^.*[\\\/]/, "")
+            console.log(fileName)
+          
           }
 
           if(hasGalleryPermission==false){
-              return <Text>No Access to Internal Storage</Text>
+              return alert("Could not access photo gallery")
           }
+          
 
-          const SavePhoto = async () => {
-              const form = new FormData();
-              form.append('profile', JSON.stringify( {
-                  name: new Date() + "profile",
-                  uri: image,
-                  type: 'image'
+           const formData = new FormData();
+                formData.append('photo',  {
+                    uri: result.uri,
+                    name: "avatar46.png",
+                    type: `image/${imgType}`
 
-                }))
-
-                let res = await fetch('',{
-                    method: "POST",
-                    body: form,
-                    headers:{
-                    "Content-Type": "multipart/form-data",
-                    }
-                    
-                })
-                let response = await res.json()
-                console.log(response)
-          }
-        //   const handleImage = (event) => {
+                    })
+                 console.log(formData)
+                 
+                    let res = await fetch('https://scrubbyapi.azurewebsites.net/Photos/uploadingImage',{
+                        method: "POST",
+                        headers:{
+                            "Accept": "application/json",
+                        },
+                        body: formData,
+                    })
+                    let response = await res.json()
+                    console.log(response.path)
+         
         //     let file = event.target.files[0];
         //     const reader = new FileReader();
         //     reader.onloadend = () => {
@@ -70,10 +73,11 @@ const AddPhotoComponent: FC =() => {
         //   }
         
     }
+
+  
+
     return(
-        <Pressable style={[styles.container]} onPress={() =>{
-            selectPhoto();
-        }}>
+        <Pressable style={[styles.container]} onPress={selectPhoto}>
             {/* {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} */}
             
             <FontAwesome name="photo" color={lilacColor} size={50}  />
@@ -95,4 +99,4 @@ const styles = StyleSheet.create({
         },
     })
 
-export default AddPhotoComponent
+export {AddPhotoComponent}

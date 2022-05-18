@@ -2,7 +2,7 @@
 import { FC, useContext, useState } from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
-import AddPhotoComponent from '../../components/AddPhotoComponent';
+
 import RootStackParamList from '../../types/INavigateProfile'
 import InputFieldComponent from '../../components/AddEdit/InputFieldComponent'
 import TitleComponent from '../../components/AddEdit/TitleComponent'
@@ -14,6 +14,7 @@ import INewName from '../../Interfaces/INewName'
 import { ThemeContext } from '../../context/ThemeContext';
 import IChild from '../../Interfaces/IChild';
 import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
+import { AddPhotoComponent } from '../../components/AddPhotoComponent';
 
 type Props = NativeStackScreenProps <RootStackParamList, 'AddChild'>
 

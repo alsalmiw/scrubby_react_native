@@ -46,6 +46,7 @@ const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r}) => {
      let tasksByUser = myRoom.tasksAssigned.filter((assignedTask:any) => assignedTask.assignedTaskId == task.id && assignedTask.userId == selectedUser.id && assignedTask.isChild == selectedUser.isChild) 
      let getDates = [] as any
      tasksByUser.map((tasks:any)=> getDates.push(tasks.dateScheduled))
+     console.log(tasksByUser)
 
      let datesData = getDates.map((date:string)=>{
       let dateF = new Date(date)
@@ -55,7 +56,7 @@ const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r}) => {
     
      setDates(datesData)
      setStoredDates(datesData)
-    }, [])
+    }, [selectedUser])
     
 
     const onDismiss = React.useCallback(() => {
@@ -66,6 +67,7 @@ const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r}) => {
   
 let allDate =[] as any
 let sendDates=[] as any
+
     const onConfirm = React.useCallback((params) => {
       setOpen(false);
       setDates(params.dates);
@@ -74,8 +76,14 @@ let sendDates=[] as any
        console.log(storedDates)
        console.log(params.dates)
       let allDatesArr=[ ] as any[]
-      params.dates.toString().split(',').filter((date:any)=> !storedDates.toString().split(',').includes(date)? allDatesArr.push(date):null )
-      storedDates.toString().split(',').filter((date:any)=> !params.dates.toString().split(',').includes(date)? allDatesArr.push(date):null )
+      if(storedDates.length>0)
+      {
+        params.dates.toString().split(',').filter((date:any)=> !storedDates.toString().split(',').includes(date)? allDatesArr.push(date):null )
+         storedDates.toString().split(',').filter((date:any)=> !params.dates.toString().split(',').includes(date)? allDatesArr.push(date):null )
+      }else{
+        allDatesArr = params.dates
+      }
+      
      
       console.log(allDatesArr)
 
@@ -120,7 +128,7 @@ let sendDates=[] as any
                               Id:0,
                               ChildId: selectedUser.id,
                               SpaceId: myRoom.id,
-                              SelectedTaskId: task.id,
+                              AssignedTaskId: task.id,
                               DateCreated: sendDates[i],
                               DateCompleted: "none",
                               IsCompleted: false,
@@ -131,7 +139,7 @@ let sendDates=[] as any
                      
               }
                console.log(scheduledTasksArr)
-                let result = AddChildAssignedTasks(scheduledTasksArr)
+               let result = await  AddChildAssignedTasks(scheduledTasksArr)
         }
      
 
@@ -141,9 +149,9 @@ let sendDates=[] as any
 
 
     const displayTaskInfo =()=> {
-        setModalVisible(true)
+       // setModalVisible(true)
         setScheduleTask(task)
-       // setOpen(true) 
+       setOpen(true) 
         allDate.push(dates)
         console.log(allDate)
 

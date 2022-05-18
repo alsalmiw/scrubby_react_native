@@ -10,6 +10,8 @@ import IUserData from '../Interfaces/IUserData';
 import IRedeemCoins from '../Interfaces/IRedeemCoins';
 import IRedeemCoinsChild from '../Interfaces/IRedeemChildCoins';
 import ISharedSpace from '../Interfaces/ISharedSpace';
+import IChildPassCode from '../Interfaces/IChildPassCode';
+import IAddAvatar from '../Interfaces/IAddAvatar';
 
 
 let link = "https://scrubbyapi.azurewebsites.net"
@@ -365,8 +367,23 @@ async function GetTasksByRoomId(roomId:number){
     return data
 }
 
-async function GetSharedSpacesByUserId(id:number){
-    let res = await fetch(`${link}/SharedSpaces/GetSharedSpacesByUserId/${id}`)
+
+
+async function GetUserDefaultSchedule(username:string){
+    let res = await fetch(`${link}/DefaultCollection/UserDefaultSchedule/${username}`)
+    // let data = await res.json();
+    // return data
+    console.log(res.status)
+    let data = []
+    if(res.status === 200)
+    {
+        data= await res.json();
+    }
+    return data;
+}
+
+async function GetSharedSpacesById(id:number){
+    let res = await fetch(`${link}/SharedSpaces/GetSharedSpacesById/${id}`)
     let data = await res.json();
     return data
 }
@@ -471,8 +488,46 @@ async function AddChildAssignedTasks(assignedTasks: any[])
     return data;
 }
 
+async function UpdateChildPassCode(updateInfo:IChildPassCode)
+{
+    let res = await fetch(`${link}/Dependent/UpdatePassCode`,{
+        method: "Post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updateInfo)
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    console.log(data)
+    return data;
+}
+
+
+async function AddDefaultAvatar(Avatar:IAddAvatar)
+{
+    let res = await fetch(`${link}/Dependent/UpdatePassCode`,{
+        method: "Post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(Avatar)
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    console.log(data)
+    return data;
+}
 
 
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId, GetUserData, RedeemCoinsUser, RedeemCoinsChild, GetSharedSpacesByUserId, CreateSharedSpaces, DeleteInvitation, NewCoinAmountDependent, NewCoinAmountNotDependent, AddChildAssignedTasks, AddUserAssignedTasks }
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId,  RedeemCoinsUser, GetUserData, RedeemCoinsChild, GetSharedSpacesById, DeleteInvitation, NewCoinAmountDependent, NewCoinAmountNotDependent, AddChildAssignedTasks, AddUserAssignedTasks, UpdateChildPassCode, GetUserDefaultSchedule, AddDefaultAvatar, }

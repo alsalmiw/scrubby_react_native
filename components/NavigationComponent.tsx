@@ -10,10 +10,13 @@ import TaskFamilyScreen from '../screens/Tasking/TaskFamilyScreen'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import ProfileNavigation from '../screens/Profile/ProfileNavigation';
 import TaskingNavigation from '../screens/Tasking/TaskingNavigation';
+import ScheduleNavigation from '../screens/Schedule/ScheduleNavigation';
+import RootStackParamList from '../types/INavigation'
 
-type RootStackParamList ={
-  Nav: undefined,
-}
+
+// type RootStackParamList ={
+//   Nav: undefined,
+// }
 type Props = NativeStackScreenProps<RootStackParamList, 'Nav'>
 
 const Tab = createBottomTabNavigator();
@@ -29,7 +32,7 @@ const MyTabs: FC = () =>{
     >
       <Tab.Screen
         name="Schedule"
-        component={ScheduleScreen}
+        component={ScheduleNavigation}
         options={{
           headerShown: false,
           tabBarLabel: 'Schedule',
@@ -61,7 +64,7 @@ const MyTabs: FC = () =>{
         }}
       />
       <Tab.Screen
-        name="SettingsNavigation"
+        name="Settings"
         component={SettingsNavigation}
         options={{
           headerShown: false,

@@ -23,7 +23,7 @@ const AvatarComponent:FC<IAvatar> =(props) =>{
 
     return(
                 <Pressable style={[styles.container]} onPress={() => handleViewProfile()}>
-                <Image source={require('../image/avatars/av1.png')} style={{ width: 100, height: 100, borderRadius:10 }} />
+                <Image source={{uri: props.imageSource}} style={{ width: 100, height: 100, borderRadius:10 }} />
                 </Pressable>
     )
 }
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         borderRadius:10, 
         width: 100,
         height: 100, 
-        margin: 10
+        margin: 8
     }
 })
 

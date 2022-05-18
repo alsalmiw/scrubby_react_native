@@ -31,31 +31,31 @@ const ScoreBoardScreen: FC<Props> = ({ navigation, route }) => {
       <View style={styles.container}>
 
         <HeaderComponent title='SCORE BOARD' />
-        <View style={{ marginBottom: 40}}>
-          <Text style={{fontSize:30}}> {scoreBoardList.length} Participants</Text>
+        <View style={{ marginBottom: 40 }}>
+          <Text style={{ fontSize: 30 }}> {scoreBoardList.length} Participants</Text>
         </View>
 
         {
           scoreBoardList.sort((a: any, b: any) => b.points - a.points).map((people: any, idx: number) => {
             return (
-              <View key={idx} style={{ flexDirection: 'row', marginBottom: 10, justifyContent: 'space-between',  }}>
-                <View style={{ flexDirection: 'row', paddingRight: 10, paddingLeft: 10, alignItems: 'flex-start' }}>
-                  <View style={{paddingRight:10}}>
-                    <Text style={{fontSize:20}}>{idx + 1}</Text>
+              <View key={idx} style={styles.scoreBoardParent}>
+                <View style={styles.scoreBoardChild1}>
+                  <View style={{ paddingRight: 10 }}>
+                    <Text style={{ fontSize: 20 }}>{idx + 1}</Text>
                   </View>
                   {/* missing image */}
-                  <View style={{paddingRight:10}}>
-                    <Text style={{fontSize:20}}>{people.name}</Text>
+                  <View style={{ paddingRight: 10 }}>
+                    <Text style={{ fontSize: 20 }}>{people.name}</Text>
                   </View>
 
 
                 </View>
-                <View style={{ alignItems: 'flex-end', paddingRight: 10, flexDirection: 'row' }}>
-                  <View style={{paddingRight:10}}><FontAwesome size={25} name="star" color={yellowColor} /></View>
-                  <View style={{paddingRight:10}}>
-                  <Text style={{fontSize:20}}>{people.points}</Text>
+                <View style={styles.parentForPoints}>
+                  <View style={{ paddingRight: 10 }}><FontAwesome size={25} name="star" color={yellowColor} /></View>
+                  <View style={{ paddingRight: 10 }}>
+                    <Text style={{ fontSize: 20 }}>{people.points}</Text>
                   </View>
-                  
+
                 </View>
 
 
@@ -77,6 +77,22 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: StatusBar.currentHeight
   },
+  scoreBoardParent: {
+    flexDirection: 'row',
+    marginBottom: 10,
+    justifyContent: 'space-between'
+  },
+  scoreBoardChild1: {
+    flexDirection: 'row',
+    paddingRight: 10,
+    paddingLeft: 10,
+    alignItems: 'flex-start'
+  },
+  parentForPoints: {
+    alignItems: 'flex-end',
+    paddingRight: 10,
+    flexDirection: 'row'
+  }
 });
 
 export default ScoreBoardScreen

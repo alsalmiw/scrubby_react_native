@@ -7,7 +7,7 @@ import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentL
 import UserContext from "../context/UserContext"
 import INewUser from "../Interfaces/INewUser"
 import IUserLogin from "../Interfaces/IUserLogin"
-import { CreateAccount, GetUserData, UserLogin } from "../services/dataService"
+import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin, AddDefaultAvatar } from "../services/dataService"
 import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
 import ChildFreeBoolComponent from "../components/Settings/ChildFreeBoolComponent"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
@@ -16,21 +16,23 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import avatars from '../types/IAvatars'
 import FullButtonComponent from "../components/FullButtonComponent"
 import { ThemeContext } from "../context/ThemeContext"
+import RootStackParamList from '../types/INavigation'
 
-type RootStackParamList = {
-    login: undefined,
-    Nav: undefined,
-}
+
+// type RootStackParamList = {
+//     login: undefined,
+//     Nav: undefined,
+// }
 
 type Props = NativeStackScreenProps<RootStackParamList, 'login'>
 
 const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
     const [login, setLogin] = useState(true);
-    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, spinnerOn, setSpinnerOn } = useContext(UserContext)
+    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, spinnerOn, setSpinnerOn, setDefaultSpace } = useContext(UserContext)
     const { yellowColor, greenColor } = useContext(ThemeContext)
 
-    let avR = Math.floor(Math.random() * 9)
+    let avR = Math.floor(Math.random() * 46)
 
     useEffect(() => {
        
@@ -47,20 +49,29 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
         setSavedPassword(password);
 
         let result = await CreateAccount(userData);
-        if (result) {
+        if (result.token!= null) {
             AsyncStorage.setItem("Token", result.token);
             AsyncStorage.setItem("Username", username);
-            let user = await GetUserData(username)
-            if (user.length > 0) {
-                setFullUserInfo(user)
-                console.log(user)
+            let avatarInfo={
+                Username: username,
+                Photo: avatars[avR]
             }
-            navigation.navigate('Nav')
-            console.log(result)
+            let avatar = await AddDefaultAvatar(avatarInfo)
+            if(avatar){
+                 navigation.navigate('Nav', {screen:"Profile"})
+            }
+            // let user = await GetUserData(username)
+            // if (user.length > 0) {
+            //     setFullUserInfo(user)
+            //     console.log(user)
+            // }
+            
+           
+            // console.log(result)
 
         }
 
-        else Alert.alert("Error", 'Invalid Username or Password.', [{ text: "Cancel", style: "cancel" }])
+        else{ Alert.alert("Error", 'Invalid Username or Password.', [{ text: "Cancel", style: "cancel" }])}
 
     }
 
@@ -75,15 +86,28 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
         let result = await UserLogin(userLoginData);
         if (result.token != null) {
+            setSpinnerOn(true);
             AsyncStorage.setItem("Token", result.token);
             AsyncStorage.setItem("Username", username);
-            let user = await GetUserData(username)
-            if (user) {
-                setFullUserInfo(user)
-                console.log(user)
+            // let user = await GetUserData(username)
+            // if (user) {
+            //     setFullUserInfo(user)
+            //     console.log(user)
+            // }
+            let defaultCollection = await GetUserDefaultSchedule(username)
+            if(defaultCollection.length != 0) 
+            {
+                setDefaultSpace(defaultCollection)
+                navigation.navigate('Nav', {screen:"Schedule"})
+            }else{
+                navigation.navigate('Nav', {screen:"Profile"})
+
             }
-            console.log(result)
-            navigation.navigate('Nav')
+            //console.log(typeof defaultCollection)
+                //
+
+            
+            
         }
         else {
             Alert.alert("Error", 'Incorrect Username or Password.', [{ text: "Cancel", style: "cancel" }])
@@ -104,11 +128,11 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
                 return;
             }
             if (regi.test(username)) {
-                Alert.alert("Error", 'Username can not contains special characters or spaces.', [{ text: "Cancel", style: "cancel" }]);
+                Alert.alert("Error", 'Username can not contains special characters or space(s).', [{ text: "Cancel", style: "cancel" }]);
                 return;
             }
             if (space.test(password)) {
-                Alert.alert("Error", 'Password can not contains any space.', [{ text: "Cancel", style: "cancel" }]);
+                Alert.alert("Error", 'Password can not contains any space(s).', [{ text: "Cancel", style: "cancel" }]);
                 return;
             }
             else {
@@ -128,7 +152,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             }
 
             else {
-                setSpinnerOn(true);
+                
                 userLogin();
                 setPassword("");
                 setUsername("");

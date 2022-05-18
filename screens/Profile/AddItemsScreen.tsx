@@ -27,11 +27,11 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 //
 interface taskInfo {
-  description:string;
-  id:number;
-  name:string;
-  tags:string;
-  UserId:number;
+  description: string;
+  id: number;
+  name: string;
+  tags: string;
+  UserId: number;
   spaceId: number;
   color: number;
 }
@@ -39,25 +39,18 @@ interface taskInfo {
 type Props = NativeStackScreenProps<RootStackParamList, 'AddItems'>
 
 
-const AddItemsScreen: FC<Props> = ({navigation}) => {
-  const { seeAll, setSeeAll, task, setTask,allTask, setAllTask, addTask, setAddTask, userData, rState, setRState, myRoom } = useContext(UserContext)
+const AddItemsScreen: FC<Props> = ({ navigation }) => {
+  const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData, rState, setRState, myRoom } = useContext(UserContext)
 
   //let r = Math.floor(Math.random() * 7)
-  
-  
+
 
   const { purpleColor } = useContext(ThemeContext)
 
-  // const [task, setTask] = useState<taskInfo[]>([]);
-  // const [allTask, setAllTask] = useState<taskInfo[]>([])
-  // const [addTask, setAddTask] = useState<taskInfo[]>([])
-
-
-
   useEffect(() => {
     console.log(fetchSpaceInfo());
-    
-    
+
+
 
   }, [])
 
@@ -68,20 +61,14 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
     }
 
 
-
   }
   const AddItems = (name: string) => {
-    setTask(allTask.filter((aTask:taskInfo) => aTask.tags.includes(name.toLowerCase())))
+    setTask(allTask.filter((aTask: taskInfo) => aTask.tags.includes(name.toLowerCase())))
   }
 
   const handleSelectedTasks = async () => {
-    console.log(addTask);
-
-    //await AddSelectedTask(addTask);
-    // let result = await AddSelectedTask(addTask);
-    // console.log(result);//
     navigation.navigate('AddedItems')
-    
+
   }
 
   return (
@@ -103,7 +90,7 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
                       icons.map((icon, idx) => {
                         return (
                           <View key={idx} style={styles.categories}>
-                            <Pressable  onPress={() => AddItems(icons[idx].Name) }>
+                            <Pressable onPress={() => AddItems(icons[idx].Name)}>
                               <View style={{ alignItems: 'center' }}>
                                 <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                               </View>
@@ -125,7 +112,7 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
                     icons.map((icon, idx) => {
                       return (
                         <View key={idx} style={styles.categories2}>
-                          <Pressable  onPress={() => AddItems(icons[idx].Name)}>
+                          <Pressable onPress={() => AddItems(icons[idx].Name)}>
                             <View style={{ alignItems: 'center' }}>
                               <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                             </View>
@@ -139,27 +126,27 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
               </View>
           }
         </>
-        
+
         <View style={styles.underlineContainer}>
-        <UnderlinedOneHeaderComponent titleFirst={'Items'} />
+          <UnderlinedOneHeaderComponent titleFirst={'Items'} />
         </View>
         <ScrollView>
           <View style={styles.rest3}>
-          <View style={[styles.underlineContainer, { marginBottom: 5 }]}>
-          
-        </View>
+            <View style={[styles.underlineContainer, { marginBottom: 5 }]}>
+
+            </View>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: '2%' }}>
               {
-                task.map((colorBtn:taskInfo, x:number) => {
+                task.map((colorBtn: taskInfo, x: number) => {
                   return (
-                  <SquareColoredButton key={x} idx={rState+x} onPress={() => { colorBtn.UserId= userData.id , addTask.push({...colorBtn, 'color': (rState + x), 'spaceId':myRoom.id}) , console.log(addTask)} } >
-                    <Entypo name="plus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
-                    <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>{colorBtn.name}</Text>
-                  </SquareColoredButton>
+                    <SquareColoredButton key={x} idx={rState + x} onPress={() => { colorBtn.UserId = userData.id, addTask.push({ ...colorBtn, 'color': (rState + x), 'spaceId': myRoom.id }), console.log(addTask) }} >
+                      <Entypo name="plus" size={45} color="white" style={styles.plusIconStyle} />
+                      <Text style={styles.plusIconText}>{colorBtn.name}</Text>
+                    </SquareColoredButton>
                   )
                 })
               }
-              
+
             </View>
           </View>
         </ScrollView >
@@ -168,7 +155,6 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
 
       </View >
       <FullButtonComponent radius={0} onPress={handleSelectedTasks} color={purpleColor}>
-      {/* AddSelectedTask(addTask), console.log(AddSelectedTask(addTask) */}
         <Text>Done</Text>
       </FullButtonComponent>
     </>
@@ -178,14 +164,14 @@ const AddItemsScreen: FC<Props> = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     paddingTop: StatusBar.currentHeight,
-    position:'absolute'
+    position: 'absolute'
   },
   headTitle: {
 
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
-    marginTop:40
+    marginTop: 40
   },
   clickText: {
     textDecorationLine: 'underline',
@@ -234,7 +220,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: "space-between",
     paddingLeft: 10,
-    paddingRight:10
+    paddingRight: 10
   },
   rest3: {
 
@@ -243,6 +229,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  plusIconStyle: {
+    paddingBottom: 0,
+    marginBottom: 0,
+    textAlign: 'center'
+  },
+  plusIconText: {
+    color: 'white',
+    textAlign: 'center',
+    marginTop: 0
   }
 
 

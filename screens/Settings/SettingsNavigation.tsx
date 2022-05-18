@@ -23,8 +23,8 @@ const SettingsNavigation: FC = ()=> {
 
   return (
 
-        <Tab.Navigator  initialRouteName="Settings">
-          <Tab.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }}/>
+        <Tab.Navigator  initialRouteName="SettingsScreen">
+          <Tab.Screen name="SettingsScreen" component={SettingsScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="ManageInvites" component={ManageInvitesScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ headerShown: false }}/>

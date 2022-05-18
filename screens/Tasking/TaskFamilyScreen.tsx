@@ -50,7 +50,7 @@ const TaskFamilyScreen: FC<Props> = ({navigation})=> {
     }
     setSelectedUser(member)
     console.log( member)
-    console.log( mySpaces)
+    //console.log( mySpaces)
     setTaskUser(user)
     setIsInvited(false)
     
@@ -63,8 +63,8 @@ const TaskFamilyScreen: FC<Props> = ({navigation})=> {
       isChild: true
     }
     setSelectedUser(member)
-    console.log( child)
-    console.log( mySpaces)
+    console.log( member)
+    //console.log( mySpaces)
     setTaskUser(child)
     setIsInvited(false)
     
@@ -78,7 +78,7 @@ const TaskFamilyScreen: FC<Props> = ({navigation})=> {
     }
     setSelectedUser(member)
     console.log( member)
-    console.log( user)
+    //console.log( user)
 
     setTaskUser(user)
     setIsInvited(true)
@@ -97,7 +97,7 @@ const TaskFamilyScreen: FC<Props> = ({navigation})=> {
     {childrenData.map((child:any, idx:number)=> {
       return(
         childrenData.length>0?
-        <AvatarComponent key={idx} onPress={()=> handleGoToTaskChild(child)} imageSource={child.DependentPhoto} />
+        <AvatarComponent key={idx} onPress={()=> handleGoToTaskChild(child)} imageSource={child.dependentPhoto} />
         : null
       )
     })}

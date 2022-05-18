@@ -35,7 +35,7 @@ type RootStackParamList = {
     //App
     Nav: {screen: string} ,
     Profile: undefined
-    Child: undefined
+    LockedChildTasks: undefined
 
   }
 

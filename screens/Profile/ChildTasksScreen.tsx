@@ -18,8 +18,8 @@ import { GetTasksByRoomId } from '../../services/dataService';
 import TaskInfoModalComponent from '../../components/Modal/TaskInfoModalComponent';
 
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
-
-
+import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
@@ -93,9 +93,15 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     roomArr.map((room: any, idx: number) => {
       rooms.push({ id: room.id, spaceName: room.spaceName, spaceCategory: room.spaceCategory, todaysTasks: taskArr[idx] });
     });
-    setChildScheduleRooms(rooms)
-    setChildSelectedRoom(rooms[0])
-    setSpace(rooms[0].spaceName);
+    setChildScheduleRooms(rooms != null || rooms.length !=0 ? rooms : 0)
+    setChildSelectedRoom(rooms[0] != null || rooms[0] !=0 ? rooms[0] : 0)
+    {
+      rooms != 0 && rooms[0] != 0 ?
+      setSpace(rooms[0].spaceName)
+      :console.log('yess')
+    }
+
+    //setSpace(rooms[0].spaceName);
   }
 
 
@@ -106,7 +112,10 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     console.log(childDefaultSpace)
     console.log("=====================+===================================================")
 
-    childTaskDate();
+  
+       childTaskDate()
+
+
     
 
   }, [])
@@ -176,7 +185,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
               )
             })
-            : null
+            // does not display even if they have nothing 
+            : <Text>You Have No Rooms</Text>
           }
 
         </ScrollView>
@@ -192,9 +202,20 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
                 return (
-                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval) }}>
+                  // <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval) }}>
+                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log(taskName.isCompleted), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval) }}>
 
-                    <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}</Text>
+                    <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                    <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name} 
+
+                    </Text>
+                    {
+                      taskName.isCompleted == true ?
+                      <AntDesign name="checksquare" size={30} color="white" />
+                      :
+                      <Ionicons name="time-sharp" size={30} color="white" />
+                    }
+                    </View>
 
                   </TaskSpaceRowComponent>
 
@@ -203,7 +224,9 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                 )
               })
-              : null
+              :
+              <Text>You Have No Task Today</Text>
+              // {Alert.alert("Error", 'You have no Task', [{ text: "Ok", style: "cancel" }])}
           }
         </ScrollView>
 

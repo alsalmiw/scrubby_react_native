@@ -25,6 +25,7 @@ interface ITaskInfoModal {
 }
 
 const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild, taskedInfo, isButton }) => {
+
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
     const SubmitTaskForCompletion =async()=> {
@@ -63,6 +64,12 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                     </View>
 
                 </View>
+                {/* <View>
+                    <Text>
+                    {Status} Hellow
+                    </Text>
+
+                </View> */}
 
 
                 <View style={styles.underlinedView}>

@@ -15,7 +15,7 @@ import { black } from 'react-native-paper/lib/typescript/styles/colors';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 import FullButtonComponent from '../../components/FullButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { DeleteInvite } from '../../services/dataService';
+import { DeleteInvite, GetSharedSpacesByUserId } from '../../services/dataService';
 import TaskSpaceRowIconComponent from '../../components/TaskSpaceRowIconComponent';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
@@ -26,6 +26,7 @@ import TaskSpaceRowPlus from '../../components/TaskSpaceRowPlus';
 import  ISharedSpace  from '../../Interfaces/ISharedSpace';
 import { CreateSharedSpaces } from '../../services/dataService';
 import { ISpace } from '../../Interfaces/ISpace';
+import {ISpaceArr} from '../../Interfaces/ISpaceArr';
 
 
 
@@ -37,6 +38,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
     const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor } = useContext(ThemeContext);
     const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh, acceptedInvitations, setAcceptedInvitations, rState, mySpaces, setMySpaces, sentAcceptedInvitations, setSentAcceptedInvitations } = useContext(UserContext)
     
+
     let r = Math.floor(Math.random() * 7)
 
     const handleDisplayFullName = async () => {
@@ -56,20 +58,25 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
             }
         }
 
-
-
     }
 
-    const handleDisplayAlert = async (space: ISpace | string ) => {
-        console.log('Hello There');
-        console.log(space);
-        console.log(await AsyncStorage.getItem('Invited'));
+    const handleDisplaySharedSpaces = async () => {
+        let result = await GetSharedSpacesByUserId(3);
+
+        console.log('this is the result');
+        console.log(result);
+    }
+
+    const handleDisplayAlert =  async (space: ISpace) => {
+
+
+        let asyncUsername = await AsyncStorage.getItem('Invited')!;
 
         //This will be how we add create shared Space
         /* 
             let newSharedSpace:ISharedSpace = {
                 id:0, 
-                invitedUsername: peter or get it from local storage or something,
+                invitedUsername: asyncUsername ,
                 collectionId: space.id,
                 isDeleted: false,
                 isAccepted: true
@@ -98,6 +105,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
 
     useEffect(() => {
         handleDisplayFullName();
+        handleDisplaySharedSpaces();
     }, [])
 
     return (
@@ -109,7 +117,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
                     <UserNameComponent name={fullName}></UserNameComponent>
                     <View style={styles.insideFirstRowContainer2}>
                         {/* The hello there is just a test, i will remove later when done adding changes */}
-                        <Feather name="trash-2" size={40} color='black' onPress={handleDisplayAlert.bind(this, "Hello There")} />
+                        <Feather name="trash-2" size={40} color='black' onPress={() => console.log('hello there')} />
                         <UserNameComponent name="Delete User"></UserNameComponent>
                     </View>
                 </View>
@@ -125,13 +133,14 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
                         <TaskSpaceRowPlus
                           idx={rState+idx}
                           key={idx}
-                          onPress={handleDisplayAlert.bind(this, space)}
+                          onPress={() => {console.log(space); handleDisplayAlert(space)}}
                         >
                           {space.collectionName}
                         </TaskSpaceRowPlus>
               
                       )
                     }
+                   
                 </View>
                 
             </View>

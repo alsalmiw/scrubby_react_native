@@ -9,7 +9,7 @@ import RootStackParamList from '../../types/INavigateProfile';
 import AvatarComponent from '../../components/AvatarComponent';
 import CoinsPointsDisplayContainer from '../../components/Profile/CoinsPointsDisplayContainer';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
-///
+////
 import { FontAwesome5 } from '@expo/vector-icons';
 import SquareColoredButton from '../../components/SquareColoredButton';
 import iconsMap from '../../types/IconsMap';
@@ -25,8 +25,8 @@ import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildRooms } = useContext(UserContext)
-
+  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, } = useContext(UserContext)
+  // const [childDefaultSpace, setChildDefaultSpace] = useState<any>()
 
   // const [todayDate, setTodayDate] = useState<any>()
 
@@ -38,45 +38,71 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
   const [childScheduleTasks, setChildScheduleTasks] = useState<any>([])
 
+  const [childScheduleRooms, setChildScheduleRooms] = useState<any>()
+  const [childSelectedRoom, setChildSelectedRoom] = useState<any>()
+
 
 
   const [childTasks, setChildTasks] = useState<any>([])
   let newArr = ['bed', 'bathroom', 'kitchen']
   let r = Math.floor(Math.random() * 7)
 
-  const ChildRooms = () => {
-    setChildRooms(childPage.scheduledTasks);
-  }
 
-  const childTaskDate = () =>{
+  const childTaskDate = () => {
     let today = new Date();
-    var todayDate = new Date(today.getFullYear(),today.getMonth(),today.getDate());
+    var todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     var nextDay = new Date(+todayDate);
 
     let sevenDays = [] as any
     sevenDays.push(todayDate.toISOString())
 
-    
-    for(let i =1; i < 7; i++)
-    {
+
+    for (let i = 1; i < 8; i++) {
       let endDate = nextDay.getDate() + 1;
-          nextDay.setDate(endDate);
-          sevenDays.push(nextDay.toISOString());
+      nextDay.setDate(endDate);
+      sevenDays.push(nextDay.toISOString());
 
     }
-    console.log(sevenDays)
-    console.log(childRooms)
-    // let nextTasks = childPage.rooms.map((room:any) => room.tasksAssigned.filter((task:any) => sevenDays.includes(task.dateScheduled)))
-    // setChildScheduleTasks(nextTasks)
 
-    // console.log(nextTasks)
+
+    let nextTasks = childDefaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => sevenDays.includes(task.dateScheduled)))
+    setChildScheduleTasks(nextTasks)
+
+
+
+    let roomArr = [] as any;
+    let taskArr = [] as any;
+    childDefaultSpace.rooms.map((room: any) => {
+      let tempArr = [] as any;
+      let tempRoomArr = [] as any;
+      room.tasksAssigned.map((task: any) => {
+        if (sevenDays.includes(task.dateScheduled)) {
+          tempArr.push(task);
+
+          if (tempRoomArr.length == 0) {
+            tempRoomArr.push(room);
+          }
+        }
+      });
+      if (tempArr.length != 0) {
+        taskArr.push(tempArr);
+      }
+      roomArr.push(...tempRoomArr);
+    });
+    let rooms = [] as any;
+    roomArr.map((room: any, idx: number) => {
+      rooms.push({ id: room.id, spaceName: room.spaceName, spaceCategory: room.spaceCategory, todaysTasks: taskArr[idx] });
+    });
+    setChildScheduleRooms(rooms)
+    setChildSelectedRoom(rooms[0])
   }
 
 
   useEffect(() => {
-    ChildRooms();
+
     console.log("=======================================================================++")
-    // console.log(childPage)
+    console.log("hi")
+    console.log(childDefaultSpace)
     console.log("=====================+===================================================")
 
     childTaskDate();
@@ -96,7 +122,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.firstRow}>
-            <AvatarComponent onPress={() => console.log('hi')} imageSource={userData.photo} />
+            <AvatarComponent onPress={() => {console.log("-----------------------------------------"), console.log(childSelectedRoom), console.log("-----------------------------------------")}} imageSource={userData.photo} />
           </View>
 
 
@@ -128,26 +154,22 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
           <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
-          {childRooms != null ?
-            childRooms.map((collection: any) => {
+          {childScheduleRooms != null ?
+            childScheduleRooms.map((room: any, x: number) => {
               // missing logic to display task not completed and today and future task.
+
+              //fix space name and location
               return (
-
-                collection.rooms.filter((roomName: any, x: number) => roomName.tasksAssigned.length != 0
-                ).map((roomWithTask: any, x: number) => {
-
-                  return (<View key={x} style={styles.sqrBtn}>
-                    <SquareColoredButton idx={x + rState + 1} onPress={() => { console.log(roomWithTask), setChildTasks(roomWithTask.tasksAssigned), setSpace(room.collectionName), setLocation(roomWithTask.spaceName) }}>
-                      <View style={styles.sqrBtn}>
-                        <Image style={styles.buttonSize} source={iconsMap.get(roomWithTask.spaceCategory)} />
-                      </View>
-                      <View style={styles.sqrBtn}>
-                        <Text style={styles.sqrTxt}>{roomWithTask.spaceCategory}</Text>
-                      </View>
-                    </SquareColoredButton>
-                  </View>
-                  )
-                })
+                <View key={x} style={styles.sqrBtn}>
+                  <SquareColoredButton idx={x + rState + 1} onPress={() => { console.log(room), setChildTasks(room.tasksAssigned), setSpace(childScheduleRooms.collectionName), setLocation(room.spaceName) }}>
+                    <View style={styles.sqrBtn}>
+                      <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
+                    </View>
+                    <View style={styles.sqrBtn}>
+                      <Text style={styles.sqrTxt}>{room.spaceCategory}</Text>
+                    </View>
+                  </SquareColoredButton>
+                </View>
 
 
               )
@@ -163,8 +185,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         <ScrollView style={styles.taskStyle}>
 
           {
-            childTasks != null ?
-              childTasks.map((taskName: any, x: number) => {
+            childSelectedRoom != null ?
+            childSelectedRoom.todaysTasks.map((taskName: any, x: number) => {
 
 
                 return (
@@ -256,10 +278,10 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5
   },
-  sqrTxt:{
-    color: 'white', 
-    flexShrink: 1, 
-    fontSize: 13 
+  sqrTxt: {
+    color: 'white',
+    flexShrink: 1,
+    fontSize: 13
   }
 });
 

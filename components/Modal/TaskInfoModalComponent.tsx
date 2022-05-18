@@ -57,7 +57,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ headerTitle, Space, Locati
                 <View style={styles.underlinedView}>
                     <UnderlinedOneHeaderComponent titleFirst={'Instructions'}></UnderlinedOneHeaderComponent>
                     <View style={styles.txtRap}>
-                        <Text>{Instruction}+ sdaddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddwwwwwwwwwwwwwwwwwwwwww</Text>
+                        <Text>{Instruction}+ sdadddddddddddddddddddddddddddddddddddddddddddddddddd</Text>
                     </View>
                 </View>
 

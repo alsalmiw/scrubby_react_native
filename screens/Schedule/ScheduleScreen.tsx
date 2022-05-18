@@ -19,6 +19,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import RootStackParamList from '../../types/INavigation'
 import ScheduleDateBtnComponent from '../../components/ScheduleDateBtnComponent';
+import ModalComponent from '../../components/ModalComponent';
+import TaskInfoModalComponent from '../../components/Modal/TaskInfoModalComponent';
 
 
 
@@ -26,11 +28,12 @@ import ScheduleDateBtnComponent from '../../components/ScheduleDateBtnComponent'
 type Props = NativeStackScreenProps<RootStackParamList, 'ScheduleScreen'>
 
 
+
 const ScheduleScreen: FC <Props> = ({navigation})=> {
-  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, setModalVisible } = useContext(UserContext)
   const {secondaryTextColor, lightLilacColor, lilacColor} = useContext(ThemeContext)
 
-  const [dayTasks, setDayTasks] = useState()
+  const [taskInfo, setTaskInfo] = useState() as any
   const [scheduledDates, setScheduledDates] =useState<any[]>([])
   const [scheduledRooms, setScheduledRooms] =useState<any[]>([])
   const [activeDate, setActiveDate] =useState<boolean>(false)
@@ -49,8 +52,6 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
     setSpinnerOn(false)
       GetTaskDates()
    
-    
-
 
   }, [])
 
@@ -90,11 +91,6 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
   const getRoomsbyDate = (date:any) =>{
 
     let taskedDate = new Date(date).toISOString()
-    // console.log("Date Chosen :  ================================================================================================= ")
-    // console.log(taskedDate)
-  //   console.log("Next Tasks Are :  ================================================================================================= ")
-  // //  let tasks= scheduledTasks.map((task:any) => task.filter((taskone:any)=>taskone.dateScheduled == taskedDate)).flat()
-  // //   console.log(tasks.flat())
   let roomArr = [] as any;
   let taskArr = [] as any;
   defaultSpace.rooms.map((room: any) => {
@@ -121,21 +117,22 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
   });
   setScheduledRooms(rooms)
   setSelectedRoom(rooms[0])
-  //  console.log("Tasked Rooms :  ================================================================================================= ")
-  //   console.log("taskedRooms")
-  //   //setScheduledRooms("mom")
+
   }
 
-  const displayTaskModel = () => {
+  const displayTaskModel = (task:any) => {
     console.log("display model")
+    setModalVisible(true)
+   
   }
+
+  
   
   const GetUserInfoByUsername = async() => {
   
     let username:any= await AsyncStorage.getItem("Username");
     if(username) {
       setSavedUsername(username)
-      //console.log(username)
       let userInfo = await GetUserData(username)
 
       if(userInfo.length!=0) {
@@ -146,16 +143,20 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
         setInvited(userInfo.invitations.sentInvites.filter((Invited:any)=> (Invited.isAccepted == false && Invited.isDeleted == false)))
         setInviters( userInfo.invitations.recievedInvites.filter((Inviter:any)=> (Inviter.isAccepted == false  && Inviter.isDeleted == false)))
         setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited:any)=> (Invited.isAccepted == true && Invited.isDeleted == false)))
-        //setDefaultSpace(userInfo.mySchedule[1])
-  
-      
       }
 
     }
-
  
   }
   
+  const ModalContent = ()=> {
+    return(
+      <>
+      <TaskInfoModalComponent headerTitle={taskInfo.task.name + ' ' + taskInfo.item.name} Space={defaultSpace.collectionName} Location={selectedRoom.spaceName} Instruction={taskInfo.task.description} coins={taskInfo.task.coins} points={taskInfo.task.coins} />
+
+      </>
+    )
+  }
   
   return (
     
@@ -168,7 +169,7 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
    <View style={[styles.flexrow]}>
    <Text style={[styles.mainHeader, {color:secondaryTextColor}]}>{defaultSpace.collectionName}</Text>
   < Pressable style={[styles.paddingL]} onPress={()=> navigation.navigate("DefaultOptions")}>
-   <MaterialCommunityIcons name="home-import-outline" size={30} color="#000"/>
+   <MaterialCommunityIcons name="home-import-outline" size={30} color={secondaryTextColor}/>
   </Pressable>
 
    </View>
@@ -190,13 +191,12 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
       //  </Pressable>
        <ScheduleDateBtnComponent key={idx} idx={idx} date={date} onPress={()=>getRoomsbyDate(date)}/>
         )
-
       })
       : 
       <Text>Your Schedule is Empty for the next ten days.</Text>
     
     }
-    
+       
  </ScrollView>
     <View>
     <UnderlinedOneHeaderComponent titleFirst={"My Rooms"}  />
@@ -206,7 +206,7 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
       scheduledRooms.map((room:any, idx:number)=>{
 
         return(
-          <SquareColoredButton key={idx} idx={r+idx} onPress={() => setSelectedRoom(room) }>
+          <SquareColoredButton key={idx} idx={r+idx} onPress={() => {setSelectedRoom(room)} }>
             <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
           <Text style={[{color:"#FFF"}]}>{room.spaceName}</Text>
           </SquareColoredButton>
@@ -227,7 +227,7 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
 
           //<Text key={idx}>{taskInfo.task.name}  {taskInfo.item.name}</Text>
             //<TaskRowTaskInfoComponent r={r} key={idx} idx={idx} task={taskInfo} />
-            <TaskSpaceRowComponent key={idx} idx={r+idx} onPress={()=>displayTaskModel()}>
+            <TaskSpaceRowComponent key={idx} idx={r+idx} onPress={()=>{displayTaskModel(taskInfo), setTaskInfo(taskInfo)}}>
             <View style={[styles.taskContainer, styles.flexrow]}>
               <Text style={[styles.text ]}>{taskInfo.task.name} {taskInfo.item.name}</Text>
               <View style={[styles.flexrow]}>
@@ -239,8 +239,17 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
 
           )
         })
+        
         :null
       }
+   
+   {
+     taskInfo!=null?
+   
+   <TaskInfoModalComponent headerTitle={taskInfo.task.name + ' ' + taskInfo.item.name} Space={defaultSpace.collectionName} Location={selectedRoom.spaceName} Instruction={taskInfo.task.description} coins={taskInfo.task.coins} points={taskInfo.task.coins} />
+
+   : null
+   }
       </View>
 
  {/* <Button

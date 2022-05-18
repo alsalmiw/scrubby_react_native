@@ -23,7 +23,7 @@ const AddPhotoComponent = () => {
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
-            quality: 0,
+            quality: 1,
           });
       
           //console.log(result);
@@ -47,13 +47,13 @@ const AddPhotoComponent = () => {
            const formData = new FormData();
                 formData.append('photo',  {
                     uri: result.uri,
-                    name: fileName,
+                    name: "avatar46.png",
                     type: `image/${imgType}`
 
                     })
                  console.log(formData)
                  
-                    let res = await fetch('http://localhost:5088/Photos/uploadingImage',{
+                    let res = await fetch('https://scrubbyapi.azurewebsites.net/Photos/uploadingImage',{
                         method: "POST",
                         headers:{
                             "Accept": "application/json",

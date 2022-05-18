@@ -7,7 +7,7 @@ import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentL
 import UserContext from "../context/UserContext"
 import INewUser from "../Interfaces/INewUser"
 import IUserLogin from "../Interfaces/IUserLogin"
-import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin } from "../services/dataService"
+import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin, AddDefaultAvatar } from "../services/dataService"
 import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
 import ChildFreeBoolComponent from "../components/Settings/ChildFreeBoolComponent"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
@@ -32,7 +32,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
     const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, spinnerOn, setSpinnerOn, setDefaultSpace } = useContext(UserContext)
     const { yellowColor, greenColor } = useContext(ThemeContext)
 
-    let avR = Math.floor(Math.random() * 9)
+    let avR = Math.floor(Math.random() * 46)
 
     useEffect(() => {
        
@@ -52,14 +52,22 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
         if (result.token!= null) {
             AsyncStorage.setItem("Token", result.token);
             AsyncStorage.setItem("Username", username);
+            let avatarInfo={
+                Username: username,
+                Photo: avatars[avR]
+            }
+            let avatar = await AddDefaultAvatar(avatarInfo)
+            if(avatar){
+                 navigation.navigate('Nav', {screen:"Profile"})
+            }
             // let user = await GetUserData(username)
             // if (user.length > 0) {
             //     setFullUserInfo(user)
             //     console.log(user)
             // }
             
-            navigation.navigate('Nav', {screen:"Profile"})
-            console.log(result)
+           
+            // console.log(result)
 
         }
 

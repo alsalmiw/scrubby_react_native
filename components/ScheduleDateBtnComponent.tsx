@@ -11,7 +11,7 @@ interface Props {
 }
 
 const ScheduleDateBtnComponent: FC<Props> =(props) => {
-    const {orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor} = useContext(ThemeContext)
+    const {orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor, primaryTextColor} = useContext(ThemeContext)
     const [bgColor, setBgColor]= useState('')
     const [r, setR] = useState('')
 
@@ -36,26 +36,25 @@ const ScheduleDateBtnComponent: FC<Props> =(props) => {
 
     return(
         <Pressable style={[styles.dateBtn, {borderColor:bgColor}]} onPress={()=>setDateTasks()}>
-   
-      <Text style={[styles.dateText]}>{props.date.slice(0,3)}</Text> 
-      <View style={[styles.dash]}></View>
-      <Text style={[styles.dateText]}>{props.date.slice(8,10)}</Text> 
-
+      <Text style={[styles.dateText, {color:primaryTextColor}]}>{props.date.slice(0,3)}</Text> 
+      <View style={[styles.dash, {borderColor:bgColor}]}></View>
+      <Text style={[styles.dateText, {color:primaryTextColor}]}>{props.date.slice(8,10)}</Text> 
     </Pressable>
+
 
     )
 }
 
 const styles = StyleSheet.create({
     dateBtn: {
-        width:80,
-        height: 100,
+        width:70,
+        height: 90,
         borderWidth: 2,
        // borderColor:"#000000",
         borderRadius:10,
         margin:10,
         marginRight:5,
-        padding:10,
+        padding:5,
         justifyContent: "center",
         alignItems: "center",
       },
@@ -63,7 +62,7 @@ const styles = StyleSheet.create({
         width:"80%",
         borderWidth: 1,
         borderColor:"#000000",
-        margin: 20,
+        margin: 10,
       },
       dateText: {
         fontSize:20

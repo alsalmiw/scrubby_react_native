@@ -2,14 +2,16 @@
 import { FC, useContext, useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View, StatusBar, FlatList, Pressable } from 'react-native';
 import CoinsPointsDisplayContainer from '../../components/Profile/CoinsPointsDisplayContainer'
-
+import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import HeaderComponent from '../../components/HeaderComponent';
 import UserNameComponent from '../../components/UserNameComponent';
 import UnderlinedHeaderComponent from '../../components/UnderlinedHeaderComponent';
 import AddItemButtonComponent from '../../components/AddItemButtonComponent';
 
 import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
-import RootStackParamList from '../../types/INavigateProfile'
+//import RootStackParamList from '../../types/INavigateProfile'
+import RootStackParamList from '../../types/INavigation'
+
 import UseTheme from '../../hooks/use-theme';
 // import { GetUserById } from '../../services/dataService';
 ///
@@ -167,7 +169,8 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       </Pressable>
       <View style={styles.newSpaceContainer}>
 
-        {mySpaces.map((space:ISpace, idx:number) =>
+        {mySpaces.length>0?
+        mySpaces.map((space:ISpace, idx:number) =>
           <TaskSpaceRowTrash
             idx={r+idx}
             key={idx}
@@ -175,9 +178,11 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
           >
             {space.collectionName}
           </TaskSpaceRowTrash>
+        
 
-        )}
-
+        )
+        : null
+        }
 
       </View>
 {
@@ -191,12 +196,12 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
                                       </AddItemButtonComponent> 
 
                                       {childrenData.length!=0 ? 
-                                      childrenData.map((child:object, idx:number)=>{ 
+                                      childrenData.map((child:any, idx:number)=>{ 
                                         return(
                                       //     <AddItemButtonComponent key={idx} onPress={()=>handleGoToChildProfile(child)}>
                                       //   <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />
                                       // </AddItemButtonComponent>
-                                        <AvatarComponent key={idx} onPress={()=> {console.log(child), handleGoToChildProfile(child) }} imageSource={userData.photo} />
+                                        <AvatarComponent key={idx} onPress={()=> {console.log(child), handleGoToChildProfile(child) }} imageSource={child.dependentPhoto} />
                                         )
 
                                       })

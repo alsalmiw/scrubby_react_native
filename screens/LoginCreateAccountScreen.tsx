@@ -7,7 +7,7 @@ import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentL
 import UserContext from "../context/UserContext"
 import INewUser from "../Interfaces/INewUser"
 import IUserLogin from "../Interfaces/IUserLogin"
-import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin } from "../services/dataService"
+import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin, AddDefaultAvatar } from "../services/dataService"
 import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
 import ChildFreeBoolComponent from "../components/Settings/ChildFreeBoolComponent"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
@@ -16,11 +16,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import avatars from '../types/IAvatars'
 import FullButtonComponent from "../components/FullButtonComponent"
 import { ThemeContext } from "../context/ThemeContext"
+import RootStackParamList from '../types/INavigation'
 
-type RootStackParamList = {
-    login: undefined,
-    Nav: undefined,
-}
+
+// type RootStackParamList = {
+//     login: undefined,
+//     Nav: undefined,
+// }
 
 type Props = NativeStackScreenProps<RootStackParamList, 'login'>
 
@@ -30,7 +32,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
     const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, spinnerOn, setSpinnerOn, setDefaultSpace } = useContext(UserContext)
     const { yellowColor, greenColor } = useContext(ThemeContext)
 
-    let avR = Math.floor(Math.random() * 9)
+    let avR = Math.floor(Math.random() * 46)
 
     useEffect(() => {
        
@@ -47,21 +49,29 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
         setSavedPassword(password);
 
         let result = await CreateAccount(userData);
-        if (result) {
+        if (result.token!= null) {
             AsyncStorage.setItem("Token", result.token);
             AsyncStorage.setItem("Username", username);
+            let avatarInfo={
+                Username: username,
+                Photo: avatars[avR]
+            }
+            let avatar = await AddDefaultAvatar(avatarInfo)
+            if(avatar){
+                 navigation.navigate('Nav', {screen:"Profile"})
+            }
             // let user = await GetUserData(username)
             // if (user.length > 0) {
             //     setFullUserInfo(user)
             //     console.log(user)
             // }/
             
-            navigation.navigate('Nav')
-            console.log(result)
+           
+            // console.log(result)
 
         }
 
-        else Alert.alert("Error", 'Invalid Username or Password.', [{ text: "Cancel", style: "cancel" }])
+        else{ Alert.alert("Error", 'Invalid Username or Password.', [{ text: "Cancel", style: "cancel" }])}
 
     }
 
@@ -84,16 +94,20 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             //     setFullUserInfo(user)
             //     console.log(user)
             // }
-            let defaultSpace = await GetUserDefaultSchedule(username)
-            setDefaultSpace(defaultSpace)
-            let user = await GetUserData(username)
-            if (user) {
-                setFullUserInfo(user)
-                console.log(user)
+            let defaultCollection = await GetUserDefaultSchedule(username)
+            if(defaultCollection.length != 0) 
+            {
+                setDefaultSpace(defaultCollection)
+                navigation.navigate('Nav', {screen:"Schedule"})
+            }else{
+                navigation.navigate('Nav', {screen:"Profile"})
+
             }
-            console.log(result)
+            //console.log(typeof defaultCollection)
+                //
+
             
-            navigation.navigate('Nav')
+            
         }
         else {
             Alert.alert("Error", 'Incorrect Username or Password.', [{ text: "Cancel", style: "cancel" }])

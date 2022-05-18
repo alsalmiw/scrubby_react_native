@@ -97,7 +97,7 @@ const TaskFamilyScreen: FC<Props> = ({navigation})=> {
     {childrenData.map((child:any, idx:number)=> {
       return(
         childrenData.length>0?
-        <AvatarComponent key={idx} onPress={()=> handleGoToTaskChild(child)} imageSource={child.DependentPhoto} />
+        <AvatarComponent key={idx} onPress={()=> handleGoToTaskChild(child)} imageSource={child.dependentPhoto} />
         : null
       )
     })}

@@ -3,7 +3,9 @@ import { FC } from 'react';
 import MyProfileScreen from '../Profile/MyProfileScreen'
 import AddedItemsScreen from '../Profile/AddedItemsScreen'
 import ChildTasksScreen from '../Profile/ChildTasksScreen';
-import RootStackParamList from '../../types/INavigateProfile'
+//import RootStackParamList from '../../types/INavigateProfile'
+import RootStackParamList from '../../types/INavigation'
+
 import AddNewSpaceScreen from '../Profile/AddNewSpaceScreen'
 import AddNewRoomScreen from '../Profile/AddNewRoomScreen';
 import AddItemsScreen from '../Profile/AddItemsScreen'

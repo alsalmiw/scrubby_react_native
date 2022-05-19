@@ -14,12 +14,14 @@ export default interface ITask {
         tags: string,
         time:string,
         coins:number
+        
     },
     item:{
         id: number,
         name: string,
         description: string,
         tags: string,
+       
     }
 
   }

@@ -1,4 +1,4 @@
-import { FC, useContext } from "react"
+import { FC, useContext, useEffect } from "react"
 import { StyleSheet, Text, View } from "react-native"
 import HeaderComponent from "../HeaderComponent"
 import ModalComponent from "../ModalComponent"
@@ -9,7 +9,8 @@ import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { ThemeContext } from "../../context/ThemeContext"
 import FullButtonComponent from "../FullButtonComponent"
 import ButtonModalComponent from "./ButtonModalComponent"
-import { UpdateUserTaskToCompleted, SubmitTaskChildApproval, ApproveTaskForCompletionChild } from "../../services/dataService"
+import { UpdateUserTaskToCompleted, SubmitTaskChildApproval, ApproveTaskForCompletionChild, GetUserDefaultSchedule } from "../../services/dataService"
+import UserContext from "../../context/UserContext"
 
 
 
@@ -26,22 +27,41 @@ interface ITaskInfoModal {
 
 const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild, taskedInfo, isButton }) => {
 
+    const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
+
 
     const SubmitTaskForCompletion =async()=> {
             if(!isChild){
-              let result =  await UpdateUserTaskToCompleted(task.id)
-                //sibmit task for completion
+             let result =  await UpdateUserTaskToCompleted(task.id)
+             console.log(task.id)
+             if(result){
+                let defaultCollection = await GetUserDefaultSchedule(userData.username)
+                if(defaultCollection!=null){
+                    setDefaultSpace(defaultCollection)
+                    setModalVisible(false)
+                    setRunAgain(true)
+                    console.log(defaultCollection);
+                }
+                
+             }
+        
+               
 
-            }else{
+            }else{  
                     //submit task for approval
-               let result= await SubmitTaskChildApproval(task.id)
+              let result= await SubmitTaskChildApproval(task.id)
+              
+              console.log("submit task for approval child");
+
                     
             }
     }
 
     const ApproveSubmittedTask = async()=> {
-        let result = await ApproveTaskForCompletionChild(task.id)
+       let result = await ApproveTaskForCompletionChild(task.id)
+        console.log("approve task for child");
+
     }
 
 

@@ -7,7 +7,7 @@ import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentL
 import UserContext from "../context/UserContext"
 import INewUser from "../Interfaces/INewUser"
 import IUserLogin from "../Interfaces/IUserLogin"
-import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin, AddDefaultAvatar } from "../services/dataService"
+import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin, AddDefaultAvatar, GetUserByUsername } from "../services/dataService"
 import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
 import ChildFreeBoolComponent from "../components/Settings/ChildFreeBoolComponent"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
@@ -29,7 +29,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'login'>
 const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
     const [login, setLogin] = useState(true);
-    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, spinnerOn, setSpinnerOn, setDefaultSpace } = useContext(UserContext)
+    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, spinnerOn, setSpinnerOn, setDefaultSpace, setUserData } = useContext(UserContext)
     const { yellowColor, greenColor } = useContext(ThemeContext)
 
     let avR = Math.floor(Math.random() * 46)
@@ -95,6 +95,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             //     console.log(user)
             // }
             let defaultCollection = await GetUserDefaultSchedule(username)
+            let userInfo = await GetUserByUsername(username)
             if(defaultCollection.length != 0) 
             {
                 setDefaultSpace(defaultCollection)
@@ -102,6 +103,10 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             }else{
                 navigation.navigate('Nav', {screen:"Profile"})
 
+            }
+            if(userInfo)
+            {
+                setUserData(userInfo)
             }
             //console.log(typeof defaultCollection)
                 //

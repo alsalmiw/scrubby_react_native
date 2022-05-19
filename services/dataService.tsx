@@ -370,7 +370,6 @@ async function GetUserDefaultSchedule(username:string){
     let res = await fetch(`${link}/DefaultCollection/UserDefaultSchedule/${username}`)
     // let data = await res.json();
     // return data
-    console.log(res.status)
     let data = []
     if(res.status === 200)
     {
@@ -399,20 +398,32 @@ async function GetSharedSpacesById(taskId:number){
 }
 
 async function UpdateUserTaskToCompleted(taskId:number){
-    let res = await fetch(`${link}/AssignedTasksUsers/UpdateUserTaskToCompleted/${taskId}`)
+    let res = await fetch(`${link}/AssignedTasksUsers/UpdateUserTaskToCompleted/${taskId}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({})
+    })
     let data = await res.json();
     return data
 }
 
 async function SubmitTaskChildApproval(taskId:number){
-    let res = await fetch(`${link}/AssignedTasksChild/SubmitTaskChildApproval/${taskId}`)
+    let res = await fetch(`${link}/AssignedTasksChild/SubmitTaskChildApproval/${taskId}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({})
+    })
     let data = await res.json();
     return data
 }
 
 
 async function ApproveTaskForCompletionChild(taskId:number){
-    let res = await fetch(`${link}/AssignedTasksChild/ApproveTaskForCompletionChild/${taskId}`)
+    let res = await fetch(`${link}/AssignedTasksChild/ApproveTaskForCompletionChild/${taskId}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({})
+    })
     let data = await res.json();
     return data
 }
@@ -436,7 +447,6 @@ async function NewCoinAmountDependent(Dependent:IRedeemCoinsChild)
     }
     let data:boolean = await res.json();
     console.log(data)
-    console.log('hi')
     return data;
 }
 

@@ -37,16 +37,18 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   const [insturction, setInstruction] = useState<String>("")
   const [title, setTitle] = useState<String>("")
   const [selectedTask, setSelectedTask]=useState<any[]>([])
+  const [requestedApproval, setRequestedApproval] = useState<boolean>(false)
+
 
   const [childScheduleTasks, setChildScheduleTasks] = useState<any>([])
-  const [requestedApproval, setRequestedApproval] = useState<boolean>(false)
+ 
 
   const [childScheduleRooms, setChildScheduleRooms] = useState<any>()
   const [childSelectedRoom, setChildSelectedRoom] = useState<any>()
 
 
 
-  const [childTasks, setChildTasks] = useState<any>([])
+
   let newArr = ['bed', 'bathroom', 'kitchen']
   let r = Math.floor(Math.random() * 7)
 
@@ -60,13 +62,14 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     sevenDays.push(todayDate.toISOString())
 
 
-    for (let i = 1; i < 8; i++) {
+    for (let i = 1; i < 7; i++) {
       let endDate = nextDay.getDate() + 1;
       nextDay.setDate(endDate);
       sevenDays.push(nextDay.toISOString());
 
     }
 
+    //need to re fetch child default space for new data to map room.
 
     let nextTasks = childDefaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => sevenDays.includes(task.dateScheduled)))
     setChildScheduleTasks(nextTasks)
@@ -108,9 +111,9 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
   useEffect(() => {
 
-    console.log("=======================================================================++")
-    console.log("hi")
-    console.log(childDefaultSpace)
+    // console.log("=======================================================================++")
+    // console.log("hi")
+     console.log(childDefaultSpace)
     console.log("=====================+===================================================")
 
   
@@ -134,7 +137,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.firstRow}>
-            <AvatarComponent onPress={() => {console.log(childScheduleRooms)}} imageSource={userData.photo} />
+            <AvatarComponent onPress={() => {console.log(childScheduleRooms)}} imageSource={childPage.dependentPhoto} />
           </View>
 
 
@@ -173,7 +176,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
               //fix space name and location
               return (
                 <View key={x} style={styles.sqrBtn}>
-                  <SquareColoredButton idx={x + rState + 1} onPress={() => { setChildSelectedRoom(room), setSpace(room.spaceName) }}>
+                  <SquareColoredButton idx={x + rState + 1} onPress={() => { console.log(childScheduleRooms.length),     console.log("=======================================================================++"), setChildSelectedRoom(room), setSpace(room.spaceName) }}>
                     <View style={styles.sqrBtn}>
                       <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
                     </View>
@@ -204,7 +207,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                 return (
 
-                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted?true:false)  }}>
+                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => {console.log("=======================================================================++"), console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted?true:false)  }}>
 
                     <View style={{flexDirection:'row', justifyContent:'space-between'}}>
                     <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name} 

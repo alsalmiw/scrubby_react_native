@@ -35,7 +35,14 @@ const ChildLockModalComponent: FC = ({ }) => {
 
     }
     const navToChildUnlockScreen = () => {
-        if (newCode != null && newCode == childPassCode) setCheckPassCode(true), setChildPassCode(0), navigation.navigate("ChildTasks"), setModalVisible(false)
+        if (newCode != null && newCode == childPassCode) {
+            setCheckPassCode(true);
+
+            setChildPassCode(0);
+            setModalVisible(false);
+            navigation.navigate("ChildTasks");
+
+        }
         else Alert.alert("Error", 'Passcode wrong. Try Again.', [{ text: "Cancel", style: "cancel" }]);
     }
 
@@ -82,7 +89,7 @@ const ChildLockModalComponent: FC = ({ }) => {
                                     />
                                 </View>
                                 <View style={styles.codeInputBtn}>
-                                    <FullButtonComponent color={blueColor} radius={10} onPress={() => { updatePasscode(), navToChildLockScreen() }}> <Text>Lock</Text></FullButtonComponent>
+                                    <FullButtonComponent color={blueColor} radius={10} onPress={() => { updatePasscode(), setModalVisible(false), navToChildLockScreen() }}> <Text>Lock</Text></FullButtonComponent>
                                 </View>
                             </>
                             :
@@ -107,7 +114,7 @@ const ChildLockModalComponent: FC = ({ }) => {
                                     />
                                 </View>
                                 <View style={styles.codeInputBtn}>
-                                    <FullButtonComponent color={blueColor} radius={10} onPress={() => { console.log(childPassCode), navToChildUnlockScreen() }}> <Text>Unlock</Text></FullButtonComponent>
+                                    <FullButtonComponent color={blueColor} radius={10} onPress={() => { setModalVisible(false), navToChildUnlockScreen() }}> <Text>Unlock</Text></FullButtonComponent>
                                 </View>
 
                             </>

@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { FC, useContext, useEffect } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Pressable, ScrollView, StatusBar, StyleSheet, Text, View, Image } from "react-native";
 import AvatarComponent from "../../components/AvatarComponent";
 import HeaderComponent from "../../components/HeaderComponent";
@@ -14,18 +14,98 @@ import UnderlinedHeaderComponent from "../../components/UnderlinedHeaderComponen
 import SquareColoredButton from "../../components/SquareColoredButton";
 
 import iconsMap from '../../types/IconsMap';
+import TaskSpaceRowComponent from "../../components/TaskSpaceRowComponent";
+import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import TaskInfoModalComponent from "../../components/Modal/TaskInfoModalComponent";
 //
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LockedChildTasks'>
 
 const LockChildTasksScreen: FC = () => {
 
-    const { userData, childPage, setModalVisible, childRooms, setChildRooms, rState } = useContext(UserContext);
+    const { userData, childPage, setModalVisible, childRooms, setChildRooms, rState, childDefaultSpace, setTaskModal, taskModal, modalVisible } = useContext(UserContext);
 
+    const [lockedChildScheduleRooms, setLockedChildScheduleRooms] = useState<any>()
+    const [lockedChildScheduleTasks, setLockedChildScheduleTasks] = useState<any>()
+    const [lockedChildSelectedRoom, setLockedChildSelectedRoom] = useState<any>()
+
+    const [space, setSpace] = useState<String>("")
+    const [location, setLocation] = useState<String>("")
+    const [coin, setCoin] = useState<String>("")
+    const [insturction, setInstruction] = useState<String>("")
+    const [title, setTitle] = useState<String>("")
+    const [selectedTask, setSelectedTask] = useState<any[]>([])
+    const [requestedApproval, setRequestedApproval] = useState<boolean>(false)
+
+
+
+    const childTaskDate = () => {
+        let today = new Date();
+        var todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        var nextDay = new Date(+todayDate);
+
+        let oneDay = [] as any
+        oneDay.push(todayDate.toISOString())
+
+
+        for (let i = 1; i < 1; i++) {
+            let endDate = nextDay.getDate() + 1;
+            nextDay.setDate(endDate);
+            oneDay.push(nextDay.toISOString());
+
+        }
+        // console.log(oneDay)
+
+        //need to re fetch child default space for new data to map room.
+
+        let nextTasks = childDefaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => oneDay.includes(task.dateScheduled)))
+        setLockedChildScheduleTasks(nextTasks)
+
+        let roomArr = [] as any;
+        let taskArr = [] as any;
+        childDefaultSpace.rooms.map((room: any) => {
+            let tempArr = [] as any;
+            let tempRoomArr = [] as any;
+            room.tasksAssigned.map((task: any) => {
+                if (oneDay.includes(task.dateScheduled)) {
+                    tempArr.push(task);
+
+                    if (tempRoomArr.length == 0) {
+                        tempRoomArr.push(room);
+                    }
+                }
+            });
+            if (tempArr.length != 0) {
+                taskArr.push(tempArr);
+            }
+            roomArr.push(...tempRoomArr);
+        });
+        let rooms = [] as any;
+        roomArr.map((room: any, idx: number) => {
+            rooms.push({ id: room.id, spaceName: room.spaceName, spaceCategory: room.spaceCategory, todaysTasks: taskArr[idx] });
+        });
+        setLockedChildScheduleRooms(rooms != null || rooms.length != 0 ? rooms : 0)
+        setLockedChildSelectedRoom(rooms[0] != null || rooms[0] != 0 ? rooms[0] : 0)
+        {
+            rooms != 0 && rooms[0] != 0 ?
+                setSpace(rooms[0].spaceName)
+                : console.log('Nooo')
+        }
+
+    }
     useEffect(() => {
-        console.log(childPage)
-        console.log('yes')
+        // console.log(childPage)
+        childTaskDate()
+        // setTaskModal(false)
+
     }, [])
+
+
+
+
+
 
     return (
         <View style={styles.container}>
@@ -36,7 +116,7 @@ const LockChildTasksScreen: FC = () => {
 
                 <View style={{ flexDirection: 'row', }}>
                     <View style={styles.firstRow}>
-                        <AvatarComponent onPress={() => console.log('hi')} imageSource={userData.photo} />
+                        <AvatarComponent onPress={() => console.log('hi')} imageSource={childPage.dependentPhoto} />
                     </View>
 
 
@@ -70,31 +150,28 @@ const LockChildTasksScreen: FC = () => {
 
                 </View>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
-                    {childRooms != null ?
-                        childRooms.map((room: any) => {
+                    {lockedChildScheduleRooms != null ?
+                        lockedChildScheduleRooms.map((room: any, x: number) => {
                             // missing logic to display task not completed and today and future task.
-                            return (
 
-                                room.rooms.filter((roomName: any, x: number) => roomName.tasksAssigned.length != 0
-                                ).map((roomWithTask: any, x: number) => {
-                                    // fix on press. refer back to child task screen
-                                    return (<View style={styles.sqrBtn}>
-                                        <SquareColoredButton key={x + 1} idx={x + rState + 1} onPress={() => { console.log(roomWithTask) }}>
-                                            <View style={styles.sqrBtn}>
-                                                <Image style={styles.buttonSize} source={iconsMap.get(roomWithTask.spaceCategory)} />
-                                            </View>
-                                            <View style={styles.sqrBtn}>
-                                                <Text style={styles.sqrTxt}>{roomWithTask.spaceCategory}</Text>
-                                            </View>
-                                        </SquareColoredButton>
-                                    </View>
-                                    )
-                                })
+                            //fix space name and location
+                            return (
+                                <View key={x} style={styles.sqrBtn}>
+                                    <SquareColoredButton idx={x + rState + 1} onPress={() => { console.log("=======================================================================++"), console.log(lockedChildScheduleRooms.length), console.log("=======================================================================++"), setLockedChildSelectedRoom(room), setSpace(room.spaceName) }}>
+                                        <View style={styles.sqrBtn}>
+                                            <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
+                                        </View>
+                                        <View style={styles.sqrBtn}>
+                                            <Text style={styles.sqrTxt}>{room.spaceCategory}</Text>
+                                        </View>
+                                    </SquareColoredButton>
+                                </View>
 
 
                             )
                         })
-                        : null
+                        // does not display even if they have nothing 
+                        : <Text>You Have No Rooms</Text>
                     }
 
                 </ScrollView>
@@ -103,14 +180,52 @@ const LockChildTasksScreen: FC = () => {
                     <UnderlinedOneHeaderComponent titleFirst={'Remaining Tasks'}></UnderlinedOneHeaderComponent>
 
                 </View>
-                <ScrollView>
-                    {/* task */}
+                <ScrollView style={styles.taskStyle}>
+
+                    {
+                        lockedChildSelectedRoom != null ?
+                            lockedChildSelectedRoom.todaysTasks.map((taskName: any, x: number) => {
+
+
+                                return (
+
+                                    <TaskSpaceRowComponent key={x} idx={x} onPress={ () => {console.log("=======================================================================++"), console.log( taskName),   setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted ? true : false), setTaskModal(true) , setModalVisible(false) }}>
+
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
+
+                                            </Text>
+                                            {
+                                                taskName.isCompleted ?
+                                                    <AntDesign name="checksquare" size={30} color="white" />
+                                                    :
+                                                    taskName.isRequestedApproval && !taskName.isCompleted ?
+                                                        <Ionicons name="time-sharp" size={30} color="white" />
+                                                        :
+                                                        <MaterialCommunityIcons name="checkbox-blank" size={30} color="white" />
+                                            }
+                                        </View>
+
+                                    </TaskSpaceRowComponent>
+
+
+
+
+                                )
+                            })
+                            :
+                            <Text>You Have No Task Today</Text>
+                        // {Alert.alert("Error", 'You have no Task', [{ text: "Ok", style: "cancel" }])}
+                    }
                 </ScrollView>
                 <View style={styles.underLineStyle}>
                     <UnderlinedOneHeaderComponent titleFirst={'Completed Tasks'}></UnderlinedOneHeaderComponent>
                 </View>
 
-
+                {modalVisible == true ?
+                    <ChildLockModalComponent /> : taskModal == true ?
+                        <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} />
+                        : null}
 
             </View>
 
@@ -177,7 +292,12 @@ const styles = StyleSheet.create({
         flex: 0,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
-    }
+    },
+    taskStyle: {
+        paddingLeft: "2.5%",
+        marginTop: 5,
+        marginBottom: 5
+    },
 });
 
 export default LockChildTasksScreen;

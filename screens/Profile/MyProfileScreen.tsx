@@ -94,6 +94,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     setSpinnerOn(false)
     //AsyncGetSpaceCollectionById();
     //AsyncGetSpaceCollectionById();
+    
 
 
   }, [])
@@ -135,9 +136,11 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   }
 
   const handleGoToChildProfile=(child:any)=> {
-    console.log(child)
+    console.log("=======================================================================++")
+     console.log(child)
     setChildPage(child)
     setChildDefaultSpace(child.scheduledTasks[1])
+    // console.log(child.scheduledTasks)
    //setChildData(child)
     navigation.navigate('ChildTasks')
   }

@@ -26,7 +26,7 @@ const ModalComponent: FC<any> = ({ children }) => {
 
               <Pressable
                 style={[styles.button,]}
-                onPress={() => { modalVisible == true ? setModalVisible(!modalVisible): taskModal == true ? setTaskModal(!taskModal) : null, console.log('yes') }}
+                onPress={() => { modalVisible == true ? setModalVisible(false): taskModal == true ? setTaskModal(false) : null, console.log('yes') }}
               >
                 <AntDesign name="close" size={35} color="black" />
               </Pressable>

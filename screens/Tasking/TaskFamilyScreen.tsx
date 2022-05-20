@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import RootStackParamList from '../../types/INavigateTasking'
 import { FC, useContext, useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import AvatarComponent from '../../components/AvatarComponent';
 import HeaderComponent from '../../components/HeaderComponent';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
@@ -22,15 +22,16 @@ type Props = NativeStackScreenProps <RootStackParamList, 'TaskFamily'>
 const TaskFamilyScreen: FC<Props> = ({navigation})=> {
 
   const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor, greenColor } = useContext(ThemeContext);
-  const { mySpaces, userData, childData, childrenData, acceptedInvitations , taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser} = useContext(UserContext)
+  const { mySpaces, userData, childData, childrenData, acceptedInvitations , taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser, seeAll} = useContext(UserContext)
 
   const [isInvited, setIsInvited] = useState(false)
   const [allMembers, setAllMembers] = useState([])
+  
 
   useEffect(() => {
-    setTaskUser(userData)
+   
     handleCreateUsersList()
-    //setTaskUser(userData)/
+
   }, [])
 
 
@@ -44,7 +45,7 @@ let membersArr = [] as any
     isInvited:false
   }
   membersArr.push(member)
-
+  setTaskUser(member)
  childrenData.length>0?
  childrenData.map((child:any, idx:number)=> {
 
@@ -67,7 +68,7 @@ acceptedInvitations.map((person:any, idx:number)=> { mySpaces.map((space:any, id
     {
   let invited = 
   {
-    id: person.id,
+    id: person.invitedId,
     fullName: person.invitedFullname,
     photo:person.invitedPhoto,
     isChild: false,
@@ -99,97 +100,65 @@ console.log(membersArr)
     
   }
 
-  // const handleGoToTaskUser = (user:any)=> {
-  //   let member = {
-  //     id: user.id,
-  //     fullName: user.name,
-  //     Photo:user.photo,
-  //     isChild: false
-  //   }
-  //   setSelectedUser(member)
-  //   console.log( member)
-  //   //console.log( mySpaces)
-  //   setTaskUser(user)
-  //   setIsInvited(false)
-    
-  // }
+  const ShowMembers=() : any=> {
 
-  // const handleGoToTaskChild = (child:any)=> {
-  //   let member = {
-  //     id: child.id,
-  //     fullName: child.dependentName,
-  //     Photo:child.dependentPhoto,
-  //     isChild: true
-  //   }
-  //   setSelectedUser(member)
-  //   console.log( member)
-  //   //console.log( mySpaces)
-  //   setTaskUser(child)
-  //   setIsInvited(false)
-    
-  // }
+    return(
 
-  // const handleGoToTaskInivtedMember = async(user:any)=> {
-  //   let member = {
-  //     id: user.invitedId,
-  //     fullName: user.invitedFullname,
-  //     Photo: user.invitedPhoto,
-  //     isChild: false
-  //   }
-  //   setSelectedUser(member)
-  //   console.log( member)
-  //   //console.log( user)
-
-  //   setTaskUser(user)
-  //   setIsInvited(true)
-  // }
+      
+        allMembers.map((member:any, idx:number)=> {
+          return(
+          <Pressable key={idx} onPress={()=> {setTaskUser(member), setSelectedUser(member), console.log(member)}}>
+            <AvatarComponent  onPress={undefined} imageSource={member.photo} />
+            <View style={[styles.fadedImage, {backgroundColor:lilacColor, opacity: taskUser.id==member.id && taskUser.isChild ==member.isChild ? 0:0.5}]} ></View>
+            </Pressable>
+          )
+           }
+        )
+      
+    )
+  } 
 
   return (
     
     <ScrollView style={styles.container}>
       <HeaderComponent title="Task Family"/>
       <View style={styles.underlineContainer}>
-            <UnderlinedHeaderComponent titleOne={'Select Member'} titleTwo={'see all'} titleThree={'see less'} />
+        {allMembers.length <3?
+         <UnderlinedHeaderComponent titleOne={'Select Member'} titleTwo={'see all'} titleThree={''} />
+        : 
+        <UnderlinedHeaderComponent titleOne={'Select Member'} titleTwo={'see all'} titleThree={'see less'} />
+        }
+           
           </View>
     <View style={styles.selectMemberCon}>
-    {/* <AvatarComponent onPress={()=> handleGoToTaskUser(userData)} imageSource={userData.photo} />
-
-    { childrenData.length>0?
-    childrenData.map((child:any, idx:number)=> {
-      return(
-       <View key={idx}>
-        <AvatarComponent  onPress={()=> handleGoToTaskChild(child)} imageSource={child.dependentPhoto} />
-        <View style={[styles.fadedImage, {backgroundColor:lilacColor, opacity:0.8}]} ></View>
-        </View>
-      )
-    }): null} */}
-    {
+  
+    {/* {
       allMembers.map((member:any, idx:number)=> {
         return(
-        <View key={idx}>
-          <AvatarComponent  onPress={()=> {setTaskUser(member), setSelectedUser(member)}} imageSource={member.photo} />
+        <Pressable key={idx} onPress={()=> {setTaskUser(member), setSelectedUser(member), console.log(member)}}>
+          <AvatarComponent  onPress={undefined} imageSource={member.photo} />
           <View style={[styles.fadedImage, {backgroundColor:lilacColor, opacity: taskUser.id==member.id && taskUser.isChild ==member.isChild ? 0:0.5}]} ></View>
-          </View>
+          </Pressable>
         )
          }
       )
-    }
-    {/* {
-    acceptedInvitations.length > 0?
-    acceptedInvitations.map((person:any, idx:number)=> { 
-     return mySpaces.map((space:any, idx:number)=> space.sharedWith.map((shared: any)=> 
-          shared.invitedId == person.invitedId?  
-      
-          <View key={idx}>
-        <AvatarComponent key={idx} onPress={()=> handleGoToTaskInivtedMember(person)} imageSource={person.invitedPhoto} />
-        <View style={styles.fadedImage} ></View>
-        </View>
-      :null
-    ))
-    })
-    : null
     } */}
+     {
 
+            seeAll?
+
+                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+
+                      <ShowMembers />
+                  </ScrollView>
+
+                  : 
+                  <View style={styles.selectMemberCon}>
+                  <ShowMembers />
+                  </View>
+
+     }
+              
     </View>
     <UnderlinedHeaderComponent titleOne={'My Spaces'} titleTwo={''} titleThree={''} />
  
@@ -199,7 +168,7 @@ console.log(membersArr)
       {
     
         
-      taskUser.isInvited?
+      !taskUser.isInvited?
           
         ( mySpaces.length > 0 ?
                 mySpaces.map((space:any, idx:number) =>{
@@ -221,7 +190,7 @@ console.log(membersArr)
         ( mySpaces.length > 0 ?
              mySpaces.map((space:any, idx:number)=>space.sharedWith.map((shared: any)=>{
                return(
-          shared.invitedId == taskUser.invitedId? 
+          shared.invitedId == taskUser.id? 
         
              <TaskSpaceRowComponent
             idx={r+idx}
@@ -276,7 +245,7 @@ const styles = StyleSheet.create({
     borderRadius:10, 
     width: 100,
     height: 100, 
-    margin: 8,
+    margin: 5,
     position: 'absolute'
 
 }

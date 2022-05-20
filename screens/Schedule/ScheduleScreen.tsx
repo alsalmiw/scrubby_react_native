@@ -31,7 +31,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ScheduleScreen'>
 
 
 const ScheduleScreen: FC <Props> = ({navigation})=> {
-  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, setModalVisible, runAgain, setRunAgain } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, setModalVisible, runAgain, setRunAgain, mySchedule, setMySchedule } = useContext(UserContext)
   const {secondaryTextColor, lightLilacColor, lilacColor} = useContext(ThemeContext)
 
   const [taskInfo, setTaskInfo] = useState() as any
@@ -155,6 +155,7 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
         setInvited(userInfo.invitations.sentInvites.filter((Invited:any)=> (Invited.isAccepted == false && Invited.isDeleted == false)))
         setInviters( userInfo.invitations.recievedInvites.filter((Inviter:any)=> (Inviter.isAccepted == false  && Inviter.isDeleted == false)))
         setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited:any)=> (Invited.isAccepted == true && Invited.isDeleted == false)))
+        setMySchedule(userInfo.mySchedule)
       }
 
     }

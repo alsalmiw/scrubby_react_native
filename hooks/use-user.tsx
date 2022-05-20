@@ -66,6 +66,7 @@ export default function UseUser(){
     const [modalVisible, setModalVisible] = useState(false);
     const [taskModal, setTaskModal] = useState(false);
     const [scheduleTask, setScheduleTask]= useState()
+    const [mySchedule, setMySchedule] = useState<any[]>([]);
 
     const [childPassCode, setChildPassCode] = useState<number>(0)
     const [checkPassCode, setCheckPassCode] = useState<boolean>(true)
@@ -77,7 +78,7 @@ export default function UseUser(){
  const [closeTasks, setCloseTasks] = useState<boolean>(false)
  const [current, setCurrent] = useState(0)
 
-    return{username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask, mySpace, setMySpace, rState, setRState, invited, setInvited, inviters, setInviters, setChildrenData, childrenData, setNewSpace, usersAddedTasks, setUsersAddedTasks, myRoom, setMyRoom, tasksAPI, setTasksAPI, roomTasks, setRoomTasks, fullUserInfo, setFullUserInfo, refresh, setRefresh, scoreBoardList, setScoreBoardList, acceptedInvitations, setAcceptedInvitations, taskUser, setTaskUser,spinnerOn, setSpinnerOn, childPage, setChildPage, isChild, setIsChild, selectedUser, setSelectedUser, modalVisible, setModalVisible, scheduleTask, setScheduleTask, childPassCode, setChildPassCode, checkPassCode, setCheckPassCode,  defaultSpace, setDefaultSpace,  taskModal, setTaskModal, childRooms, setChildRooms, childDefaultSpace, setChildDefaultSpace, runAgain, setRunAgain, roomIdx, setRoomIDX, closeTasks, setCloseTasks,current, setCurrent}
+    return{username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask, mySpace, setMySpace, rState, setRState, invited, setInvited, inviters, setInviters, setChildrenData, childrenData, setNewSpace, usersAddedTasks, setUsersAddedTasks, myRoom, setMyRoom, tasksAPI, setTasksAPI, roomTasks, setRoomTasks, fullUserInfo, setFullUserInfo, refresh, setRefresh, scoreBoardList, setScoreBoardList, acceptedInvitations, setAcceptedInvitations, taskUser, setTaskUser,spinnerOn, setSpinnerOn, childPage, setChildPage, isChild, setIsChild, selectedUser, setSelectedUser, modalVisible, setModalVisible, scheduleTask, setScheduleTask, childPassCode, setChildPassCode, checkPassCode, setCheckPassCode,  defaultSpace, setDefaultSpace,  taskModal, setTaskModal, childRooms, setChildRooms, childDefaultSpace, setChildDefaultSpace, runAgain, setRunAgain, roomIdx, setRoomIDX, closeTasks, setCloseTasks,current, setCurrent, mySchedule, setMySchedule}
 
    
 

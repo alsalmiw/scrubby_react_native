@@ -14,7 +14,7 @@ import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderCo
 import SquareColoredButton from '../../components/SquareColoredButton';
 import iconsMap from '../../types/IconsMap';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 ///
@@ -31,7 +31,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ScheduleScreen'>
 
 
 const ScheduleScreen: FC <Props> = ({navigation})=> {
-  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, setModalVisible } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, setModalVisible, runAgain, setRunAgain, mySchedule, setMySchedule } = useContext(UserContext)
   const {secondaryTextColor, lightLilacColor, lilacColor} = useContext(ThemeContext)
 
   const [taskInfo, setTaskInfo] = useState() as any
@@ -41,6 +41,8 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
   const [scheduledTasks, setScheduledTasks] =useState<any[]>([])
   const [r, setR]= useState<number>(Math.floor(Math.random() * 7))
   const [selectedRoom, setSelectedRoom] = useState<any>()
+  const [showBtn, setShowBtn] = useState<boolean>(true)
+
 
 
 
@@ -49,12 +51,21 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
   
   useEffect(() => {
     
-    GetUserInfoByUsername();
-    setSpinnerOn(false)
+   
+    if(runAgain)
+    {
       GetTaskDates()
+      setRunAgain(false)
+    }
+    else{
+       GetUserInfoByUsername();
+     setSpinnerOn(false)
+      GetTaskDates()
+      
+    }
    
 
-  }, [])
+  }, [runAgain])
 
   const GetTaskDates = () => {
     let today = new Date();
@@ -144,6 +155,7 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
         setInvited(userInfo.invitations.sentInvites.filter((Invited:any)=> (Invited.isAccepted == false && Invited.isDeleted == false)))
         setInviters( userInfo.invitations.recievedInvites.filter((Inviter:any)=> (Inviter.isAccepted == false  && Inviter.isDeleted == false)))
         setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited:any)=> (Invited.isAccepted == true && Invited.isDeleted == false)))
+        setMySchedule(userInfo.mySchedule)
       }
 
     }
@@ -221,12 +233,21 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
 
           //<Text key={idx}>{taskInfo.task.name}  {taskInfo.item.name}</Text>
             //<TaskRowTaskInfoComponent r={r} key={idx} idx={idx} task={taskInfo} />
-            <TaskSpaceRowComponent key={idx} idx={r+idx} onPress={()=>{displayTaskModel(taskInfo), setTaskInfo(taskInfo)}}>
+            <TaskSpaceRowComponent key={idx} idx={r+idx} onPress={()=>{displayTaskModel(taskInfo), setTaskInfo(taskInfo), setShowBtn(taskInfo.isCompleted)}}>
             <View style={[styles.taskContainer, styles.flexrow]}>
               <Text style={[styles.text ]}>{taskInfo.task.name} {taskInfo.item.name}</Text>
               <View style={[styles.flexrow]}>
-                
-              <Text style={[styles.text, ]}>{taskInfo.task.coins} coins</Text>
+                {
+                  !taskInfo.isCompleted?
+                  null
+                  // <>
+                  // <FontAwesome5 name="coins" color={"#FFF"} size={20} /> 
+                  // <Text style={[styles.text, ]}> {taskInfo.task.coins} coins</Text>
+                  // </>
+                  : 
+                  <AntDesign name="checksquare" size={30} color="white" />
+                }
+              
               </View>
             </View>
           </TaskSpaceRowComponent>
@@ -240,7 +261,7 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
    {
      taskInfo!=null?
    
-   <TaskInfoModalComponent Space={defaultSpace.collectionName} Location={selectedRoom.spaceName} task={taskInfo} isChild={false} taskedInfo={userData} isButton={true}/>
+   <TaskInfoModalComponent Space={defaultSpace.collectionName} Location={selectedRoom.spaceName} task={taskInfo} isChild={false} taskedInfo={userData} isButton={!showBtn}/>
 
    : null
    }
@@ -264,7 +285,8 @@ const styles = StyleSheet.create({
   paddingTop:20
   },
   taskContainer:{
-    padding: 10,
+    padding: 5,
+    justifyContent: "space-between"
   },
   mainHeader: {
     fontSize:25,
@@ -293,7 +315,7 @@ dash:{
   margin: 20,
 },
 dateText: {
-  fontSize:20
+  fontSize:20,
 },
 datesContainer:{
 
@@ -309,7 +331,7 @@ flexrow: {
 text: {
   color:"#FFF", 
   fontWeight: 'bold', 
-  fontSize: 20
+  fontSize: 20,
 }, 
 taskInfo: {
   fontSize: 20,

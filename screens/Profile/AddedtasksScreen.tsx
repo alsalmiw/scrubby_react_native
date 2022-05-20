@@ -22,9 +22,9 @@ type Props = NativeStackScreenProps <RootStackParamList, 'AddedTasks'>
 
 const AddedTasksScreen: FC<Props> = ({navigation})=> {
     const {bgColor, lilacColor, purpleColor} = useContext(ThemeContext)
-    const { userData, usersAddedTasks, setTasksAPI, roomTasks, setRoomTasks, myRoom, tasksAPI } = useContext(UserContext)
+    const { userData, usersAddedTasks, setTasksAPI, roomTasks, setRoomTasks, myRoom, tasksAPI, current, setCurrent } = useContext(UserContext)
     const [display, setDisplay] = useState(false)
-
+  
 
     useEffect(() => {
   
@@ -80,15 +80,20 @@ const AddedTasksScreen: FC<Props> = ({navigation})=> {
       roomTasks.map((task:ITask, idx:number)=>{
         return(
 
-
+          <View key={idx}>
           <TaskRowFullInfoComponent r={r} key={idx} idx={idx} task={task} />
-          // <TaskSpaceRowComponent key={idx} idx={r+idx} onPress={()=>{displayTaskInfo(); console.log(task)}}>
-          // <Text>{task.tasks.name}</Text>
-          // <View>
-          // <FontAwesome5 name={'coins'} size={25} style={{marginRight: 10, color: "#FFF"}} />
-          // <Text>10 coins</Text>
-          // </View>
-          // </TaskSpaceRowComponent>
+          <View style={[ {display:current===task.id?"flex": "none", padding: 10}]}>
+          <Text style={[styles.taskInfo ]}>Description: {task.task.description}</Text>
+           <Text style={[styles.taskInfo ]}>Item: {task.item.name}</Text>
+           <Text style={[styles.taskInfo ]}>Points: {task.task.coins} points</Text>
+           </View>
+
+          </View>
+
+
+
+          
+     
         )
       })
     }
@@ -116,7 +121,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     margin: 10
-  }
+  },
+  taskInfo: {
+    fontSize: 20,
+}
 });
 
 export default AddedTasksScreen

@@ -37,7 +37,7 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
 
 
   const handleGoBack = () => {
-    navigation.navigate("Settings")
+    navigation.navigate("SettingsScreen")
   }
   let leftover: any;
   const quickMath = async () => {
@@ -115,7 +115,7 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
 
   useEffect(() => {
 
-    getUserandChild()
+    // getUserandChild()
     setUserCoins(userData.coins)
     //setChildRedeem(false)
     //setChildCoin(aChild.dependentCoins)

@@ -195,7 +195,7 @@ const LockChildTasksScreen: FC = () => {
                                             <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
 
                                             </Text>
-                                            {
+                                            {/* {
                                                 taskName.isCompleted ?
                                                     <AntDesign name="checksquare" size={30} color="white" />
                                                     :
@@ -203,7 +203,7 @@ const LockChildTasksScreen: FC = () => {
                                                         <Ionicons name="time-sharp" size={30} color="white" />
                                                         :
                                                         <MaterialCommunityIcons name="checkbox-blank" size={30} color="white" />
-                                            }
+                                            } */}
                                         </View>
 
                                     </TaskSpaceRowComponent>

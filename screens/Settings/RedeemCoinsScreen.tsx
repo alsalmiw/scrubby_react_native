@@ -116,7 +116,7 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
 
   useEffect(() => {
 
-    getUserandChild()
+    // getUserandChild()
     setUserCoins(userData.coins)
     console.log("================================================")
     //setChildRedeem(false)

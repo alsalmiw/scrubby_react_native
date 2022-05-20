@@ -37,6 +37,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
     useEffect(() => {
        
     }, [])
+    
 
     const addUser = async () => {
         let userData: INewUser = {

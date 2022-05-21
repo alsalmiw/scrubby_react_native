@@ -97,7 +97,16 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
     return dateF.toString()
    }))
    console.log(datesArr[0])
-   getRoomsbyDate(datesArr[0])
+   if(datesArr.length>0)
+   {
+      getRoomsbyDate(datesArr[0])
+   }
+   else
+   {
+    setScheduledRooms([])
+    setSelectedRoom([])
+   }
+  
   }
 
   const getRoomsbyDate = (date:any) =>{
@@ -174,9 +183,15 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
    <HeaderComponent title="My Schedule"/>
    <View style={[styles.flexrow]}>
    <Text style={[styles.mainHeader, {color:secondaryTextColor}]}>{defaultSpace.collectionName}</Text>
-  < Pressable style={[styles.paddingL]} onPress={()=> navigation.navigate("DefaultOptions")}>
+   {
+     mySchedule.length>1?
+
+      < Pressable style={[styles.paddingL]} onPress={()=> navigation.navigate("DefaultOptions")}>
    <MaterialCommunityIcons name="home-import-outline" size={30} color={secondaryTextColor}/>
   </Pressable>
+  :null
+   }
+ 
 
    </View>
 
@@ -199,14 +214,19 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
         )
       })
       : 
-      <Text>Your Schedule is Empty for the next ten days.</Text>
+      <Text>Your Schedule is Empty.</Text>
     
     }
        
  </ScrollView>
+ {
+    scheduledDates.length>0?
     <View>
-    <UnderlinedOneHeaderComponent titleFirst={"My Rooms"}  />
-    </View>
+        <UnderlinedOneHeaderComponent titleFirst={"My Rooms"}  />
+        </View>
+      :null
+ }
+   
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
     {
       scheduledRooms.map((room:any, idx:number)=>{
@@ -222,12 +242,24 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
     }
 
     </ScrollView>
-    <View>
+    {
+     
+     scheduledDates.length>0?
+       <View>
+       <UnderlinedOneHeaderComponent titleFirst={"My Tasks"}  />
+         </View>
+         :null
+         
+          
+    }
+    {/* <View>
     <UnderlinedOneHeaderComponent titleFirst={"My Tasks"}  />
-      </View>
+      </View> */}
       <View>
       {
-        selectedRoom!=null?
+        selectedRoom!= null? 
+        selectedRoom.todaysTasks!=null?
+        selectedRoom.todaysTasks.length>0?
         selectedRoom.todaysTasks.map((taskInfo:any, idx:number)=>{
           return(
 
@@ -255,6 +287,8 @@ const ScheduleScreen: FC <Props> = ({navigation})=> {
           )
         })
         
+        :null
+        :null
         :null
       }
    

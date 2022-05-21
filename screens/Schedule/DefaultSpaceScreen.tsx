@@ -17,18 +17,22 @@ import RootStackParamList from '../../types/INavigation'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import FullButtonComponent from '../../components/FullButtonComponent';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
-import { AntDesign } from '@expo/vector-icons';
+import { Ionicons} from '@expo/vector-icons';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DefaultOptions'>
 
 const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
 
-    const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, mySchedule } = useContext(UserContext)
+    const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, mySchedule, setRunAgain } = useContext(UserContext)
     const {secondaryTextColor, purpleColor} = useContext(ThemeContext)
 
 
-
+    const handleSetDefaultSchedule =async(space:any)=> {
+        setDefaultSpace(space)
+        setRunAgain(true)
+       // let changeDefault = await 
+    }
     return(
         <View style={styles.container}>
             <ScrollView>
@@ -38,10 +42,20 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
             <View>
             {
                 mySchedule.map((space:any, idx:number) =>
-                    <TaskSpaceRowComponent key={idx} idx={idx} onPress={()=>console.log(space.collectionName)}>
+                    <TaskSpaceRowComponent key={idx} idx={idx} onPress={()=>handleSetDefaultSchedule(space)}>
                         <View style={[styles.flexrow]}>
                         <Text style={[styles.spacesFont]}>{space.collectionName}</Text>
-                        <AntDesign name="checksquare" size={30} color="white" />
+                        {
+                            space.rooms.length > 0?
+                            defaultSpace.id==space.id?
+                            <Ionicons name="radio-button-on" size={24} color="#FFF" />
+                             :
+                             <Ionicons name="radio-button-off" size={24} color="#FFF" />
+                             :
+                             <Text style={{color: '#FFF', fontSize:15}}>Not Available</Text>
+                             
+                        }
+                       
                         </View>
                     </TaskSpaceRowComponent>
                 )
@@ -76,7 +90,10 @@ const styles = StyleSheet.create({
         justifyContent: "space-between"
       },
       spacesFont:{
-          color:"#FFF"
+          color:"#FFF",
+          fontSize: 18,
+          fontWeight: "bold"
+
       }
 })
 

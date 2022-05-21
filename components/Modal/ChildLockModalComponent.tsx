@@ -16,7 +16,7 @@ import { UpdateChildPassCode } from "../../services/dataService";
 
 const ChildLockModalComponent: FC = ({ }) => {
 
-    const { setModalVisible, childPage, checkPassCode, setCheckPassCode, childPassCode, setChildPassCode } = useContext(UserContext)
+    const { setModalVisible, childPage, checkPassCode, setCheckPassCode, childPassCode, setChildPassCode, setTaskModal } = useContext(UserContext)
     const { blueColor } = useContext(ThemeContext)
     const [newCode, setNewCode] = useState<number>()
 
@@ -26,8 +26,10 @@ const ChildLockModalComponent: FC = ({ }) => {
         if (childPassCode != null && String(childPassCode).length == 5) {
             setCheckPassCode(false);
             Alert.alert("Success", `Your passcode is ${childPassCode}`, [{ text: "Ok", style: "cancel" }]);
-            navigation.navigate("LockedChildTasks");
             setModalVisible(false)
+            setTaskModal(false)
+            navigation.navigate("LockedChildTasks");
+
         }
         else {
             Alert.alert("Error", 'Please fill in entry field', [{ text: "Cancel", style: "cancel" }]);
@@ -39,6 +41,7 @@ const ChildLockModalComponent: FC = ({ }) => {
             setCheckPassCode(true);
 
             setChildPassCode(0);
+            setTaskModal(false)
             setModalVisible(false);
             navigation.navigate("ChildTasks");
 
@@ -83,13 +86,13 @@ const ChildLockModalComponent: FC = ({ }) => {
                                         ignoreCase={true}
                                         inputPosition='center'
                                         size={50}
-                                        onFulfill={(e: number) => { console.log(e), setChildPassCode((e)) }}
+                                        onFulfill={(e: number) =>  setChildPassCode((e)) }
                                         containerStyle={{ marginTop: 30 }}
                                         codeInputStyle={{ borderWidth: 1.5 }}
                                     />
                                 </View>
                                 <View style={styles.codeInputBtn}>
-                                    <FullButtonComponent color={blueColor} radius={10} onPress={() => { updatePasscode(), setModalVisible(false), navToChildLockScreen() }}> <Text>Lock</Text></FullButtonComponent>
+                                    <FullButtonComponent color={blueColor} radius={10} onPress={() => {updatePasscode(),  navToChildLockScreen() }}> <Text>Lock</Text></FullButtonComponent>
                                 </View>
                             </>
                             :
@@ -108,13 +111,13 @@ const ChildLockModalComponent: FC = ({ }) => {
                                         ignoreCase={true}
                                         inputPosition='center'
                                         size={50}
-                                        onFulfill={(e: number) => { setNewCode(Number(e)) }}
+                                        onFulfill={(e: number) =>  setNewCode(Number(e)) }
                                         containerStyle={{ marginTop: 30 }}
                                         codeInputStyle={{ borderWidth: 1.5 }}
                                     />
                                 </View>
                                 <View style={styles.codeInputBtn}>
-                                    <FullButtonComponent color={blueColor} radius={10} onPress={() => { setModalVisible(false), navToChildUnlockScreen() }}> <Text>Unlock</Text></FullButtonComponent>
+                                    <FullButtonComponent color={blueColor} radius={10} onPress={() =>  navToChildUnlockScreen() }> <Text>Unlock</Text></FullButtonComponent>
                                 </View>
 
                             </>

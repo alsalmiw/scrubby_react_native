@@ -1,4 +1,4 @@
-import { FC, useContext } from "react"
+import { FC, useContext, useEffect } from "react"
 import { StyleSheet, Text, View } from "react-native"
 import HeaderComponent from "../HeaderComponent"
 import ModalComponent from "../ModalComponent"
@@ -43,11 +43,15 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
     const ApproveSubmittedTask = async()=> {
         let result = await ApproveTaskForCompletionChild(task.id)
     }
+    
+
 
 
     return (
+        
 
         <View>
+            {console.log("task123", task)}
             <ModalComponent>
                 <View style={styles.modalContainer}>
                 <View>

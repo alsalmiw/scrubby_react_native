@@ -26,7 +26,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, } = useContext(UserContext)
+  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, selectedTask, setSelectedTask} = useContext(UserContext)
   // const [childDefaultSpace, setChildDefaultSpace] = useState<any>()
 
   // const [todayDate, setTodayDate] = useState<any>()
@@ -36,7 +36,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   const [coin, setCoin] = useState<String>("")
   const [insturction, setInstruction] = useState<String>("")
   const [title, setTitle] = useState<String>("")
-  const [selectedTask, setSelectedTask]=useState<any[]>([])
+  // const [selectedTask, setSelectedTask]=useState<any[]>([])
   const [requestedApproval, setRequestedApproval] = useState<boolean>(false)
 
 
@@ -159,7 +159,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
           </View>
           <View style={styles.unlockIconView}>
-            <Pressable onPress={() => { setModalVisible(true) }}>
+            <Pressable onPress={() =>  setModalVisible(true) }>
               <FontAwesome5 name="unlock" size={40} color="grey" />
             </Pressable>
           </View>
@@ -210,7 +210,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                 return (
 
-                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => {console.log("=======================================================================++"), console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted?true:false)  }}>
+                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => {console.log("=======================================================================++"), console.log(taskName),  setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted?true:false)  }}>
 
                     <View style={{flexDirection:'row', justifyContent:'space-between'}}>
                     <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name} 
@@ -223,7 +223,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                       taskName.isRequestedApproval && !taskName.isCompleted?
                       <Ionicons name="time-sharp" size={30} color="white" />
                       :
-                      <MaterialCommunityIcons name="checkbox-blank" size={30} color="white" />
+                      null
                     }
                     </View>
 
@@ -240,8 +240,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
           }
         </ScrollView>
 
-        {modalVisible == true ?
-          <ChildLockModalComponent /> : taskModal == true ?
+        {modalVisible === true ?
+          <ChildLockModalComponent /> : taskModal === true ?
             <TaskInfoModalComponent  Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval}/>
             : null}
 

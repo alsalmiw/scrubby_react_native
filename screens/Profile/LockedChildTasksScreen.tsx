@@ -23,9 +23,11 @@ import TaskInfoModalComponent from "../../components/Modal/TaskInfoModalComponen
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LockedChildTasks'>
 
-const LockChildTasksScreen: FC = () => {
 
-    const { userData, childPage, setModalVisible, childRooms, setChildRooms, rState, childDefaultSpace, setTaskModal, taskModal, modalVisible } = useContext(UserContext);
+
+const LockChildTasksScreen: FC<Props> = ({ navigation }) => {
+
+    const { userData, childPage, setModalVisible, childRooms, setChildRooms, rState, childDefaultSpace, setTaskModal, taskModal, modalVisible, selectedTask, setSelectedTask } = useContext(UserContext);
 
     const [lockedChildScheduleRooms, setLockedChildScheduleRooms] = useState<any>()
     const [lockedChildScheduleTasks, setLockedChildScheduleTasks] = useState<any>()
@@ -36,7 +38,7 @@ const LockChildTasksScreen: FC = () => {
     const [coin, setCoin] = useState<String>("")
     const [insturction, setInstruction] = useState<String>("")
     const [title, setTitle] = useState<String>("")
-    const [selectedTask, setSelectedTask] = useState<any[]>([])
+    //const [selectedTask, setSelectedTask] = useState() as any
     const [requestedApproval, setRequestedApproval] = useState<boolean>(false)
 
 
@@ -97,7 +99,12 @@ const LockChildTasksScreen: FC = () => {
     }
     useEffect(() => {
         // console.log(childPage)
-        childTaskDate()
+
+        childTaskDate();
+        console.log("Mod",modalVisible)
+        console.log("tm",taskModal)
+
+
         // setTaskModal(false)
 
     }, [])
@@ -116,7 +123,7 @@ const LockChildTasksScreen: FC = () => {
 
                 <View style={{ flexDirection: 'row', }}>
                     <View style={styles.firstRow}>
-                        <AvatarComponent onPress={() => console.log('hi')} imageSource={childPage.dependentPhoto} />
+                        <AvatarComponent onPress={() =>  console.log(lockedChildSelectedRoom.todaysTasks) } imageSource={childPage.dependentPhoto} />
                     </View>
 
 
@@ -135,7 +142,7 @@ const LockChildTasksScreen: FC = () => {
 
                     </View>
                     <View style={styles.lockStyle}>
-                        <Pressable onPress={() => { setModalVisible(true) }}>
+                        <Pressable onPress={() =>  setModalVisible(true) }>
                             <FontAwesome5 name="lock" size={40} color="grey" />
                         </Pressable>
                         <ChildLockModalComponent />
@@ -188,26 +195,21 @@ const LockChildTasksScreen: FC = () => {
 
 
                                 return (
+                                    <View key={x}>
+                                        <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log("=======================================================================++"), console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted?true:false)  }}>
 
-                                    <TaskSpaceRowComponent key={x} idx={x} onPress={ () => {console.log("=======================================================================++"), console.log( taskName),   setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted ? true : false), setTaskModal(true) , setModalVisible(false) }}>
+                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                                <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
+                                                </Text>
+                                            </View>
 
-                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
+                                        </TaskSpaceRowComponent>
+                                        {modalVisible == true ?
+                                            <ChildLockModalComponent /> : 
+                                                <TaskInfoModalComponent Space={space} Location={location} task={taskName} isChild={true} taskedInfo={childPage} isButton={requestedApproval} />
+                                               }
 
-                                            </Text>
-                                            {/* {
-                                                taskName.isCompleted ?
-                                                    <AntDesign name="checksquare" size={30} color="white" />
-                                                    :
-                                                    taskName.isRequestedApproval && !taskName.isCompleted ?
-                                                        <Ionicons name="time-sharp" size={30} color="white" />
-                                                        :
-                                                        <MaterialCommunityIcons name="checkbox-blank" size={30} color="white" />
-                                            } */}
-                                        </View>
-
-                                    </TaskSpaceRowComponent>
-
+                                    </View>
 
 
 
@@ -215,18 +217,23 @@ const LockChildTasksScreen: FC = () => {
                             })
                             :
                             <Text>You Have No Task Today</Text>
-                        // {Alert.alert("Error", 'You have no Task', [{ text: "Ok", style: "cancel" }])}
                     }
                 </ScrollView>
                 <View style={styles.underLineStyle}>
                     <UnderlinedOneHeaderComponent titleFirst={'Completed Tasks'}></UnderlinedOneHeaderComponent>
                 </View>
 
-                {modalVisible == true ?
-                    <ChildLockModalComponent /> : taskModal == true ?
-                        <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} />
-                        : null}
+                {/* {
+               !taskModal == true ?
+                <ChildLockModalComponent />
+                : 
+                <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} />
+                        } */}
 
+                {/* {modalVisible === true ?
+          <ChildLockModalComponent /> : taskModal === true ?
+            <TaskInfoModalComponent  Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval}/>
+            : null} */}
             </View>
 
         </View>

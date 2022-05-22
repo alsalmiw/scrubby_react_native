@@ -151,7 +151,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
         <AvatarComponent onPress={undefined} imageSource={userData.photo} />
         <View style={styles.nameAndCoinContainer}>
 
-          <UserNameComponent name={savedUsername}></UserNameComponent>
+          <UserNameComponent name={userData.name}></UserNameComponent>
           <View style={styles.coinContainer}>
             <CoinsPointsDisplayContainer coins={`${userData.coins}`} points={userData.points}></CoinsPointsDisplayContainer>
           </View>

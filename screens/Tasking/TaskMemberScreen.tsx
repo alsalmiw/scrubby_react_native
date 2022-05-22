@@ -56,11 +56,11 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
   
   return (
  <>
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
         
         <HeaderComponent title='Task Family Member'/>
         <View style={styles.firstRowContainer}>
-                <AvatarComponent onPress={undefined} imageSource={selectedUser.Photo}/>
+                <AvatarComponent onPress={undefined} imageSource={selectedUser.photo}/>
                 <View style={styles.insideFirstRowContainer1}>
                     <UserNameComponent name={selectedUser.fullName}/>
                  
@@ -111,7 +111,7 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
           </View>
 
        
-    </View>
+    </ScrollView>
     <FullButtonComponent radius={0} color={purpleColor} onPress={()=>navigation.goBack()} >Back</FullButtonComponent>
     </>
     

@@ -6,7 +6,7 @@ import {ThemeContext} from "../context/ThemeContext"
 interface Props {
     children: ReactNode,
     idx: number,
-    onPress: Function
+    onPress: Function | undefined
 }
 
 const TaskSpaceRowComponent: FC<Props> =(props) => {
@@ -26,9 +26,13 @@ const TaskSpaceRowComponent: FC<Props> =(props) => {
         // console.log(index)
         setBgColor(colors[index]) 
     }
+    const handleOnPress = () => {
+        if(props.onPress) 
+        {props.onPress()}
+    }
 
     return(
-        <Pressable key ={props.idx} style={[styles.container, {backgroundColor:bgColor}]} onPress={()=>props.onPress()}>
+        <Pressable key ={props.idx} style={[styles.container, {backgroundColor:bgColor}]} onPress={()=>handleOnPress()}>
             
             {props.children}
 
@@ -39,7 +43,7 @@ const TaskSpaceRowComponent: FC<Props> =(props) => {
 const styles = StyleSheet.create({
        container: {
             width:"95%",
-            padding: 10,
+            padding: 15,
             borderRadius:5,
             margin: 3,
         },

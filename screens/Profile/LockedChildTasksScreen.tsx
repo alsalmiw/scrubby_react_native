@@ -140,7 +140,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.firstRow}>
-            <AvatarComponent onPress={() => {console.log(childScheduleRooms)}} imageSource={childPage.dependentPhoto} />
+            <AvatarComponent onPress={() => console.log(childDefaultSpace)} imageSource={childPage.dependentPhoto} />
           </View>
 
 
@@ -199,7 +199,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         </ScrollView>
 
         <View style={styles.underLineView}>
-          <UnderlinedOneHeaderComponent titleFirst={'Tasks'}></UnderlinedOneHeaderComponent>
+          <UnderlinedOneHeaderComponent titleFirst={'Remaining Tasks'}></UnderlinedOneHeaderComponent>
         </View>
         <ScrollView style={styles.taskStyle}>
 
@@ -239,6 +239,10 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
               // {Alert.alert("Error", 'You have no Task', [{ text: "Ok", style: "cancel" }])}
           }
         </ScrollView>
+
+        <View style={styles.underLineView}>
+          <UnderlinedOneHeaderComponent titleFirst={'Completed Tasks '}></UnderlinedOneHeaderComponent>
+        </View>
 
         {modalVisible === true ?
           <ChildLockModalComponent /> : taskModal === true ?

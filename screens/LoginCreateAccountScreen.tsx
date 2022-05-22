@@ -17,6 +17,8 @@ import avatars from '../types/IAvatars'
 import FullButtonComponent from "../components/FullButtonComponent"
 import { ThemeContext } from "../context/ThemeContext"
 import RootStackParamList from '../types/INavigation'
+import { TextInput } from 'react-native-paper';
+import { AntDesign } from '@expo/vector-icons';
 
 
 // type RootStackParamList = {
@@ -28,50 +30,47 @@ type Props = NativeStackScreenProps<RootStackParamList, 'login'>
 
 const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
-    const [login, setLogin] = useState(true);
-    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, spinnerOn, setSpinnerOn, setDefaultSpace, setUserData } = useContext(UserContext)
+   // const [login, setLogin] = useState(true);
+    //const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, spinnerOn, setSpinnerOn, setDefaultSpace, setUserData } = useContext(UserContext)
+    // const [login, setLogin] = useState<Boolean>(true);
+    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, spinnerOn, setSpinnerOn, setDefaultSpace, fullName, setFullName, login, setLogin, setUserData } = useContext(UserContext)
     const { yellowColor, greenColor } = useContext(ThemeContext)
+    const [name, setName] = useState<any>("")
 
     let avR = Math.floor(Math.random() * 46)
 
     useEffect(() => {
-       
+
     }, [])
 
+
+
+
     const addUser = async () => {
+        //send full name to the backend
+
+        // need to trim full name of leading and trailing spaces
+        let name = fullName.trim().split(" ").filter((word:string)=> word !="").join(" ");
         let userData: INewUser = {
             Id: 0,
             Username: username,
             Password: password,
+            Photo: avatars[avR],
+            Fullname: name,
         }
         console.log(userData)
         setSavedUsername(username);
         setSavedPassword(password);
 
         let result = await CreateAccount(userData);
-        if (result.token!= null) {
-            AsyncStorage.setItem("Token", result.token);
-            AsyncStorage.setItem("Username", username);
-            let avatarInfo={
-                Username: username,
-                Photo: avatars[avR]
-            }
-            let avatar = await AddDefaultAvatar(avatarInfo)
-            if(avatar){
-                 navigation.navigate('Nav', {screen:"Profile"})
-            }
-            // let user = await GetUserData(username)
-            // if (user.length > 0) {
-            //     setFullUserInfo(user)
-            //     console.log(user)
-            // }/
-            
-           
-            // console.log(result)
+        // console.log(result.token)
+        if (result) {
+
+            userLogin()
 
         }
 
-        else{ Alert.alert("Error", 'Invalid Username or Password.', [{ text: "Cancel", style: "cancel" }])}
+        else { Alert.alert("Error", 'Invalid Username or Password.', [{ text: "Cancel", style: "cancel" }]) }
 
     }
 
@@ -99,9 +98,9 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             if(defaultCollection.length != 0) 
             {
                 setDefaultSpace(defaultCollection)
-                navigation.navigate('Nav', {screen:"Schedule"})
-            }else{
-                navigation.navigate('Nav', {screen:"Profile"})
+                navigation.navigate('Nav', { screen: "Schedule" })
+            } else {
+                navigation.navigate('Nav', { screen: "Profile" })
 
             }
             if(userInfo)
@@ -109,10 +108,10 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
                 setUserData(userInfo)
             }
             //console.log(typeof defaultCollection)
-                //
+            //
 
-            
-            
+
+
         }
         else {
             Alert.alert("Error", 'Incorrect Username or Password.', [{ text: "Cancel", style: "cancel" }])
@@ -122,6 +121,9 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
     const checkTextInput = () => {
         let regi = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g
         let space = /[ ]/
+        let specialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/
+
+
 
         if (login) {
             if (!username.trim()) {
@@ -140,8 +142,14 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
                 Alert.alert("Error", 'Password can not contains any space(s).', [{ text: "Cancel", style: "cancel" }]);
                 return;
             }
+
+            if(specialChar.test(fullName)){
+                Alert.alert("Error", 'Full name can not contains special characters.', [{ text: "Cancel", style: "cancel" }]);
+                return;
+            }
             else {
                 addUser();
+                setFullName("");
                 setPassword("");
                 setUsername("");
             }
@@ -157,7 +165,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             }
 
             else {
-                
+
                 userLogin();
                 setPassword("");
                 setUsername("");
@@ -177,6 +185,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
                                 <Text style={styles.title}>Sign up</Text>
 
                                 <View style={styles.inputPosition}>
+                                    
                                     <InputFieldComponentLogin />
                                 </View>
                                 {
@@ -283,6 +292,35 @@ const styles = StyleSheet.create({
         marginBottom: 100,
         marginTop: 0,
 
+    },
+    SectionStyle: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        borderWidth: 2,
+        borderColor: "white",
+        height: 60,
+        width: 300,
+        borderRadius: 10,
+        margin: 10,
+        overflow: 'hidden',
+    },
+    ImageStyle: {
+        paddingLeft: 10
+
+    },
+    inputUsername: {
+        flex: 1,
+        height: 60,
+        width: 50,
+        paddingEnd: 10,
+        backgroundColor: 'white',
+        textDecorationLine: "underline",
+        overflow: 'hidden',
+        borderRadius: 0,
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
     }
 
 

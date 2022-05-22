@@ -13,6 +13,8 @@ import { UpdateUserTaskToCompleted, SubmitTaskChildApproval, ApproveTaskForCompl
 import UserContext from "../../context/UserContext"
 
 
+//
+
 
 interface ITaskInfoModal {
     
@@ -63,11 +65,15 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
         console.log("approve task for child");
 
     }
+    
+
 
 
     return (
+        
 
         <View>
+            {console.log("task123", task)}
             <ModalComponent>
                 <View style={styles.modalContainer}>
                 <View>

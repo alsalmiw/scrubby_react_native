@@ -14,7 +14,7 @@ import UserContext from '../../context/UserContext';
 
 
 const InputFieldComponentLogin = () => {
-    const {setPassword,password, username, setUsername } = useContext(UserContext)
+    const { setPassword, password, username, setUsername, login, setLogin, fullName, setFullName, } = useContext(UserContext)
     const [hide, setHide] = useState(true);
 
 
@@ -22,8 +22,28 @@ const InputFieldComponentLogin = () => {
     return (
         //userlogin input
         <>
+            {login?
+                <View style={styles.SectionStyle}>
+                    <AntDesign name="user" size={28} color="#808080" style={styles.ImageStyle} />
+                    <TextInput
+
+                        autoComplete='off'
+                        style={styles.inputUsername}
+                        placeholder="Full Name"
+                        mode='flat'
+                        selectionColor='#808080'
+                        onChangeText={e => setFullName(e)}
+                        // onEndEditing={(e) => setFullName(e)}
+                        value={fullName}
+
+
+                    />
+
+                </View>
+                :null
+            }
             <View style={styles.SectionStyle}>
-            <AntDesign name="user" size={28} color="#808080" style={styles.ImageStyle} />
+                <AntDesign name="user" size={28} color="#808080" style={styles.ImageStyle} />
                 <TextInput
                     value={username}
                     autoComplete='off'
@@ -31,27 +51,27 @@ const InputFieldComponentLogin = () => {
                     placeholder="username"
                     mode='flat'
                     selectionColor='#808080'
-                    onChangeText={(e)=>setUsername(e)}
+                    onChangeText={(e) => setUsername(e)}
                 />
 
             </View>
 
 
             <View style={styles.SectionStyle}>
-            <AntDesign name="lock" size={28} color="#808080" style={styles.ImageStyle}/>
-            
+                <AntDesign name="lock" size={28} color="#808080" style={styles.ImageStyle} />
+
                 <TextInput
-                        value={password}
-                        autoComplete='off'
-                        style={styles.inputUsername}
-                        placeholder="password"
-                        mode='flat'
-                        selectionColor='#808080'
-                        onChangeText={(e)=>setPassword(e)}
-                        secureTextEntry={hide}  
-                        
-                    />
-            
+                    value={password}
+                    autoComplete='off'
+                    style={styles.inputUsername}
+                    placeholder="password"
+                    mode='flat'
+                    selectionColor='#808080'
+                    onChangeText={(e) => setPassword(e)}
+                    secureTextEntry={hide}
+
+                />
+
 
             </View>
 
@@ -76,7 +96,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     ImageStyle: {
-        paddingLeft:10
+        paddingLeft: 10
 
     },
     inputUsername: {
@@ -90,7 +110,7 @@ const styles = StyleSheet.create({
         borderRadius: 0,
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
-    
+
 
 
 

@@ -7,6 +7,16 @@ import { AntDesign } from '@expo/vector-icons';
 const ModalComponent: FC<any> = ({ children }) => {
 
   const { modalVisible, setModalVisible, taskModal, setTaskModal } = useContext(UserContext)
+  const handleX = () => {
+    if(modalVisible == true)
+    {
+      setModalVisible(false)
+    }
+    if(taskModal == true)
+    {
+      setTaskModal(false)
+    }
+  }
 
   return (
     <View style={styles.centeredView}>
@@ -14,10 +24,10 @@ const ModalComponent: FC<any> = ({ children }) => {
         animationType="slide"
         transparent={true}
         visible={modalVisible || taskModal}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible || !taskModal);
-        }}
+        // onRequestClose={() => {
+        //   Alert.alert("Modal has been closed.");
+        //   setModalVisible(false);
+        // }}
       >
         <View style={styles.centeredView}>
 
@@ -26,7 +36,7 @@ const ModalComponent: FC<any> = ({ children }) => {
 
               <Pressable
                 style={[styles.button,]}
-                onPress={() => { modalVisible == true ? setModalVisible(!modalVisible): taskModal == true ? setTaskModal(!taskModal) : null, console.log('yes') }}
+                onPress={() => handleX()}
               >
                 <AntDesign name="close" size={35} color="black" />
               </Pressable>

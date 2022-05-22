@@ -24,7 +24,7 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
 
   const { orangeColor, purpleColor } = useContext(ThemeContext)
 
-  const { userData, setUserData, setChildrenData, childrenData, seeAll, setSeeAll, childData, savedUsername } = useContext(UserContext)
+  const { userData, setUserData, setChildrenData, childrenData, seeAll, setSeeAll, childData, savedUsername,} = useContext(UserContext)
   const [redeemCoins, setRedeemCoins] = useState<any>()
   const [remainingCoins, setRemainingCoins] = useState<any>()
   const [refreshCoins, setRefreshCoins] = useState(true)
@@ -109,6 +109,7 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
       let children = await GetDependantByUserId(user.id);
       if (children.length != 0) {
         setChildrenData(children)
+        console.log(children)
       }
     }
   }
@@ -117,6 +118,7 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
 
     // getUserandChild()
     setUserCoins(userData.coins)
+    console.log("================================================")
     //setChildRedeem(false)
     //setChildCoin(aChild.dependentCoins)
     setRedeemCoins("")
@@ -146,7 +148,7 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
                       <AvatarComponent onPress={() => { setChildRedeem(false), setRefreshCoins(true) }} imageSource={userData.photo} />
                       {childrenData.map((child: any, idx: number) => {
                         return (
-                          <AvatarComponent key={idx} onPress={() => { setAChild(child), setChildCoin(child.dependentCoins), console.log(child), setChildRedeem(true) }} imageSource={child.DependentPhoto} />
+                          <AvatarComponent key={idx} onPress={() => { setAChild(child), setChildCoin(child.dependentCoins), console.log(child), setChildRedeem(true) }} imageSource={child.dependentPhoto} />
                         )
                       })}
                     </ScrollView>
@@ -158,7 +160,7 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
                     <AvatarComponent onPress={() => { setChildRedeem(false), setRefreshCoins(true) }} imageSource={userData.photo} />
                     {childrenData.map((child: any, idx: number) => {
                       return (
-                        <AvatarComponent key={idx} onPress={() => { setAChild(child), setChildCoin(child.dependentCoins), console.log(child), setChildRedeem(true) }} imageSource={child.DependentPhoto} />
+                        <AvatarComponent key={idx} onPress={() => { setAChild(child), setChildCoin(child.dependentCoins), console.log(child), setChildRedeem(true) }} imageSource={child.dependentPhoto} />
                       )
                     })}
                   </View>

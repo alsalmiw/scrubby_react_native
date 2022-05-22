@@ -23,11 +23,9 @@ const TaskSpaceRowTrash: FC<Props> = (props) => {
     <TaskSpaceRowComponent idx={props.idx} onPress={handleNav}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={styles.textStyle}>{props.children}</Text>
-        <TaskSpaceRowIconComponent>
-          {/* <Entypo name="trash" size={24} color={bgColor} /> */}
-          <Feather name="trash-2" size={24} color={bgColor} />
-
-        </TaskSpaceRowIconComponent>
+        <View>
+          <Feather name="trash-2" size={27} color={"#FFF"} />
+        </View>
       </View>
     </TaskSpaceRowComponent>
   )

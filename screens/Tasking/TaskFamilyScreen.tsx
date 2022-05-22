@@ -14,6 +14,7 @@ import IInviteUser from '../../Interfaces/IInviteUser';
 import { ISpace } from '../../Interfaces/ISpace';
 import {GetSharedSpacesById, GetSpacesByCollectionID} from '../../services/dataService';
 import { ISpaceArr } from '../../Interfaces/ISpaceArr';
+import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 
 
 type Props = NativeStackScreenProps <RootStackParamList, 'TaskFamily'>
@@ -32,7 +33,7 @@ const TaskFamilyScreen: FC<Props> = ({navigation})=> {
    
     handleCreateUsersList()
 
-  }, [])
+  }, [childrenData, acceptedInvitations])
 
 
 const handleCreateUsersList = () => {
@@ -45,6 +46,7 @@ let membersArr = [] as any
     isInvited:false
   }
   membersArr.push(member)
+  setSelectedUser(member)
   setTaskUser(member)
  childrenData.length>0?
  childrenData.map((child:any, idx:number)=> {
@@ -123,8 +125,8 @@ console.log(membersArr)
     <ScrollView style={styles.container}>
       <HeaderComponent title="Task Family"/>
       <View style={styles.underlineContainer}>
-        {allMembers.length <3?
-         <UnderlinedHeaderComponent titleOne={'Select Member'} titleTwo={'see all'} titleThree={''} />
+        {allMembers.length <=3?
+         <UnderlinedOneHeaderComponent titleFirst={'Select Member'}  />
         : 
         <UnderlinedHeaderComponent titleOne={'Select Member'} titleTwo={'see all'} titleThree={'see less'} />
         }
@@ -132,17 +134,6 @@ console.log(membersArr)
           </View>
     <View style={styles.selectMemberCon}>
   
-    {/* {
-      allMembers.map((member:any, idx:number)=> {
-        return(
-        <Pressable key={idx} onPress={()=> {setTaskUser(member), setSelectedUser(member), console.log(member)}}>
-          <AvatarComponent  onPress={undefined} imageSource={member.photo} />
-          <View style={[styles.fadedImage, {backgroundColor:lilacColor, opacity: taskUser.id==member.id && taskUser.isChild ==member.isChild ? 0:0.5}]} ></View>
-          </Pressable>
-        )
-         }
-      )
-    } */}
      {
 
             seeAll?

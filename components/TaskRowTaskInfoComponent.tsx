@@ -28,7 +28,7 @@ interface taskProp {
 
 const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r}) => {
 
-    const { modalVisible, setModalVisible, scheduleTask, setScheduleTask, selectedUser, userData, myRoom} = useContext(UserContext)
+    const { modalVisible, setModalVisible, scheduleTask, setScheduleTask, selectedUser, userData, myRoom, setRunAgain} = useContext(UserContext)
     const {secondaryTextColor, lightLilacColor, yellowColor, blueColor} = useContext(ThemeContext)
 
    
@@ -118,6 +118,9 @@ let sendDates=[] as any
                       }
                       console.log(scheduledTasksArr)
                       let result = await AddUserAssignedTasks(scheduledTasksArr)
+                      if(result) {
+                        setRunAgain(true)
+                      }
                       
             }
             
@@ -140,6 +143,10 @@ let sendDates=[] as any
               }
                console.log(scheduledTasksArr)
                let result = await  AddChildAssignedTasks(scheduledTasksArr)
+               if(result) {
+                setRunAgain(true)
+              }
+              
         }
      
 

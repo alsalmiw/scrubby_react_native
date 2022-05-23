@@ -17,16 +17,16 @@ const TaskSpaceRowPlus: FC<Props> = (props) => {
 
   const {bgColor, lilacColor} = useContext(ThemeContext)
 
-  const handleNav = () => {
+  const handleFunction = () => {
     props.onPress();
   }
   return (
-    <TaskSpaceRowComponent idx={props.idx} onPress={handleNav}>
+    <TaskSpaceRowComponent idx={props.idx} onPress={() => {}}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <Text style={styles.textStyle}>{props.children}</Text>
         <TaskSpaceRowIconComponent>
           {/* <Entypo name="trash" size={24} color={bgColor} /> */}
-           <Feather name="plus" size={40} color={bgColor} /> 
+           <Feather name="plus" size={40} color={bgColor} onPress={handleFunction}/> 
           
 
         </TaskSpaceRowIconComponent>

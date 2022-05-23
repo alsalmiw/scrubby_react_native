@@ -1,6 +1,6 @@
 import { FC, useContext, useEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { StyleSheet, Text, View, StatusBar, Dimensions, Pressable, Alert } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Dimensions, Pressable, Alert, ScrollView } from 'react-native';
 import { ThemeContext } from '../../context/ThemeContext';
 import UserContext from '../../context/UserContext';
 
@@ -15,7 +15,7 @@ import { black } from 'react-native-paper/lib/typescript/styles/colors';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 import FullButtonComponent from '../../components/FullButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { DeleteInvite, GetSharedSpacesByUserId } from '../../services/dataService';
+import { DeleteInvite, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername } from '../../services/dataService';
 import TaskSpaceRowIconComponent from '../../components/TaskSpaceRowIconComponent';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
@@ -23,10 +23,11 @@ import TaskSpaceRowCheck from '../../components/TaskSpaceRowCheck';
 import SquareColoredButton from '../../components/SquareColoredButton';
 import SquareWhiteButton from '../../components/SquareWhiteButton';
 import TaskSpaceRowPlus from '../../components/TaskSpaceRowPlus';
-import  ISharedSpace  from '../../Interfaces/ISharedSpace';
+import ISharedSpace from '../../Interfaces/ISharedSpace';
 import { CreateSharedSpaces } from '../../services/dataService';
+import TaskSpaceRowMinus from '../../components/TaskSpaceRowMinus';
 import { ISpace } from '../../Interfaces/ISpace';
-import {ISpaceArr} from '../../Interfaces/ISpaceArr';
+import { ISpaceArr } from '../../Interfaces/ISpaceArr';
 
 
 
@@ -34,10 +35,14 @@ type Props = NativeStackScreenProps<RootStackParamList, 'SentAcceptedInvitation'
 
 const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
 
-    const [fullName, setFullName] = useState<string>("");
+
     const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor } = useContext(ThemeContext);
-    const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh, acceptedInvitations, setAcceptedInvitations, rState, mySpaces, setMySpaces, sentAcceptedInvitations, setSentAcceptedInvitations } = useContext(UserContext)
-    
+    const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh, acceptedInvitations, setAcceptedInvitations, rState, mySpaces, setMySpaces, sentAcceptedInvitations, setSentAcceptedInvitations, savedUsername } = useContext(UserContext)
+
+    const [fullName, setFullName] = useState<string>("");
+    const [invitedPhoto, setInvitedPhoto] = useState<any>();
+    const [sharedSpaces, setSharedSpaces] = useState<any>([]);
+    const [refreshLocalUseEffect, setRefreshLocalUseEffect] = useState<boolean>(false);
 
     let r = Math.floor(Math.random() * 7)
 
@@ -45,8 +50,6 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
         console.log(sentAcceptedInvitations);
 
         let invitedUserNameAsyncStorage = (await AsyncStorage.getItem('Invited'))!;
-        //This gives me peter
-        console.log(invitedUserNameAsyncStorage);
 
         for (let i = 0; i < sentAcceptedInvitations.length; i++) {
             if (sentAcceptedInvitations[i].invitedUsername === invitedUserNameAsyncStorage) {
@@ -55,48 +58,89 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
                 } else {
                     setFullName(sentAcceptedInvitations[i].invitedUsername);
                 }
+
+                //This sets accepted user's invitation photo
+                setInvitedPhoto(sentAcceptedInvitations[i].invitedPhoto)
             }
         }
+
 
     }
 
     const handleDisplaySharedSpaces = async () => {
-        let result = await GetSharedSpacesByUserId(3);
 
-        console.log('this is the result');
-        console.log(result);
+        let invitedUsername = (await AsyncStorage.getItem('Invited'))!;
+
+        //Gets shared spaces shared by both invited and inviter
+        let result = await GetSharedSpacesByInvitedAndInviterUsername(invitedUsername, savedUsername);
+        setSharedSpaces(result);
     }
 
-    const handleDisplayAlert =  async (space: ISpace) => {
-
-
-        let asyncUsername = await AsyncStorage.getItem('Invited')!;
+    const handleAddSharedSpace = async (filteredMySpace: any) => {
+        let invitedUsername = (await AsyncStorage.getItem('Invited'))!;
 
         //This will be how we add create shared Space
-        /* 
-            let newSharedSpace:ISharedSpace = {
-                id:0, 
-                invitedUsername: asyncUsername ,
-                collectionId: space.id,
-                isDeleted: false,
-                isAccepted: true
-            }
-            console.log(newSharedSpace)
 
-            let result = await CreateSharedSpaces(newSharedSpace)
-            if (result)
-            {
-                Alert.alert("You have successfully added a new shared space")
-               
-                //dont know what to save it too, do it later
-                
-            }
+        console.log(filteredMySpace);
+         
+        let newSharedSpace:ISharedSpace = {
+            id:0, 
+            invitedUsername: invitedUsername,
+            inviterUsername: userData.username,
+            collectionId: filteredMySpace.id,
+            isDeleted: false,
+            isAccepted: true
+        }
+        console.log(newSharedSpace)
 
-            console.log(result);
-
-        */
+        let result = await CreateSharedSpaces(newSharedSpace)
+        
+        if (result) {
+            console.log("You added a new shared space")
+            setRefreshLocalUseEffect((prevState: boolean) => !prevState);
+        }
 
     }
+
+    const handleDeleteSharedSpace = async (filteredSharedSpace: any) => {
+        console.log("You deleted a shared space");
+        console.log(filteredSharedSpace);
+
+        //let result = await 
+    }
+
+
+
+    
+
+    const handleAddSharedAlert = async (filteredMySpace: any) => {
+
+
+        Alert.alert("Adding a Shared Space", "You are about to share a space, would you like to add?",
+        [
+            {text: "Cancel", onPress: undefined, style: "destructive"},
+            {text: "Add", onPress: handleAddSharedSpace.bind(this, filteredMySpace), style: 'default'}
+
+        ])
+
+
+
+    }
+
+    const handleDeleteSharedAlert = async (filteredSharedSpace: any) => {
+        Alert.alert("Deleting a Shared Space", "You are about to delete a shared Space, would you like to delete?",
+        [
+            {text: "Cancel", onPress: undefined, style: "destructive"},
+            {text: "Delete", onPress: handleDeleteSharedSpace.bind(this, filteredSharedSpace), style: 'default'}
+        ])
+
+
+
+
+
+    }
+
+    
 
     const handleNavigateBack = () => {
         navigation.navigate('ManageInvites');
@@ -106,13 +150,15 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
     useEffect(() => {
         handleDisplayFullName();
         handleDisplaySharedSpaces();
-    }, [])
+        console.log(sharedSpaces);
+
+    }, [refreshLocalUseEffect])
 
     return (
         <View style={styles.container}>
             <HeaderComponent title={'Add To My Space'}></HeaderComponent>
             <View style={styles.firstRowContainer}>
-                <AvatarComponent onPress={undefined} imageSource={undefined} />
+                <AvatarComponent onPress={undefined} imageSource={invitedPhoto} />
                 <View style={styles.insideFirstRowContainer1}>
                     <UserNameComponent name={fullName}></UserNameComponent>
                     <View style={styles.insideFirstRowContainer2}>
@@ -126,23 +172,49 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
             <View style={styles.secondRowContainer}>
                 <UnderlinedOneHeaderComponent titleFirst='Add To'></UnderlinedOneHeaderComponent>
                 <View style={styles.insideSecondRowContainer1}>
-                    
+
+
+                    {/* {
+                        mySpaces.map((space: ISpace, idx: number) =>
+                            <TaskSpaceRowPlus
+                                idx={rState + idx}
+                                key={idx}
+                                onPress={() => { console.log(space); handleDisplayAlert(space) }}
+                            >
+                                {space.collectionName}
+                            </TaskSpaceRowPlus>
+
+                        )
+                    } */}
 
                     {
-                        mySpaces.map((space:ISpace, idx:number) =>
+                        mySpaces.filter((mySpace: any) => !sharedSpaces.map((sharedSpace: any) => sharedSpace.collectionId).includes(mySpace.id)).map((filteredMySpaces: any, idx: number) => 
                         <TaskSpaceRowPlus
-                          idx={rState+idx}
-                          key={idx}
-                          onPress={() => {console.log(space); handleDisplayAlert(space)}}
-                        >
-                          {space.collectionName}
-                        </TaskSpaceRowPlus>
-              
-                      )
+                            idx={rState + idx}
+                            key={filteredMySpaces.collectionName}
+                            onPress={handleAddSharedAlert.bind(this, filteredMySpaces)}>
+                            {filteredMySpaces.collectionName}
+
+                        </TaskSpaceRowPlus>)
                     }
-                   
+
+
+
+                    {
+                        mySpaces.filter((mySpace: any) => sharedSpaces.map((sharedSpace: any) => sharedSpace.collectionId).includes(mySpace.id)).map((filteredSharedSpace: any, idx: number) => 
+                        <TaskSpaceRowMinus
+                            idx={rState + idx + mySpaces.length + 1}
+                            key={filteredSharedSpace.id + 100}
+                            onPress={handleDeleteSharedAlert.bind(this, filteredSharedSpace)}>
+                            {filteredSharedSpace.collectionName}
+
+                        </TaskSpaceRowMinus>)
+                    }
+
+
+
                 </View>
-                
+
             </View>
 
             <FullButtonComponent onPress={handleNavigateBack} radius={0} color={purpleColor}>
@@ -165,7 +237,8 @@ const styles = StyleSheet.create({
     },
     insideFirstRowContainer1: {
         justifyContent: 'space-around',
-        paddingLeft: '3%'
+        paddingLeft: '3%',
+        flex: 1
     },
     insideFirstRowContainer2: {
         flexDirection: 'row',

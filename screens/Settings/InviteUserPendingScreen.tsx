@@ -25,9 +25,13 @@ type Props = NativeStackScreenProps<RootStackParamList, 'InviteUserPending'>
 
 const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
 
+
+
     const { purpleColor } = useContext(ThemeContext)
     const {invited, setInvited, allRequestName, setAllRequestName, userData, refresh, setRefresh} =useContext(UserContext)
     const [fullName, setFullName] = useState<string | null>("");
+    const [invitedPhoto, setInvitedPhoto] = useState<string>("?")
+
 
     const showName = async() => {
          let invitedUserFromAsyncStorage = await AsyncStorage.getItem('Invited');
@@ -47,6 +51,7 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
                     setFullName(person.invitedFullname)
                 }
                 
+                setInvitedPhoto(person.invitedPhoto);
             }
         });
 
@@ -110,11 +115,10 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
           },
           { text: "Delete", onPress: handleDeleteInvite , style: "destructive" }
         ]);
-
-
-        
         
     }
+
+    
 
     
 
@@ -133,7 +137,7 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
         <View style={styles.container}>
             <HeaderComponent title="Add To My Space" />
             <View style={styles.firstRowContainer}>
-                <AvatarComponent onPress={undefined} imageSource={userData}/>
+                <AvatarComponent onPress={undefined} imageSource={invitedPhoto}/>
                 <View style={styles.insideFirstRowContainer1}>
                     <UserNameComponent name={fullName}></UserNameComponent>
                     <View style={styles.insideFirstRowContainer2}>

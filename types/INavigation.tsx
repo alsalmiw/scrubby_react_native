@@ -9,6 +9,7 @@ type RootStackParamList = {
     AddedTasks: undefined
     Rooms: undefined
     AddChild: undefined
+    DefaultChildOptions: undefined
 
     //Tasking
     TaskFamily:undefined, 

@@ -90,6 +90,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   // }
 
   useEffect(() => {
+    setBlank(false)
     // console.log(savedUsername)
     //AsyncGetSpaceCollectionById();
     //AsyncGetSpaceCollectionById();
@@ -137,7 +138,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   const handleGoToChildProfile= async(child:any)=> {
     console.log("=======================================================================++")
      console.log(child)
-     setBlank(false)
+
     setChildPage(child)
     let childDefault = await GetChildDefaultSchedule(child.id)
     if(childDefault.length!= 0)

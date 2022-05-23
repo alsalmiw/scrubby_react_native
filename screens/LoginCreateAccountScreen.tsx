@@ -30,12 +30,11 @@ type Props = NativeStackScreenProps<RootStackParamList, 'login'>
 
 const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
-   // const [login, setLogin] = useState(true);
-    //const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, spinnerOn, setSpinnerOn, setDefaultSpace, setUserData } = useContext(UserContext)
-    // const [login, setLogin] = useState<Boolean>(true);
-    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, spinnerOn, setSpinnerOn, setDefaultSpace, fullName, setFullName, login, setLogin, setUserData } = useContext(UserContext)
+    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, setDefaultSpace, fullName, setFullName, login, setLogin, setUserData, blank, setBlank } = useContext(UserContext)
     const { yellowColor, greenColor } = useContext(ThemeContext)
     const [name, setName] = useState<any>("")
+
+
 
     let avR = Math.floor(Math.random() * 46)
 
@@ -50,7 +49,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
         //send full name to the backend
 
         // need to trim full name of leading and trailing spaces
-        let name = fullName.trim().split(" ").filter((word:string)=> word !="").join(" ");
+        let name = fullName.trim().split(" ").filter((word: string) => word != "").join(" ");
         let userData: INewUser = {
             Id: 0,
             Username: username,
@@ -85,26 +84,20 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
         let result = await UserLogin(userLoginData);
         if (result.token != null) {
-            setSpinnerOn(true);
+
             AsyncStorage.setItem("Token", result.token);
             AsyncStorage.setItem("Username", username);
-            // let user = await GetUserData(username)
-            // if (user) {
-            //     setFullUserInfo(user)
-            //     console.log(user)
-            // }
+
             let defaultCollection = await GetUserDefaultSchedule(username)
             let userInfo = await GetUserByUsername(username)
-            if(defaultCollection.length != 0) 
-            {
+            if (defaultCollection.length != 0) {
                 setDefaultSpace(defaultCollection)
                 navigation.navigate('Nav', { screen: "Schedule" })
             } else {
                 navigation.navigate('Nav', { screen: "Profile" })
 
             }
-            if(userInfo)
-            {
+            if (userInfo) {
                 setUserData(userInfo)
             }
             //console.log(typeof defaultCollection)
@@ -143,11 +136,12 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
                 return;
             }
 
-            if(specialChar.test(fullName)){
+            if (specialChar.test(fullName)) {
                 Alert.alert("Error", 'Full name can not contains special characters.', [{ text: "Cancel", style: "cancel" }]);
                 return;
             }
             else {
+                setBlank(true)
                 addUser();
                 setFullName("");
                 setPassword("");
@@ -165,7 +159,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             }
 
             else {
-
+                setBlank(true)
                 userLogin();
                 setPassword("");
                 setUsername("");
@@ -174,70 +168,67 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
     };
 
     return (
-
         <>
-            {
-                login
-                    ?
-                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                        <View style={styles.backgroundColor}>
-                            <View style={styles.loginContent}>
-                                <Text style={styles.title}>Sign up</Text>
 
-                                <View style={styles.inputPosition}>
-                                    
-                                    <InputFieldComponentLogin />
+            {blank ?
+                <View style={styles.spinBackgroundColor}>
+                    <View style={[styles.spinBackgroundColor, { justifyContent: 'center' }]}>
+
+                        <SafeAreaView >
+                            <ActivityIndicator color='white' size="large" />
+                        </SafeAreaView>
+
+                    </View>
+                </View>
+                :
+                <>
+                    {
+                        login
+                            ?
+                            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                                <View style={styles.backgroundColor}>
+                                    <View style={styles.loginContent}>
+                                        <Text style={styles.title}>Sign up</Text>
+
+                                        <View style={styles.inputPosition}>
+
+                                            <InputFieldComponentLogin />
+                                        </View>
+
+
+                                        <View>
+                                            <Text style={styles.loginTxt}>Already have an account. <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: 'blue' }}>Login here.</Text></Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.btnStyle}>
+                                        <FullButtonComponent radius={15} color={yellowColor} onPress={() => checkTextInput()} > <Text>Create Account</Text></FullButtonComponent>
+
+                                    </View>
                                 </View>
-                                {
-                                    spinnerOn ?
-                                        <SafeAreaView>
-                                            <ActivityIndicator color={greenColor} size="large" />
-                                        </SafeAreaView>
-                                        :
-                                        null
-                                }
+                            </TouchableWithoutFeedback>
+                            :
+                            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                                <View style={styles.backgroundColor}>
+                                    <View style={styles.loginContent}>
+                                        <Text style={styles.title}>Login</Text>
 
-                                <View>
-                                    <Text style={styles.loginTxt}>Already have an account. <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: 'blue' }}>Login here.</Text></Text>
+                                        <View style={styles.inputPosition}>
+                                            <InputFieldComponentLogin />
+                                        </View>
+
+                                        <View>
+                                            <Text style={styles.loginTxt}>New here? <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: 'blue' }}>Create an Account</Text></Text>
+                                        </View>
+
+                                    </View>
+                                    <View style={styles.btnStyle}>
+                                        <FullButtonComponent radius={15} color={yellowColor} onPress={() => checkTextInput()} > <Text>Login</Text></FullButtonComponent>
+                                    </View>
                                 </View>
-                            </View>
-                            <View style={styles.btnStyle}>
-                                <FullButtonComponent radius={15} color={yellowColor} onPress={() => checkTextInput()} > <Text>Create Account</Text></FullButtonComponent>
-
-                            </View>
-                        </View>
-                    </TouchableWithoutFeedback>
-                    :
-                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                        <View style={styles.backgroundColor}>
-                            <View style={styles.loginContent}>
-                                <Text style={styles.title}>Login</Text>
-
-                                <View style={styles.inputPosition}>
-                                    <InputFieldComponentLogin />
-                                </View>
-                                {
-                                    spinnerOn ?
-                                        <SafeAreaView>
-                                            <ActivityIndicator color={greenColor} size="large" />
-                                        </SafeAreaView>
-                                        :
-                                        null
-                                }
-
-                                <View>
-                                    <Text style={styles.loginTxt}>New here? <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: 'blue' }}>Create an Account</Text></Text>
-                                </View>
-
-                            </View>
-                            <View style={styles.btnStyle}>
-                                <FullButtonComponent radius={15} color={yellowColor} onPress={() => checkTextInput()} > <Text>Login</Text></FullButtonComponent>
-                            </View>
-                        </View>
-                    </TouchableWithoutFeedback>
-            }
+                            </TouchableWithoutFeedback>
+                    }
+                </>}
         </>
-
     )
 }
 
@@ -321,6 +312,12 @@ const styles = StyleSheet.create({
         borderRadius: 0,
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
+    },
+    spinBackgroundColor: {
+
+        backgroundColor: '#1699B1',
+        minWidth: "100%",
+        minHeight: '100%',
     }
 
 

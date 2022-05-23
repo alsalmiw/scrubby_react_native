@@ -14,7 +14,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import SquareColoredButton from '../../components/SquareColoredButton';
 import iconsMap from '../../types/IconsMap';
 import ChildLockModalComponent from '../../components/Modal/ChildLockModalComponent';
-import { GetTasksByRoomId } from '../../services/dataService';
+import { GetDependantDTOByChildId, GetTasksByRoomId } from '../../services/dataService';
 import TaskInfoModalComponent from '../../components/Modal/TaskInfoModalComponent';
 
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
@@ -27,7 +27,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 type Props = NativeStackScreenProps<RootStackParamList, 'LockedChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-    const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, selectedTask, setSelectedTask } = useContext(UserContext)
+    const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, setChildDefaultSpace, selectedTask, setSelectedTask } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
     const [space, setSpace] = useState<String>("")
@@ -119,17 +119,25 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
         //setSpace(rooms[0].spaceName);
     }
+    const getChildInformation = async(childId:number) =>{
+       let childInfo = await GetDependantDTOByChildId(childId)
+       setChildPage(childInfo)
+       setChildDefaultSpace(childInfo.scheduledTasks[1])
+    }
 
 
     useEffect(() => {
         //repeat
         navigation.addListener('focus', () => {
+            getChildInformation(childPage.id)
             childTaskDate()
         })
         // console.log("=======================================================================++")
         // console.log("hi")
-        console.log(childDefaultSpace)
+        // console.log(childDefaultSpace)
         console.log("=====================+===================================================")
+        console.log("diff",childPage)
+
 
 
 

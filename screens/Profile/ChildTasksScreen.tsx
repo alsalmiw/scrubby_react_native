@@ -79,6 +79,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     childDefaultSpace.rooms.map((room: any) => {
       let tempArr = [] as any;
       let tempRoomArr = [] as any;
+      console.log("Task:",childDefaultSpace)
       room.tasksAssigned.map((task: any) => {
         if (sevenDays.includes(task.dateScheduled)) {
           tempArr.push(task);
@@ -97,6 +98,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     roomArr.map((room: any, idx: number) => {
       rooms.push({ id: room.id, spaceName: room.spaceName, spaceCategory: room.spaceCategory, todaysTasks: taskArr[idx] });
     });
+
     setChildScheduleRooms(rooms != null || rooms.length !=0 ? rooms : 0)
     setChildSelectedRoom(rooms[0] != null || rooms[0] !=0 ? rooms[0] : 0)
     {
@@ -116,7 +118,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     })
     // console.log("=======================================================================++")
     // console.log("hi")
-     console.log(childDefaultSpace)
+    //  console.log("Stuff:",childDefaultSpace)
+      // console.log("ChildPage:",childPage)
     console.log("=====================+===================================================")
 
   

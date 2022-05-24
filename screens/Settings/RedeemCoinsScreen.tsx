@@ -102,17 +102,17 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
       Alert.alert("Success", `${aChild.dependentName} have redeemed ${redeemCoins} coins.`, [{ text: "Okay", style: "cancel", onPress: () => { setChildCoin(leftover) } }]);
     }
   }
-  const getUserandChild = async () => {
-    let user = await GetUserByUsername(savedUsername);
-    if (user.length != 0) {
-      setUserData(user)
-      let children = await GetDependantByUserId(user.id);
-      if (children.length != 0) {
-        setChildrenData(children)
-        console.log(children)
-      }
-    }
-  }
+  // const getUserandChild = async () => {
+  //   let user = await GetUserByUsername(savedUsername);
+  //   if (user.length != 0) {
+  //     setUserData(user)
+  //     let children = await GetDependantByUserId(user.id);
+  //     if (children.length != 0) {
+  //       setChildrenData(children)
+  //       console.log(children)
+  //     }
+  //   }
+  // }
 
   useEffect(() => {
     setSelectedUser({"id":userData.id, "isChild": false})

@@ -9,8 +9,9 @@ import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { ThemeContext } from "../../context/ThemeContext"
 import FullButtonComponent from "../FullButtonComponent"
 import ButtonModalComponent from "./ButtonModalComponent"
-import { UpdateUserTaskToCompleted, SubmitTaskChildApproval, ApproveTaskForCompletionChild, GetUserDefaultSchedule } from "../../services/dataService"
+import { UpdateUserTaskToCompleted, SubmitTaskChildApproval, ApproveTaskForCompletionChild, GetUserDefaultSchedule, NewCoinAmountDependent } from "../../services/dataService"
 import UserContext from "../../context/UserContext"
+import IRedeemCoinsChild from "../../Interfaces/IRedeemChildCoins"
 
 
 //
@@ -65,6 +66,15 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
         console.log("approve task for child");
 
     }
+
+    // const updateCoinsandPoint = async()=>{
+    //     let childRedeem: IRedeemCoinsChild = {
+    //         Id: aChild.id,
+    //         DependentCoins: leftover
+    
+    //       }
+    //     let updateCNP = NewCoinAmountDependent(childRedeem)
+    // }
     
 
 

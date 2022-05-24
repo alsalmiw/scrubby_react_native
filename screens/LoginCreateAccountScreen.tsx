@@ -19,12 +19,14 @@ import { ThemeContext } from "../context/ThemeContext"
 import RootStackParamList from '../types/INavigation'
 import { TextInput } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
+import SplashComponent from "../components/SplashComponent"
 
 
 // type RootStackParamList = {
 //     login: undefined,
 //     Nav: undefined,
 // }
+//
 
 type Props = NativeStackScreenProps<RootStackParamList, 'login'>
 
@@ -142,7 +144,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             }
             else {
                 setBlank(true)
-                addUser();
+                //addUser();
                 setFullName("");
                 setPassword("");
                 setUsername("");
@@ -167,67 +169,57 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
         }
     };
 
+
     return (
         <>
+            <SplashComponent>
+                {
+                    login
+                        ?
+                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                            <View style={styles.backgroundColor}>
+                                <View style={styles.loginContent}>
+                                    <Text style={styles.title}>Sign up</Text>
 
-            {blank ?
-                <View style={styles.spinBackgroundColor}>
-                    <View style={[styles.spinBackgroundColor, { justifyContent: 'center' }]}>
+                                    <View style={styles.inputPosition}>
 
-                        <SafeAreaView >
-                            <ActivityIndicator color='#FFF' size="large" />
-                        </SafeAreaView>
-
-                    </View>
-                </View>
-                :
-                <>
-                    {
-                        login
-                            ?
-                            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                                <View style={styles.backgroundColor}>
-                                    <View style={styles.loginContent}>
-                                        <Text style={styles.title}>Sign up</Text>
-
-                                        <View style={styles.inputPosition}>
-
-                                            <InputFieldComponentLogin />
-                                        </View>
-
-
-                                        <View>
-                                            <Text style={styles.loginTxt}>Already have an account. <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: 'blue' }}>Login here.</Text></Text>
-                                        </View>
+                                        <InputFieldComponentLogin />
                                     </View>
-                                    <View style={styles.btnStyle}>
-                                        <FullButtonComponent radius={15} color={yellowColor} onPress={() => checkTextInput()} > <Text>Create Account</Text></FullButtonComponent>
 
+
+                                    <View>
+                                        <Text style={styles.loginTxt}>Already have an account. <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: 'blue' }}>Login here.</Text></Text>
                                     </View>
                                 </View>
-                            </TouchableWithoutFeedback>
-                            :
-                            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                                <View style={styles.backgroundColor}>
-                                    <View style={styles.loginContent}>
-                                        <Text style={styles.title}>Login</Text>
+                                <View style={styles.btnStyle}>
+                                    <FullButtonComponent radius={15} color={yellowColor} onPress={() => checkTextInput()} > <Text>Create Account</Text></FullButtonComponent>
 
-                                        <View style={styles.inputPosition}>
-                                            <InputFieldComponentLogin />
-                                        </View>
-
-                                        <View>
-                                            <Text style={styles.loginTxt}>New here? <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: 'blue' }}>Create an Account</Text></Text>
-                                        </View>
-
-                                    </View>
-                                    <View style={styles.btnStyle}>
-                                        <FullButtonComponent radius={15} color={yellowColor} onPress={() => checkTextInput()} > <Text>Login</Text></FullButtonComponent>
-                                    </View>
                                 </View>
-                            </TouchableWithoutFeedback>
-                    }
-                </>}
+                            </View>
+                        </TouchableWithoutFeedback>
+                        :
+                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                            <View style={styles.backgroundColor}>
+                                <View style={styles.loginContent}>
+                                    <Text style={styles.title}>Login</Text>
+
+                                    <View style={styles.inputPosition}>
+                                        <InputFieldComponentLogin />
+                                    </View>
+
+                                    <View>
+                                        <Text style={styles.loginTxt}>New here? <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: 'blue' }}>Create an Account</Text></Text>
+                                    </View>
+
+                                </View>
+                                <View style={styles.btnStyle}>
+                                    <FullButtonComponent radius={15} color={yellowColor} onPress={() => checkTextInput()} > <Text>Login</Text></FullButtonComponent>
+                                </View>
+                            </View>
+                        </TouchableWithoutFeedback>
+                }
+
+            </SplashComponent>
         </>
     )
 }

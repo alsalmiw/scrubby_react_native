@@ -165,7 +165,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
       <HeaderComponent title="MY PROFILE"></HeaderComponent>
       <View style={styles.firstRow}>
-        <AvatarComponent onPress={undefined} imageSource={userData.photo} />
+        <AvatarComponent onPress={undefined}  imageSource={userData.photo} />
         <View style={styles.nameAndCoinContainer}>
 
           <UserNameComponent name={userData.name}></UserNameComponent>
@@ -219,7 +219,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
                                       //     <AddItemButtonComponent key={idx} onPress={()=>handleGoToChildProfile(child)}>
                                       //   <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />
                                       // </AddItemButtonComponent>
-                                        <AvatarComponent key={idx} onPress={()=> {console.log(child), handleGoToChildProfile(child) }} imageSource={child.dependentPhoto} />
+                                        <AvatarComponent key={idx}  onPress={()=> {console.log(child), handleGoToChildProfile(child) }} imageSource={child.dependentPhoto} />
                                         )
 
                                       })

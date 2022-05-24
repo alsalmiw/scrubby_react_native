@@ -31,13 +31,15 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ScheduleScreen'>
 
 
 const ScheduleScreen: FC<Props> = ({ navigation }) => {
-  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, runAgain, setRunAgain, mySchedule, setMySchedule, setBlank, setTasksHistory } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, runAgain, setRunAgain, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate } = useContext(UserContext)
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
 
   const [taskInfo, setTaskInfo] = useState() as any
   const [scheduledDates, setScheduledDates] = useState<any[]>([])
   const [scheduledRooms, setScheduledRooms] = useState<any[]>([])
-  const [activeDate, setActiveDate] = useState<boolean>(false)
+  const [activeRoom, setActiveRoom] = useState<number>() 
+
+ 
   const [scheduledTasks, setScheduledTasks] = useState<any[]>([])
   const [r, setR] = useState<number>(Math.floor(Math.random() * 7))
   const [selectedRoom, setSelectedRoom] = useState<any>()
@@ -82,22 +84,24 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       nextFiftyDays.push(nextDay.toISOString());
 
     }
-    console.log(nextFiftyDays)
+    //console.log(nextFiftyDays)
     let nextTasks = defaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => nextFiftyDays.includes(task.dateScheduled)))
     setScheduledTasks(nextTasks)
-    console.log(nextTasks)
+    //console.log(nextTasks)
     let datesArr = [] as any
 
 
     nextTasks.map((task: any) => task.map((taskone: any) => datesArr.push(taskone.dateScheduled)))
     datesArr = Array.from(new Set(datesArr.sort()))
-    setScheduledDates(datesArr.map((date: any) => {
+    setScheduledDates(datesArr.map((date: string) => {
       let dateF = new Date(date)
       return dateF.toString()
     }))
-    console.log(datesArr[0])
+   
     if (datesArr.length > 0) {
       getRoomsbyDate(datesArr[0])
+      let day = new Date(datesArr[0])
+      setActiveDate(day.toString())
     }
     else {
       setScheduledRooms([])
@@ -135,11 +139,13 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
     });
     setScheduledRooms(rooms)
     setSelectedRoom(rooms[0])
+    setActiveRoom(rooms[0].id)
+
 
   }
 
   const displayTaskModel = (task: any) => {
-    console.log("display model")
+    
     setModalVisible(true)
 
   }
@@ -163,6 +169,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
         setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
         setMySchedule(userInfo.mySchedule)
         setTasksHistory(userInfo.tasksHistory)
+        setIsChildFree(userInfo.userInfo.isChildFree)
       }
 
     }
@@ -208,7 +215,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
                 // <View style={styles.dash}></View>
                 // <Text style={styles.dateText}>{date.slice(8,10)}</Text> 
                 //  </Pressable>
-                <ScheduleDateBtnComponent key={idx} idx={idx} date={date} onPress={() => getRoomsbyDate(date)} />
+                <ScheduleDateBtnComponent key={idx} idx={idx} date={date} onPress={() => {getRoomsbyDate(date), setActiveDate(date)}} />
               )
             })
             :
@@ -230,10 +237,14 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
             scheduledRooms.map((room: any, idx: number) => {
 
               return (
-                <SquareColoredButton key={idx} idx={r + idx} onPress={() => { setSelectedRoom(room) }}>
+                <Pressable key={idx} onPress={() => { setSelectedRoom(room), setActiveRoom(room.id) }} >
+                   
+                <SquareColoredButton idx={r + idx} onPress={() => { setSelectedRoom(room), setActiveRoom(room.id)  }}>
                   <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
-                  <Text style={[{ color: "#FFF" }]}>{room.spaceName}</Text>
+                  <Text style={{ color: "rgb(255, 255, 255)" }}>{room.spaceName}</Text>
                 </SquareColoredButton>
+               <View style={[styles.fadedImage, {backgroundColor: "#FFF", opacity:activeRoom == room.id ? 0:0.5}]}></View>
+                </Pressable>
               )
 
             })
@@ -275,7 +286,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
                                 // <Text style={[styles.text, ]}> {taskInfo.task.coins} coins</Text>
                                 // </>
                                 :
-                                <AntDesign name="checksquare" size={30} color="white" />
+                                <AntDesign name="checksquare" size={30} color="#FFF" />
                             }
 
                           </View>
@@ -346,9 +357,9 @@ const styles = StyleSheet.create({
     borderColor: "#000000",
     margin: 20,
   },
-  dateText: {
-    fontSize: 20,
-  },
+  // dateText: {
+  //   fontSize: 20,
+  // },
   datesContainer: {
 
     flexDirection: "row",
@@ -361,16 +372,24 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   text: {
-    color: "#FFF",
+    color: 'rgb(255, 255, 255)',
     fontWeight: 'bold',
     fontSize: 20,
   },
-  taskInfo: {
-    fontSize: 20,
-  },
+  // taskInfo: {
+  //   fontSize: 20,
+  // },
   paddingL: {
     paddingLeft: 10,
-  }
+  },
+  fadedImage: {
+    borderRadius:5, 
+    width: 80,
+    height: 80, 
+    margin: 3,
+    position: 'absolute'
+
+}
 
 });
 

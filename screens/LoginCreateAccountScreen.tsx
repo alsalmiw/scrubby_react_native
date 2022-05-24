@@ -57,7 +57,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             Photo: avatars[avR],
             Fullname: name,
         }
-        console.log(userData)
+        //console.log(userData)
         setSavedUsername(username);
         setSavedPassword(password);
 
@@ -78,7 +78,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             Username: username,
             Password: password
         }
-        console.log(userLoginData)
+        //console.log(userLoginData)
         setSavedUsername(username);
         setSavedPassword(password);
 
@@ -108,7 +108,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
         }
         else {
             Alert.alert("Error", 'Incorrect Username or Password.', [{ text: "Cancel", style: "cancel" }])
-            console.log('fail')
+            //console.log('fail')
         }
     }
     const checkTextInput = () => {
@@ -175,7 +175,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
                     <View style={[styles.spinBackgroundColor, { justifyContent: 'center' }]}>
 
                         <SafeAreaView >
-                            <ActivityIndicator color='white' size="large" />
+                            <ActivityIndicator color='#FFF' size="large" />
                         </SafeAreaView>
 
                     </View>
@@ -240,13 +240,13 @@ const styles = StyleSheet.create({
         minHeight: '100%',
     },
     title: {
-        color: "white",
+        color: "#FFF",
         fontWeight: 'bold',
         fontSize: 40,
         textAlign: 'center'
     },
     loginTxt: {
-        color: 'white',
+        color: '#FFF',
         textAlign: 'center',
         fontStyle: 'italic',
         marginTop: 20
@@ -288,9 +288,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'white',
+        backgroundColor: '#FFF',
         borderWidth: 2,
-        borderColor: "white",
+        borderColor: "#FFF",
         height: 60,
         width: 300,
         borderRadius: 10,
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
         height: 60,
         width: 50,
         paddingEnd: 10,
-        backgroundColor: 'white',
+        backgroundColor: '#FFF',
         textDecorationLine: "underline",
         overflow: 'hidden',
         borderRadius: 0,

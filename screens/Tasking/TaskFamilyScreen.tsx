@@ -111,7 +111,7 @@ console.log(membersArr)
           return(
           <Pressable key={idx} onPress={()=> {setTaskUser(member), setSelectedUser(member), console.log(member)}}>
             <AvatarComponent  onPress={undefined} imageSource={member.photo} />
-            <View style={[styles.fadedImage, {backgroundColor:lilacColor, opacity: taskUser.id==member.id && taskUser.isChild ==member.isChild ? 0:0.5}]} ></View>
+            <View style={[styles.fadedImage, {backgroundColor:'#FFF', opacity: taskUser.id==member.id && taskUser.isChild ==member.isChild ? 0:0.5}]} ></View>
             </Pressable>
           )
            }

@@ -20,7 +20,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'TasksHistory'>
 
 const TasksHistoryScreen: FC<Props> = ({navigation})=> {
   const {orangeColor, blueColor, fuchsiaColor, violetColor, greenColor, yellowColor, purpleColor, lilacColor} = useContext(ThemeContext)
-  const { mySpaces, userData, childData, childrenData, acceptedInvitations , taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser, seeAll, tasksHistory, setTasksHistory, current, setCurrent } = useContext(UserContext)
+  const { mySpaces, userData, childData, childrenData, acceptedInvitations , taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser, seeAll, tasksHistory, setTasksHistory, current, setCurrent, isChildFree } = useContext(UserContext)
   const [allMembers, setAllMembers] = useState([])
   //const navigation = useNavigation();
 
@@ -33,7 +33,7 @@ const TasksHistoryScreen: FC<Props> = ({navigation})=> {
   }, [childrenData, acceptedInvitations])
 
  
-const handleCreateUsersList = async () => {
+const handleCreateUsersList =  () => {
 let membersArr = [] as any
   let member = {
     id: userData.id,
@@ -43,8 +43,9 @@ let membersArr = [] as any
     isInvited:false
   }
   membersArr.push(member)
- await setSelectedUser(member)
+ setSelectedUser(member)
 
+ !isChildFree?
  childrenData.length>0?
  childrenData.map((child:any, idx:number)=> {
 
@@ -59,7 +60,7 @@ let membersArr = [] as any
   membersArr.push(kid)
  })
 : null
-
+:null
 acceptedInvitations.length > 0?
 acceptedInvitations.map((person:any, idx:number)=> { mySpaces.map((space:any, idx:number)=> space.sharedWith.map((shared: any)=> 
   {
@@ -101,7 +102,7 @@ let r = Math.floor(Math.random() * 7)
           return(
           <Pressable key={idx} onPress={()=> {setSelectedUser(member), console.log(member)}}>
             <AvatarComponent  onPress={undefined} imageSource={member.photo} />
-            <View style={[styles.fadedImage, {backgroundColor:lilacColor, opacity: selectedUser.id==member.id && selectedUser.isChild ==member.isChild ? 0:0.5}]} ></View>
+            <View style={[styles.fadedImage, {backgroundColor:"#FFF", opacity: selectedUser.id==member.id && selectedUser.isChild ==member.isChild ? 0:0.5}]} ></View>
             </Pressable>
           )
            }
@@ -175,7 +176,7 @@ let r = Math.floor(Math.random() * 7)
              )
          })
          
-         : null
+         : <Text>You have no Task History</Text>
          :null
      }
 

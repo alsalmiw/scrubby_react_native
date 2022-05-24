@@ -13,6 +13,7 @@ import AcceptRequestScreen from './AcceptRequestScreen';
 import InviteUserPendingScreen from './InviteUserPendingScreen';
 
 import AcceptedInvitationScreen from './AcceptedInvitationScreen';
+import SentAcceptedInvitation from './SentAcceptedInvitationScreen';
 
 
 
@@ -33,6 +34,7 @@ const SettingsNavigation: FC = ()=> {
           <Tab.Screen name="AcceptRequest" component={AcceptRequestScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="InviteUserPending" component={InviteUserPendingScreen} options={{headerShown: false}} />
           <Tab.Screen name="AcceptedInvitation" component={AcceptedInvitationScreen} options={{headerShown: false}} />
+          <Tab.Screen name="SentAcceptedInvitation" component={SentAcceptedInvitation} options={{headerShown: false}} />
         </Tab.Navigator>
   );
 }

@@ -403,15 +403,25 @@ async function CreateSharedSpaces(sharedSpace: ISharedSpace) {
    return data;
 }
 
-// async function DeleteSharedSpacesById(sharedSpace: any) {
-//     let res = await fetch(`${link}/SharedSpaces/DeleteSharedSpacesById/${sharedSpace.id}`, {
-//         method: "POST",
-//         headers: {
-//             "Content-Type" : "application/json"
-//         },
-//         body: JSON.stringify()
-//     })
-// }
+async function DeleteSharedSpacesById(sharedSpace: any) {
+
+    let res= await fetch(`${link}/SharedSpaces/DeleteSharedSpacesById/${sharedSpace.id}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        //
+        body: JSON.stringify({})
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    return data;
+    
+}
 
 async function GetSharedSpacesByUserId(id:number) {
     let res = await fetch(`${link}/SharedSpaces/GetSharedSpacesByUserId/${id}`)
@@ -555,4 +565,4 @@ async function AddDefaultAvatar(Avatar:IAddAvatar)
 
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId,  RedeemCoinsUser, GetUserData, RedeemCoinsChild, CreateSharedSpaces, GetSharedSpacesById, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername, DeleteInvitation, NewCoinAmountDependent, NewCoinAmountNotDependent, AddChildAssignedTasks, AddUserAssignedTasks, UpdateChildPassCode, GetUserDefaultSchedule, AddDefaultAvatar, }
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId,  RedeemCoinsUser, GetUserData, RedeemCoinsChild, CreateSharedSpaces, GetSharedSpacesById, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername, DeleteInvitation, NewCoinAmountDependent, NewCoinAmountNotDependent, AddChildAssignedTasks, AddUserAssignedTasks, UpdateChildPassCode, GetUserDefaultSchedule, AddDefaultAvatar, DeleteSharedSpacesById }

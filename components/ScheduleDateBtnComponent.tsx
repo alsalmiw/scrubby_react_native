@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { FC, useContext } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import {ThemeContext} from "../context/ThemeContext"
+import UserContext from "../context/UserContext";
 
 interface Props {
    onPress:Function
@@ -12,6 +13,8 @@ interface Props {
 
 const ScheduleDateBtnComponent: FC<Props> =(props) => {
     const {orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor, primaryTextColor} = useContext(ThemeContext)
+  const { activeDate, setActiveDate } = useContext(UserContext)
+
     const [bgColor, setBgColor]= useState('')
     const [r, setR] = useState('')
 
@@ -35,10 +38,10 @@ const ScheduleDateBtnComponent: FC<Props> =(props) => {
 
 
     return(
-        <Pressable style={[styles.dateBtn, {borderColor:bgColor}]} onPress={()=>setDateTasks()}>
-      <Text style={[styles.dateText, {color:primaryTextColor}]}>{props.date.slice(0,3)}</Text> 
-      <View style={[styles.dash, {borderColor:bgColor}]}></View>
-      <Text style={[styles.dateText, {color:primaryTextColor}]}>{props.date.slice(8,10)}</Text> 
+        <Pressable style={[styles.dateBtn, {borderColor:bgColor, backgroundColor:activeDate == props.date?bgColor:'rgb(255, 255, 255)' }]} onPress={()=>setDateTasks()}>
+      <Text style={[styles.dateText, {color:activeDate == props.date?'rgb(255, 255, 255)':bgColor}]}>{props.date.slice(0,3)}</Text> 
+      <View style={[styles.dash, {borderColor:activeDate == props.date?'rgb(255, 255, 255)':bgColor}]}></View>
+      <Text style={[styles.dateText, {color:activeDate == props.date?'rgb(255, 255, 255)':bgColor}]}>{props.date.slice(8,10)}</Text> 
     </Pressable>
 
 
@@ -50,7 +53,6 @@ const styles = StyleSheet.create({
         width:70,
         height: 90,
         borderWidth: 2,
-       // borderColor:"#000000",
         borderRadius:10,
         margin:10,
         marginRight:5,
@@ -61,16 +63,13 @@ const styles = StyleSheet.create({
       dash:{
         width:"80%",
         borderWidth: 1,
-        borderColor:"#000000",
         margin: 10,
       },
       dateText: {
         fontSize:20
       },
       datesContainer:{
-      
         flexDirection: "row",
-        
       }
     })
 

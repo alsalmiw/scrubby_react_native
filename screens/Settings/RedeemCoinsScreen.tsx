@@ -1,7 +1,7 @@
 // import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { StyleSheet, Text, View, StatusBar, TouchableWithoutFeedback, Keyboard, Alert, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TouchableWithoutFeedback, Keyboard, Alert, ScrollView, Pressable } from 'react-native';
 
 import RootStackParamList from '../../types/INavigateSettings'
 import HeaderComponent from '../../components/HeaderComponent';
@@ -22,9 +22,9 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
 
 
 
-  const { orangeColor, purpleColor } = useContext(ThemeContext)
+  const { orangeColor, purpleColor, lilacColor } = useContext(ThemeContext)
 
-  const { userData, setUserData, setChildrenData, childrenData, seeAll, setSeeAll, childData, savedUsername,} = useContext(UserContext)
+  const { userData, setUserData, setChildrenData, childrenData, seeAll, setSeeAll, childData, savedUsername, isChildFree} = useContext(UserContext)
   const [redeemCoins, setRedeemCoins] = useState<any>()
   const [remainingCoins, setRemainingCoins] = useState<any>()
   const [refreshCoins, setRefreshCoins] = useState(true)
@@ -32,7 +32,7 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
   const [childRedeem, setChildRedeem] = useState<boolean>(false)
   const [userCoins, setUserCoins] = useState(userData.coins)
   const [childCoin, setChildCoin] = useState()
-
+  const [selectedUser, setSelectedUser] = useState([]) as any
 
 
 
@@ -115,7 +115,8 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
   }
 
   useEffect(() => {
-
+    setSelectedUser({"id":userData.id, "isChild": false})
+    setChildRedeem(false)
     // getUserandChild()
     setUserCoins(userData.coins)
     console.log("================================================")
@@ -137,7 +138,14 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
           </View>
 
           <View style={styles.underlineContainer}>
+            {
+              childrenData.length>2?
             <UnderlinedHeaderComponent titleOne={'Select Member'} titleTwo={'see all'} titleThree={'see less'} />
+            : 
+            <UnderlinedOneHeaderComponent titleFirst={"Select Member"} />
+
+            }
+      
           </View>
           <>
             {
@@ -145,24 +153,44 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
                 <>
                   <View >
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                      <AvatarComponent onPress={() => { setChildRedeem(false), setRefreshCoins(true) }} imageSource={userData.photo} />
-                      {childrenData.map((child: any, idx: number) => {
+                    <Pressable  onPress={()=> {setSelectedUser({"id":userData.id, "isChild": false}), setChildRedeem(false), setRefreshCoins(true) }}>
+
+                      <AvatarComponent onPress={undefined} imageSource={userData.photo} />
+                    
+                    <View style={[styles.fadedImage, {backgroundColor:"#FFF", opacity: selectedUser.id==userData.id && selectedUser.isChild ==false ? 0:0.5}]} ></View>
+            </Pressable>
+                    
+                      {  !isChildFree?
+                      childrenData.map((child: any, idx: number) => {
                         return (
-                          <AvatarComponent key={idx} onPress={() => { setAChild(child), setChildCoin(child.dependentCoins), console.log(child), setChildRedeem(true) }} imageSource={child.dependentPhoto} />
+                          <Pressable key={idx} onPress={()=> {setSelectedUser({"id":child.id, "isChild": true}), setAChild(child), setChildCoin(child.dependentCoins),setChildRedeem(true) }}>
+                          <AvatarComponent onPress={undefined} imageSource={child.dependentPhoto} />
+                          <View style={[styles.fadedImage, {backgroundColor:"#FFF", opacity: selectedUser.id==child.id && selectedUser.isChild ==true ? 0:0.5}]} ></View>
+                          </Pressable>
                         )
-                      })}
+                      }):null}
                     </ScrollView>
                   </View>
                 </>
                 :
                 <>
                   <View style={styles.childIconView}>
-                    <AvatarComponent onPress={() => { setChildRedeem(false), setRefreshCoins(true) }} imageSource={userData.photo} />
-                    {childrenData.map((child: any, idx: number) => {
+                  <Pressable  onPress={()=> {setSelectedUser({"id":userData.id, "isChild": false}), setChildRedeem(false), setRefreshCoins(true) }}>
+
+                  <AvatarComponent onPress={undefined} imageSource={userData.photo} />
+
+                <View style={[styles.fadedImage, {backgroundColor:"#FFF", opacity: selectedUser.id==userData.id && selectedUser.isChild ==false ? 0:0.5}]} ></View>
+                </Pressable>
+                    {
+                     !isChildFree?
+                     childrenData.map((child: any, idx: number) => {
                       return (
-                        <AvatarComponent key={idx} onPress={() => { setAChild(child), setChildCoin(child.dependentCoins), console.log(child), setChildRedeem(true) }} imageSource={child.dependentPhoto} />
+                        <Pressable key={idx} onPress={()=> {setSelectedUser({"id":child.id, "isChild": true}), setAChild(child), setChildCoin(child.dependentCoins),setChildRedeem(true) }}>
+                        <AvatarComponent onPress={undefined} imageSource={child.dependentPhoto} />
+                        <View style={[styles.fadedImage, {backgroundColor:"#FFF", opacity: selectedUser.id==child.id && selectedUser.isChild ==true ? 0:0.5}]} ></View>
+                        </Pressable>
                       )
-                    })}
+                    }):null}
                   </View>
                 </>
             }
@@ -234,7 +262,15 @@ const styles = StyleSheet.create({
     flex: 0.2,
     flexDirection: 'row',
     justifyContent: 'center'
-  }
+  }, 
+  fadedImage: {
+    borderRadius:10, 
+    width: 100,
+    height: 100, 
+    margin: 5,
+    position: 'absolute'
+
+},
 });
 
 export default RedeemCoinsScreen

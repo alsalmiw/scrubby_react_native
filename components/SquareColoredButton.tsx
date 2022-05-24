@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { FC, useContext } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import {ThemeContext} from "../context/ThemeContext"
+import UserContext from "../context/UserContext";
 
 interface Props {
     children: ReactNode,
@@ -11,6 +12,8 @@ interface Props {
 
 const SquareColoredButton: FC<Props> =(props) => {
     const {orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor} = useContext(ThemeContext)
+  const { activeRoom, setActiveRoom } = useContext(UserContext)
+
     const [bgColor, setBgColor]= useState('')
 
   useEffect(()=> {

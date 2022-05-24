@@ -18,6 +18,7 @@ const ScoreBoardScreen: FC<Props> = ({ navigation, route }) => {
 
   const handleGoBack = () => {
     navigation.navigate("SettingsScreen")
+    //navigation.goBack(); 
   }
 
   useEffect(() => {

@@ -31,7 +31,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ScheduleScreen'>
 
 
 const ScheduleScreen: FC<Props> = ({ navigation }) => {
-  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, runAgain, setRunAgain, mySchedule, setMySchedule, setBlank } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, runAgain, setRunAgain, mySchedule, setMySchedule, setBlank, setTasksHistory } = useContext(UserContext)
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
 
   const [taskInfo, setTaskInfo] = useState() as any
@@ -162,6 +162,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
         setInviters(userInfo.invitations.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
         setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
         setMySchedule(userInfo.mySchedule)
+        setTasksHistory(userInfo.tasksHistory)
       }
 
     }

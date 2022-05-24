@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import { FC, useContext, useEffect, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View} from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View, Text} from 'react-native';
 import SettingsLinkComponent from '../../components/Settings/SettingsLinkComponent';
 import { FontAwesome, FontAwesome5  } from '@expo/vector-icons';
 import HeaderComponent from "../../components/HeaderComponent"
@@ -13,12 +13,14 @@ import UserContext from '../../context/UserContext';
 import AvatarComponent from '../../components/AvatarComponent';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 import UnderlinedHeaderComponent from '../../components/UnderlinedHeaderComponent';
+import TaskRowHistoryComponent from '../../components/TaskRowHistoryComponent';
+
 
 type Props = NativeStackScreenProps<RootStackParamList, 'TasksHistory'>
 
 const TasksHistoryScreen: FC<Props> = ({navigation})=> {
   const {orangeColor, blueColor, fuchsiaColor, violetColor, greenColor, yellowColor, purpleColor, lilacColor} = useContext(ThemeContext)
-  const { mySpaces, userData, childData, childrenData, acceptedInvitations , taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser, seeAll} = useContext(UserContext)
+  const { mySpaces, userData, childData, childrenData, acceptedInvitations , taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser, seeAll, tasksHistory, setTasksHistory, current, setCurrent } = useContext(UserContext)
   const [allMembers, setAllMembers] = useState([])
   //const navigation = useNavigation();
 
@@ -30,8 +32,8 @@ const TasksHistoryScreen: FC<Props> = ({navigation})=> {
 
   }, [childrenData, acceptedInvitations])
 
-
-const handleCreateUsersList = () => {
+ 
+const handleCreateUsersList = async () => {
 let membersArr = [] as any
   let member = {
     id: userData.id,
@@ -41,7 +43,7 @@ let membersArr = [] as any
     isInvited:false
   }
   membersArr.push(member)
-  setSelectedUser(member)
+ await setSelectedUser(member)
 
  childrenData.length>0?
  childrenData.map((child:any, idx:number)=> {
@@ -86,6 +88,10 @@ console.log(membersArr)
 console.log(membersArr)
 }
 
+
+
+
+let r = Math.floor(Math.random() * 7)
   const ShowMembers=() : any=> {
 
     return(
@@ -106,7 +112,7 @@ console.log(membersArr)
 
   return (
 
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
           <HeaderComponent title="Tasks History"/>
 
           <View style={styles.underlineContainer}>
@@ -136,9 +142,46 @@ console.log(membersArr)
      }
               
     </View>
-                
-          
-     </View>
+ 
+    <UnderlinedOneHeaderComponent titleFirst={'Last 50 days'}  />
+   
+    
+    <View style = {styles.flexrow}>
+       
+       
+      
+</View>
+
+     {
+         selectedUser!=null?
+         tasksHistory.length > 0?
+
+         tasksHistory.map((task:any, idx: number) =>{ 
+             return( 
+            task.memberId==selectedUser.id && task.isChild == selectedUser.isChild?
+            <View key={idx}>
+            <TaskRowHistoryComponent r={r} key={idx} idx={idx} task={task} />
+            <View style={[ {display:current===idx?"flex": "none", padding: 10}]}>
+            <Text style={[styles.taskInfo ]}>Location: {task.taskSpace} </Text>
+             <Text style={[styles.taskInfo ]}>Room: {task.taskRoom} </Text>
+            <Text style={[styles.taskInfo ]}>Date Scheduled: {task.dateScheduled.slice(0,10)}</Text>
+             <Text style={[styles.taskInfo ]}>Date Completed: {task.isCompleted?task.dateCompleted.slice(0,10):"not completed"}</Text>
+            
+             </View>
+  
+            </View>
+  
+                 : null
+             )
+         })
+         
+         : null
+         :null
+     }
+
+    </ScrollView>
+         
+
 
 
   );
@@ -148,7 +191,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
     paddingTop: 60,
     // justifyContent: 'center',
   },
@@ -172,6 +214,13 @@ underlineContainer: {
     flexWrap: "wrap",
 
   },
+  flexrow: {
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  taskInfo: {
+    fontSize: 20,
+}
 });
 
 export default TasksHistoryScreen

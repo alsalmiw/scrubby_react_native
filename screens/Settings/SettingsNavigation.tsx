@@ -3,7 +3,7 @@ import { FC } from 'react';
 import EditProfileScreen from '../Settings/EditProfileScreen'
 import SettingsScreen from '../Settings/SettingsScreen'
 import ManageInvitesScreen from '../Settings/ManageInvitesScreen'
-import RootStackParamList from '../../types/INavigateSettings'
+import RootStackParamList from '../../types/INavigation'
 import ChangePasswordScreen from './ChangePasswordScreen';
 import RedeemCoinsScreen from './RedeemCoinsScreen';
 import ScoreBoardScreen from '../ScoreBoardScreen'
@@ -14,6 +14,7 @@ import InviteUserPendingScreen from './InviteUserPendingScreen';
 
 import AcceptedInvitationScreen from './AcceptedInvitationScreen';
 import SentAcceptedInvitation from './SentAcceptedInvitationScreen';
+import TasksHistoryScreen from './TasksHistoryScreen';
 
 
 
@@ -35,6 +36,8 @@ const SettingsNavigation: FC = ()=> {
           <Tab.Screen name="InviteUserPending" component={InviteUserPendingScreen} options={{headerShown: false}} />
           <Tab.Screen name="AcceptedInvitation" component={AcceptedInvitationScreen} options={{headerShown: false}} />
           <Tab.Screen name="SentAcceptedInvitation" component={SentAcceptedInvitation} options={{headerShown: false}} />
+          <Tab.Screen name="TasksHistory" component={TasksHistoryScreen} options={{headerShown: false}} />
+
         </Tab.Navigator>
   );
 }

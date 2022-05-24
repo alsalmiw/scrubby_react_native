@@ -17,7 +17,8 @@ const ScoreBoardScreen: FC<Props> = ({ navigation, route }) => {
   const { scoreBoardList } = useContext(UserContext)
 
   const handleGoBack = () => {
-    navigation.navigate("Settings")
+    navigation.navigate("SettingsScreen")
+    //navigation.goBack(); 
   }
 
   useEffect(() => {

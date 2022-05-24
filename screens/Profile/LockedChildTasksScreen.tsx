@@ -14,22 +14,21 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import SquareColoredButton from '../../components/SquareColoredButton';
 import iconsMap from '../../types/IconsMap';
 import ChildLockModalComponent from '../../components/Modal/ChildLockModalComponent';
-import { GetTasksByRoomId } from '../../services/dataService';
+import { GetDependantDTOByChildId, GetTasksByRoomId } from '../../services/dataService';
 import TaskInfoModalComponent from '../../components/Modal/TaskInfoModalComponent';
 
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { ThemeContext } from '../../context/ThemeContext';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LockedChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-    const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, selectedTask, setSelectedTask } = useContext(UserContext)
-    // const [childDefaultSpace, setChildDefaultSpace] = useState<any>()
-
-    // const [todayDate, setTodayDate] = useState<any>()
+    const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, setChildDefaultSpace, selectedTask, setSelectedTask } = useContext(UserContext)
+    const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
     const [space, setSpace] = useState<String>("")
     const [location, setLocation] = useState<String>("")
@@ -41,6 +40,9 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
     const [childScheduleTasks, setChildScheduleTasks] = useState<any>([])
+
+    const [childCoin, setChildCoin] = useState<any>("")
+    const [childPoint, setChildPoint] = useState<any>("")
 
 
     const [childScheduleRooms, setChildScheduleRooms] = useState<any>()
@@ -104,10 +106,10 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         let notCompletedTask: any = []
         let newRooms = rooms.slice()
         newRooms.map((x: any) => x.todaysTasks.map((need: any) => need.isCompleted ? completedTask.push(need) : notCompletedTask.push(need)))
-        console.log("notComplete:", notCompletedTask)
-        console.log("Complete:", completedTask)
-        console.log("room:", rooms)
-        console.log("room:", newRooms)
+        // console.log("notComplete:", notCompletedTask)
+        // console.log("Complete:", completedTask)
+        // console.log("room:", rooms)
+        // console.log("room:", newRooms)
         setChildScheduleRooms(rooms != null || rooms.length != 0 ? rooms : 0)
         setChildScheduleRoomsCompleted(completedTask != null || completedTask.length != 0 ? completedTask : 0)
         setChildScheduleRoomsNotCompleted(notCompletedTask != null || notCompletedTask.length != 0 ? notCompletedTask : 0)
@@ -120,17 +122,28 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
         //setSpace(rooms[0].spaceName);
     }
+    const getChildInformation = async(childId:number) =>{
+       let childInfo = await GetDependantDTOByChildId(childId)
+       console.log("fetch",childInfo)
+       setChildCoin(childInfo.dependentCoins)
+       setChildPoint(childInfo.dependentPoints)
+    //    setChildPage(childInfo)
+    //    setChildDefaultSpace(childInfo.scheduledTasks[1])
+    }
 
 
     useEffect(() => {
         //repeat
         navigation.addListener('focus', () => {
+            getChildInformation(childPage.id)
             childTaskDate()
         })
         // console.log("=======================================================================++")
         // console.log("hi")
-        console.log(childDefaultSpace)
+        // console.log(childDefaultSpace)
         console.log("=====================+===================================================")
+        //console.log("diff",childPage)
+
 
 
 
@@ -166,7 +179,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
                         <View style={styles.coinContainer}>
-                            <CoinsPointsDisplayContainer coins={childPage.dependentCoins} points={childPage.dependentPoints} ></CoinsPointsDisplayContainer>
+                            <CoinsPointsDisplayContainer coins={childCoin} points={childPoint} ></CoinsPointsDisplayContainer>
                         </View>
 
 
@@ -225,19 +238,20 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                                     <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log("=======================================================================++"), console.log(taskName.isCompleted), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
 
-                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
+                                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                            <View>
+                                                <Text>Image</Text>
+                                            </View>
+                                            <View style={{ justifyContent: 'space-between' }}>
+                                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                                    <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
 
-                                            </Text>
-                                            {
-                                                taskName.isCompleted == true ?
-                                                    <AntDesign name="checksquare" size={30} color="white" />
-                                                    :
-                                                    taskName.isRequestedApproval == true && !taskName.isCompleted == true ?
-                                                        <Ionicons name="time-sharp" size={30} color="white" />
-                                                        :
-                                                        null
-                                            }
+                                                    </Text>
+                                                </View>
+                                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                                    <Text style={[{ color: 'white', fontSize: 20 }]}> <FontAwesome5 name="coins" color='white' />  {taskName.task.coins}</Text>
+                                                </View>
+                                            </View>
                                         </View>
 
                                     </TaskSpaceRowComponent>
@@ -262,28 +276,27 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                     {
                         childScheduleRoomsCompleted != null ?
-                        childScheduleRoomsCompleted.map((taskName: any, x: number) => {
+                            childScheduleRoomsCompleted.map((taskName: any, x: number) => {
 
                                 // !taskName.isCompleted
                                 return (
 
-                                    <TaskSpaceRowComponent key={x} idx={x+1} onPress={() => { console.log("=======================================================================++"), console.log(taskName.isCompleted), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
+                                    <TaskSpaceRowComponent key={x} idx={x + 1} onPress={() => { console.log("=======================================================================++"), console.log(taskName.isCompleted), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
 
-                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
-
-                                            </Text>
-                                            {
-                                                taskName.isCompleted == true ?
-                                                    <AntDesign name="checksquare" size={30} color="white" />
-                                                    :
-                                                    taskName.isRequestedApproval == true && !taskName.isCompleted == true ?
-                                                        <Ionicons name="time-sharp" size={30} color="white" />
-                                                        :
-                                                        null
-                                            }
+                                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                            <View>
+                                                <Text>Image</Text>
+                                            </View>
+                                            <View style={{ justifyContent: 'center' }}>
+                                                <View style={{ justifyContent: 'center' }}>
+                                                    <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
+                                                    </Text>
+                                                </View>
+                                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                                    <Text style={[{ color: 'white', fontSize: 20 }]}> <FontAwesome5 name="coins" color='white' />  {taskName.task.coins}</Text>
+                                                </View>
+                                            </View>
                                         </View>
-
                                     </TaskSpaceRowComponent>
 
 

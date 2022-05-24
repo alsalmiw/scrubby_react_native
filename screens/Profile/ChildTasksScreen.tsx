@@ -5,7 +5,7 @@ import { ScrollView, StyleSheet, Text, View, StatusBar, Image, Pressable, Alert 
 import HeaderComponent from '../../components/HeaderComponent';
 
 import UserContext from '../../context/UserContext';
-import RootStackParamList from '../../types/INavigateProfile';
+import RootStackParamList from '../../types/INavigation';
 import AvatarComponent from '../../components/AvatarComponent';
 import CoinsPointsDisplayContainer from '../../components/Profile/CoinsPointsDisplayContainer';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
@@ -21,12 +21,14 @@ import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { ThemeContext } from '../../context/ThemeContext';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, selectedTask, setSelectedTask} = useContext(UserContext)
+  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, selectedTask, setSelectedTask, runAgain} = useContext(UserContext)
+  const {secondaryTextColor, lightLilacColor, lilacColor} = useContext(ThemeContext)
   // const [childDefaultSpace, setChildDefaultSpace] = useState<any>()
 
   // const [todayDate, setTodayDate] = useState<any>()
@@ -79,6 +81,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     childDefaultSpace.rooms.map((room: any) => {
       let tempArr = [] as any;
       let tempRoomArr = [] as any;
+      console.log("Task:",childDefaultSpace)
       room.tasksAssigned.map((task: any) => {
         if (sevenDays.includes(task.dateScheduled)) {
           tempArr.push(task);
@@ -97,6 +100,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     roomArr.map((room: any, idx: number) => {
       rooms.push({ id: room.id, spaceName: room.spaceName, spaceCategory: room.spaceCategory, todaysTasks: taskArr[idx] });
     });
+
     setChildScheduleRooms(rooms != null || rooms.length !=0 ? rooms : 0)
     setChildSelectedRoom(rooms[0] != null || rooms[0] !=0 ? rooms[0] : 0)
     {
@@ -112,27 +116,28 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   useEffect(() => {
     //repeat
     navigation.addListener('focus', () =>{
-      childTaskDate()
+     childTaskDate()
     })
     // console.log("=======================================================================++")
     // console.log("hi")
-     console.log(childDefaultSpace)
+    //  console.log("Stuff:",childDefaultSpace)
+      // console.log("ChildPage:",childPage)
     console.log("=====================+===================================================")
 
   
-
+    
 
 
     
 
-  }, [])
+  }, [runAgain])
 
 
 
 
   return (
 
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View>
         <View>
           <HeaderComponent title='My Tasks'></HeaderComponent>
@@ -167,11 +172,27 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
         </View>
+        {/* Add GERE */}
+        <View style={[styles.flexrow]}>
+   <Text style={[styles.mainHeader, {color:secondaryTextColor}]}>{childDefaultSpace.collectionName}</Text>
+   {
+     childPage.scheduledTasks.length>1?
+
+      < Pressable style={[styles.paddingL]} onPress={()=> navigation.navigate("DefaultChildOptions")}>
+   <MaterialCommunityIcons name="home-import-outline" size={30} color={secondaryTextColor}/>
+  </Pressable>
+  :null
+   }
+   </View>
+ 
 
         <View style={styles.underLineView}>
           <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
         </View>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
+        {
+          childDefaultSpace!=null?
+          <>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
           {childScheduleRooms != null ?
             childScheduleRooms.map((room: any, x: number) => {
               // missing logic to display task not completed and today and future task.
@@ -201,7 +222,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         <View style={styles.underLineView}>
           <UnderlinedOneHeaderComponent titleFirst={'Tasks'}></UnderlinedOneHeaderComponent>
         </View>
-        <ScrollView style={styles.taskStyle}>
+        <View style={styles.taskStyle}>
 
           {
             childSelectedRoom != null ?
@@ -235,10 +256,15 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                 )
               })
               :
-              <Text>You Have No Task Today</Text>
+              <Text>Child has no upcoming tasks</Text>
               // {Alert.alert("Error", 'You have no Task', [{ text: "Ok", style: "cancel" }])}
           }
-        </ScrollView>
+        </View>
+        </>
+        :
+        <Text>There are no rooms or tasks</Text>
+        }
+       
 
         {modalVisible === true ?
           <ChildLockModalComponent /> : taskModal === true ?
@@ -249,7 +275,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
       </View>
 
-    </View>
+    </ScrollView>
   );
 }
 
@@ -317,7 +343,17 @@ const styles = StyleSheet.create({
     color: 'white',
     flexShrink: 1,
     fontSize: 13
-  }
+  },
+  flexrow: {
+    flexDirection: "row"
+  },
+  mainHeader: {
+    fontSize:25,
+    fontWeight: "bold", 
+},
+paddingL:{
+  paddingLeft:10,
+}
 });
 
 export default ChildTasksScreen

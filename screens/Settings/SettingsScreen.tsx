@@ -2,9 +2,9 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import { FC, useContext, useEffect } from 'react';
 import { StyleSheet, View} from 'react-native';
 import SettingsLinkComponent from '../../components/Settings/SettingsLinkComponent';
-import { FontAwesome, FontAwesome5  } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome5, Fontisto  } from '@expo/vector-icons';
 import HeaderComponent from "../../components/HeaderComponent"
-import RootStackParamList from '../../types/INavigateSettings'
+import RootStackParamList from '../../types/INavigation'
 import { ThemeContext } from '../../context/ThemeContext';
 import ChildFreeBoolComponent from '../../components/Settings/ChildFreeBoolComponent'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -67,6 +67,10 @@ const handleLogOut = () => {
 
                 <SettingsLinkComponent linkName='Redeem Coins' onPress={()=>navigation.navigate('RedeemCoins')} >
                   <FontAwesome5 name={'coins'} size={25} style={{marginRight: 10, color: yellowColor}} />
+                </SettingsLinkComponent>
+
+                <SettingsLinkComponent linkName='Tasks History' onPress={()=>navigation.navigate('TasksHistory')} >
+                  <Fontisto name={'archive'} size={25} style={{marginRight: 10, color: greenColor}} />
                 </SettingsLinkComponent>
       
           

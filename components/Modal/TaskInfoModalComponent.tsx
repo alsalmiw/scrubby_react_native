@@ -1,5 +1,5 @@
 import { FC, useContext, useEffect } from "react"
-import { StyleSheet, Text, View } from "react-native"
+import { Alert, StyleSheet, Text, View } from "react-native"
 import HeaderComponent from "../HeaderComponent"
 import ModalComponent from "../ModalComponent"
 import CoinsPointsDisplayContainer from "../Profile/CoinsPointsDisplayContainer"
@@ -29,7 +29,7 @@ interface ITaskInfoModal {
 
 const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild, taskedInfo, isButton }) => {
 
-    const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain } = useContext(UserContext)
+    const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
 
@@ -123,13 +123,14 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                     {
                         isButton?
                         !task.isRequestedApproval?
-                            <ButtonModalComponent onPress={()=> SubmitTaskForCompletion()}>
+                            <ButtonModalComponent onPress={()=> {SubmitTaskForCompletion(),  Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }]);}}>
                             <Text>Completed</Text>
                             </ButtonModalComponent>
                         :
 
 
-                        <ButtonModalComponent onPress={()=> ApproveSubmittedTask()}>
+                        <ButtonModalComponent onPress={()=> {ApproveSubmittedTask(),
+                         Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])}}>
                          <Text>Approve</Text>
                         </ButtonModalComponent>
                         : null

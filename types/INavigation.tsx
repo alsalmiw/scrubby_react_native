@@ -9,6 +9,7 @@ type RootStackParamList = {
     AddedTasks: undefined
     Rooms: undefined
     AddChild: undefined
+    DefaultChildOptions: undefined
 
     //Tasking
     TaskFamily:undefined, 
@@ -27,6 +28,7 @@ type RootStackParamList = {
     AcceptRequest:undefined
     InviteUserPending: undefined
     AcceptedInvitation: undefined
+    TasksHistory: undefined
 
     //Schedule
     ScheduleScreen:undefined

@@ -16,7 +16,7 @@ import UseTheme from '../../hooks/use-theme';
 // import { GetUserById } from '../../services/dataService';
 ///
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetSpacesByCollectionID, GetSelectedTasksByUserID } from '../../services/dataService';
+import { GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetSpacesByCollectionID, GetSelectedTasksByUserID, GetChildDefaultSchedule } from '../../services/dataService';
 
 
 //This is just testing
@@ -45,7 +45,7 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, setSpinnerOn, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms,setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childDefaultSpace, setChildDefaultSpace } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms,setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childDefaultSpace, setChildDefaultSpace, setBlank } = useContext(UserContext)
 
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
@@ -90,8 +90,8 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   // }
 
   useEffect(() => {
+    setBlank(false)
     // console.log(savedUsername)
-    setSpinnerOn(false)
     //AsyncGetSpaceCollectionById();
     //AsyncGetSpaceCollectionById();
     
@@ -135,14 +135,28 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   }
 
-  const handleGoToChildProfile=(child:any)=> {
+  const handleGoToChildProfile= async(child:any)=> {
     console.log("=======================================================================++")
      console.log(child)
+
     setChildPage(child)
-    setChildDefaultSpace(child.scheduledTasks[1])
+    let childDefault = await GetChildDefaultSchedule(child.id)
+    if(childDefault.length!= 0)
+    {
+      setChildDefaultSpace(childDefault)   
+       navigation.navigate('ChildTasks')
+       console.log("got it");
+    }
+    else{
+      setChildDefaultSpace([])
+      navigation.navigate('ChildTasks')
+      console.log('empty default space')
+      console.log(childDefault)
+    }
+    
     // console.log(child.scheduledTasks)
    //setChildData(child)
-    navigation.navigate('ChildTasks')
+
   }
 
   return (

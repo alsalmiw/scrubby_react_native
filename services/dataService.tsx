@@ -13,6 +13,7 @@ import ISharedSpace from '../Interfaces/ISharedSpace';
 import IChildPassCode from '../Interfaces/IChildPassCode';
 import IAddAvatar from '../Interfaces/IAddAvatar';
 import IDefaultSpace from '../Interfaces/IDefaultSpace';
+import IDefaultSpaceChild from '../Interfaces/IDefaultSpaceChild';
 
 
 let link = "https://scrubbyapi.azurewebsites.net"
@@ -382,6 +383,8 @@ async function GetUserDefaultSchedule(username:string){
     return data;
 }
 
+
+
 async function GetChildDefaultSchedule(childId:number){
     let res = await fetch(`${link}/DefaultCollectionDependent/ChildDefaultSchedule/${childId}`)
     // let data = await res.json();
@@ -447,6 +450,14 @@ async function GetSharedSpacesById(id:number){
     let data = await res.json();
     return data
 }
+
+async function GetDependantDTOByChildId(childId:number){
+    let res = await fetch(`${link}/Dependent/GetDependantDTOByChildId/${childId}`)
+    let data = await res.json();
+    return data
+}
+
+
 
 async function UpdateUserTaskToCompleted(taskId:number){
     let res = await fetch(`${link}/AssignedTasksUsers/UpdateUserTaskToCompleted/${taskId}`, {
@@ -622,9 +633,29 @@ async function AddDefaultUserSpace(newDefaultSpace:IDefaultSpace)
     return data;
 }
 
+async function CreateChildDefaultSchedule(newDefaultSpace:IDefaultSpaceChild)
+{
+    let res = await fetch(`${link}/DefaultCollectionDependent/CreateChildDefaultSchedule`,{
+        method: "Post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newDefaultSpace)
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    console.log(data)
+    return data;
+}
 
 
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId, GetUserData, RedeemCoinsUser, RedeemCoinsChild, GetSharedSpacesById, DeleteInvitation, NewCoinAmountDependent, NewCoinAmountNotDependent, AddChildAssignedTasks, AddUserAssignedTasks, UpdateChildPassCode, GetUserDefaultSchedule, AddDefaultAvatar, GetChildDefaultSchedule, UpdateUserTaskToCompleted, ApproveTaskForCompletionChild, SubmitTaskChildApproval, AddDefaultUserSpace,  CreateSharedSpaces, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername, DeleteSharedSpacesById  }
+
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId, GetUserData, RedeemCoinsUser, RedeemCoinsChild, GetSharedSpacesById, DeleteInvitation, NewCoinAmountDependent, NewCoinAmountNotDependent, AddChildAssignedTasks, AddUserAssignedTasks, UpdateChildPassCode, GetUserDefaultSchedule, AddDefaultAvatar, GetChildDefaultSchedule, UpdateUserTaskToCompleted, ApproveTaskForCompletionChild, SubmitTaskChildApproval, AddDefaultUserSpace,  CreateSharedSpaces, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername, DeleteSharedSpacesById, GetDependantDTOByChildId, CreateChildDefaultSchedule }
+
 

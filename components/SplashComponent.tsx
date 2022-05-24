@@ -19,7 +19,12 @@ const SplashComponent: FC<any> = ({ children }) => {
 
                         <SafeAreaView >
                             <ActivityIndicator color='#FFF' size="large" />
+                            <View style={{flexDirection:'row', justifyContent:'center'}}>
+                            <Text style={{color:'white'}}>Loading</Text>
+                            </View>
+
                         </SafeAreaView>
+                        
 
                     </View>
                 </View>

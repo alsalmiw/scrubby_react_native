@@ -106,10 +106,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         let notCompletedTask: any = []
         let newRooms = rooms.slice()
         newRooms.map((x: any) => x.todaysTasks.map((need: any) => need.isCompleted ? completedTask.push(need) : notCompletedTask.push(need)))
-        // console.log("notComplete:", notCompletedTask)
-        // console.log("Complete:", completedTask)
-        // console.log("room:", rooms)
-        // console.log("room:", newRooms)
+
         setChildScheduleRooms(rooms != null || rooms.length != 0 ? rooms : 0)
         setChildScheduleRoomsCompleted(completedTask != null || completedTask.length != 0 ? completedTask : 0)
         setChildScheduleRoomsNotCompleted(notCompletedTask != null || notCompletedTask.length != 0 ? notCompletedTask : 0)
@@ -134,15 +131,10 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
     useEffect(() => {
         //repeat
-        navigation.addListener('focus', () => {
+        // navigation.addListener('focus', () => {
             getChildInformation(childPage.id)
             childTaskDate()
-        })
-        // console.log("=======================================================================++")
-        // console.log("hi")
-        // console.log(childDefaultSpace)
-        console.log("=====================+===================================================")
-        //console.log("diff",childPage)
+        
 
 
 

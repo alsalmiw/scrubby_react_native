@@ -25,6 +25,10 @@ interface ITaskInfoModal {
     isChild: boolean;
     taskedInfo:any;
     isButton: boolean;
+    // childCoins:any;
+    // childPoints:any;
+    // userCoins:any;
+    // userPoints:any;
 
 }
 
@@ -35,8 +39,9 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
 
 
     const SubmitTaskForCompletion =async()=> {
+        console.log("task Info:",task.id)
             if(!isChild){
-             let result =  await UpdateUserTaskToCompleted(task.id)
+             let result:any =  await UpdateUserTaskToCompleted(task.id)
              console.log(task.id)
              if(result){
                 let defaultCollection = await GetUserDefaultSchedule(userData.username)
@@ -54,6 +59,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
             }else{  
                     //submit task for approval
               let result= await SubmitTaskChildApproval(task.id)
+              console.log("completed:",result)
               
               console.log("submit task for approval child");
 
@@ -63,6 +69,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
 
     const ApproveSubmittedTask = async()=> {
        let result = await ApproveTaskForCompletionChild(task.id)
+       console.log("approve:", result)
         console.log("approve task for child");
 
     }

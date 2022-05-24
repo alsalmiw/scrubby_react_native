@@ -137,21 +137,22 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const handleGoToChildProfile= async(child:any)=> {
     console.log("=======================================================================++")
-     console.log(child)
+     //console.log(child)
 
     setChildPage(child)
     let childDefault = await GetChildDefaultSchedule(child.id)
+    console.log("Child fetch",childDefault)
     if(childDefault.length!= 0)
     {
       setChildDefaultSpace(childDefault)   
        navigation.navigate('ChildTasks')
-       console.log("got it");
+       //console.log("got it");
     }
     else{
       setChildDefaultSpace([])
       navigation.navigate('ChildTasks')
-      console.log('empty default space')
-      console.log(childDefault)
+      //console.log('empty default space')
+      console.log("Child Default Space",childDefaultSpace)
     }
     
     // console.log(child.scheduledTasks)
@@ -248,6 +249,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     // justifyContent: 'center',
     paddingTop: StatusBar.currentHeight,
+    
   },
 
   firstRow: {

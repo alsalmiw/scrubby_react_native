@@ -129,6 +129,10 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
                 Alert.alert("Error", 'Please Enter password.', [{ text: "Cancel", style: "cancel" }]);
                 return;
             }
+            if(!fullName.trim()){
+                Alert.alert("Error", 'Please Enter Full Name.', [{ text: "Cancel", style: "cancel" }]);
+                return;
+            }
             if (regi.test(username)) {
                 Alert.alert("Error", 'Username can not contains special characters or space(s).', [{ text: "Cancel", style: "cancel" }]);
                 return;
@@ -144,7 +148,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             }
             else {
                 setBlank(true)
-                //addUser();
+                addUser();
                 setFullName("");
                 setPassword("");
                 setUsername("");

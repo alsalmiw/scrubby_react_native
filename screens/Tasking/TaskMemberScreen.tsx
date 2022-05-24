@@ -25,6 +25,7 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
   const { seeAll, setSeeAll,  mySpace, taskUser, isChild, setIsChild, selectedUser, setSelectedUser, setMyRoom} = useContext(UserContext)
 
   const [tasks, setTasks] = useState([])
+  const [r, setR] = useState(Math.floor(Math.random() * 7))
 
   useEffect(() => {
     setSeeAll(true)
@@ -33,7 +34,7 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
 
   }, [])
 
-  let r = Math.floor(Math.random() * 7)
+ 
   
   const handleGoBack = ()=>{
    
@@ -102,7 +103,7 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
             {
               tasks.length>0?
               tasks.map((task: any, idx: number) =>   
-          <TaskRowTaskInfoComponent r={r} key={idx} idx={idx} task={task} />
+          <TaskRowTaskInfoComponent r={r+2} key={idx} idx={idx} task={task} />
                 
                 
                 )

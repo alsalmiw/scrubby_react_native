@@ -16,6 +16,7 @@ import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderCo
 import FullButtonComponent from '../../components/FullButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DeleteInvite, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername } from '../../services/dataService';
+import { DeleteSharedSpacesById } from '../../services/dataService';
 import TaskSpaceRowIconComponent from '../../components/TaskSpaceRowIconComponent';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
@@ -73,7 +74,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
 
         //Gets shared spaces shared by both invited and inviter
         let result = await GetSharedSpacesByInvitedAndInviterUsername(invitedUsername, savedUsername);
-        setSharedSpaces(result);
+        setSharedSpaces(result.filter((sharedSpace: any) => sharedSpace.isDeleted === false));
     }
 
     const handleAddSharedSpace = async (filteredMySpace: any) => {
@@ -104,15 +105,43 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
 
     const handleDeleteSharedSpace = async (filteredSharedSpace: any) => {
         console.log("You deleted a shared space");
-        console.log(filteredSharedSpace);
+        console.log(filteredSharedSpace.id)
+        console.log(sharedSpaces);
 
-        //let result = await 
+        let findSharedSpace = sharedSpaces.find((sharedSpace:any) => sharedSpace.collectionId === filteredSharedSpace.id);
+        console.log(findSharedSpace);
+
+
+        let result = await DeleteSharedSpacesById(findSharedSpace);
+        console.log(result);
+        
+        if (result) {
+            console.log("You deleted a shared Space")
+            setRefreshLocalUseEffect((prevState: boolean) => !prevState);
+        }
+        
     }
 
+    const handleDeleteInvite = async () => {
 
+        let invitedUserToBeDeleted = await AsyncStorage.getItem('Invited')!;
+        
+        const DeleteInviteFetch = async() => {
+            let result = await DeleteInvite(userData.id, invitedUserToBeDeleted!);
+             console.log(result);
+            // setRefresh((prevRefresh:boolean) => prevRefresh = true)
+            // navigation.navigate('ManageInvites');
+            console.log('shit')
+            console.log(userData.id)
+            console.log(invitedUserToBeDeleted);
+            
+        }
+        
+        DeleteInviteFetch();
 
+        
+    }
     
-
     const handleAddSharedAlert = async (filteredMySpace: any) => {
 
 
@@ -134,10 +163,15 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
             {text: "Delete", onPress: handleDeleteSharedSpace.bind(this, filteredSharedSpace), style: 'default'}
         ])
 
+    }
 
+    const handleDeleteUserAlert = async () => {
+        Alert.alert("Deleting a user", "You are about to delete the user from your invitations, would you like to delete?",
+        [
+            {text: "Cancel", onPress: undefined, style: "destructive"},
+            {text: "Delete", onPress: handleDeleteInvite, style: "default"}
 
-
-
+        ])
     }
 
     
@@ -163,7 +197,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
                     <UserNameComponent name={fullName}></UserNameComponent>
                     <View style={styles.insideFirstRowContainer2}>
                         {/* The hello there is just a test, i will remove later when done adding changes */}
-                        <Feather name="trash-2" size={40} color='black' onPress={() => console.log('hello there')} />
+                        <Feather name="trash-2" size={40} color='black' onPress={handleDeleteUserAlert} />
                         <UserNameComponent name="Delete User"></UserNameComponent>
                     </View>
                 </View>

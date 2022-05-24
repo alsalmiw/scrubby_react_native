@@ -58,12 +58,15 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
         }
 
     }
-    const removeInvitee = () => {
+    const removeInvitee = async () => {
         //call delete fetch here 
-        DeleteInvite( userData.id, person.username)
+       let result = await DeleteInvite( person.id, userData.username)
+       console.log(result);
+
+       //console.log(result);
 
         //do I even need this code
-        setInviters(inviters.filter((person: IPerson) => person.username != Name))
+        //setInviters(inviters.filter((person: IPerson) => person.username != Name))
         setRefresh(true)
 
     }

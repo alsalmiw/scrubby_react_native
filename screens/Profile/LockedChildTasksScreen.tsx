@@ -41,6 +41,9 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
     const [childScheduleTasks, setChildScheduleTasks] = useState<any>([])
 
+    const [childCoin, setChildCoin] = useState<any>("")
+    const [childPoint, setChildPoint] = useState<any>("")
+
 
     const [childScheduleRooms, setChildScheduleRooms] = useState<any>()
     const [childScheduleRoomsNotCompleted, setChildScheduleRoomsNotCompleted] = useState<any>()
@@ -103,10 +106,10 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         let notCompletedTask: any = []
         let newRooms = rooms.slice()
         newRooms.map((x: any) => x.todaysTasks.map((need: any) => need.isCompleted ? completedTask.push(need) : notCompletedTask.push(need)))
-        console.log("notComplete:", notCompletedTask)
-        console.log("Complete:", completedTask)
-        console.log("room:", rooms)
-        console.log("room:", newRooms)
+        // console.log("notComplete:", notCompletedTask)
+        // console.log("Complete:", completedTask)
+        // console.log("room:", rooms)
+        // console.log("room:", newRooms)
         setChildScheduleRooms(rooms != null || rooms.length != 0 ? rooms : 0)
         setChildScheduleRoomsCompleted(completedTask != null || completedTask.length != 0 ? completedTask : 0)
         setChildScheduleRoomsNotCompleted(notCompletedTask != null || notCompletedTask.length != 0 ? notCompletedTask : 0)
@@ -121,8 +124,11 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     }
     const getChildInformation = async(childId:number) =>{
        let childInfo = await GetDependantDTOByChildId(childId)
-       setChildPage(childInfo)
-       setChildDefaultSpace(childInfo.scheduledTasks[1])
+       console.log("fetch",childInfo)
+       setChildCoin(childInfo.dependentCoins)
+       setChildPoint(childInfo.dependentPoints)
+    //    setChildPage(childInfo)
+    //    setChildDefaultSpace(childInfo.scheduledTasks[1])
     }
 
 
@@ -136,7 +142,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         // console.log("hi")
         // console.log(childDefaultSpace)
         console.log("=====================+===================================================")
-        console.log("diff",childPage)
+        //console.log("diff",childPage)
 
 
 
@@ -173,7 +179,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
                         <View style={styles.coinContainer}>
-                            <CoinsPointsDisplayContainer coins={childPage.dependentCoins} points={childPage.dependentPoints} ></CoinsPointsDisplayContainer>
+                            <CoinsPointsDisplayContainer coins={childCoin} points={childPoint} ></CoinsPointsDisplayContainer>
                         </View>
 
 

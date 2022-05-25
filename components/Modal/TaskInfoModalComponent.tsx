@@ -46,6 +46,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
              if(result){
                 let defaultCollection = await GetUserDefaultSchedule(userData.username)
                 if(defaultCollection!=null){
+                    //Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])
                     setDefaultSpace(defaultCollection)
                     setModalVisible(false)
                     setRunAgain(true)
@@ -59,9 +60,11 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
             }else{  
                     //submit task for approval
               let result= await SubmitTaskChildApproval(task.id)
+              if(result){
+                Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }]);
+                setRunAgain(true)
+              }
               console.log("completed:",result)
-              setRunAgain(true)
-              console.log("submit task for approval child");
 
                     
             }
@@ -69,7 +72,10 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
 
     const ApproveSubmittedTask = async()=> {
        let result = await ApproveTaskForCompletionChild(task.id)
-       setRunAgain(true)
+       if(result){
+        Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])
+        setRunAgain(true)
+       } 
        //console.log("approve:", result)
         console.log("approve task for child");
 
@@ -141,14 +147,13 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                     {
                         isButton?
                         !task.isRequestedApproval?
-                            <ButtonModalComponent onPress={()=> {SubmitTaskForCompletion(),  Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }]);}}>
+                            <ButtonModalComponent onPress={()=> {SubmitTaskForCompletion()}}>
                             <Text>Completed</Text>
                             </ButtonModalComponent>
                         :
 
 
-                        <ButtonModalComponent onPress={()=> {ApproveSubmittedTask(),
-                         Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])}}>
+                        <ButtonModalComponent onPress={()=> {ApproveSubmittedTask()}}>
                          <Text>Approve</Text>
                         </ButtonModalComponent>
                         : null

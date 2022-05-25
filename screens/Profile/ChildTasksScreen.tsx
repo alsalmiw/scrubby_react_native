@@ -119,7 +119,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
   useEffect(() => {
-
+    //repeat
+    // navigation.addListener('focus', () =>{
     ChildDefault()
     childTaskDate()
 

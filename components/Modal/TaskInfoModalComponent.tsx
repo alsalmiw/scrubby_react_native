@@ -39,7 +39,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
 
 
     const SubmitTaskForCompletion =async()=> {
-        console.log("task Info:",task.id)
+        //console.log("task Info:",task.id)
             if(!isChild){
              let result:any =  await UpdateUserTaskToCompleted(task.id)
              console.log(task.id)
@@ -49,7 +49,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                     setDefaultSpace(defaultCollection)
                     setModalVisible(false)
                     setRunAgain(true)
-                    console.log(defaultCollection);
+                    //console.log(defaultCollection);
                 }
                 
              }
@@ -60,7 +60,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                     //submit task for approval
               let result= await SubmitTaskChildApproval(task.id)
               console.log("completed:",result)
-              
+              setRunAgain(true)
               console.log("submit task for approval child");
 
                     
@@ -69,7 +69,8 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
 
     const ApproveSubmittedTask = async()=> {
        let result = await ApproveTaskForCompletionChild(task.id)
-       console.log("approve:", result)
+       setRunAgain(true)
+       //console.log("approve:", result)
         console.log("approve task for child");
 
     }
@@ -90,7 +91,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
         
 
         <View>
-            {console.log("task123", task)}
+            {/* {console.log("task123", task)} */}
             <ModalComponent>
                 <View style={styles.modalContainer}>
                 <View>

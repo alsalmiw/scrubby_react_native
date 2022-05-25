@@ -71,7 +71,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
         }
 
-        else { Alert.alert("Error", 'Invalid Username or Password.', [{ text: "Cancel", style: "cancel" }]) }
+        else  {setBlank(false), Alert.alert("Error", 'Account not created.', [{ text: "Cancel", style: "cancel" }]) }
 
     }
 
@@ -93,9 +93,11 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             let defaultCollection = await GetUserDefaultSchedule(username)
             let userInfo = await GetUserByUsername(username)
             if (defaultCollection.length != 0) {
+                
                 setDefaultSpace(defaultCollection)
                 navigation.navigate('Nav', { screen: "Schedule" })
             } else {
+                
                 navigation.navigate('Nav', { screen: "Profile" })
 
             }
@@ -110,6 +112,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
         }
         else {
             Alert.alert("Error", 'Incorrect Username or Password.', [{ text: "Cancel", style: "cancel" }])
+            setBlank(false)
             //console.log('fail')
         }
     }

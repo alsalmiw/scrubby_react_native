@@ -45,7 +45,7 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms,setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childDefaultSpace, setChildDefaultSpace, setBlank } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank } = useContext(UserContext)
 
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
@@ -64,17 +64,17 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     navigation.navigate('AddNewSpace');
   }
 
-  const handleGoToSpaceRooms = async(space:any)=> {
-    console.log("collection id is "+space.id)
+  const handleGoToSpaceRooms = async (space: any) => {
+    console.log("collection id is " + space.id)
     let spaceRooms = await GetSpacesByCollectionID(space.id)
     console.log("spacerooms" + spaceRooms)
     setMySpace(space)
 
-    if (spaceRooms.length != 0){
+    if (spaceRooms.length != 0) {
       setMyRooms(spaceRooms)
       navigation.navigate('Rooms')
     }
-    else{
+    else {
       setMyRooms('')
       navigation.navigate('Rooms')
     }
@@ -94,7 +94,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     // console.log(savedUsername)
     //AsyncGetSpaceCollectionById();
     //AsyncGetSpaceCollectionById();
-    
+
 
 
   }, [])
@@ -125,38 +125,39 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       //   setChildrenData(children)
       //   console.log("after");
       // }
-    //   if(usersTasks.length!= 0)
-    // {
-    //   setUsersAddedTasks (usersTasks)
-    //   console.log(usersTasks)
-    // }
+      //   if(usersTasks.length!= 0)
+      // {
+      //   setUsersAddedTasks (usersTasks)
+      //   console.log(usersTasks)
+      // }
 
     }
 
   }
 
-  const handleGoToChildProfile= async(child:any)=> {
+  const handleGoToChildProfile = async (child: any) => {
     console.log("=======================================================================++")
-     //console.log(child)
+    //console.log(child)
 
     setChildPage(child)
     let childDefault = await GetChildDefaultSchedule(child.id)
-    console.log("Child fetch",childDefault)
-    if(childDefault.length!= 0)
-    {
-      setChildDefaultSpace(childDefault)   
-       navigation.navigate('ChildTasks')
-       //console.log("got it");
+    console.log("Child fetch", childDefault)
+    if (childDefault.length != 0) {
+      //console.log("child Page",childPage)
+      setChildDefaultSpace(childDefault)
+      navigation.navigate('ChildTasks')
+      //console.log("got it");
     }
-    else{
+    else {
       setChildDefaultSpace([])
+      //console.log("child Page",childPage)
       navigation.navigate('ChildTasks')
       //console.log('empty default space')
-      console.log("Child Default Space",childDefaultSpace)
+      console.log("Child Default Space", childDefaultSpace)
     }
-    
+
     // console.log(child.scheduledTasks)
-   //setChildData(child)
+    //setChildData(child)
 
   }
 
@@ -166,7 +167,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
       <HeaderComponent title="MY PROFILE"></HeaderComponent>
       <View style={styles.firstRow}>
-        <AvatarComponent onPress={undefined}  imageSource={userData.photo} />
+        <AvatarComponent onPress={undefined} imageSource={userData.photo} />
         <View style={styles.nameAndCoinContainer}>
 
           <UserNameComponent name={userData.name}></UserNameComponent>
@@ -177,7 +178,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       </View>
 
 
-      <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo="" titleThree=""/>
+      <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo="" titleThree="" />
       <Pressable style={styles.secondRow} onPress={handleAddNewSpaceNavigation}>
         <AddItemButtonComponent onPress={handleAddNewSpaceNavigation}>
           <Entypo name="squared-plus" size={50} color={lilacColor} />
@@ -188,51 +189,51 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       </Pressable>
       <View style={styles.newSpaceContainer}>
 
-        {mySpaces.length>0?
-        mySpaces.map((space:ISpace, idx:number) =>
-          <TaskSpaceRowTrash
-            idx={r+idx}
-            key={idx}
-            onPress={()=>handleGoToSpaceRooms(space)}
-          >
-            {space.collectionName}
-          </TaskSpaceRowTrash>
-        
+        {mySpaces.length > 0 ?
+          mySpaces.map((space: ISpace, idx: number) =>
+            <TaskSpaceRowTrash
+              idx={r + idx}
+              key={idx}
+              onPress={() => handleGoToSpaceRooms(space)}
+            >
+              {space.collectionName}
+            </TaskSpaceRowTrash>
 
-        )
-        : null
+
+          )
+          : null
         }
 
       </View>
-{
-                !isChildFree? 
-                <>
-                          <UnderlinedHeaderComponent titleOne="Kids" titleTwo="" titleThree=""/>
-                            <View style={styles.thirdRow}>
-                                
-                                      <AddItemButtonComponent  onPress={handleAddChild}>
-                                        <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
-                                      </AddItemButtonComponent> 
+      {
+        !isChildFree ?
+          <>
+            <UnderlinedHeaderComponent titleOne="Kids" titleTwo="" titleThree="" />
+            <View style={styles.thirdRow}>
 
-                                      {childrenData.length!=0 ? 
-                                      childrenData.map((child:any, idx:number)=>{ 
-                                        return(
-                                      //     <AddItemButtonComponent key={idx} onPress={()=>handleGoToChildProfile(child)}>
-                                      //   <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />
-                                      // </AddItemButtonComponent>
-                                        <AvatarComponent key={idx}  onPress={()=> {console.log(child), handleGoToChildProfile(child) }} imageSource={child.dependentPhoto} />
-                                        )
+              <AddItemButtonComponent onPress={handleAddChild}>
+                <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
+              </AddItemButtonComponent>
 
-                                      })
-                                      
-                                    : null}
-                              
-                            </View>
+              {childrenData.length != 0 ?
+                childrenData.map((child: any, idx: number) => {
+                  return (
+                    //     <AddItemButtonComponent key={idx} onPress={()=>handleGoToChildProfile(child)}>
+                    //   <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />
+                    // </AddItemButtonComponent>
+                    <AvatarComponent key={idx} onPress={() => { console.log(child), handleGoToChildProfile(child) }} imageSource={child.dependentPhoto} />
+                  )
 
-                </>
-                :null
-              }
-    
+                })
+
+                : null}
+
+            </View>
+
+          </>
+          : null
+      }
+
     </ScrollView>
 
 
@@ -249,7 +250,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     // justifyContent: 'center',
     paddingTop: StatusBar.currentHeight,
-    
+
   },
 
   firstRow: {
@@ -288,7 +289,7 @@ const styles = StyleSheet.create({
   thirdRow: {
     flex: 1,
     flexDirection: 'row',
-   flexWrap: 'wrap'
+    flexWrap: 'wrap'
   },
   textStyle: {
     fontSize: 20,

@@ -14,7 +14,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import SquareColoredButton from '../../components/SquareColoredButton';
 import iconsMap from '../../types/IconsMap';
 import ChildLockModalComponent from '../../components/Modal/ChildLockModalComponent';
-import { GetDependantDTOByChildId, GetTasksByRoomId } from '../../services/dataService';
+import { GetChildDefaultSchedule, GetDependantDTOByChildId, GetTasksByRoomId } from '../../services/dataService';
 import TaskInfoModalComponent from '../../components/Modal/TaskInfoModalComponent';
 
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
@@ -27,7 +27,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 type Props = NativeStackScreenProps<RootStackParamList, 'LockedChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-    const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, setChildDefaultSpace, selectedTask, setSelectedTask } = useContext(UserContext)
+    const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, setChildDefaultSpace, selectedTask, setSelectedTask, runAgain } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
     const [space, setSpace] = useState<String>("")
@@ -124,16 +124,26 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
        console.log("fetch",childInfo)
        setChildCoin(childInfo.dependentCoins)
        setChildPoint(childInfo.dependentPoints)
-    //    setChildPage(childInfo)
-    //    setChildDefaultSpace(childInfo.scheduledTasks[1])
+        setChildPage(childInfo)
+        //setChildDefaultSpace(childInfo.scheduledTasks[1])
+    }
+
+    const childDefaultSchedule = ()=>{
+        let childDefault = GetChildDefaultSchedule(childPage.id)
+        console.log(childDefault)
+        //setChildDefaultSpace(childDefault)
     }
 
 
     useEffect(() => {
         //repeat
         // navigation.addListener('focus', () => {
-            getChildInformation(childPage.id)
-            childTaskDate()
+            //getChildInformation(childPage.id)
+            
+            
+
+            if(runAgain)childDefaultSchedule(), childTaskDate()
+            else childTaskDate()
         
 
 
@@ -143,7 +153,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
 
-    }, [])
+    }, [runAgain])
 
 
 

@@ -76,19 +76,10 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
         Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])
         setRunAgain(true)
        } 
-       //console.log("approve:", result)
         console.log("approve task for child");
 
     }
 
-    // const updateCoinsandPoint = async()=>{
-    //     let childRedeem: IRedeemCoinsChild = {
-    //         Id: aChild.id,
-    //         DependentCoins: leftover
-    
-    //       }
-    //     let updateCNP = NewCoinAmountDependent(childRedeem)
-    // }
     
 
 
@@ -114,12 +105,6 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                     </View>
 
                 </View>
-                {/* <View>
-                    <Text>
-                    {Status} Hellow
-                    </Text>
-
-                </View> */}
 
 
                 <View style={styles.underlinedView}>
@@ -139,7 +124,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                 <View style={styles.underlinedView}>
                     <UnderlinedOneHeaderComponent titleFirst={'Instructions'}></UnderlinedOneHeaderComponent>
                     <View style={styles.txtRap}>
-                        <Text>{task.task.description}+ sdadddddddddddddddddddddddddddddddddddddddddddddddddd</Text>
+                        <Text>{task.task.description}</Text>
                     </View>
                 </View>
                 </View>

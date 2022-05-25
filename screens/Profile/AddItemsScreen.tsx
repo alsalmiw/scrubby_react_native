@@ -42,6 +42,8 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AddItems'>
 const AddItemsScreen: FC<Props> = ({ navigation }) => {
   const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData, rState, setRState, myRoom } = useContext(UserContext)
 
+  const[counter,setCounter] =useState<number>(0)
+
   //let r = Math.floor(Math.random() * 7)
 
 
@@ -67,6 +69,7 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
   }
 
   const handleSelectedTasks = async () => {
+    setCounter(0);
     navigation.navigate('AddedItems')
 
   }
@@ -128,7 +131,7 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
         </>
 
         <View style={styles.underlineContainer}>
-          <UnderlinedOneHeaderComponent titleFirst={'Items'} />
+          <UnderlinedOneHeaderComponent titleFirst={'Items   '+counter } />
         </View>
         <ScrollView>
           <View style={styles.rest3}>
@@ -139,7 +142,7 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
               {
                 task.map((colorBtn: taskInfo, x: number) => {
                   return (
-                    <SquareColoredButton key={x} idx={rState + x} onPress={() => { colorBtn.UserId = userData.id, addTask.push({ ...colorBtn, 'color': (rState + x), 'spaceId': myRoom.id }), console.log(addTask) }} >
+                    <SquareColoredButton key={x} idx={rState + x} onPress={() => { colorBtn.UserId = userData.id, addTask.push({ ...colorBtn, 'color': (rState + x), 'spaceId': myRoom.id }), console.log(addTask), setCounter(counter + 1) }} >
                       <Entypo name="plus" size={45} color="white" style={styles.plusIconStyle} />
                       <Text style={styles.plusIconText}>{colorBtn.name}</Text>
                     </SquareColoredButton>

@@ -240,17 +240,17 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                                     <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log("=======================================================================++"), console.log(taskName.isCompleted), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
 
-                                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                        <View style={styles.centering}>
                                             <View>
                                                 <Text>Image</Text>
                                             </View>
                                             <View style={{ justifyContent: 'space-between' }}>
-                                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                                <View style={styles.centering}>
                                                     <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
 
                                                     </Text>
                                                 </View>
-                                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                                <View style={styles.centering}>
                                                     <Text style={[{ color: 'white', fontSize: 20 }]}> <FontAwesome5 name="coins" color='white' />  {taskName.task.coins}</Text>
                                                 </View>
                                             </View>
@@ -285,7 +285,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                                     <TaskSpaceRowComponent key={x} idx={x + 1} onPress={() => { console.log("=======================================================================++"), console.log(taskName.isCompleted), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
 
-                                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                        <View style={styles.centering}>
                                             <View>
                                                 <Text>Image</Text>
                                             </View>
@@ -294,7 +294,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                                                     <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
                                                     </Text>
                                                 </View>
-                                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                                <View style={styles.centering}>
                                                     <Text style={[{ color: 'white', fontSize: 20 }]}> <FontAwesome5 name="coins" color='white' />  {taskName.task.coins}</Text>
                                                 </View>
                                             </View>
@@ -391,6 +391,10 @@ const styles = StyleSheet.create({
         color: 'white',
         flexShrink: 1,
         fontSize: 13
+    },
+    centering:{
+        flexDirection: 'row',
+         justifyContent: 'center'
     }
 });
 

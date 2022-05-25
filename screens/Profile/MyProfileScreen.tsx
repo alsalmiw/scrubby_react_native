@@ -30,6 +30,7 @@ import UserContext from '../../context/UserContext';
 import { ISpace } from '../../Interfaces/ISpace';
 import IChild from '../../Interfaces/IChild';
 import AvatarComponent from '../../components/AvatarComponent';
+import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 
 const windowWidth = Dimensions.get('window').width * 0.33;
 
@@ -177,8 +178,10 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
         </View>
       </View>
 
-
-      <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo="" titleThree="" />
+      <View style={styles.underlineContainer}>
+    <UnderlinedOneHeaderComponent titleFirst='My Spaces' />
+      </View>
+      {/* <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo="" titleThree="" /> */}
       <Pressable style={styles.secondRow} onPress={handleAddNewSpaceNavigation}>
         <AddItemButtonComponent onPress={handleAddNewSpaceNavigation}>
           <Entypo name="squared-plus" size={50} color={lilacColor} />
@@ -208,7 +211,10 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       {
         !isChildFree ?
           <>
-            <UnderlinedHeaderComponent titleOne="Kids" titleTwo="" titleThree="" />
+          <View style={styles.underlineContainer} >
+        <UnderlinedOneHeaderComponent titleFirst='Kids' />
+          </View>
+            {/* <UnderlinedHeaderComponent titleOne="Kids" titleTwo="" titleThree="" /> */}
             <View style={styles.thirdRow}>
 
               <AddItemButtonComponent onPress={handleAddChild}>
@@ -295,7 +301,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#FFF'
-  }
+  },
+  underlineContainer: {
+
+    flexDirection: 'row',
+    justifyContent: "space-between",
+    paddingLeft: 10,
+    paddingRight: 10
+  },
 
 });
 

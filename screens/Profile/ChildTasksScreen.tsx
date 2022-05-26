@@ -166,8 +166,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
           </View>
           <View style={styles.unlockIconView}>
-            <Pressable onPress={() => setModalVisible(true)}>
-              <FontAwesome5 name="unlock" size={40} color="grey" />
+            <Pressable onPress={() =>  setModalVisible(true) }>
+              <FontAwesome5 name="unlock" size={40} color={lilacColor} />
             </Pressable>
           </View>
 
@@ -235,20 +235,20 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                         <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log("=======================================================================++"), console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
 
-                          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
+                    <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                    <Text style={{ color: '#FFF', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name} 
 
-                            </Text>
-                            {
-                              taskName.isCompleted ?
-                                <AntDesign name="checksquare" size={30} color="white" />
-                                :
-                                taskName.isRequestedApproval && !taskName.isCompleted ?
-                                  <Ionicons name="time-sharp" size={30} color="white" />
-                                  :
-                                  null
-                            }
-                          </View>
+                    </Text>
+                    {
+                      taskName.isCompleted?
+                      <AntDesign name="checksquare" size={30} color="#FFF" />
+                      :
+                      taskName.isRequestedApproval && !taskName.isCompleted?
+                      <Ionicons name="time-sharp" size={30} color="#FFF" />
+                      :
+                      null
+                    }
+                    </View>
 
                         </TaskSpaceRowComponent>
 
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   sqrTxt: {
-    color: 'white',
+    color: '#FFF',
     flexShrink: 1,
     fontSize: 13
   },

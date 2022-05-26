@@ -14,6 +14,7 @@ import AvatarComponent from '../../components/AvatarComponent';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 import UnderlinedHeaderComponent from '../../components/UnderlinedHeaderComponent';
 import TaskRowHistoryComponent from '../../components/TaskRowHistoryComponent';
+import { GetAllTasksHistoryForMembers } from '../../services/dataService';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'TasksHistory'>
@@ -27,11 +28,17 @@ const TasksHistoryScreen: FC<Props> = ({navigation})=> {
  
 
   useEffect(() => {
-   
+    getArchives()
     handleCreateUsersList()
 
-  }, [childrenData, acceptedInvitations])
+  }, [childrenData, acceptedInvitations, tasksHistory])
 
+  const getArchives = async ()=>{
+    let archives = await GetAllTasksHistoryForMembers (userData.Id)
+    if(archives.length!=0){
+      setTasksHistory(archives)
+    }
+  }
  
 const handleCreateUsersList =  () => {
 let membersArr = [] as any

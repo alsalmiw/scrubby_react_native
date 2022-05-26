@@ -43,9 +43,10 @@ const TaskSpaceRowComponent: FC<Props> =(props) => {
 const styles = StyleSheet.create({
        container: {
             width:"95%",
-            padding: 15,
+            padding: 10,
             borderRadius:5,
             margin: 3,
+          
         },
     })
 

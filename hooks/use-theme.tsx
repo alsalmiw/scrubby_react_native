@@ -5,7 +5,7 @@ export default function UseTheme(){
 
     const [primaryTextColor, setPrimaryTextColor] = useState("#454444")
     const [secondaryTextColor, setSecondaryTextColor] = useState("#5D5D5D")
-    const [primaryColor, setPrimaryColor] = useState("#FFFF")
+    const [primaryColor, setPrimaryColor] = useState("#FFFFFF")
     const [lightLilacColor, setlightLilacColor] = useState("#D9DBE7")
     const [lilacColor, setLilacColor] = useState("#A3A0B3")
     const [orangeColor, setOrangeColor] = useState("#E2683C")

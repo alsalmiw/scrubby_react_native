@@ -48,8 +48,9 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                 if(defaultCollection!=null){
                     setDefaultSpace(defaultCollection)
                     setModalVisible(false)
+                    setTaskModal(false)
                     setRunAgain(true)
-                    //console.log(defaultCollection);
+                    console.log("did it close?");
                 }
                 
              }
@@ -62,7 +63,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
               console.log("completed:",result)
               setRunAgain(true)
               console.log("submit task for approval child");
-
+              setModalVisible(false)
                     
             }
     }
@@ -72,6 +73,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
        setRunAgain(true)
        //console.log("approve:", result)
         console.log("approve task for child");
+        setModalVisible(false)
 
     }
 

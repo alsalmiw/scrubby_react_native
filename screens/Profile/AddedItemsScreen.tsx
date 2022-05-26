@@ -103,7 +103,10 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
       {/* This header component use font size 25, later must change to percentage based on device width */}
       <View>
         <HeaderComponent title="Master Bathroom Items" />
-        <UnderlinedOneHeaderComponent titleFirst="Added Items" />
+        
+      </View>
+      <View style={styles.underlineContainer}>
+      <UnderlinedOneHeaderComponent titleFirst="Added Items" />
       </View>
 
 
@@ -144,6 +147,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight
+  },
+  underlineContainer: {
+    flexDirection: 'row',
+    justifyContent: "space-between",
+    paddingLeft: 10,
+    paddingRight: 10
   },
 });
 

@@ -27,7 +27,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 type Props = NativeStackScreenProps<RootStackParamList, 'LockedChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-    const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, setChildDefaultSpace, selectedTask, setSelectedTask, runAgain } = useContext(UserContext)
+    const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, setChildDefaultSpace, selectedTask, setSelectedTask, runAgain, setRunAgain } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
     const [space, setSpace] = useState<String>("")
@@ -62,20 +62,20 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         var todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
         var nextDay = new Date(+todayDate);
 
-        let sevenDays = [] as any
-        sevenDays.push(todayDate.toISOString())
+        let oneDays = [] as any
+        oneDays.push(todayDate.toISOString())
 
 
         for (let i = 1; i < 1; i++) {
             let endDate = nextDay.getDate() + 1;
             nextDay.setDate(endDate);
-            sevenDays.push(nextDay.toISOString());
+            oneDays.push(nextDay.toISOString());
 
         }
 
         //need to re fetch child default space for new data to map room.
 
-        let nextTasks = childDefaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => sevenDays.includes(task.dateScheduled)))
+        let nextTasks = childDefaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => oneDays.includes(task.dateScheduled)))
         setChildScheduleTasks(nextTasks)
 
         let roomArr = [] as any;
@@ -84,7 +84,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
             let tempArr = [] as any;
             let tempRoomArr = [] as any;
             room.tasksAssigned.map((task: any) => {
-                if (sevenDays.includes(task.dateScheduled)) {
+                if (oneDays.includes(task.dateScheduled)) {
                     tempArr.push(task);
 
                     if (tempRoomArr.length == 0) {
@@ -105,6 +105,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         let completedTask: any = []
         let notCompletedTask: any = []
         let newRooms = rooms.slice()
+        console.log("==============================================================================================")
+        console.log(newRooms)
         newRooms.map((x: any) => x.todaysTasks.map((need: any) => need.isCompleted ? completedTask.push(need) : notCompletedTask.push(need)))
 
         setChildScheduleRooms(rooms != null || rooms.length != 0 ? rooms : 0)
@@ -119,39 +121,26 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
         //setSpace(rooms[0].spaceName);
     }
-    const getChildInformation = async(childId:number) =>{
-       let childInfo = await GetDependantDTOByChildId(childId)
-       console.log("fetch",childInfo)
-       setChildCoin(childInfo.dependentCoins)
-       setChildPoint(childInfo.dependentPoints)
+    const getChildInformation = async (childId: number) => {
+        let childInfo = await GetDependantDTOByChildId(childId)
+        console.log("fetch", childInfo)
+        setChildCoin(childInfo.dependentCoins)
+        setChildPoint(childInfo.dependentPoints)
         setChildPage(childInfo)
         //setChildDefaultSpace(childInfo.scheduledTasks[1])
     }
 
-    const childDefaultSchedule = ()=>{
+    const childDefaultSchedule = () => {
         let childDefault = GetChildDefaultSchedule(childPage.id)
-        console.log(childDefault)
-        //setChildDefaultSpace(childDefault)
+        //console.log(childDefault)
+        setChildDefaultSpace(childDefault)
     }
 
 
     useEffect(() => {
-        //repeat
-        // navigation.addListener('focus', () => {
-            //getChildInformation(childPage.id)
-            
-            
 
-            if(runAgain)childDefaultSchedule(), childTaskDate()
-            else childTaskDate()
-        
-
-
-
-
-
-
-
+        if (runAgain) childDefaultSchedule(), childTaskDate(), setRunAgain(false)
+        else childDefaultSchedule(), childTaskDate()
 
     }, [runAgain])
 
@@ -207,7 +196,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                             //fix space name and location
                             return (
                                 <View key={x} style={styles.sqrBtn}>
-                                    <SquareColoredButton idx={x + rState + 1} onPress={() => { console.log(childScheduleRooms.length), console.log("=======================================================================++"), setChildSelectedRoom(room), setSpace(room.spaceName) }}>
+                                    <SquareColoredButton idx={x + rState + 1} onPress={() => { console.log(childScheduleRooms), console.log("=======================================================================++"), setChildSelectedRoom(room), setSpace(room.spaceName) }}>
                                         <View style={styles.sqrBtn}>
                                             <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
                                         </View>
@@ -232,42 +221,46 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                 <ScrollView style={styles.taskStyle}>
 
                     {
-                        childScheduleRoomsNotCompleted != null ?
-                            childScheduleRoomsNotCompleted.map((taskName: any, x: number) => {
+                        childSelectedRoom != null ?
+                            childSelectedRoom.todaysTasks.map((taskName: any, x: number) => {
+                                // setChildScheduleRoomsNotCompleted
 
-                                // !taskName.isCompleted
                                 return (
+                                    !taskName.isCompleted ?
+                                        <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log("=======================================================================++"), console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
 
-                                    <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log("=======================================================================++"), console.log(taskName.isCompleted), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
-
-                                        <View style={styles.centering}>
-                                            <View>
-                                                <Text>Image</Text>
-                                            </View>
-                                            <View style={{ justifyContent: 'space-between' }}>
-                                                <View style={styles.centering}>
-                                                    <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
-
-                                                    </Text>
+                                            <View style={styles.centering}>
+                                                <View>
+                                                    <Text>Image</Text>
                                                 </View>
-                                                <View style={styles.centering}>
-                                                    <Text style={[{ color: 'white', fontSize: 20 }]}> <FontAwesome5 name="coins" color='white' />  {taskName.task.coins}</Text>
+                                                <View style={{ justifyContent: 'space-between' }}>
+                                                    <View style={styles.centering}>
+                                                        <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
+
+                                                        </Text>
+                                                    </View>
+                                                    <View style={styles.centering}>
+                                                        <Text style={[{ color: 'white', fontSize: 20 }]}> <FontAwesome5 name="coins" color='white' />  {taskName.task.coins}</Text>
+                                                    </View>
                                                 </View>
                                             </View>
-                                        </View>
 
-                                    </TaskSpaceRowComponent>
-
+                                        </TaskSpaceRowComponent>
+                                        :
+                                        <Text>You Have No Task Today</Text>
 
 
 
                                 )
 
 
+
                             })
+
+
                             :
                             <Text>You Have No Task Today</Text>
-                        // {Alert.alert("Error", 'You have no Task', [{ text: "Ok", style: "cancel" }])}
+
                     }
                 </ScrollView>
 
@@ -277,33 +270,31 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                 <ScrollView style={styles.taskStyle}>
 
                     {
-                        childScheduleRoomsCompleted != null ?
-                            childScheduleRoomsCompleted.map((taskName: any, x: number) => {
+                        childSelectedRoom != null ?
+                            childSelectedRoom.todaysTasks.map((taskName: any, x: number) => {
 
                                 // !taskName.isCompleted
                                 return (
+                                    taskName.isCompleted ?
+                                        <TaskSpaceRowComponent key={x} idx={x + 1} onPress={() => { console.log("=======================================================================++"), console.log(taskName.isCompleted), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
 
-                                    <TaskSpaceRowComponent key={x} idx={x + 1} onPress={() => { console.log("=======================================================================++"), console.log(taskName.isCompleted), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
-
-                                        <View style={styles.centering}>
-                                            <View>
-                                                <Text>Image</Text>
-                                            </View>
-                                            <View style={{ justifyContent: 'center' }}>
+                                            <View style={styles.centering}>
+                                                <View>
+                                                    <Text>Image</Text>
+                                                </View>
                                                 <View style={{ justifyContent: 'center' }}>
-                                                    <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
-                                                    </Text>
-                                                </View>
-                                                <View style={styles.centering}>
-                                                    <Text style={[{ color: 'white', fontSize: 20 }]}> <FontAwesome5 name="coins" color='white' />  {taskName.task.coins}</Text>
+                                                    <View style={{ justifyContent: 'center' }}>
+                                                        <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
+                                                        </Text>
+                                                    </View>
+                                                    <View style={styles.centering}>
+                                                        <Text style={[{ color: 'white', fontSize: 20 }]}> <FontAwesome5 name="coins" color='white' />  {taskName.task.coins}</Text>
+                                                    </View>
                                                 </View>
                                             </View>
-                                        </View>
-                                    </TaskSpaceRowComponent>
-
-
-
-
+                                        </TaskSpaceRowComponent>
+                                        :
+                                        null
                                 )
 
 
@@ -392,9 +383,9 @@ const styles = StyleSheet.create({
         flexShrink: 1,
         fontSize: 13
     },
-    centering:{
+    centering: {
         flexDirection: 'row',
-         justifyContent: 'center'
+        justifyContent: 'center'
     }
 });
 

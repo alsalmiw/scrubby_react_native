@@ -222,8 +222,8 @@ const styles = StyleSheet.create({
   underlineContainer: {
     flexDirection: 'row',
     justifyContent: "space-between",
-    paddingLeft: 10,
-    paddingRight: 10
+    paddingLeft: "2.5%",
+    paddingRight: "2.5%"
   },
   rest3: {
 

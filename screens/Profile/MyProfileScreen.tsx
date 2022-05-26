@@ -46,7 +46,7 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank, setRunAgain } = useContext(UserContext)
 
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
@@ -91,7 +91,11 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   // }
 
   useEffect(() => {
-    setBlank(false)
+    navigation.addListener('focus', ()=>{
+      setBlank(false)
+      setRunAgain(true)
+    })
+
     // console.log(savedUsername)
     //AsyncGetSpaceCollectionById();
     //AsyncGetSpaceCollectionById();
@@ -264,6 +268,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingLeft:'1%',
   },
 
   nameAndCoinContainer: {
@@ -295,7 +300,9 @@ const styles = StyleSheet.create({
   thirdRow: {
     flex: 1,
     flexDirection: 'row',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    paddingLeft:'2.5%',
+    paddingRight:'2.5%'
   },
   textStyle: {
     fontSize: 20,
@@ -306,8 +313,8 @@ const styles = StyleSheet.create({
 
     flexDirection: 'row',
     justifyContent: "space-between",
-    paddingLeft: 10,
-    paddingRight: 10
+    paddingLeft: '2.5%',
+    paddingRight: '2.5%'
   },
 
 });

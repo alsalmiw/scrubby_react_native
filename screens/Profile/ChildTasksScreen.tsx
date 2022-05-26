@@ -27,7 +27,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain } = useContext(UserContext)
+  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setRunAgain } = useContext(UserContext)
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
   // const [childDefaultSpace, setChildDefaultSpace] = useState<any>()
 
@@ -112,8 +112,9 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     //setSpace(rooms[0].spaceName);
   }
 
-  const ChildDefault = () => {
-    let childDefault = GetChildDefaultSchedule(childPage.id)
+  const ChildDefault = async() => {
+    let childDefault = await GetChildDefaultSchedule(childPage.id)
+    console.log("child default space:",childDefault)
     setChildDefaultSpace(childDefault)
   }
 
@@ -123,9 +124,10 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     // navigation.addListener('focus', () =>{
     ChildDefault()
     childTaskDate()
+    setRunAgain(false)
 
     console.log("=====================+===================================================")
-    console.log(runAgain)
+    
 
 
 

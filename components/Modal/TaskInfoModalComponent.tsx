@@ -9,7 +9,7 @@ import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { ThemeContext } from "../../context/ThemeContext"
 import FullButtonComponent from "../FullButtonComponent"
 import ButtonModalComponent from "./ButtonModalComponent"
-import { UpdateUserTaskToCompleted, SubmitTaskChildApproval, ApproveTaskForCompletionChild, GetUserDefaultSchedule, NewCoinAmountDependent } from "../../services/dataService"
+import { UpdateUserTaskToCompleted, SubmitTaskChildApproval, ApproveTaskForCompletionChild, GetUserDefaultSchedule, NewCoinAmountDependent, UpdateChildCoinsAndPoints } from "../../services/dataService"
 import UserContext from "../../context/UserContext"
 import IRedeemCoinsChild from "../../Interfaces/IRedeemChildCoins"
 
@@ -25,14 +25,14 @@ interface ITaskInfoModal {
     isChild: boolean;
     taskedInfo:any;
     isButton: boolean;
-    // childCoins:any;
-    // childPoints:any;
+    childInfo:any;
+    userInfo:any;
     // userCoins:any;
     // userPoints:any;
 
 }
 
-const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild, taskedInfo, isButton }) => {
+const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild, taskedInfo, isButton, childInfo, userInfo }) => {
 
     const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
@@ -74,6 +74,8 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
        let result = await ApproveTaskForCompletionChild(task.id)
        if(result){
         Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])
+        
+        let childUpdate = await UpdateChildCoinsAndPoints(childInfo)
         setRunAgain(true)
        } 
         console.log("approve task for child");

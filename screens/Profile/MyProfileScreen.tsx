@@ -55,7 +55,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   let r = Math.floor(Math.random() * 7)
 
   const handleAddChild = () => {
-    console.log('Plus Icon Works');
+    //console.log('Plus Icon Works');
     navigation.navigate('AddChild')
   }
 
@@ -65,9 +65,9 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   }
 
   const handleGoToSpaceRooms = async(space:any)=> {
-    console.log("collection id is "+space.id)
+   // console.log("collection id is "+space.id)
     let spaceRooms = await GetSpacesByCollectionID(space.id)
-    console.log("spacerooms" + spaceRooms)
+   // console.log("spacerooms" + spaceRooms)
     setMySpace(space)
 
     if (spaceRooms.length != 0){
@@ -104,7 +104,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     let userInfo: any = await AsyncStorage.getItem("Username");
     if (userInfo) {
       setSavedUsername(userInfo)
-      console.log(userInfo)
+      //console.log(userInfo)
     }
 
     let user = await GetUserByUsername(savedUsername)
@@ -136,12 +136,12 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   }
 
   const handleGoToChildProfile= async(child:any)=> {
-    console.log("=======================================================================++")
+   // console.log("=======================================================================++")
      //console.log(child)
 
     setChildPage(child)
     let childDefault = await GetChildDefaultSchedule(child.id)
-    console.log("Child fetch",childDefault)
+   // console.log("Child fetch",childDefault)
     if(childDefault.length!= 0)
     {
       setChildDefaultSpace(childDefault)   
@@ -152,7 +152,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       setChildDefaultSpace([])
       navigation.navigate('ChildTasks')
       //console.log('empty default space')
-      console.log("Child Default Space",childDefaultSpace)
+     // console.log("Child Default Space",childDefaultSpace)
     }
     
     // console.log(child.scheduledTasks)
@@ -179,7 +179,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
       <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo="" titleThree=""/>
       <Pressable style={styles.secondRow} onPress={handleAddNewSpaceNavigation}>
-        <AddItemButtonComponent onPress={handleAddNewSpaceNavigation}>
+        <AddItemButtonComponent onPress={()=>{handleAddNewSpaceNavigation}}>
           <Entypo name="squared-plus" size={50} color={lilacColor} />
         </AddItemButtonComponent>
         <View style={styles.userNameContainer}>
@@ -193,6 +193,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
           <TaskSpaceRowTrash
             idx={r+idx}
             key={idx}
+            spaceId={space.id}
             onPress={()=>handleGoToSpaceRooms(space)}
           >
             {space.collectionName}

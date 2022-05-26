@@ -29,7 +29,7 @@ export default function UseUser() {
     const [password, setPassword] = useState('')
     const [savedUsername, setSavedUsername] = useState('username')
     const [savedPassword, setSavedPassword] = useState('password')
-    const [seeAll, setSeeAll] = useState(false)
+    const [seeAll, setSeeAll] = useState(true)
     const [isChildFree, setIsChildFree] = useState(false)
     const [isChild, setIsChild] = useState(false)
     const [userData, setUserData] = useState<IUserData[]>([])

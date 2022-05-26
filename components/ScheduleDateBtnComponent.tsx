@@ -12,7 +12,7 @@ interface Props {
 }
 
 const ScheduleDateBtnComponent: FC<Props> =(props) => {
-    const {orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor, primaryTextColor} = useContext(ThemeContext)
+    const {orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor, primaryTextColor, primaryColor} = useContext(ThemeContext)
   const { activeDate, setActiveDate } = useContext(UserContext)
 
     const [bgColor, setBgColor]= useState('')
@@ -34,14 +34,14 @@ const ScheduleDateBtnComponent: FC<Props> =(props) => {
         //make color fill 
         props.onPress()
     }
-
+    // {color:activeDate == props.date?primaryColor:bgColor}
 
 
     return(
         <Pressable style={[styles.dateBtn, {borderColor:bgColor, backgroundColor:activeDate == props.date?bgColor:'rgb(255, 255, 255)' }]} onPress={()=>setDateTasks()}>
-      <Text style={[styles.dateText, {color:activeDate == props.date?'rgb(255, 255, 255)':bgColor}]}>{props.date.slice(0,3)}</Text> 
+      <Text style={[styles.dateText, {color:activeDate == props.date?primaryColor:bgColor}]}>{props.date.slice(0,3)}</Text> 
       <View style={[styles.dash, {borderColor:activeDate == props.date?'rgb(255, 255, 255)':bgColor}]}></View>
-      <Text style={[styles.dateText, {color:activeDate == props.date?'rgb(255, 255, 255)':bgColor}]}>{props.date.slice(8,10)}</Text> 
+      <Text style={[styles.dateText, {color:activeDate == props.date?primaryColor:bgColor}]}>{props.date.slice(8,10)}</Text> 
     </Pressable>
 
 

@@ -31,7 +31,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ScheduleScreen'>
 
 
 const ScheduleScreen: FC<Props> = ({ navigation }) => {
-  const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, runAgain, setRunAgain, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, mySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, runAgain, setRunAgain, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate, defaultCollection } = useContext(UserContext)
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
 
   const [taskInfo, setTaskInfo] = useState() as any
@@ -67,7 +67,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
     }
 
 
-  }, [runAgain])
+  }, [runAgain, defaultCollection])
 
   const GetTaskDates = () => {
     let today = new Date();
@@ -189,7 +189,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
         <View style={[styles.flexrow]}>
           <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{defaultSpace.collectionName}</Text>
           {
-            mySchedule.length > 1 ?
+            mySchedule!==null ?
 
               < Pressable style={[styles.paddingL]} onPress={() => navigation.navigate("DefaultOptions")}>
                 <MaterialCommunityIcons name="home-import-outline" size={30} color={secondaryTextColor} />
@@ -276,7 +276,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
                       //<TaskRowTaskInfoComponent r={r} key={idx} idx={idx} task={taskInfo} />
                       <TaskSpaceRowComponent key={idx} idx={r + idx} onPress={() => { displayTaskModel(taskInfo), setTaskInfo(taskInfo), setShowBtn(taskInfo.isCompleted) }}>
                         <View style={[styles.taskContainer, styles.flexrow]}>
-                          <Text style={[styles.text]}>{taskInfo.task.name} {taskInfo.item.name}</Text>
+                          <Text style={[styles.text, {color:"#FFF"}]}>{taskInfo.task.name} {taskInfo.item.name}</Text>
                           <View style={[styles.flexrow]}>
                             {
                               !taskInfo.isCompleted ?
@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   text: {
-    color: 'rgb(255, 255, 255)',
+    //color: 'rgb(255, 255, 255)',
     fontWeight: 'bold',
     fontSize: 20,
   },

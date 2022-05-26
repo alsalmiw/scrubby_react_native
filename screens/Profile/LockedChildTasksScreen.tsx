@@ -195,22 +195,24 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                             //fix space name and location
                             return (
-                                <View key={x} style={styles.sqrBtn}>
-                                    <SquareColoredButton idx={x + rState + 1} onPress={() => { console.log(childScheduleRooms), console.log("=======================================================================++"), setChildSelectedRoom(room), setSpace(room.spaceName) }}>
-                                        <View style={styles.sqrBtn}>
-                                            <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
-                                        </View>
-                                        <View style={styles.sqrBtn}>
-                                            <Text style={styles.sqrTxt}>{room.spaceCategory}</Text>
-                                        </View>
-                                    </SquareColoredButton>
-                                </View>
+                                room != null ?
+                                    <View key={x} style={styles.sqrBtn}>
+                                        <SquareColoredButton idx={x + rState + 1} onPress={() => { console.log(childScheduleRooms), console.log("=======================================================================++"), setChildSelectedRoom(room), setSpace(room.spaceName) }}>
+                                            <View style={styles.sqrBtn}>
+                                                <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
+                                            </View>
+                                            <View style={styles.sqrBtn}>
+                                                <Text style={styles.sqrTxt}>{room.spaceCategory}</Text>
+                                            </View>
+                                        </SquareColoredButton>
+                                    </View>
+                                    : <Text>You Have No Rooms</Text>
 
 
                             )
                         })
-                        // does not display even if they have nothing 
-                        : <Text>You Have No Rooms</Text>
+                        
+                        : null
                     }
 
                 </ScrollView>
@@ -259,7 +261,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
                             :
-                            <Text>You Have No Task Today</Text>
+                            null
 
                     }
                 </ScrollView>
@@ -294,13 +296,13 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                                             </View>
                                         </TaskSpaceRowComponent>
                                         :
-                                        null
+                                        <Text>You Have No Completed Task Today</Text>
                                 )
 
 
                             })
                             :
-                            <Text>You Have No Task Today</Text>
+                            null
                         // {Alert.alert("Error", 'You have no Task', [{ text: "Ok", style: "cancel" }])}
                     }
                 </ScrollView>

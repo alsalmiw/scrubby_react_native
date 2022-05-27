@@ -139,8 +139,16 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
     useEffect(() => {
 
-        if (runAgain) childDefaultSchedule(), childTaskDate(), setRunAgain(false)
-        else childDefaultSchedule(), childTaskDate()
+        if (runAgain) {
+            //childDefaultSchedule()
+            childTaskDate()
+            setRunAgain(false)
+        }
+        else {
+            //childDefaultSchedule()
+            childTaskDate()
+            console.log(childPage)
+        }
 
     }, [runAgain])
 
@@ -170,7 +178,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
                         <View style={styles.coinContainer}>
-                            <CoinsPointsDisplayContainer coins={childCoin} points={childPoint} ></CoinsPointsDisplayContainer>
+                            <CoinsPointsDisplayContainer coins={childPage.dependentCoins} points={childPage.dependents} ></CoinsPointsDisplayContainer>
                         </View>
 
 
@@ -211,7 +219,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                             )
                         })
-                        
+
                         : null
                     }
 

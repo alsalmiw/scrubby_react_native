@@ -14,6 +14,7 @@ import InviteUserPendingScreen from './InviteUserPendingScreen';
 
 import AcceptedInvitationScreen from './AcceptedInvitationScreen';
 import SentAcceptedInvitation from './SentAcceptedInvitationScreen';
+import AcceptedRequestScreen from './AcceptedRequestScreen';
 import TasksHistoryScreen from './TasksHistoryScreen';
 
 
@@ -28,6 +29,8 @@ const SettingsNavigation: FC = ()=> {
           <Tab.Screen name="SettingsScreen" component={SettingsScreen} options={{ headerShown: false }}/>
           {/* <Tab.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }}/> */}
           <Tab.Screen name="ManageInvites" component={ManageInvitesScreen} options={{ headerShown: false }}/>
+          <Tab.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }}/>
+          {/* <Tab.Screen name="ManageInvites" component={ManageInvitesScreen} options={{ headerShown: false}}/> */}
           <Tab.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="ScoreBoard" component={ScoreBoardScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="RedeemCoins" component={RedeemCoinsScreen} options={{ headerShown: false }}/>
@@ -36,8 +39,8 @@ const SettingsNavigation: FC = ()=> {
           <Tab.Screen name="InviteUserPending" component={InviteUserPendingScreen} options={{headerShown: false}} />
           <Tab.Screen name="AcceptedInvitation" component={AcceptedInvitationScreen} options={{headerShown: false}} />
           <Tab.Screen name="SentAcceptedInvitation" component={SentAcceptedInvitation} options={{headerShown: false}} />
+          <Tab.Screen name="AcceptedRequest" component={AcceptedRequestScreen} options={{headerShown: false}} />
           <Tab.Screen name="TasksHistory" component={TasksHistoryScreen} options={{headerShown: false}} />
-
         </Tab.Navigator>
   );
 }

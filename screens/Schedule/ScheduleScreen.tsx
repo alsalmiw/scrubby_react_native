@@ -187,7 +187,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
         setInvited(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
         setInviters(userInfo.invitations.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
         setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
-        setMySchedule(userInfo.mySchedule)
+        //setMySchedule(userInfo.mySchedule)
         setTasksHistory(userInfo.tasksHistory)
         setIsChildFree(userInfo.userInfo.isChildFree)
       }

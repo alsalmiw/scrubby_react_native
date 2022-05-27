@@ -12,6 +12,7 @@ type RootStackParamList = {
     InviteUserPending: undefined,
     AcceptedInvitation: undefined,
     SentAcceptedInvitation: undefined;
+    AcceptedRequest: undefined
   }
 
   

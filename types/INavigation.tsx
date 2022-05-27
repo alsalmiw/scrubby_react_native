@@ -30,6 +30,7 @@ type RootStackParamList = {
     AcceptedInvitation: undefined
     TasksHistory: undefined
     SentAcceptedInvitation: undefined
+    AcceptedRequest: undefined
 
     //Schedule
     ScheduleScreen:undefined

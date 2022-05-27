@@ -13,11 +13,12 @@ import UserContext from "../../context/UserContext";
 import { AcceptInvite, DeleteInvite, GetUserByUsername } from "../../services/dataService";
 
 import { FontAwesome } from '@expo/vector-icons';
+import AvatarComponent from "../../components/AvatarComponent";
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AcceptRequest'>
 
-const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
+const AcceptRequestScreen: FC<Props> = ({ navigation, route,}) => {
 
     interface IPerson {
         coins: number,
@@ -35,17 +36,19 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
     const [fullName, setFullName] = useState("")
     const [Name, setName] = useState("")
     const [person, setPerson] = useState<any>({})
+    const [inviterPhoto, setInviterPhoto] = useState<any>();
 
 
     const handleAcceptBtn = async () => {
         await handleGetLocalNameInfo()
         let accept = await AcceptInvite(person.id, userData.username)
         setRefresh(true)
-        Alert.alert("Congratulation", `${person.username} can now share a space with you`, [{ text: "Cancel", style: "cancel", onPress: () => navigation.navigate("ManageInvites") }])
+        Alert.alert("Congratulation", `${person.username} can now share a space with you`, [{ text: "Cancel", style: "cancel", onPress: () => { setRefresh(true); navigation.navigate("ManageInvites")} }])
     }
 
     const handleGetLocalNameInfo = async () => {
         let displayFullName: any = await AsyncStorage.getItem('InviterFullName')
+        console.log(displayFullName);
         if (displayFullName.length != 0) {
             setFullName(displayFullName)
         }
@@ -57,9 +60,30 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
             setPerson(displayPerson);
         }
 
+        
+
     }
+
+    const handleGetInviterPhoto = async () => {
+        let photo = await AsyncStorage.getItem('InviterPhoto')!;
+        setInviterPhoto(photo);
+        
+    }
+
+    
+
+    const handleDisplayAlert = () => {
+        Alert.alert("Deleting request" , "You are about to delete a request, would you like to delete this?", 
+        [
+            { text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "destructive" },
+            { text : "Delete", onPress: removeInvitee, style: "default" }
+        ])
+    }
+
+  
+
     const removeInvitee = async () => {
-        //call delete fetch here 
+        //call delete fetch here
        let result = await DeleteInvite( person.id, userData.username)
        console.log(result);
 
@@ -68,6 +92,7 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
         //do I even need this code
         //setInviters(inviters.filter((person: IPerson) => person.username != Name))
         setRefresh(true)
+        navigation.navigate("ManageInvites");
 
     }
     const handleGetName = async () => {
@@ -76,6 +101,7 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
     }
     useEffect(() => {
         handleGetName()
+        handleGetInviterPhoto();
 
 
     }, [])
@@ -86,12 +112,12 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route }) => {
                 <View>
                     <HeaderComponent title={"ADD TO MY SPACE"}></HeaderComponent>
                 </View>
-                <View style={{ flexDirection: 'row', paddingLeft: 20 }}>
-                    {
-                        fullName != null ? <Text>{fullName}</Text> : <Text>{Name}</Text>
-                    }
+                <View style={{ flexDirection: 'row', paddingLeft: '2%' }}>
+                    
+                    <AvatarComponent onPress={undefined} imageSource={inviterPhoto}/>
+         
 
-                    <Pressable onPress={() => removeInvitee()}>
+                    <Pressable onPress={handleDisplayAlert}>
                         <FontAwesome name="trash-o" size={24} style={{ paddingLeft: 20 }} color="gray" />
                         <Text>Delete User</Text>
                     </Pressable>

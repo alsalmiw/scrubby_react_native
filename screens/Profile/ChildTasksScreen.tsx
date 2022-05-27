@@ -22,16 +22,25 @@ import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeContext } from '../../context/ThemeContext';
+import IchildCoinAndPoint from '../../Interfaces/IchildCoinAndPoint';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setChangeFullName, setIsEditImage } = useContext(UserContext)
+  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setChangeFullName, setIsEditImage , setRunAgain} = useContext(UserContext)
+
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
   // const [childDefaultSpace, setChildDefaultSpace] = useState<any>()
 
   // const [todayDate, setTodayDate] = useState<any>()
+
+
+  // interface IchildCoinAndPoint {
+  //   Id: number;
+  //   DependentCoins: number;
+  //   DependentPoints: number
+  // }
 
   const [space, setSpace] = useState<String>("")
   const [location, setLocation] = useState<String>("")
@@ -48,11 +57,12 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   const [childScheduleRooms, setChildScheduleRooms] = useState<any>()
   const [childSelectedRoom, setChildSelectedRoom] = useState<any>()
 
+  const [childUpdateCoins, setChildUpdateCoins] = useState<IchildCoinAndPoint>()
 
 
 
-  let newArr = ['bed', 'bathroom', 'kitchen']
-  let r = Math.floor(Math.random() * 7)
+  // let newArr = ['bed', 'bathroom', 'kitchen']
+  // let r = Math.floor(Math.random() * 7)
 
 
   const childTaskDate = () => {
@@ -112,19 +122,24 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     //setSpace(rooms[0].spaceName);
   }
 
-  const ChildDefault = () => {
-    let childDefault = GetChildDefaultSchedule(childPage.id)
+  const ChildDefault = async () => {
+    let childDefault = await GetChildDefaultSchedule(childPage.id)
+    console.log("child default space:", childDefault)
     setChildDefaultSpace(childDefault)
   }
 
 
-  useEffect(() => {
+  //need to refect the value of childPage for coins to change
 
+  useEffect(() => {
+    //repeat
+    // navigation.addListener('focus', () =>{
     ChildDefault()
     childTaskDate()
+    setRunAgain(false)
 
     console.log("=====================+===================================================")
-    console.log(runAgain)
+
 
 
 
@@ -248,7 +263,18 @@ const changeChildFullName = () => {
 
                       return (
 
-                        <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log("=======================================================================++"), console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
+                        <TaskSpaceRowComponent key={x} idx={x} onPress={() => {
+                          console.log("=======================================================================++"), console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted ? true : false)
+                          {
+                            let childInfoCoin: IchildCoinAndPoint = {
+                              Id: childPage.id,
+                              DependentCoins:taskName.task.coins,
+                              DependentPoints:taskName.task.coins
+                            }
+                            setChildUpdateCoins(childInfoCoin)
+                          }
+                          
+                        }}>
 
                     <View style={{flexDirection:'row', justifyContent:'space-between'}}>
                     <Text style={{ color: '#FFF', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name} 
@@ -285,7 +311,7 @@ const changeChildFullName = () => {
 
         {modalVisible === true ?
           <ChildLockModalComponent /> : taskModal === true ?
-            <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} />
+            <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} childInfo={ childUpdateCoins} userInfo={undefined} />
             : null}
 
 

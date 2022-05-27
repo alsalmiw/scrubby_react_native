@@ -26,6 +26,7 @@ import UserContext from '../../context/UserContext';
 import { ISpace } from '../../Interfaces/ISpace';
 import IChild from '../../Interfaces/IChild';
 import AvatarComponent from '../../components/AvatarComponent';
+import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 
 const windowWidth = Dimensions.get('window').width * 0.33;
 
@@ -41,7 +42,8 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank,memberInfo, setMemberInfo, setIsEditImage  } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank,memberInfo, setMemberInfo, setIsEditImage, setRunAgain  } = useContext(UserContext)
+
 
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
@@ -86,7 +88,11 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   // }
 
   useEffect(() => {
-    setBlank(false)
+    navigation.addListener('focus', ()=>{
+      setBlank(false)
+      setRunAgain(true)
+    })
+
     // console.log(savedUsername)
     //AsyncGetSpaceCollectionById();
     //AsyncGetSpaceCollectionById();
@@ -202,8 +208,10 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
         </View>
       </View>
 
-
-      <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo="" titleThree="" />
+      <View style={styles.underlineContainer}>
+    <UnderlinedOneHeaderComponent titleFirst='My Spaces' />
+      </View>
+      {/* <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo="" titleThree="" /> */}
       <Pressable style={styles.secondRow} onPress={handleAddNewSpaceNavigation}>
         <AddItemButtonComponent onPress={()=>{handleAddNewSpaceNavigation}}>
           <Entypo name="squared-plus" size={50} color={lilacColor} />
@@ -235,7 +243,10 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       {
         !isChildFree ?
           <>
-            <UnderlinedHeaderComponent titleOne="Kids" titleTwo="" titleThree="" />
+          <View style={styles.underlineContainer} >
+        <UnderlinedOneHeaderComponent titleFirst='Kids' />
+          </View>
+            {/* <UnderlinedHeaderComponent titleOne="Kids" titleTwo="" titleThree="" /> */}
             <View style={styles.thirdRow}>
 
               <AddItemButtonComponent onPress={handleAddChild}>
@@ -285,6 +296,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingLeft:'1%',
   },
 
   nameAndCoinContainer: {
@@ -317,13 +329,22 @@ const styles = StyleSheet.create({
   thirdRow: {
     flex: 1,
     flexDirection: 'row',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    paddingLeft:'2.5%',
+    paddingRight:'2.5%'
   },
   textStyle: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#FFF'
-  }
+  },
+  underlineContainer: {
+
+    flexDirection: 'row',
+    justifyContent: "space-between",
+    paddingLeft: '2.5%',
+    paddingRight: '2.5%'
+  },
 
 });
 

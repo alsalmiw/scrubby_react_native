@@ -21,7 +21,7 @@ import { Ionicons} from '@expo/vector-icons';
 import IDefaultSpace from '../../Interfaces/IDefaultSpace';
 import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 import IDefaultSpaceChild from '../../Interfaces/IDefaultSpaceChild';
-
+//
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DefaultChildOptions'>
 

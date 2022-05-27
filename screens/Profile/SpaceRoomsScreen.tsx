@@ -57,7 +57,7 @@ const SpaceRoomsScreen: FC<Props> = ({navigation})=> {
     <Entypo  name="squared-plus" size={100} color={lilacColor} />
     </AddItemButtonComponent> 
 
-       
+       <View style={styles.roomsContainerIn}>
     {
     myRooms.length!=0?
       myRooms.map((room:any, idx:number) => {
@@ -71,6 +71,7 @@ const SpaceRoomsScreen: FC<Props> = ({navigation})=> {
       :
       null
     }
+    </View>
        {/* map through all the rooms here */}
     
 
@@ -98,7 +99,15 @@ const styles = StyleSheet.create({
 },
 buttonSize: {
    width:50, height:50
-}
+},
+roomsContainerIn:{
+  flex: 1,
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  marginTop:8,
+  
+},
+
 });
 
 export default SpaceRoomsScreen

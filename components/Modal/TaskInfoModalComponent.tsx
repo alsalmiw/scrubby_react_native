@@ -9,7 +9,7 @@ import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { ThemeContext } from "../../context/ThemeContext"
 import FullButtonComponent from "../FullButtonComponent"
 import ButtonModalComponent from "./ButtonModalComponent"
-import { UpdateUserTaskToCompleted, SubmitTaskChildApproval, ApproveTaskForCompletionChild, GetUserDefaultSchedule, NewCoinAmountDependent } from "../../services/dataService"
+import { UpdateUserTaskToCompleted, SubmitTaskChildApproval, ApproveTaskForCompletionChild, GetUserDefaultSchedule, NewCoinAmountDependent, UpdateChildCoinsAndPoints } from "../../services/dataService"
 import UserContext from "../../context/UserContext"
 import IRedeemCoinsChild from "../../Interfaces/IRedeemChildCoins"
 
@@ -25,14 +25,14 @@ interface ITaskInfoModal {
     isChild: boolean;
     taskedInfo:any;
     isButton: boolean;
-    // childCoins:any;
-    // childPoints:any;
+    childInfo:any;
+    userInfo:any;
     // userCoins:any;
     // userPoints:any;
 
 }
 
-const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild, taskedInfo, isButton }) => {
+const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild, taskedInfo, isButton, childInfo, userInfo }) => {
 
     const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
@@ -48,7 +48,8 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
              setTaskModal(false)
              if(result){
                 let defaultCollection = await GetUserDefaultSchedule(userData.username)
-                if(defaultCollection.length!=0){
+                if(defaultCollection!=null){
+                    //Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])
                     setDefaultSpace(defaultCollection)
                     setRunAgain(true)
                     console.log("did it close?");
@@ -61,6 +62,10 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
             }else{  
                     //submit task for approval
               let result= await SubmitTaskChildApproval(task.id)
+              if(result){
+                Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }]);
+                setRunAgain(true)
+              }
               console.log("completed:",result)
               setRunAgain(true)
               console.log("submit task for approval child");
@@ -71,21 +76,17 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
 
     const ApproveSubmittedTask = async()=> {
        let result = await ApproveTaskForCompletionChild(task.id)
-       setRunAgain(true)
-       //console.log("approve:", result)
+       if(result){
+        Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])
+        
+        let childUpdate = await UpdateChildCoinsAndPoints(childInfo)
+        setRunAgain(true)
+       } 
         console.log("approve task for child");
         setModalVisible(false)
 
     }
 
-    // const updateCoinsandPoint = async()=>{
-    //     let childRedeem: IRedeemCoinsChild = {
-    //         Id: aChild.id,
-    //         DependentCoins: leftover
-    
-    //       }
-    //     let updateCNP = NewCoinAmountDependent(childRedeem)
-    // }
     
 
 
@@ -111,12 +112,6 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                     </View>
 
                 </View>
-                {/* <View>
-                    <Text>
-                    {Status} Hellow
-                    </Text>
-
-                </View> */}
 
 
                 <View style={styles.underlinedView}>
@@ -136,7 +131,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                 <View style={styles.underlinedView}>
                     <UnderlinedOneHeaderComponent titleFirst={'Instructions'}></UnderlinedOneHeaderComponent>
                     <View style={styles.txtRap}>
-                        <Text>{task.task.description}+ sdadddddddddddddddddddddddddddddddddddddddddddddddddd</Text>
+                        <Text>{task.task.description}</Text>
                     </View>
                 </View>
                 </View>
@@ -150,8 +145,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                         :
 
 
-                        <ButtonModalComponent onPress={()=> {ApproveSubmittedTask(),
-                         Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])}}>
+                        <ButtonModalComponent onPress={()=> {ApproveSubmittedTask()}}>
                          <Text>Approve</Text>
                         </ButtonModalComponent>
                         : null

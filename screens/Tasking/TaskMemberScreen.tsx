@@ -1,7 +1,7 @@
 // import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useEffect, useState } from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { ScrollView, StyleSheet, Text, View, StatusBar, Image } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, StatusBar, Image, Pressable } from 'react-native';
 import RootStackParamList from '../../types/INavigateTasking'
 import { ThemeContext } from '../../context/ThemeContext';
 import HeaderComponent from '../../components/HeaderComponent';
@@ -26,11 +26,17 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
 
   const [tasks, setTasks] = useState([])
   const [r, setR] = useState(Math.floor(Math.random() * 7))
+  const [activeRoom, setActiveRoom] = useState<number>() 
 
   useEffect(() => {
     setSeeAll(true)
-    console.log(selectedUser.fullName)
+    console.log(mySpace.rooms[0])
     //console.log(mySpace)
+    if (mySpace.rooms.length > 0) {
+      setActiveRoom(mySpace.rooms[0].id)
+      setTasks(mySpace.rooms[0].tasks)
+      setMyRoom(mySpace.rooms[0])
+    }
 
   }, [])
 
@@ -46,10 +52,13 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
 
       mySpace.rooms.map((room:any, idx:number) => {
         return(
+          <Pressable key={idx} onPress={() => { setTasks(room.tasks), setMyRoom(room), setActiveRoom(room.id) }} >
         <SquareColoredButton key={idx} idx={r+idx} onPress={() => {setTasks(room.tasks), setMyRoom(room)} }>
           <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
         <Text style={[{color:"#FFF"}]}>{room.spaceName}</Text>
         </SquareColoredButton>
+        <View style={[styles.fadedImage, {backgroundColor: "#FFF", opacity:activeRoom == room.id ? 0:0.5}]}></View>
+        </Pressable>
         )
       })
     )
@@ -70,10 +79,19 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
 
            
           <View style={styles.underlineContainer}>
-          <UnderlinedHeaderComponent titleOne={'Select a Room'} titleTwo={'see all'} titleThree={'see less'} />
+            {
+               mySpace.rooms.length<5?
+                <UnderlinedOneHeaderComponent titleFirst={"Select a Room"}/>
+               : 
+
+               <UnderlinedHeaderComponent titleOne={'Select a Room'} titleTwo={'see all'} titleThree={'see less'} />
+
+            }
+          
         </View>
         <View>
           {
+           
             seeAll?
 
                   <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -100,20 +118,24 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
             {/* </View> */}
 
           <View>
+             
             {
               tasks.length>0?
               tasks.map((task: any, idx: number) =>   
-          <TaskRowTaskInfoComponent r={r+2} key={idx} idx={idx} task={task} />
-                
+             
+               <TaskRowTaskInfoComponent r={r+2} key={idx} idx={idx} task={task} />
+               
                 
                 )
-              : null
+              : 
+              <Text> You have no tasks in this room.</Text>
             }
+             
           </View>
 
-       
     </ScrollView>
-    <FullButtonComponent radius={0} color={purpleColor} onPress={()=>navigation.goBack()} >Back</FullButtonComponent>
+           <FullButtonComponent radius={0} color={purpleColor} onPress={()=>navigation.goBack()} >Back</FullButtonComponent>
+
     </>
     
   );
@@ -151,6 +173,14 @@ const styles = StyleSheet.create({
   justifyContent: "space-between",
   paddingLeft: 10,
 },
+fadedImage: {
+  borderRadius:5, 
+  width: 80,
+  height: 80, 
+  margin: 3,
+  position: 'absolute'
+
+}
   
 })
 

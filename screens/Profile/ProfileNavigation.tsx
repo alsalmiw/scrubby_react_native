@@ -13,6 +13,7 @@ import AddedTasksScreen from '../Profile/AddedtasksScreen';
 import SpaceRoomsScreen from '../Profile/SpaceRoomsScreen'
 import AddChildScreen from './AddChildScreen';
 import DefaultSpaceChildScreen from './DefaultSpaceChildScreen';
+import EditProfileScreen from './EditProfileScreen';
 
 
 const Tab = createNativeStackNavigator<RootStackParamList>();
@@ -32,6 +33,8 @@ const ProfileNavigation: FC = ()=> {
           <Tab.Screen name="Rooms" component={SpaceRoomsScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="AddChild" component={AddChildScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="DefaultChildOptions" component={DefaultSpaceChildScreen} options={{ headerShown: false }}/>
+          <Tab.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }}/>
+
 
 
         </Tab.Navigator>

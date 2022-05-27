@@ -82,7 +82,11 @@ acceptedInvitations.map((person:any, idx:number)=> { mySpaces.map((space:any, id
     isInvited:true
 
   }
-  membersArr.push(invited)
+  if(!membersArr.includes(invited))
+  {
+     membersArr.push(invited)
+  }
+ 
   }
 
   }
@@ -162,7 +166,7 @@ let r = Math.floor(Math.random() * 7)
 
      {
          selectedUser!=null?
-         tasksHistory.length > 0?
+         tasksHistory!=null?
 
          tasksHistory.map((task:any, idx: number) =>{ 
              return( 

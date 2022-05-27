@@ -1,6 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { FC } from 'react';
-import EditProfileScreen from '../Settings/EditProfileScreen'
+import EditProfileScreen from '../Profile/EditProfileScreen'
 import SettingsScreen from '../Settings/SettingsScreen'
 import ManageInvitesScreen from '../Settings/ManageInvitesScreen'
 import RootStackParamList from '../../types/INavigation'
@@ -26,7 +26,7 @@ const SettingsNavigation: FC = ()=> {
 
         <Tab.Navigator  initialRouteName="SettingsScreen">
           <Tab.Screen name="SettingsScreen" component={SettingsScreen} options={{ headerShown: false }}/>
-          <Tab.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }}/>
+          {/* <Tab.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }}/> */}
           <Tab.Screen name="ManageInvites" component={ManageInvitesScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="ScoreBoard" component={ScoreBoardScreen} options={{ headerShown: false }}/>

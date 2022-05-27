@@ -23,7 +23,7 @@ type Props = NativeStackScreenProps <RootStackParamList, 'TaskFamily'>
 const TaskFamilyScreen: FC<Props> = ({navigation})=> {
 
   const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor, greenColor } = useContext(ThemeContext);
-  const { mySpaces, userData, childData, childrenData, acceptedInvitations , taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser, seeAll} = useContext(UserContext)
+  const { mySpaces, userData, childData, childrenData, acceptedInvitations , taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser, seeAll, isChildFree} = useContext(UserContext)
 
   const [isInvited, setIsInvited] = useState(false)
   const [allMembers, setAllMembers] = useState([])
@@ -48,6 +48,9 @@ let membersArr = [] as any
   membersArr.push(member)
   setSelectedUser(member)
   setTaskUser(member)
+  
+  !isChildFree?
+
  childrenData.length>0?
  childrenData.map((child:any, idx:number)=> {
 
@@ -62,6 +65,7 @@ let membersArr = [] as any
   membersArr.push(kid)
  })
 : null
+:null
 
 acceptedInvitations.length > 0?
 acceptedInvitations.map((person:any, idx:number)=> { mySpaces.map((space:any, idx:number)=> space.sharedWith.map((shared: any)=> 
@@ -77,7 +81,11 @@ acceptedInvitations.map((person:any, idx:number)=> { mySpaces.map((space:any, id
     isInvited:true
 
   }
-  membersArr.push(invited)
+  if(!membersArr.includes(invited))
+  {
+     membersArr.push(invited)
+  }
+
   }
 
   }

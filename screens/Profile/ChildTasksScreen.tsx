@@ -27,7 +27,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain } = useContext(UserContext)
+  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setChangeFullName, setIsEditImage } = useContext(UserContext)
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
   // const [childDefaultSpace, setChildDefaultSpace] = useState<any>()
 
@@ -135,7 +135,17 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   }, [runAgain])
 
 
+const changeChildFullName = () => {
 
+  let newDetails= {
+    personId: childPage.Id,
+    username: "",
+    isChild: true,
+  }
+  setChangeFullName(newDetails)
+  navigation.navigate('EditProfile')
+  setIsEditImage(false)
+}
 
   return (
 
@@ -153,7 +163,12 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
           <View style={styles.nameAndCoinContainer}>
             <View style={styles.childName}>
+            <Pressable style={{flexDirection: 'row'}} onPress={()=>changeChildFullName()}>
               <Text style={{ fontSize: 20 }}>{childPage.dependentName}</Text>
+              <View style={{marginLeft:5}}>
+          <FontAwesome5 name="edit" size={15} color={lilacColor} />
+          </View>
+        </Pressable>
             </View>
 
             <Text>{childPage.dependentAge} years old</Text>

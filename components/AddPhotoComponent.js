@@ -44,6 +44,21 @@ const AddPhotoComponent = () => {
           }
           
 
+        
+         
+        //     let file = event.target.files[0];
+        //     const reader = new FileReader();
+        //     reader.onloadend = () => {
+        //       console.log(reader.result)
+        //       setBlogImage(reader.result)
+        //     }
+        //     reader.readAsDataURL(file)
+        //   }
+        
+    }
+
+    const handleSaveImage = async () => {
+
            const formData = new FormData();
                 formData.append('photo',  {
                     uri: result.uri,
@@ -62,26 +77,23 @@ const AddPhotoComponent = () => {
                     })
                     let response = await res.json()
                     console.log(response.path)
-         
-        //     let file = event.target.files[0];
-        //     const reader = new FileReader();
-        //     reader.onloadend = () => {
-        //       console.log(reader.result)
-        //       setBlogImage(reader.result)
-        //     }
-        //     reader.readAsDataURL(file)
-        //   }
-        
     }
 
   
 
     return(
+        <View style={[styles.container,{backgroundColor:orangeColor}]}>
+        <TitleComponent title="Edit Profile" />
         <Pressable style={[styles.container]} onPress={selectPhoto}>
             {/* {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} */}
             
             <FontAwesome name="photo" color={lilacColor} size={50}  />
         </Pressable>
+
+<FullButtonComponent radius={0} onPress={handleSave} color={blueColor}>
+<Text>Save</Text>
+</FullButtonComponent>
+</View>
     )
 }
 

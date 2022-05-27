@@ -9,12 +9,15 @@ import { ThemeContext } from '../../context/ThemeContext';
 import ChildFreeBoolComponent from '../../components/Settings/ChildFreeBoolComponent'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getLocalStorageInfo} from '../../services/localStorage'
+import UserContext from '../../context/UserContext';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SettingsScreen'>
 
 const SettingsScreen: FC<Props> = ({navigation})=> {
   const {orangeColor, blueColor, fuchsiaColor, violetColor, greenColor, yellowColor, purpleColor} = useContext(ThemeContext)
+  const { isChildFree} = useContext(UserContext)
+
   //const navigation = useNavigation();
 
   useEffect(() => {
@@ -45,15 +48,15 @@ const handleLogOut = () => {
                   <FontAwesome name={'sign-out'} size={25} style={{marginRight: 10, color: greenColor}} />
                 </SettingsLinkComponent>
 
-                <SettingsLinkComponent linkName='Edit Profile' onPress={()=>navigation.navigate('EditProfile')} >
+                {/* <SettingsLinkComponent linkName='Edit Profile' onPress={()=>navigation.navigate('EditProfile')} >
                   <FontAwesome name={'edit'} size={25} style={{marginRight: 10, color: orangeColor}} />
-                </SettingsLinkComponent>
+                </SettingsLinkComponent> */}
 
                 <SettingsLinkComponent linkName='Invites'  onPress={()=> navigation.navigate('ManageInvites')} >
                   <FontAwesome name={'group'} size={25} style={{marginRight: 10, color: fuchsiaColor}} />
                 </SettingsLinkComponent>
 
-                <SettingsLinkComponent linkName='Child Free' onPress={undefined} >
+                <SettingsLinkComponent linkName={!isChildFree?'Child Free?': 'Not Child Free?'} onPress={undefined} >
                  <ChildFreeBoolComponent/>
                 </SettingsLinkComponent>
 

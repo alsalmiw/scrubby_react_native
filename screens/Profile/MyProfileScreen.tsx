@@ -7,14 +7,10 @@ import HeaderComponent from '../../components/HeaderComponent';
 import UserNameComponent from '../../components/UserNameComponent';
 import UnderlinedHeaderComponent from '../../components/UnderlinedHeaderComponent';
 import AddItemButtonComponent from '../../components/AddItemButtonComponent';
-
+import { FontAwesome5 } from '@expo/vector-icons'; 
 import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
-//import RootStackParamList from '../../types/INavigateProfile'
 import RootStackParamList from '../../types/INavigation'
-
 import UseTheme from '../../hooks/use-theme';
-// import { GetUserById } from '../../services/dataService';
-///
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetSpacesByCollectionID, GetSelectedTasksByUserID, GetChildDefaultSchedule } from '../../services/dataService';
 
@@ -45,7 +41,7 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank, changeFullName, setChangeFullName, setIsEditImage  } = useContext(UserContext)
 
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
@@ -161,6 +157,17 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   }
 
+  const changeUserFullName=() => {
+    let newDetails= {
+      personId: userData.Id,
+      username: userData.Username,
+      isChild: false,
+    }
+    setChangeFullName(newDetails)
+    navigation.navigate('EditProfile')
+    setIsEditImage(false)
+  }
+
   return (
 
     <ScrollView style={styles.container}>
@@ -169,8 +176,13 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       <View style={styles.firstRow}>
         <AvatarComponent onPress={undefined} imageSource={userData.photo} />
         <View style={styles.nameAndCoinContainer}>
-
-          <UserNameComponent name={userData.name}></UserNameComponent>
+        <Pressable style={{flexDirection: 'row'}} onPress={()=>changeUserFullName()}>
+            <UserNameComponent name={userData.name}/>
+            <View style={{marginLeft:5}}>
+          <FontAwesome5 name="edit" size={15} color={lilacColor} />
+          </View>
+        </Pressable>
+        
           <View style={styles.coinContainer}>
             <CoinsPointsDisplayContainer coins={`${userData.coins}`} points={userData.points}></CoinsPointsDisplayContainer>
           </View>

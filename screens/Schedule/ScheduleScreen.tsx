@@ -57,7 +57,6 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
 
     if (runAgain) {
       GetTaskDates()
-      setRunAgain(false)
     }
     else {
       setBlank(false)
@@ -67,7 +66,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
     }
 
 
-  }, [runAgain, defaultCollection])
+  }, [runAgain])
 
   const GetTaskDates = () => {
     let today = new Date();
@@ -99,9 +98,19 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
     }))
    
     if (datesArr.length > 0) {
-      getRoomsbyDate(datesArr[0])
-      let day = new Date(datesArr[0])
-      setActiveDate(day.toString())
+     
+
+
+      if(runAgain){
+        setActiveDate(activeDate)
+        getRoomsbyDate(activeDate)
+        console.log("im running again")
+        console.log(activeDate)
+      }else{
+         getRoomsbyDate(datesArr[0])
+       let day = new Date(datesArr[0])
+        setActiveDate(day.toString())
+      }
     }
     else {
       setScheduledRooms([])
@@ -138,8 +147,19 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       rooms.push({ id: room.id, spaceName: room.spaceName, spaceCategory: room.spaceCategory, todaysTasks: taskArr[idx] });
     });
     setScheduledRooms(rooms)
-    setSelectedRoom(rooms[0])
-    setActiveRoom(rooms[0].id)
+   
+    if(runAgain){
+      console.log("im running again")
+      console.log(selectedRoom, activeRoom)
+
+      setSelectedRoom(selectedRoom)
+      setActiveRoom(activeRoom)
+      setRunAgain(false)
+
+    }else{
+       setSelectedRoom(rooms[0])
+        setActiveRoom(rooms[0].id)
+    }
 
 
   }
@@ -167,7 +187,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
         setInvited(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
         setInviters(userInfo.invitations.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
         setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
-        //setMySchedule(userInfo.mySchedule)
+        setMySchedule(userInfo.mySchedule)
         setTasksHistory(userInfo.tasksHistory)
         setIsChildFree(userInfo.userInfo.isChildFree)
       }
@@ -189,7 +209,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
         <View style={[styles.flexrow]}>
           <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{defaultSpace.collectionName}</Text>
           {
-            mySchedule!==null ?
+            mySchedule.length>1 ?
 
               < Pressable style={[styles.paddingL]} onPress={() => navigation.navigate("DefaultOptions")}>
                 <MaterialCommunityIcons name="home-import-outline" size={30} color={secondaryTextColor} />

@@ -42,13 +42,14 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
         //console.log("task Info:",task.id)
             if(!isChild){
              let result:any =  await UpdateUserTaskToCompleted(task.id)
-             console.log(task.id)
+           
+             Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }])
+             setModalVisible(false)
+             setTaskModal(false)
              if(result){
                 let defaultCollection = await GetUserDefaultSchedule(userData.username)
-                if(defaultCollection!=null){
+                if(defaultCollection.length!=0){
                     setDefaultSpace(defaultCollection)
-                    setModalVisible(false)
-                    setTaskModal(false)
                     setRunAgain(true)
                     console.log("did it close?");
                 }
@@ -143,7 +144,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                     {
                         isButton?
                         !task.isRequestedApproval?
-                            <ButtonModalComponent onPress={()=> {SubmitTaskForCompletion(),  Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }]);}}>
+                            <ButtonModalComponent onPress={()=> {SubmitTaskForCompletion()}}>
                             <Text>Completed</Text>
                             </ButtonModalComponent>
                         :

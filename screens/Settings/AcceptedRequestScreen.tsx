@@ -17,6 +17,7 @@ import FullButtonComponent from '../../components/FullButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DeleteInvite, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername, GetSpaceCollectionByUserId } from '../../services/dataService';
 import { DeleteSharedSpacesById } from '../../services/dataService';
+import { DeleteInvitationByInvitedAndInviterUsername } from '../../services/dataService';
 import TaskSpaceRowIconComponent from '../../components/TaskSpaceRowIconComponent';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
@@ -55,9 +56,6 @@ const AcceptedRequestScreen: FC<Props> = ({ navigation }) => {
         console.log('Saved name is')
         console.log(savedUsername)
         let inviterRequestResult = JSON.parse((await AsyncStorage.getItem("AcceptedInviterRequest"))!);
-
-        let result1 = await AsyncStorage.getAllKeys();
-        console.log(result1);
 
         console.log(inviterRequestResult);
 
@@ -115,32 +113,32 @@ const AcceptedRequestScreen: FC<Props> = ({ navigation }) => {
        
 
 
-        // let result = await DeleteSharedSpacesById(findSharedSpace);
-        // console.log(result);
+        let result = await DeleteSharedSpacesById(sharedSpace);
+        console.log(result);
 
-        // if (result) {
-        //     console.log("You deleted a shared Space")
-        //     setRefreshLocalUseEffect((prevState: boolean) => !prevState);
-        // }
+        if (result) {
+            console.log("You deleted a shared Space")
+            setRefreshLocalUseEffect((prevState: boolean) => !prevState);
+        }
 
     }
 
     const handleDeleteInvite = async () => {
 
-        let invitedUserToBeDeleted = await AsyncStorage.getItem('Invited')!;
+        console.log(savedUsername);
+        console.log(inviterInfo.inviterUsername)
 
-        const DeleteInviteFetch = async () => {
-            let result = await DeleteInvite(userData.id, invitedUserToBeDeleted!);
-            console.log(result);
-            // setRefresh((prevRefresh:boolean) => prevRefresh = true)
-            // navigation.navigate('ManageInvites');
-            console.log('shit')
-            console.log(userData.id)
-            console.log(invitedUserToBeDeleted);
+        
+        let result = await DeleteInvitationByInvitedAndInviterUsername(savedUsername, inviterInfo.inviterUsername);
+        console.log(result);
+        setRefresh((prevRefresh:boolean) => prevRefresh = true)
+        navigation.navigate('ManageInvites');
 
-        }
+        
 
-        DeleteInviteFetch();
+       
+
+       
 
 
     }

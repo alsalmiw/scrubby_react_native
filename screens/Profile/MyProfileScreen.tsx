@@ -41,7 +41,7 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank, changeFullName, setChangeFullName, setIsEditImage  } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank,memberInfo, setMemberInfo, setIsEditImage  } = useContext(UserContext)
 
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
@@ -157,26 +157,39 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   }
 
-  const changeUserFullName=() => {
+  const handleChangeInfo=(isChangeName:boolean) => {
     let newDetails= {
       personId: userData.Id,
       username: userData.Username,
       isChild: false,
     }
-    setChangeFullName(newDetails)
+
+    setMemberInfo(newDetails)
     navigation.navigate('EditProfile')
-    setIsEditImage(false)
+
+    if(isChangeName)
+    {
+      setIsEditImage(false)
+    }
+    else{
+       setIsEditImage(true)
+    }
+    
   }
 
+ 
   return (
 
     <ScrollView style={styles.container}>
 
       <HeaderComponent title="MY PROFILE"></HeaderComponent>
       <View style={styles.firstRow}>
+        <View>
         <AvatarComponent onPress={undefined} imageSource={userData.photo} />
+        <Text onPress={() =>handleChangeInfo(false)}>Edit image?</Text>
+        </View>
         <View style={styles.nameAndCoinContainer}>
-        <Pressable style={{flexDirection: 'row'}} onPress={()=>changeUserFullName()}>
+        <Pressable style={{flexDirection: 'row'}} onPress={()=>handleChangeInfo(true)}>
             <UserNameComponent name={userData.name}/>
             <View style={{marginLeft:5}}>
           <FontAwesome5 name="edit" size={15} color={lilacColor} />
@@ -277,6 +290,7 @@ const styles = StyleSheet.create({
   nameAndCoinContainer: {
     flex: 1,
     alignItems: 'center',
+    marginTop: 10,
   },
 
   coinContainer: {

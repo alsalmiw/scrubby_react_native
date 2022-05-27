@@ -21,7 +21,7 @@ type Props = NativeStackScreenProps <RootStackParamList, 'EditProfile'>
 const EditProfileScreen: FC<Props> = ({navigation})=> {
   const {orangeColor, blueColor} = useContext(ThemeContext)
   const [newName, setNewName] = useState('')
-  const {username, changeFullName, setChangeFullName, isEditImage, setIsEditImage } = useContext(UserContext)
+  const {username, isEditImage, setIsEditImage, memberInfo } = useContext(UserContext)
 
 
   const handleSave = async () => {
@@ -42,7 +42,7 @@ const EditProfileScreen: FC<Props> = ({navigation})=> {
     }
     else{
     
-    if(!changeFullName.isChild)
+    if(!memberInfo.isChild)
     {
       let data:INewName = {
       Username: username,
@@ -56,10 +56,10 @@ const EditProfileScreen: FC<Props> = ({navigation})=> {
         }
 
     }
-    else if (changeFullName.isChild)
+    else if (memberInfo.isChild)
     {
       let data:any = {
-        ChildId: changeFullName.Id,
+        ChildId: memberInfo.Id,
         Name: newName
         }
         console.log(data)
@@ -83,7 +83,7 @@ const EditProfileScreen: FC<Props> = ({navigation})=> {
    <>
         <TitleComponent title="Edit FullName" />
         <Ionicons name="person" size={100} color="#FFF" />
-        <WhiteSubTitleComponent title={!changeFullName.isChild?"New Name": "Child's New Name"} />
+        <WhiteSubTitleComponent title={!memberInfo.isChild?"New Name": "Child's New Name"} />
         <InputFieldComponent maxLength={20} value={""} holder="enter new name" hide={false} onChangeText={(e: string)=>setNewName(e)} />
  
            <FullButtonComponent radius={0} onPress={handleSave} color={blueColor}>

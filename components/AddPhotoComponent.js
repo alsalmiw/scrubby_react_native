@@ -3,12 +3,19 @@ import { StyleSheet, Text, View, TouchableHighlight, Image, Pressable } from "re
 import { FontAwesome } from '@expo/vector-icons';
 import {ThemeContext} from "../context/ThemeContext"
 import * as ImagePicker from 'expo-image-picker';
+import TitleComponent from "./AddEdit/TitleComponent";
+import FullButtonComponent from "./FullButtonComponent";
+import UserContext from "../context/UserContext";
 
 
 const AddPhotoComponent = () => {
-    const {lilacColor} = useContext(ThemeContext)
+    const {lilacColor, orangeColor, blueColor} = useContext(ThemeContext)
+  const {username, isEditImage, setIsEditImage, memberInfo } = useContext(UserContext)
+
     const [image, setImage] = useState('');
+    const [isSelected, setIsSelected] = useState(false)
     const [hasGalleryPermission, setHasGalleryPermission] =useState(false);
+
 
     useEffect(()=>{
         (async () => {
@@ -43,7 +50,7 @@ const AddPhotoComponent = () => {
               return alert("Could not access photo gallery")
           }
           
-
+          setIsSelected(true)
         
          
         //     let file = event.target.files[0];
@@ -82,18 +89,24 @@ const AddPhotoComponent = () => {
   
 
     return(
-        <View style={[styles.container,{backgroundColor:orangeColor}]}>
-        <TitleComponent title="Edit Profile" />
+        <>
+        <TitleComponent title="Edit Profile Photo" />
         <Pressable style={[styles.container]} onPress={selectPhoto}>
-            {/* {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} */}
+            {
+                isSelected?
+           <Image source={{ uri: image }} style={{ width: 200, height: 200, borderRadius:10 }} />
+                :
+                 <FontAwesome name="photo" color={lilacColor} size={50}  />
+
+            }
             
-            <FontAwesome name="photo" color={lilacColor} size={50}  />
+           
         </Pressable>
 
-<FullButtonComponent radius={0} onPress={handleSave} color={blueColor}>
+<FullButtonComponent radius={0} onPress={handleSaveImage} color={blueColor}>
 <Text>Save</Text>
 </FullButtonComponent>
-</View>
+</>
     )
 }
 

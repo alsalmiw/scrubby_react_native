@@ -166,7 +166,7 @@ const changeChildFullName = () => {
             <Pressable style={{flexDirection: 'row'}} onPress={()=>changeChildFullName()}>
               <Text style={{ fontSize: 20 }}>{childPage.dependentName}</Text>
               <View style={{marginLeft:5}}>
-          <FontAwesome5 name="edit" size={15} color={lilacColor} />
+          <FontAwesome5 name="edit" size={20} color={lilacColor} />
           </View>
         </Pressable>
             </View>

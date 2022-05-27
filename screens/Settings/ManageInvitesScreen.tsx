@@ -86,7 +86,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
     <>
       <View style={styles.container}>
         <View >
-          <HeaderComponent title='MANAGE INVIATIONS' />
+          <HeaderComponent title='MANAGE INVITATIONS' />
         </View>
 
         <View style={{ alignItems: 'center' }}>

@@ -1,4 +1,4 @@
 export default interface IAddAvatar {
-    Username:string;
+    Id:string;
     Photo:string;
     }

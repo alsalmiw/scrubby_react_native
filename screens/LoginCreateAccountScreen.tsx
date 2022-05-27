@@ -7,11 +7,10 @@ import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentL
 import UserContext from "../context/UserContext"
 import INewUser from "../Interfaces/INewUser"
 import IUserLogin from "../Interfaces/IUserLogin"
-import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin, AddDefaultAvatar, GetUserByUsername } from "../services/dataService"
+import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin, GetUserByUsername } from "../services/dataService"
 import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
 import ChildFreeBoolComponent from "../components/Settings/ChildFreeBoolComponent"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import PhotoComponent from "../components/PhotoComponent"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import avatars from '../types/IAvatars'
 import FullButtonComponent from "../components/FullButtonComponent"

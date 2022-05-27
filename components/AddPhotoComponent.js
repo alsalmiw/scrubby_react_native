@@ -6,6 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import TitleComponent from "./AddEdit/TitleComponent";
 import FullButtonComponent from "./FullButtonComponent";
 import UserContext from "../context/UserContext";
+import { ChangeAvatarImage, ChangeDependentAvatarImageawait } from "../services/dataService";
 
 
 const AddPhotoComponent = () => {
@@ -84,13 +85,45 @@ const AddPhotoComponent = () => {
                     })
                     let response = await res.json()
                     console.log(response.path)
+
+                    if(response!=null){
+                        if(!memberInfo.isChild)
+                        {
+                          let data = {
+                          Id: userData.id,
+                          Photo: response.path
+                          }
+                          console.log(data)
+                          let result = await ChangeAvatarImage(data)
+                          if(result) {
+                              alert("You have successfully updated your photo")
+                              navigation.navigate('ProfileScreen')
+                            }
+                    
+                        }
+                        else if (memberInfo.isChild)
+                        {
+                          let data = {
+                            Id: memberInfo.Id,
+                            Photo: response.path
+                            }
+                            console.log(data)
+                            let result = ChangeDependentAvatarImageawait (data)
+                            if(result) {
+                                alert("You have successfully updated your child's photo")
+                                navigation.navigate('ChildTasks')
+                              }
+                      
+                        }
+                    }
+                   
     }
 
   
 
     return(
         <>
-        <TitleComponent title="Edit Profile Photo" />
+        <TitleComponent title={memberInfo.isChild?"Edit Child's Photo":"Edit Profile Photo"} />
         <Pressable style={[styles.container]} onPress={selectPhoto}>
             {
                 isSelected?

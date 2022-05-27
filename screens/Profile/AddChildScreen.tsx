@@ -2,7 +2,7 @@
 import { FC, useContext, useState } from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
-
+import avatars from '../../types/IAvatars'
 import RootStackParamList from '../../types/INavigateProfile'
 import InputFieldComponent from '../../components/AddEdit/InputFieldComponent'
 import TitleComponent from '../../components/AddEdit/TitleComponent'
@@ -22,6 +22,8 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
   const {orangeColor, blueColor} = useContext(ThemeContext)
   const [newChildName, setNewChildName] = useState('')
   const [newChildAge, setNewChildAge] = useState(0)
+  let avR = Math.floor(Math.random() * 46)
+
 
   const {username, userData, setChildData, childData} = useContext(UserContext)
 
@@ -32,7 +34,7 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
         UserID: userData.id,
         DependentName: newChildName,
         DependentAge: newChildAge,
-        DependentPhoto: "none",
+        DependentPhoto: avatars[avR],
         DependentCoins: 0,
         DependentPoints: 0,
         IsDeleted: false,

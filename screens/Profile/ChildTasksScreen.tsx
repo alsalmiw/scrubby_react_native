@@ -27,7 +27,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setChangeFullName, setIsEditImage } = useContext(UserContext)
+  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setIsEditImage, setMemberInfo } = useContext(UserContext)
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
   // const [childDefaultSpace, setChildDefaultSpace] = useState<any>()
 
@@ -135,16 +135,23 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   }, [runAgain])
 
 
-const changeChildFullName = () => {
+const handleChangeInfo = (isChangeName:boolean) => {
 
   let newDetails= {
     personId: childPage.Id,
     username: "",
     isChild: true,
   }
-  setChangeFullName(newDetails)
+  setMemberInfo(newDetails)
   navigation.navigate('EditProfile')
-  setIsEditImage(false)
+  if(isChangeName)
+  {
+    setIsEditImage(false)
+  }
+  else{
+     setIsEditImage(true)
+  }
+ 
 }
 
   return (
@@ -157,13 +164,16 @@ const changeChildFullName = () => {
 
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.firstRow}>
+            <View>
             <AvatarComponent onPress={() => { console.log(childScheduleRooms) }} imageSource={childPage.dependentPhoto} />
+            <Text style={{color:"blue"}} onPress={() =>handleChangeInfo(false)}>Edit image?</Text>
+            </View>
           </View>
 
 
           <View style={styles.nameAndCoinContainer}>
             <View style={styles.childName}>
-            <Pressable style={{flexDirection: 'row'}} onPress={()=>changeChildFullName()}>
+            <Pressable style={{flexDirection: 'row'}} onPress={()=>handleChangeInfo(true)}>
               <Text style={{ fontSize: 20 }}>{childPage.dependentName}</Text>
               <View style={{marginLeft:5}}>
           <FontAwesome5 name="edit" size={20} color={lilacColor} />

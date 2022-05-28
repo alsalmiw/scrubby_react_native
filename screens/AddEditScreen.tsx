@@ -20,7 +20,7 @@ const AddEditProfile: FC =() => {
 const styles = StyleSheet.create({
         container: {
             alignItems: 'center',
-            backgroundColor:"white",
+            backgroundColor:"#FFF",
             justifyContent: 'center',
              width:200,
              height:200,

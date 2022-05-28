@@ -11,7 +11,7 @@ import {en, enGB, registerTranslation,} from 'react-native-paper-dates'
 import { ThemeContext } from '../context/ThemeContext';
 import UnderlinedOneHeaderComponent from './UnderlinedOneHeaderComponent';
 import UserNameComponent from './UserNameComponent';
-import ReactNativeCalendar from './ReactNativeCalendar';
+//import ReactNativeCalendar from './ReactNativeCalendar';
 import { AddChildAssignedTasks, AddUserAssignedTasks } from '../services/dataService';
 import DatePicker from 'react-native-datepicker';
 import { getDate } from 'date-fns';

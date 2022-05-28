@@ -38,7 +38,7 @@ const ModalComponent: FC<any> = ({ children }) => {
                 style={[styles.button,]}
                 onPress={() => handleX()}
               >
-                <AntDesign name="close" size={35} color="black" />
+                <AntDesign name="close" size={35} color="#000" />
               </Pressable>
             </View>
 
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     margin: 20,
     width: "95%",
     height: "80%",
-    backgroundColor: "white",
+    backgroundColor: "#FFF",
     borderRadius: 0,
     paddingTop: 10,
     padding: 10,
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
 
   textStyle: {
-    color: "white",
+    color: "#FFF",
     fontWeight: "bold",
     textAlign: "center"
   },

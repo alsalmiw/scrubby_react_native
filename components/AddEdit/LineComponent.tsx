@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     lineChild: {
         height: 1,
         alignSelf: 'stretch',
-        backgroundColor: 'black',
+        backgroundColor: '#000',
         width: '95%',
     }
 })

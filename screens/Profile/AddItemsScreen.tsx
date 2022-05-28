@@ -143,7 +143,7 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
                 task.map((colorBtn: taskInfo, x: number) => {
                   return (
                     <SquareColoredButton key={x} idx={rState + x} onPress={() => { colorBtn.UserId = userData.id, addTask.push({ ...colorBtn, 'color': (rState + x), 'spaceId': myRoom.id }), console.log(addTask), setCounter(counter + 1) }} >
-                      <Entypo name="plus" size={45} color="white" style={styles.plusIconStyle} />
+                      <Entypo name="plus" size={45} color="#fff" style={styles.plusIconStyle} />
                       <Text style={styles.plusIconText}>{colorBtn.name}</Text>
                     </SquareColoredButton>
                   )
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   categories: {
-    borderColor: 'black',
+    borderColor: '#000',
     borderWidth: 2,
     borderRadius: 8,
     padding: 10,
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   categories2: {
-    borderColor: 'black',
+    borderColor: '#000',
     borderWidth: 2,
     borderRadius: 8,
     padding: 10,
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   plusIconText: {
-    color: 'white',
+    color: '#FFF',
     textAlign: 'center',
     marginTop: 0
   }

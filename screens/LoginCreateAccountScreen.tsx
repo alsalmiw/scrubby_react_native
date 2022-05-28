@@ -250,7 +250,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
 
                                     <View>
-                                        <Text style={styles.loginTxt}>Already have an account. <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: 'blue' }}>Login here.</Text></Text>
+                                        <Text style={styles.loginTxt}>Already have an account. <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: '#000080' }}>Login here.</Text></Text>
                                     </View>
                                 </View>
                                 <View style={styles.btnStyle}>
@@ -270,7 +270,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
                                     </View>
 
                                     <View>
-                                        <Text style={styles.loginTxt}>New here? <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: 'blue' }}>Create an Account</Text></Text>
+                                        <Text style={styles.loginTxt}>New here? <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: '#000080' }}>Create an Account</Text></Text>
                                     </View>
 
                                 </View>

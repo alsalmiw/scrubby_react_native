@@ -34,13 +34,14 @@ interface ITaskInfoModal {
 
 const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild,  isButton, childInfo }) => {
 
-    const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal } = useContext(UserContext)
+    const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal, setRunScheduleAgain } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
 
     const SubmitTaskForCompletion =async()=> {
         //console.log("task Info:",task.id)
             if(!isChild){
+                setRunScheduleAgain(true)
              let result:any =  await UpdateUserTaskToCompleted(task.id)
            
              Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }])
@@ -51,7 +52,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                 if(defaultCollection!=null){
                     //Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])
                     setDefaultSpace(defaultCollection)
-                    setRunAgain(true)
+                  
                     console.log("did it close?");
                 }
                 

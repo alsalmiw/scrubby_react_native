@@ -4,7 +4,7 @@ import { Button, Pressable, StyleSheet, Text, View, ScrollView, Image } from 're
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GetUserData } from '../../services/dataService';
 import UserContext from '../../context/UserContext';
-import ReactNativeCalendar from '../../components/ReactNativeCalendar';
+//import ReactNativeCalendar from '../../components/ReactNativeCalendar';
 import HeaderComponent from '../../components/HeaderComponent';
 import UserNameComponent from '../../components/UserNameComponent';
 import { ThemeContext } from '../../context/ThemeContext';
@@ -31,15 +31,15 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ScheduleScreen'>
 
 
 const ScheduleScreen: FC<Props> = ({ navigation }) => {
-  const { savedUsername, setSavedUsername, setMySpaces, mySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, runAgain, setRunAgain, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate, defaultCollection } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, mySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate, defaultCollection, runScheduleAgain, setRunScheduleAgain } = useContext(UserContext)
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
 
   const [taskInfo, setTaskInfo] = useState() as any
   const [scheduledDates, setScheduledDates] = useState<any[]>([])
   const [scheduledRooms, setScheduledRooms] = useState<any[]>([])
-  const [activeRoom, setActiveRoom] = useState<number>() 
+  const [activeRoom, setActiveRoom] = useState<number>()
 
- 
+
   const [scheduledTasks, setScheduledTasks] = useState<any[]>([])
   const [r, setR] = useState<number>(Math.floor(Math.random() * 7))
   const [selectedRoom, setSelectedRoom] = useState<any>()
@@ -52,10 +52,10 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
 
 
   useEffect(() => {
-    
-      setBlank(false)
-      GetTaskDates()
-  }, [defaultSpace])
+
+    setBlank(false)
+    GetTaskDates()
+  }, [defaultSpace, selectedRoom])
 
   const GetTaskDates = () => {
     let today = new Date();
@@ -72,7 +72,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       nextFiftyDays.push(nextDay.toISOString());
 
     }
-  
+
     let nextTasks = defaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => nextFiftyDays.includes(task.dateScheduled)))
     setScheduledTasks(nextTasks)
     let datesArr = [] as any
@@ -84,23 +84,20 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       let dateF = new Date(date)
       return dateF.toString()
     }))
-   
+
     if (datesArr.length > 0) {
-     
 
 
-      if(runAgain){
-        setActiveDate(activeDate)
-        getRoomsbyDate(activeDate)
-        console.log("run again true")
-        console.log("active date: " + activeDate)
+        console.log(runScheduleAgain)
+      // if (runScheduleAgain==true) {
+      //   setActiveDate(activeDate)
+      //   getRoomsbyDate(activeDate)
+
+     // } 
+      if(!runScheduleAgain) {
+        getRoomsbyDate(datesArr[0])
         let day = new Date(datesArr[0])
-        console.log("day passed in "+day.toString());
-      }else{
-         getRoomsbyDate(datesArr[0])
-       let day = new Date(datesArr[0])
         setActiveDate(day.toString())
-        console.log(day.toString());
       }
     }
     else {
@@ -138,54 +135,56 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       rooms.push({ id: room.id, spaceName: room.spaceName, spaceCategory: room.spaceCategory, todaysTasks: taskArr[idx] });
     });
     setScheduledRooms(rooms)
-   
-    if(runAgain){
-      // console.log("im running again")
-      // console.log(selectedRoom, activeRoom)
+
+    if (runScheduleAgain==true) {
+      console.log("im running again setting selected and active room")
+      console.log(selectedRoom, activeRoom)
 
       setSelectedRoom(selectedRoom)
-      setActiveRoom(activeRoom)
-      setRunAgain(false)
+     // setActiveRoom(activeRoom)
+      
 
-    }else{
-       setSelectedRoom(rooms[0])
-        setActiveRoom(rooms[0].id)
+    } 
+      else if(!runScheduleAgain){
+      console.log("im in room one when selecting date")
+      setSelectedRoom(rooms[0])
+      setActiveRoom(rooms[0].id)
     }
 
-
+    setRunScheduleAgain(false)
   }
 
   const displayTaskModel = (task: any) => {
-    
+
     setModalVisible(true)
 
   }
 
 
 
-  const GetUserInfoByUsername = async () => {
+  // const GetUserInfoByUsername = async () => {
 
-    let username: any = await AsyncStorage.getItem("Username");
-    if (username) {
-      setSavedUsername(username)
-      let userInfo = await GetUserData(username)
+  //   let username: any = await AsyncStorage.getItem("Username");
+  //   if (username) {
+  //     setSavedUsername(username)
+  //     let userInfo = await GetUserData(username)
 
-      if (userInfo.length != 0) {
-       //setChildrenData(userInfo.children)
-        //setMySpaces(userInfo.spaces)
-       // setUserData(userInfo.userInfo)
-        //setScoreBoardList(userInfo.scoreBoard)
-       // setInvited(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
-        //setInviters(userInfo.invitations.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
-       // setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
-        //setMySchedule(userInfo.mySchedule)
-        setTasksHistory(userInfo.tasksHistory)
-        //setIsChildFree(userInfo.userInfo.isChildFree)
-      }
+  //     if (userInfo.length != 0) {
+  //       //setChildrenData(userInfo.children)
+  //       //setMySpaces(userInfo.spaces)
+  //       // setUserData(userInfo.userInfo)
+  //       //setScoreBoardList(userInfo.scoreBoard)
+  //       // setInvited(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
+  //       //setInviters(userInfo.invitations.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
+  //       // setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
+  //       //setMySchedule(userInfo.mySchedule)
+  //       setTasksHistory(userInfo.tasksHistory)
+  //       //setIsChildFree(userInfo.userInfo.isChildFree)
+  //     }
 
-    }
+  //   }
 
-  }
+  // }
 
 
 
@@ -200,7 +199,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
         <View style={[styles.flexrow]}>
           <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{defaultSpace.collectionName}</Text>
           {
-            mySchedule.length>1 ?
+            mySchedule.length > 1 ?
 
               < Pressable style={[styles.paddingL]} onPress={() => navigation.navigate("DefaultOptions")}>
                 <MaterialCommunityIcons name="home-import-outline" size={30} color={secondaryTextColor} />
@@ -226,7 +225,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
                 // <View style={styles.dash}></View>
                 // <Text style={styles.dateText}>{date.slice(8,10)}</Text> 
                 //  </Pressable>
-                <ScheduleDateBtnComponent key={idx} idx={idx} date={date} onPress={() => {getRoomsbyDate(date), setActiveDate(date)}} />
+                <ScheduleDateBtnComponent key={idx} idx={idx} date={date} onPress={() => { getRoomsbyDate(date), setActiveDate(date) }} />
               )
             })
             :
@@ -249,12 +248,12 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
 
               return (
                 <Pressable key={idx} onPress={() => { setSelectedRoom(room), setActiveRoom(room.id) }} >
-                   
-                <SquareColoredButton idx={r + idx} onPress={() => { setSelectedRoom(room), setActiveRoom(room.id)  }}>
-                  <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
-                  <Text style={{ color: "rgb(255, 255, 255)" }}>{room.spaceName}</Text>
-                </SquareColoredButton>
-               <View style={[styles.fadedImage, {backgroundColor: "#FFF", opacity:activeRoom == room.id ? 0:0.5}]}></View>
+
+                  <SquareColoredButton idx={r + idx} onPress={() => { setSelectedRoom(room), setActiveRoom(room.id) }}>
+                    <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
+                    <Text style={{ color: "rgb(255, 255, 255)" }}>{room.spaceName}</Text>
+                  </SquareColoredButton>
+                  <View style={[styles.fadedImage, { backgroundColor: "#FFF", opacity: activeRoom == room.id ? 0 : 0.5 }]}></View>
                 </Pressable>
               )
 
@@ -287,7 +286,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
                       //<TaskRowTaskInfoComponent r={r} key={idx} idx={idx} task={taskInfo} />
                       <TaskSpaceRowComponent key={idx} idx={r + idx} onPress={() => { displayTaskModel(taskInfo), setTaskInfo(taskInfo), setShowBtn(taskInfo.isCompleted) }}>
                         <View style={[styles.taskContainer, styles.flexrow]}>
-                          <Text style={[styles.text, {color:"#FFF"}]}>{taskInfo.task.name} {taskInfo.item.name}</Text>
+                          <Text style={[styles.text, { color: "#FFF" }]}>{taskInfo.task.name} {taskInfo.item.name}</Text>
                           <View style={[styles.flexrow]}>
                             {
                               !taskInfo.isCompleted ?
@@ -394,13 +393,13 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   fadedImage: {
-    borderRadius:5, 
+    borderRadius: 5,
     width: 80,
-    height: 80, 
+    height: 80,
     margin: 3,
     position: 'absolute'
 
-}
+  }
 
 });
 

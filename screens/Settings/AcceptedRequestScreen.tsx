@@ -203,7 +203,7 @@ const AcceptedRequestScreen: FC<Props> = ({ navigation }) => {
                     <UserNameComponent name={inviterInfo.inviterFullname}></UserNameComponent>
                     <View style={styles.insideFirstRowContainer2}>
                         {/* The hello there is just a test, i will remove later when done adding changes */}
-                        <Feather name="trash-2" size={40} color='black' onPress={handleDeleteUserAlert} />
+                        <Feather name="trash-2" size={40} color='#000' onPress={handleDeleteUserAlert} />
                         <UserNameComponent name="Delete User"></UserNameComponent>
                     </View>
                 </View>

@@ -141,7 +141,7 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
                 <View style={styles.insideFirstRowContainer1}>
                     <UserNameComponent name={fullName}></UserNameComponent>
                     <View style={styles.insideFirstRowContainer2}>
-                        <Feather name="trash-2" size={40} color='black' onPress={handleDisplayAlert}/>
+                        <Feather name="trash-2" size={40} color='#000' onPress={handleDisplayAlert}/>
                         <UserNameComponent name="Delete User"></UserNameComponent>
                     </View>
                 </View>

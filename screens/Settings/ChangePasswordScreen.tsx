@@ -33,7 +33,7 @@ const ChangePasswordScreen: FC<Props> = ({navigation, route})=> {
     if(result) {
         console.log (result)
         alert("You have successfully updated your password")
-        navigation.navigate('Settings')
+        navigation.navigate('SettingsScreen')
     }
       }
       else{
@@ -49,7 +49,7 @@ const ChangePasswordScreen: FC<Props> = ({navigation, route})=> {
  
     <View style={[styles.container, {backgroundColor:fuchsiaColor}]}>
         <TitleComponent title="Change Password" />
-        <FontAwesome name='lock' size={100} style={{marginRight: 10, color: 'white', marginBottom:10}} />
+        <FontAwesome name='lock' size={100} style={{marginRight: 10, color: '#FFF', marginBottom:10}} />
         <WhiteSubTitleComponent title="New Password" />
         <InputFieldComponent value={""} maxLength={20} holder="new password" hide={true} onChangeText={(e: string)=>setNewPassword(e)} />
         <WhiteSubTitleComponent title="Repeat New Password" />

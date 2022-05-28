@@ -185,7 +185,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                     </View>
                     <View style={styles.unlockIconView}>
                         <Pressable onPress={() => setModalVisible(true)}>
-                            <FontAwesome5 name="lock" size={40} color="grey" />
+                            <FontAwesome5 name="lock" size={40} color="#414141" />
                         </Pressable>
                     </View>
 
@@ -245,12 +245,12 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                                                 </View>
                                                 <View style={{ justifyContent: 'space-between' }}>
                                                     <View style={styles.centering}>
-                                                        <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
+                                                        <Text style={{ color: '#FFF', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
 
                                                         </Text>
                                                     </View>
                                                     <View style={styles.centering}>
-                                                        <Text style={[{ color: 'white', fontSize: 20 }]}> <FontAwesome5 name="coins" color='white' />  {taskName.task.coins}</Text>
+                                                        <Text style={[{ color: '#FFF', fontSize: 20 }]}> <FontAwesome5 name="coins" color='#FFF' />  {taskName.task.coins}</Text>
                                                     </View>
                                                 </View>
                                             </View>
@@ -294,11 +294,11 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                                                 </View>
                                                 <View style={{ justifyContent: 'center' }}>
                                                     <View style={{ justifyContent: 'center' }}>
-                                                        <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
+                                                        <Text style={{ color: '#FFF', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
                                                         </Text>
                                                     </View>
                                                     <View style={styles.centering}>
-                                                        <Text style={[{ color: 'white', fontSize: 20 }]}> <FontAwesome5 name="coins" color='white' />  {taskName.task.coins}</Text>
+                                                        <Text style={[{ color: '#FFF', fontSize: 20 }]}> <FontAwesome5 name="coins" color='white' />  {taskName.task.coins}</Text>
                                                     </View>
                                                 </View>
                                             </View>
@@ -317,7 +317,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                 {modalVisible === true ?
                     <ChildLockModalComponent /> : taskModal === true ?
-                        <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} childInfo={undefined} userInfo={undefined} />
+                        <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} childInfo={undefined} />
                         : null}
 
 
@@ -389,7 +389,7 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     sqrTxt: {
-        color: 'white',
+        color: '#FFF',
         flexShrink: 1,
         fontSize: 13
     },

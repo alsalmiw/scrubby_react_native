@@ -4,7 +4,7 @@ import { Button, Pressable, StyleSheet, Text, View, ScrollView, Image } from 're
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AddDefaultUserSpace, CreateChildDefaultSchedule, GetUserData } from '../../services/dataService';
 import UserContext from '../../context/UserContext';
-import ReactNativeCalendar from '../../components/ReactNativeCalendar';
+//import ReactNativeCalendar from '../../components/ReactNativeCalendar';
 import HeaderComponent from '../../components/HeaderComponent';
 import UserNameComponent from '../../components/UserNameComponent';
 import { ThemeContext } from '../../context/ThemeContext';

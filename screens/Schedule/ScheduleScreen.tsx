@@ -31,7 +31,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ScheduleScreen'>
 
 
 const ScheduleScreen: FC<Props> = ({ navigation }) => {
-  const { savedUsername, setSavedUsername, setMySpaces, mySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate, defaultCollection } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, mySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate, defaultCollection, runScheduleAgain, setRunScheduleAgain  } = useContext(UserContext)
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
 
   const [taskInfo, setTaskInfo] = useState() as any
@@ -88,17 +88,18 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
     if (datesArr.length > 0) {
 
 
-        //console.log(runScheduleAgain)
-      // if (runScheduleAgain==true) {
-      //   setActiveDate(activeDate)
-      //   getRoomsbyDate(activeDate)
+    //     console.log(runScheduleAgain)
+      if (runScheduleAgain==true) {
+        //setActiveDate(activeDate)
+        getRoomsbyDate(activeDate)
 
-     // } 
-     // if(!runScheduleAgain) {
+     } 
+     else if(!runScheduleAgain) {
         getRoomsbyDate(datesArr[0])
         let day = new Date(datesArr[0])
         setActiveDate(day.toString())
-      //}
+        
+      }
     }
     else {
       setScheduledRooms([])
@@ -136,22 +137,23 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
     });
     setScheduledRooms(rooms)
 
-    //if (runScheduleAgain==true) {
+    if (runScheduleAgain==true) {
       console.log("im running again setting selected and active room")
-      console.log(selectedRoom, activeRoom)
+      //console.log(selectedRoom, activeRoom)
+      let findRoom = rooms.filter((r:any) => r.id === selectedRoom.id);
 
-     // setSelectedRoom(selectedRoom)
-     // setActiveRoom(activeRoom)
-      
+    setSelectedRoom(findRoom[0])
+    //setActiveRoom(activeRoom)
+    
 
-    //} 
-     // else if(!runScheduleAgain){
+    } 
+     else if(!runScheduleAgain){
       console.log("im in room one when selecting date")
       setSelectedRoom(rooms[0])
       setActiveRoom(rooms[0].id)
-    //}
+    }
 
-   // setRunScheduleAgain(false)
+    setRunScheduleAgain(false)
   }
 
   const displayTaskModel = (task: any) => {

@@ -34,14 +34,14 @@ interface ITaskInfoModal {
 
 const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild,  isButton, childInfo }) => {
 
-    const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal} = useContext(UserContext)
+    const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal, runScheduleAgain, setRunScheduleAgain } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
 
     const SubmitTaskForCompletion =async()=> {
         //console.log("task Info:",task.id)
             if(!isChild){
-               
+                setRunScheduleAgain(true)
              let result:any =  await UpdateUserTaskToCompleted(task.id)
            
              Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }])

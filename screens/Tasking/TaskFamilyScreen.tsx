@@ -192,6 +192,10 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
             (mySpaces.length > 0 ?
               mySpaces.map((space: any, idx: number) => {
                 return (
+                  <>
+                  {
+                    space.rooms.length > 0 ?
+                 
                   <TaskSpaceRowComponent
                     idx={r + idx}
                     key={idx}
@@ -199,6 +203,9 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
                   >
                     <Text style={styles.spaceFont}>{space.collectionName}</Text>
                   </TaskSpaceRowComponent>
+                  :null
+                   }
+                  </>
                 )
               })
               : null
@@ -210,7 +217,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
               mySpaces.map((space: any, idx: number) => space.sharedWith.map((shared: any) => {
                 return (
                   shared.invitedId == taskUser.id ?
-
+                  space.rooms.length > 0 ?
                     <TaskSpaceRowComponent
                       idx={r + idx}
                       key={idx}
@@ -218,7 +225,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
                     >
                       <Text style={styles.spaceFont}>{space.collectionName}</Text>
                     </TaskSpaceRowComponent>
-
+                    :null
                     : null
 
                 )
@@ -241,8 +248,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 60,
-    padding: 10,
+    // paddingTop: 60,
+     padding: 10,
   },
   spaceFont: {
     color: '#fff',

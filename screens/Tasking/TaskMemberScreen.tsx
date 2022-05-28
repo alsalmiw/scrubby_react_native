@@ -63,8 +63,9 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
   }
   
   return (
- <>
-    <ScrollView style={styles.container}>
+ <View style={styles.container}>
+
+    <ScrollView style={{flex:0.8}}>
         
         <HeaderComponent title='Task Family Member'/>
         <View style={styles.firstRowContainer}>
@@ -133,8 +134,8 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
 
     </ScrollView>
            <FullButtonComponent radius={0} color={purpleColor} onPress={()=>navigation.goBack()} >Back</FullButtonComponent>
-
-    </>
+         
+    </View>
     
   );
 }

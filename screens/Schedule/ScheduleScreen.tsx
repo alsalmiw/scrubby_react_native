@@ -52,21 +52,10 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
 
 
   useEffect(() => {
-
-
-
-    if (runAgain) {
-      GetTaskDates()
-    }
-    else {
+    
       setBlank(false)
-      //GetUserInfoByUsername();
       GetTaskDates()
-
-    }
-
-
-  }, [runAgain])
+  }, [defaultSpace])
 
   const GetTaskDates = () => {
     let today = new Date();
@@ -83,10 +72,9 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       nextFiftyDays.push(nextDay.toISOString());
 
     }
-    //console.log(nextFiftyDays)
+  
     let nextTasks = defaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => nextFiftyDays.includes(task.dateScheduled)))
     setScheduledTasks(nextTasks)
-    //console.log(nextTasks)
     let datesArr = [] as any
 
 
@@ -104,12 +92,15 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       if(runAgain){
         setActiveDate(activeDate)
         getRoomsbyDate(activeDate)
-        //console.log("im running again")
-        //console.log(activeDate)
+        console.log("run again true")
+        console.log("active date: " + activeDate)
+        let day = new Date(datesArr[0])
+        console.log("day passed in "+day.toString());
       }else{
          getRoomsbyDate(datesArr[0])
        let day = new Date(datesArr[0])
         setActiveDate(day.toString())
+        console.log(day.toString());
       }
     }
     else {

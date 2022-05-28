@@ -49,17 +49,17 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   weekDayText: {
-    color: '#646464',
+    color: 'gray',
     marginBottom: 5,
   },
   label: {
     fontSize: 14,
-    color: '#000',
+    color: 'black',
     textAlign: 'center',
   },
   selectedLabel: {
     fontSize: 14,
-    color: '#FFF',
+    color: 'white',
     textAlign: 'center',
   },
   touchable: {
@@ -67,14 +67,14 @@ const styles = StyleSheet.create({
     padding: 7.5,
     height: 35,
     width: 35,
-    backgroundColor: '#FFF',
+    backgroundColor: 'white',
   },
   selectedTouchable: {
     borderRadius: 20,
     padding: 7.5,
     height: 35,
     width: 35,
-    backgroundColor: '#437C17',
+    backgroundColor: 'green',
   },
   weekDayItem: {
     alignItems: 'center',

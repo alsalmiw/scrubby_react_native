@@ -20,7 +20,7 @@ const TitleComponent: FC<TitleType> =({title}) => {
 const styles = StyleSheet.create({
         mainHeader: {
             fontSize:30,
-            color: "#FFF",
+            color: "white",
         }, 
         headerContainer:{
           

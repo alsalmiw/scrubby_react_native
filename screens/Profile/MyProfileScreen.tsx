@@ -197,7 +197,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       <View style={styles.firstRow}>
         <View>
         <AvatarComponent onPress={undefined} imageSource={userData.photo} />
-        <Text style={{color:"#0000ff"}} onPress={() =>handleChangeInfo(false)}>Edit image?</Text>
+        <Text style={{color:"blue"}} onPress={() =>handleChangeInfo(false)}>Edit image?</Text>
         </View>
         <View style={styles.nameAndCoinContainer}>
         <Pressable style={{flexDirection: 'row'}} onPress={()=>handleChangeInfo(true)}>

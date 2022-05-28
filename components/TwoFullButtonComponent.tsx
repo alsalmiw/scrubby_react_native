@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         width: '49%'
     },
     buttonText: {
-        color: '#FFF',
+        color: 'white',
         textAlign: 'center',
         fontSize: 20
     },
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         height: '100%',
         paddingVertical: '7%',
         width: 2,
-        backgroundColor: '#fff',
+        backgroundColor: 'white',
 
     }
 

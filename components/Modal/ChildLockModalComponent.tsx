@@ -80,8 +80,8 @@ const ChildLockModalComponent: FC = ({ }) => {
                                     <CodeInput
 
                                         keyboardType="numeric"
-                                        activeColor='#484848'
-                                        inactiveColor='#484848'
+                                        activeColor='grey'
+                                        inactiveColor='grey'
                                         autoFocus={false}
                                         ignoreCase={true}
                                         inputPosition='center'
@@ -105,8 +105,8 @@ const ChildLockModalComponent: FC = ({ }) => {
                                     <CodeInput
 
                                         keyboardType="numeric"
-                                        activeColor='#484848'
-                                        inactiveColor='#484848'
+                                        activeColor='grey'
+                                        inactiveColor='grey'
                                         autoFocus={false}
                                         ignoreCase={true}
                                         inputPosition='center'

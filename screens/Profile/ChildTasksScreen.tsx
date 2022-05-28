@@ -181,7 +181,7 @@ const handleChangeInfo = (isChangeName:boolean) => {
           <View style={styles.firstRow}>
             <View>
             <AvatarComponent onPress={() => { console.log(childScheduleRooms) }} imageSource={childPage.dependentPhoto} />
-            <Text style={{color:"#0000FF"}} onPress={() =>handleChangeInfo(false)}>Edit image?</Text>
+            <Text style={{color:"blue"}} onPress={() =>handleChangeInfo(false)}>Edit image?</Text>
             </View>
           </View>
 
@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   sqrTxt: {
-    color: '#FFF',
+    color: 'white',
     flexShrink: 1,
     fontSize: 13
   },

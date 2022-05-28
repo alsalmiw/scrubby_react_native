@@ -117,7 +117,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
                 setInvited(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
                 setInviters(invitesInfo.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
                 setAcceptedInvitations(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
-              console.log(invitesInfo.sentInvites)
+            //  console.log(invitesInfo.sentInvites)
             }
             if(scores.length > 0){
                 setScoreBoardList(scores)

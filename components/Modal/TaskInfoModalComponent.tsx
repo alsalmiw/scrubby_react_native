@@ -53,7 +53,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                     //Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])
                     setDefaultSpace(defaultCollection)
                     setRunAgain(true)
-                    console.log("did it close?");
+                    //console.log("did it close?");
                 }
                 
              }
@@ -67,9 +67,9 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                 Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }]);
                 setRunAgain(true)
               }
-              console.log("completed:",result)
+            //  console.log("completed:",result)
               setRunAgain(true)
-              console.log("submit task for approval child");
+              //console.log("submit task for approval child");
               setModalVisible(false)
                     
             }
@@ -83,7 +83,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
         let childUpdate = await UpdateChildCoinsAndPoints(childInfo)
         setRunAgain(true)
        } 
-        console.log("approve task for child");
+       // console.log("approve task for child");
         setModalVisible(false)
 
     }

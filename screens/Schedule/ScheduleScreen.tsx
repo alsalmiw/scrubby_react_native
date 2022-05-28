@@ -138,7 +138,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
     setScheduledRooms(rooms)
 
     if (runScheduleAgain==true) {
-      console.log("im running again setting selected and active room")
+      //console.log("im running again setting selected and active room")
       //console.log(selectedRoom, activeRoom)
       let findRoom = rooms.filter((r:any) => r.id === selectedRoom.id);
 
@@ -148,7 +148,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
 
     } 
      else if(!runScheduleAgain){
-      console.log("im in room one when selecting date")
+      //console.log("im in room one when selecting date")
       setSelectedRoom(rooms[0])
       setActiveRoom(rooms[0].id)
     }

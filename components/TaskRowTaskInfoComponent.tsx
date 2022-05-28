@@ -12,7 +12,7 @@ import { ThemeContext } from '../context/ThemeContext';
 import UnderlinedOneHeaderComponent from './UnderlinedOneHeaderComponent';
 import UserNameComponent from './UserNameComponent';
 //import ReactNativeCalendar from './ReactNativeCalendar';
-import { AddChildAssignedTasks, AddUserAssignedTasks } from '../services/dataService';
+import { AddChildAssignedTasks, AddUserAssignedTasks, GetCollectionByUsername, GetUserDefaultScheduleByUserId } from '../services/dataService';
 import DatePicker from 'react-native-datepicker';
 import { getDate } from 'date-fns';
   registerTranslation('en', en)
@@ -22,13 +22,14 @@ import { getDate } from 'date-fns';
 interface taskProp {
     task: ITask; 
     idx: number;
-    r:number
+    r:number;
+    selectedSpaceId: number
 }
 
 
-const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r}) => {
+const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r, selectedSpaceId}) => {
 
-    const { modalVisible, setModalVisible, scheduleTask, setScheduleTask, selectedUser, userData, myRoom, setRunAgain} = useContext(UserContext)
+    const { modalVisible, setModalVisible, scheduleTask, setScheduleTask, selectedUser, userData, myRoom, setRunAgain,  defaultSpace, mySpace, setDefaultSpace, setMySpaces, mySpaces} = useContext(UserContext)
     const {secondaryTextColor, lightLilacColor, yellowColor, blueColor} = useContext(ThemeContext)
 
    
@@ -37,44 +38,73 @@ const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r}) => {
 
     const [storedDates, setStoredDates] = useState<any[]>([])
     const [open, setOpen] = React.useState(false);
-
+    const [runGetDates, setRunGetDates]= useState<boolean>(true)
     const [isAdded, setIsAdded]= useState(false)
     let datesArr=[] as any
 
-    useEffect(() => {
-     //console.log(task.id, myRoom.id, selectedUser.id, selectedUser.isChild)
-     let tasksByUser = myRoom.tasksAssigned.filter((assignedTask:any) => assignedTask.assignedTaskId == task.id && assignedTask.userId == selectedUser.id && assignedTask.isChild == selectedUser.isChild) 
-     let getDates = [] as any
-     tasksByUser.map((tasks:any)=> getDates.push(tasks.dateScheduled))
-     console.log(tasksByUser)
+    // useEffect(() => {
+    //  //console.log(task.id, myRoom.id, selectedUser.id, selectedUser.isChild)
+    //  getTasks()
+    // }, [mySpaces])
 
-     let datesData = getDates.map((date:string)=>{
-      let dateF = new Date(date)
-        return dateF
-     })
 
+    const displayTaskInfo =()=> {
+      getTasks()
+       // setModalVisible(true)
+        //setScheduleTask(task)
+       setOpen(true) 
+       // allDate.push(dates)
+        //console.log(allDate)
+
+       
+    }
+
+    const getTasks=()=> {
+      let tasksByUser = myRoom.tasksAssigned.filter((assignedTask:any) => assignedTask.assignedTaskId == task.id && assignedTask.userId == selectedUser.id && assignedTask.isChild == selectedUser.isChild) 
+     console.log(selectedSpaceId)
+    // console.log("am i running getting dates?")
+      let getDates = [] as any
+      tasksByUser.map((tasks:any)=> {getDates.push(tasks.dateScheduled)})
+     console.log(task.id)
+     
+   
+  
+ 
+      let datesData = getDates.map((date:string)=>{
+       let dateF = new Date(date)
+         return dateF
+      })
+ 
+       //console.log(datesData)
+       if(runGetDates){
+          console.log("im setting dates cause im true")
+          setDates(datesData)
+      setStoredDates(datesData)
+       }
     
-     setDates(datesData)
-     setStoredDates(datesData)
-    }, [selectedUser])
-    
 
-    const onDismiss = React.useCallback(() => {
+      console.log(selectedSpaceId)
+    }
+
+ 
+    const onDismiss = () => {
       setOpen(false);
 
-     
-    }, [setOpen]);
+      console.log(selectedSpaceId)
+    };
   
 let allDate =[] as any
 let sendDates=[] as any
 
-    const onConfirm = React.useCallback((params) => {
+    const onConfirm = (params:any) => {
+      setRunGetDates(false)
+      console.log(selectedSpaceId)
       setOpen(false);
       setDates(params.dates);
      allDate.push(params.dates)
       let date = new Date
-       console.log(storedDates)
-       console.log(params.dates)
+      // console.log(storedDates)
+      // console.log(params.dates)
       let allDatesArr=[ ] as any[]
       if(storedDates.length>0)
       {
@@ -82,10 +112,11 @@ let sendDates=[] as any
          storedDates.toString().split(',').filter((date:any)=> !params.dates.toString().split(',').includes(date)? allDatesArr.push(date):null )
       }else{
         allDatesArr = params.dates
+        console.log(params.dates)
       }
       
      
-      console.log(allDatesArr)
+      //console.log(allDatesArr)
 
       sendDates= allDatesArr.map((date:string) => {
         let dateF = new Date(date)
@@ -93,8 +124,8 @@ let sendDates=[] as any
       })
      
       sendScheduledTasks()
-        
-    }, []);
+      setStoredDates(params.dates)
+    };
     
       const sendScheduledTasks = async()=> {
             let scheduledTasksArr =[]
@@ -105,7 +136,7 @@ let sendDates=[] as any
                           let scheduledTaskUser = {
                                       Id:0,
                                       UserId: selectedUser.id,
-                                      SpaceId: myRoom.id,
+                                      SpaceId:selectedSpaceId,
                                       AssignedTaskId: task.id,
                                       DateCreated: sendDates[i],
                                       DateCompleted: "none",
@@ -116,10 +147,23 @@ let sendDates=[] as any
                               scheduledTasksArr.push(scheduledTaskUser)
 
                       }
-                      console.log(scheduledTasksArr)
+                     console.log(scheduledTasksArr)
                       let result = await AddUserAssignedTasks(scheduledTasksArr)
                       if(result) {
-                        setRunAgain(true)
+                        if(userData.id == selectedUser.id && !selectedUser.isChild && mySpace.id == defaultSpace.id) {
+                          let defaultCollection = await GetUserDefaultScheduleByUserId(selectedUser.id)
+                          if (defaultCollection.length != 0) {
+                
+                            setDefaultSpace(defaultCollection)
+                          }
+
+                        }
+                        let spaces = await GetCollectionByUsername(userData.username)
+                        if(spaces.length > 0){
+                          setMySpaces(spaces)
+                          console.log("they came")
+                      }
+
                       }
                       
             }
@@ -130,7 +174,7 @@ let sendDates=[] as any
                   let scheduledTaskUser = {
                               Id:0,
                               ChildId: selectedUser.id,
-                              SpaceId: myRoom.id,
+                              SpaceId: selectedSpaceId,
                               AssignedTaskId: task.id,
                               DateCreated: sendDates[i],
                               DateCompleted: "none",
@@ -141,10 +185,13 @@ let sendDates=[] as any
                       scheduledTasksArr.push(scheduledTaskUser)
                      
               }
-               console.log(scheduledTasksArr)
+              // console.log(scheduledTasksArr)
                let result = await  AddChildAssignedTasks(scheduledTasksArr)
                if(result) {
-                setRunAgain(true)
+                let spaces = await GetCollectionByUsername(userData.username)
+                if(spaces.length > 0){
+                  setMySpaces(spaces)
+                  }
               }
               
         }
@@ -155,68 +202,60 @@ let sendDates=[] as any
 
 
 
-    const displayTaskInfo =()=> {
-       // setModalVisible(true)
-        setScheduleTask(task)
-       setOpen(true) 
-        allDate.push(dates)
-        console.log(allDate)
-
-       
-    }
+   
   
-    const ModalContent = () => {
+    // const ModalContent = () => {
 
-        return(
-            <>
-            <View>
-            <Text>{task.task.name}</Text>
-            </View>
-            <View>
-                <UnderlinedOneHeaderComponent titleFirst={'Repeat'} />
-            </View>
-            <View>
-            <UnderlinedOneHeaderComponent titleFirst={'Dates'} />
-            <View>
-                <UserNameComponent name={'Start Date'} />
-            </View>
-            <View>
-                <UserNameComponent name={'End Date'} />
-            </View>
+    //     return(
+    //         <>
+    //         <View>
+    //         <Text>{task.task.name}</Text>
+    //         </View>
+    //         <View>
+    //             <UnderlinedOneHeaderComponent titleFirst={'Repeat'} />
+    //         </View>
+    //         <View>
+    //         <UnderlinedOneHeaderComponent titleFirst={'Dates'} />
+    //         <View>
+    //             <UserNameComponent name={'Start Date'} />
+    //         </View>
+    //         <View>
+    //             <UserNameComponent name={'End Date'} />
+    //         </View>
 
-            </View>
-              <View>
-                 <DatePicker
-          style={styles.datePickerStyle}
-          date={datePicker} //initial date from state
-          mode="date" //The enum of date, datetime and time
-          placeholder="select date"
-          format="DD-MM-YYYY"
-          minDate="01-01-2016"
-          maxDate="01-01-2019"
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-          customStyles={{
-            dateIcon: {
-              //display: 'none',
-              position: 'absolute',
-              left: 0,
-              top: 4,
-              marginLeft: 0,
-            },
-            dateInput: {
-              marginLeft: 36,
-            },
-          }}
-          onDateChange={(date) => {
-            setDatePicker(date);
-          }}
-        />
-              </View>
+    //         </View>
+    //           <View>
+    //              <DatePicker
+    //       style={styles.datePickerStyle}
+    //       date={datePicker} //initial date from state
+    //       mode="date" //The enum of date, datetime and time
+    //       placeholder="select date"
+    //       format="DD-MM-YYYY"
+    //       minDate="01-01-2016"
+    //       maxDate="01-01-2019"
+    //       confirmBtnText="Confirm"
+    //       cancelBtnText="Cancel"
+    //       customStyles={{
+    //         dateIcon: {
+    //           //display: 'none',
+    //           position: 'absolute',
+    //           left: 0,
+    //           top: 4,
+    //           marginLeft: 0,
+    //         },
+    //         dateInput: {
+    //           marginLeft: 36,
+    //         },
+    //       }}
+    //       onDateChange={(date) => {
+    //         setDatePicker(date);
+    //       }}
+    //     />
+    //           </View>
           
-          </>
-        )
-    }
+    //       </>
+    //     )
+    // }
     const theme = { ...DefaultTheme,
         colors: {
         ...DefaultTheme.colors,
@@ -271,9 +310,9 @@ let sendDates=[] as any
       />
         
         </PaperProvider>
-    <ModalComponent>
+    {/* <ModalComponent>
         <ModalContent />
-     </ModalComponent>
+     </ModalComponent> */}
     </>
   )
 }

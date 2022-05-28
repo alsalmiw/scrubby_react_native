@@ -26,33 +26,31 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
 
   const [tasks, setTasks] = useState([])
   const [r, setR] = useState(Math.floor(Math.random() * 7))
-  const [activeRoom, setActiveRoom] = useState<number>() 
+  const [activeRoom, setActiveRoom] = useState<number>(0) 
+
 
   useEffect(() => {
+    console.log("im at the useEffect " + activeRoom)
     setSeeAll(true)
-    console.log(mySpace.rooms[0])
+    //console.log(mySpace.rooms[0])
     //console.log(mySpace)
+   // console.log(selectedUser)
     if (mySpace.rooms.length > 0) {
       setActiveRoom(mySpace.rooms[0].id)
       setTasks(mySpace.rooms[0].tasks)
       setMyRoom(mySpace.rooms[0])
+      console.log("did i run again and reset the room?")
     }
 
   }, [])
 
- 
-  
-  const handleGoBack = ()=>{
-   
-  }
-///
   const ShowRooms = ()=>{
 
     return(
 
       mySpace.rooms.map((room:any, idx:number) => {
         return(
-          <Pressable key={idx} onPress={() => { setTasks(room.tasks), setMyRoom(room), setActiveRoom(room.id) }} >
+          <Pressable key={idx} onPress={() => { setTasks(room.tasks), setMyRoom(room), setActiveRoom(room.id), console.log("im with other rooms " +room.id)}} >
         <SquareColoredButton key={idx} idx={r+idx} onPress={() => {setTasks(room.tasks), setMyRoom(room)} }>
           <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
         <Text style={[{color:"#FFF"}]}>{room.spaceName}</Text>
@@ -123,7 +121,7 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
               tasks.length>0?
               tasks.map((task: any, idx: number) =>   
              
-               <TaskRowTaskInfoComponent r={r+2} key={idx} idx={idx} task={task} />
+               <TaskRowTaskInfoComponent r={r+2} key={idx} idx={idx} task={task} selectedSpaceId={activeRoom} />
                
                 
                 )

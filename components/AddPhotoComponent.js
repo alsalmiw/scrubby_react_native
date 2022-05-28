@@ -7,16 +7,22 @@ import TitleComponent from "./AddEdit/TitleComponent";
 import FullButtonComponent from "./FullButtonComponent";
 import UserContext from "../context/UserContext";
 import { ChangeAvatarImage, ChangeDependentAvatarImageawait } from "../services/dataService";
+import { useNavigation } from "@react-navigation/native";
 
 
 const AddPhotoComponent = () => {
     const {lilacColor, orangeColor, blueColor} = useContext(ThemeContext)
-  const {username, isEditImage, setIsEditImage, memberInfo } = useContext(UserContext)
+  const {username, isEditImage, setIsEditImage, memberInfo, userData } = useContext(UserContext)
 
     const [image, setImage] = useState('');
+    const [imgType, setImgType] = useState('');
+    const [fileName, setFileName] = useState('');
+
     const [isSelected, setIsSelected] = useState(false)
     const [hasGalleryPermission, setHasGalleryPermission] =useState(false);
+    const navigation = useNavigation();
 
+ 
 
     useEffect(()=>{
         (async () => {
@@ -35,14 +41,14 @@ const AddPhotoComponent = () => {
           });
       
           //console.log(result);
-          let imgType=''
-          let fileName =''
+          
+          
           if (!result.cancelled) {
             setImage(result.uri);
             console.log(result.uri)
-            imgType = result.uri.split('.')[1]
+            setImgType(result.uri.split('.')[1])
             console.log(imgType);
-            fileName = result.uri.replace(/^.*[\\\/]/, "")
+            setFileName(result.uri.replace(/^.*[\\\/]/, ""))
             console.log(fileName)
           
           }
@@ -69,8 +75,8 @@ const AddPhotoComponent = () => {
 
            const formData = new FormData();
                 formData.append('photo',  {
-                    uri: result.uri,
-                    name: "avatar46.png",
+                    uri: image,
+                    name: fileName,
                     type: `image/${imgType}`
 
                     })
@@ -97,7 +103,7 @@ const AddPhotoComponent = () => {
                           let result = await ChangeAvatarImage(data)
                           if(result) {
                               alert("You have successfully updated your photo")
-                              navigation.navigate('ProfileScreen')
+                              navigation.navigate('MyProfile')
                             }
                     
                         }

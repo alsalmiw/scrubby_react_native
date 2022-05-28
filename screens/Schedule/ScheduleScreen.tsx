@@ -60,7 +60,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
     }
     else {
       setBlank(false)
-      GetUserInfoByUsername();
+      //GetUserInfoByUsername();
       GetTaskDates()
 
     }
@@ -104,8 +104,8 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       if(runAgain){
         setActiveDate(activeDate)
         getRoomsbyDate(activeDate)
-        console.log("im running again")
-        console.log(activeDate)
+        //console.log("im running again")
+        //console.log(activeDate)
       }else{
          getRoomsbyDate(datesArr[0])
        let day = new Date(datesArr[0])
@@ -149,8 +149,8 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
     setScheduledRooms(rooms)
    
     if(runAgain){
-      console.log("im running again")
-      console.log(selectedRoom, activeRoom)
+      // console.log("im running again")
+      // console.log(selectedRoom, activeRoom)
 
       setSelectedRoom(selectedRoom)
       setActiveRoom(activeRoom)
@@ -180,16 +180,16 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       let userInfo = await GetUserData(username)
 
       if (userInfo.length != 0) {
-        setChildrenData(userInfo.children)
-        setMySpaces(userInfo.spaces)
-        setUserData(userInfo.userInfo)
-        setScoreBoardList(userInfo.scoreBoard)
-        setInvited(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
-        setInviters(userInfo.invitations.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
-        setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
+       //setChildrenData(userInfo.children)
+        //setMySpaces(userInfo.spaces)
+       // setUserData(userInfo.userInfo)
+        //setScoreBoardList(userInfo.scoreBoard)
+       // setInvited(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
+        //setInviters(userInfo.invitations.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
+       // setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
         //setMySchedule(userInfo.mySchedule)
         setTasksHistory(userInfo.tasksHistory)
-        setIsChildFree(userInfo.userInfo.isChildFree)
+        //setIsChildFree(userInfo.userInfo.isChildFree)
       }
 
     }
@@ -324,7 +324,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
           {
             taskInfo != null ?
 
-              <TaskInfoModalComponent Space={defaultSpace.collectionName} Location={selectedRoom.spaceName} task={taskInfo} isChild={false} taskedInfo={userData} isButton={!showBtn} />
+              <TaskInfoModalComponent childInfo={''} Space={defaultSpace.collectionName} Location={selectedRoom.spaceName} task={taskInfo} isChild={false} taskedInfo={userData} isButton={!showBtn} />
 
               : null
           }

@@ -7,7 +7,7 @@ import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentL
 import UserContext from "../context/UserContext"
 import INewUser from "../Interfaces/INewUser"
 import IUserLogin from "../Interfaces/IUserLogin"
-import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin, GetUserByUsername } from "../services/dataService"
+import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin, GetUserByUsername, GetDependantsDTOByUserId, GetAcceptedInvitationsbyInviterId, GetDependantByUserId, GetInvitationByUsername, GetDependantsDTOByUsername, GetScoreBoardByUsername, GetCollectionByUsername, GetMyTaskedCollectionsByUsername } from "../services/dataService"
 import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
 import ChildFreeBoolComponent from "../components/Settings/ChildFreeBoolComponent"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
@@ -31,7 +31,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'login'>
 
 const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
-    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, setDefaultSpace, fullName, setFullName, login, setLogin, setUserData, blank, setBlank } = useContext(UserContext)
+    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, setDefaultSpace, fullName, setFullName, login, setLogin, setUserData, blank, setBlank, setChildrenData, setMySpaces, setScoreBoardList, setInvited, setInviters, setAcceptedInvitations, setMySchedule, setTasksHistory, setIsChildFree, childrenInfo, setChildrenInfo  } = useContext(UserContext)
     const { yellowColor, greenColor } = useContext(ThemeContext)
     const [name, setName] = useState<any>("")
 
@@ -58,12 +58,10 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             Photo: avatars[avR],
             Fullname: name,
         }
-        //console.log(userData)
         setSavedUsername(username);
         setSavedPassword(password);
 
         let result = await CreateAccount(userData);
-        // console.log(result.token)
         if (result) {
 
             userLogin()
@@ -88,9 +86,20 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
             AsyncStorage.setItem("Token", result.token);
             AsyncStorage.setItem("Username", username);
-
+          
             let defaultCollection = await GetUserDefaultSchedule(username)
             let userInfo = await GetUserByUsername(username)
+            let invitesInfo = await GetInvitationByUsername(username)
+            let dependents = await GetDependantsDTOByUsername(username)
+            let scores = await GetScoreBoardByUsername(username)
+            let spaces = await GetCollectionByUsername(username)
+            let schedule = await GetMyTaskedCollectionsByUsername (username)
+            
+
+          
+            if(dependents.length>0){
+                setChildrenData(dependents)
+            }
             if (defaultCollection.length != 0) {
                 
                 setDefaultSpace(defaultCollection)
@@ -102,9 +111,24 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             }
             if (userInfo) {
                 setUserData(userInfo)
+                setIsChildFree(userInfo.isChildFree)
             }
-            //console.log(typeof defaultCollection)
-            //
+            if(invitesInfo.length!=0){
+                setInvited(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
+                setInviters(invitesInfo.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
+                setAcceptedInvitations(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
+              console.log(invitesInfo.sentInvites)
+            }
+            if(scores.length > 0){
+                setScoreBoardList(scores)
+            }
+            if(spaces.length > 0){
+                setMySpaces(spaces)
+            }
+            if(schedule.length > 0){
+                setMySchedule(schedule)
+            }
+        
 
 
 
@@ -175,6 +199,38 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
         }
     };
 
+    // const GetUserInfoByUsername = async () => {
+
+    //     let username: any = await AsyncStorage.getItem("Username");
+    //     if (username) {
+    //       setSavedUsername(username)
+    //       let userInfo = await GetUserData(username)
+    //       let dependent= await GetDependantsDTOByUserId(userInfo.userInfo.Id)
+    //       if(dependent.length!= 0){
+    //         setChildrenData(dependent)
+    //       }
+    //       let invites = await GetAcceptedInvitationsbyInviterId(userInfo.userInfo.Id)
+    //       if(invites.length!= 0){
+    //         setAcceptedInvitations(invites)
+    //       }
+    //       if (userInfo.length != 0) {
+    //         //setChildrenData(userInfo.children)
+    //         //setMySpaces(userInfo.spaces)
+    //         //setUserData(userInfo.userInfo)
+    //         // setScoreBoardList(userInfo.scoreBoard)
+    //         // setInvited(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
+    //         // setInviters(userInfo.invitations.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
+    //         // setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
+    //        // setMySchedule(userInfo.mySchedule)
+    //         setTasksHistory(userInfo.tasksHistory)
+    //         // setIsChildFree(userInfo.userInfo.isChildFree)
+    //       }
+    
+    //     }
+    
+    //   }
+    
+        
 
     return (
         <>

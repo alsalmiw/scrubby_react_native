@@ -193,11 +193,17 @@ async function GetUserByUsername(Username:string) {
     return data;
 }
 
-async function GetDependantByUserId (Id: number){
-let res = await fetch(`${link}/Dependent/GetDependantByUserId/${Id}`);
+async function GetDependantsDTOByUserId (Id: number){
+let res = await fetch(`${link}/Dependent/GetDependantsDTOByUserId/${Id}`);
 let data = await res.json();
 return data;
 }
+
+async function GetDependantByUserId (Id: number){
+    let res = await fetch(`${link}/Dependent/GetDependantByUserId/${Id}`);
+    let data = await res.json();
+    return data;
+    }
 
 async function GetSpacesByCollectionID (Id: number){
     let res = await fetch(`${link}/SpaceInfo/GetSpacesByCollectionID/${Id}`);
@@ -232,6 +238,12 @@ async function AddSelectedTask(newSelectedTask: any) {
 
 async function AllInvitesByInvitedUsername(username:string){
     let res = await fetch(`${link}/InviteUsers/AllInvitesByInvitedUsername/${username}`);
+    let data = await res.json();
+    return data;
+}
+
+async function GetAcceptedInvitationsbyInviterId(inviterId:number){
+    let res = await fetch(`${link}/InviteUsers/GetAcceptedInvitationsbyInviterId/${inviterId}`);
     let data = await res.json();
     return data;
 }
@@ -304,7 +316,7 @@ async function RedeemCoinsChild(newAmount:any) {
 async function GetInvitationByUsername(username:string){
     let res = await fetch(`${link}/InviteUsers/GetInvitationsByUsername/${username}`)
     let data = await res.json();
-    console.log(data)
+
     return data
 }
 
@@ -360,6 +372,24 @@ async function DeleteInvite(userId:number, invitedUsername:string){
 }
 async function GetUserData(username:string){
     let res = await fetch(`${link}/User/GetUserData/${username}`)
+    let data = await res.json();
+    return data
+}
+
+async function GetScoreBoardByUsername(username:string){
+    let res = await fetch(`${link}/User/ScoreBoardList/${username}`)
+    let data = await res.json();
+    return data
+}
+
+async function GetCollectionByUsername(username:string){
+    let res = await fetch(`${link}/User/GetCollectionByUsername/${username}`)
+    let data = await res.json();
+    return data
+}
+
+async function GetMyTaskedCollectionsByUsername(username:string){
+    let res = await fetch(`${link}/User/GetMyTaskedCollectionsByUsername/${username}`)
     let data = await res.json();
     return data
 }
@@ -452,12 +482,17 @@ async function GetSharedSpacesById(id:number){
     return data
 }
 
+async function GetDependantsDTOByUsername(username: string){
+    let res = await fetch(`${link}/Dependent/GetDependantsDTOByUsername/${username}`)
+    let data = await res.json();
+    return data
+}
+
 async function GetDependantDTOByChildId(childId:number){
     let res = await fetch(`${link}/Dependent/GetDependantDTOByChildId/${childId}`)
     let data = await res.json();
     return data
 }
-
 
 async function GetAllTasksHistoryForMembers(userId:number){
     let res = await fetch(`${link}/SpaceCollection/GetAllTasksHistoryForMembers/${userId}`)
@@ -630,7 +665,7 @@ async function ChangeDependentAvatarImage(Avatar:IAddAvatar)
 
 async function ChangeAvatarImage(Avatar:IAddAvatar)
 {
-    let res = await fetch(`${link}/User/ChangeDependentAvatarImage`,{
+    let res = await fetch(`${link}/User/ChangeAvatarImage`,{
         method: "Post",
         headers: {
             "Content-Type": "application/json"
@@ -768,6 +803,6 @@ async function UpdateChildName(NewName:any)
 
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId, GetUserData, RedeemCoinsUser, RedeemCoinsChild, GetSharedSpacesById, DeleteInvitation, NewCoinAmountDependent, NewCoinAmountNotDependent, AddChildAssignedTasks, AddUserAssignedTasks, UpdateChildPassCode, GetUserDefaultSchedule, GetChildDefaultSchedule, UpdateUserTaskToCompleted, ApproveTaskForCompletionChild, SubmitTaskChildApproval, AddDefaultUserSpace,  CreateSharedSpaces, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername, DeleteSharedSpacesById, GetDependantDTOByChildId, CreateChildDefaultSchedule, DeleteSpaceCollectionById, GetAllTasksHistoryForMembers, DeleteInvitationByInvitedInviter, UpdateChildName, UpdateChildCoinsAndPoints, ChangeAvatarImage, ChangeDependentAvatarImage }
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId, GetUserData, RedeemCoinsUser, RedeemCoinsChild, GetSharedSpacesById, DeleteInvitation, NewCoinAmountDependent, NewCoinAmountNotDependent, AddChildAssignedTasks, AddUserAssignedTasks, UpdateChildPassCode, GetUserDefaultSchedule, GetChildDefaultSchedule, UpdateUserTaskToCompleted, ApproveTaskForCompletionChild, SubmitTaskChildApproval, AddDefaultUserSpace,  CreateSharedSpaces, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername, DeleteSharedSpacesById, GetDependantDTOByChildId, CreateChildDefaultSchedule, DeleteSpaceCollectionById, GetAllTasksHistoryForMembers, DeleteInvitationByInvitedInviter, UpdateChildName, UpdateChildCoinsAndPoints, ChangeAvatarImage, ChangeDependentAvatarImage, GetDependantsDTOByUserId, GetAcceptedInvitationsbyInviterId, GetDependantsDTOByUsername, GetScoreBoardByUsername, GetCollectionByUsername, GetMyTaskedCollectionsByUsername }
 
 

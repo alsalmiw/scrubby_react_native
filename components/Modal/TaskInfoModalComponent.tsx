@@ -26,13 +26,13 @@ interface ITaskInfoModal {
     taskedInfo:any;
     isButton: boolean;
     childInfo:any;
-    userInfo:any;
+
     // userCoins:any;
     // userPoints:any;
 
 }
 
-const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild, taskedInfo, isButton, childInfo, userInfo }) => {
+const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild,  isButton, childInfo }) => {
 
     const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)

@@ -21,7 +21,7 @@ type Props = NativeStackScreenProps <RootStackParamList, 'EditProfile'>
 const EditProfileScreen: FC<Props> = ({navigation})=> {
   const {orangeColor, blueColor} = useContext(ThemeContext)
   const [newName, setNewName] = useState('')
-  const {username, isEditImage, setIsEditImage, memberInfo } = useContext(UserContext)
+  const {username, isEditImage, setIsEditImage, memberInfo, userData } = useContext(UserContext)
 
 
   const handleSave = async () => {
@@ -45,14 +45,14 @@ const EditProfileScreen: FC<Props> = ({navigation})=> {
     if(!memberInfo.isChild)
     {
       let data:INewName = {
-      Username: username,
+      Username: userData.username,
       Name: newName
       }
       console.log(data)
       let result = await UpdateName(data)
       if(result) {
           alert("You have successfully updated your name")
-          navigation.navigate('SettingsScreen')
+          navigation.navigate('MyProfile')
         }
 
     }

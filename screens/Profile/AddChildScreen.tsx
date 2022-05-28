@@ -58,7 +58,7 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
  
     <View style={[styles.container,{backgroundColor:orangeColor}]}>
         <TitleComponent title="Add New Child" />
-        <AddPhotoComponent />
+     
         <View>
         <WhiteSubTitleComponent title="Name" />
         <InputFieldComponent value={''} maxLength={20} holder="enter your name" hide={false} onChangeText={(e: string)=>setNewChildName(e)} />

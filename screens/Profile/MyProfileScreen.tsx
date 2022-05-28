@@ -12,7 +12,7 @@ import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
 import RootStackParamList from '../../types/INavigation'
 import UseTheme from '../../hooks/use-theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetSpacesByCollectionID, GetSelectedTasksByUserID, GetChildDefaultSchedule } from '../../services/dataService';
+import { GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetSpacesByCollectionID, GetSelectedTasksByUserID, GetChildDefaultSchedule, GetDependantsDTOByUserId } from '../../services/dataService';
 
 
 //This is just testing
@@ -42,7 +42,7 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank,memberInfo, setMemberInfo, setIsEditImage, setRunAgain  } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank,memberInfo, setMemberInfo, setIsEditImage, setRunAgain, childrenInfo, setChildrenInfo  } = useContext(UserContext)
 
 
   //This is a test useState for populating create a new space
@@ -88,10 +88,13 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   // }
 
   useEffect(() => {
+
+      
     navigation.addListener('focus', ()=>{
       setBlank(false)
       setRunAgain(true)
     })
+  
 
     // console.log(savedUsername)
     //AsyncGetSpaceCollectionById();
@@ -100,6 +103,8 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
 
   }, [])
+
+  
 
   const AsyncGetSpaceCollectionById = async () => {
 
@@ -110,7 +115,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     }
 
     let user = await GetUserByUsername(savedUsername)
-    console.log(user);
+    //console.log(user);
     // console.log(user)
     if (user.length != 0) {
       setUserData(user)
@@ -259,7 +264,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
                     //     <AddItemButtonComponent key={idx} onPress={()=>handleGoToChildProfile(child)}>
                     //   <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />
                     // </AddItemButtonComponent>
-                    <AvatarComponent key={idx} onPress={() => { console.log(child), handleGoToChildProfile(child) }} imageSource={child.dependentPhoto} />
+                    <AvatarComponent key={idx} onPress={() => { handleGoToChildProfile(child) }} imageSource={child.dependentPhoto} />
                   )
 
                 })

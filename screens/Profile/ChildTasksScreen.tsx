@@ -321,7 +321,7 @@ const handleChangeInfo = (isChangeName:boolean) => {
 
         {modalVisible === true ?
           <ChildLockModalComponent /> : taskModal === true ?
-            <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} childInfo={ childUpdateCoins} userInfo={undefined} />
+            <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} childInfo={ childUpdateCoins}  />
             : null}
 
 

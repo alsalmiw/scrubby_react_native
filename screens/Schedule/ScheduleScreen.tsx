@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useEffect, useState } from 'react';
 import { Button, Pressable, StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GetUserData } from '../../services/dataService';
+import { GetUserData, UpdateUserPointAndCoin } from '../../services/dataService';
 import UserContext from '../../context/UserContext';
 import ReactNativeCalendar from '../../components/ReactNativeCalendar';
 import HeaderComponent from '../../components/HeaderComponent';
@@ -22,6 +22,8 @@ import RootStackParamList from '../../types/INavigation'
 import ScheduleDateBtnComponent from '../../components/ScheduleDateBtnComponent';
 import ModalComponent from '../../components/ModalComponent';
 import TaskInfoModalComponent from '../../components/Modal/TaskInfoModalComponent';
+import IUserCoinPoint from '../../Interfaces/IUserCoinPoint';
+import IchildCoinAndPoint from '../../Interfaces/IchildCoinAndPoint';
 
 
 
@@ -44,6 +46,8 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
   const [r, setR] = useState<number>(Math.floor(Math.random() * 7))
   const [selectedRoom, setSelectedRoom] = useState<any>()
   const [showBtn, setShowBtn] = useState<boolean>(true)
+
+  const [userUpdateCoins, setUserUpdateCoins] = useState<IUserCoinPoint>()
 
 
 
@@ -294,7 +298,15 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
 
                       //<Text key={idx}>{taskInfo.task.name}  {taskInfo.item.name}</Text>
                       //<TaskRowTaskInfoComponent r={r} key={idx} idx={idx} task={taskInfo} />
-                      <TaskSpaceRowComponent key={idx} idx={r + idx} onPress={() => { displayTaskModel(taskInfo), setTaskInfo(taskInfo), setShowBtn(taskInfo.isCompleted) }}>
+                      <TaskSpaceRowComponent key={idx} idx={r + idx} onPress={() => { displayTaskModel(taskInfo), setTaskInfo(taskInfo), setShowBtn(taskInfo.isCompleted)
+                        {
+                          let userInfoCoin: IUserCoinPoint = {
+                            Id: userData.id,
+                            Coins: taskInfo.task.coins,
+                            Points: taskInfo.task.points
+                          }
+                          setUserUpdateCoins(userInfoCoin)
+                        } }}>
                         <View style={[styles.taskContainer, styles.flexrow]}>
                           <Text style={[styles.text, {color:"#FFF"}]}>{taskInfo.task.name} {taskInfo.item.name}</Text>
                           <View style={[styles.flexrow]}>
@@ -324,7 +336,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
           {
             taskInfo != null ?
 
-              <TaskInfoModalComponent Space={defaultSpace.collectionName} Location={selectedRoom.spaceName} task={taskInfo} isChild={false} taskedInfo={userData} isButton={!showBtn} />
+              <TaskInfoModalComponent Space={defaultSpace.collectionName} Location={selectedRoom.spaceName} task={taskInfo} isChild={false} taskedInfo={userData} isButton={!showBtn} childInfo={undefined} userInfo={userUpdateCoins} />
 
               : null
           }

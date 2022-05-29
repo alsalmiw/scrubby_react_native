@@ -27,7 +27,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 type Props = NativeStackScreenProps<RootStackParamList, 'LockedChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-    const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, setChildDefaultSpace, selectedTask, setSelectedTask, runAgain, setRunAgain } = useContext(UserContext)
+    const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, setChildDefaultSpace, selectedTask, setSelectedTask, runAgain, setRunAgain, childCoin, setChildCoin, childPoint, setChildPoint } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
     const [space, setSpace] = useState<String>("")
@@ -41,8 +41,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
     const [childScheduleTasks, setChildScheduleTasks] = useState<any>([])
 
-    const [childCoin, setChildCoin] = useState<any>("")
-    const [childPoint, setChildPoint] = useState<any>("")
+
 
 
     const [childScheduleRooms, setChildScheduleRooms] = useState<any>()
@@ -124,8 +123,6 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     const getChildInformation = async (childId: number) => {
         let childInfo = await GetDependantDTOByChildId(childId)
         console.log("fetch", childInfo)
-        setChildCoin(childInfo.dependentCoins)
-        setChildPoint(childInfo.dependentPoints)
         setChildPage(childInfo)
         //setChildDefaultSpace(childInfo.scheduledTasks[1])
     }
@@ -139,7 +136,9 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
     useEffect(() => {
 
+        navigation.addListener('focus', () =>{
         if (runAgain) {
+            
             //childDefaultSchedule()
             childTaskDate()
             setRunAgain(false)
@@ -149,6 +148,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
             childTaskDate()
             console.log(childPage)
         }
+    })
 
     }, [runAgain])
 
@@ -178,7 +178,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
                         <View style={styles.coinContainer}>
-                            <CoinsPointsDisplayContainer coins={childPage.dependentCoins} points={childPage.dependents} ></CoinsPointsDisplayContainer>
+                            <CoinsPointsDisplayContainer coins={childCoin} points={childPoint} ></CoinsPointsDisplayContainer>
                         </View>
 
 
@@ -214,7 +214,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                                             </View>
                                         </SquareColoredButton>
                                     </View>
-                                    : <Text>You Have No Rooms</Text>
+                                    
+                                    :  x === 0 ? <Text>You Have No Rooms</Text>: null
 
 
                             )
@@ -232,6 +233,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                     {
                         childSelectedRoom != null ?
+                        
                             childSelectedRoom.todaysTasks.map((taskName: any, x: number) => {
                                 // setChildScheduleRoomsNotCompleted
 
@@ -257,7 +259,9 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                                         </TaskSpaceRowComponent>
                                         :
-                                        <Text>You Have No Task Today</Text>
+                                        x === 0 ? <Text>You Have No Task Today</Text> : null
+                                        
+                                        
 
 
 
@@ -270,6 +274,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                             :
                             null
+                            
 
                     }
                 </ScrollView>
@@ -304,7 +309,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                                             </View>
                                         </TaskSpaceRowComponent>
                                         :
-                                        <Text>You Have No Completed Task Today</Text>
+                                        x === 0 ? <Text>You Have No Completed Task Today</Text> : null
                                 )
 
 

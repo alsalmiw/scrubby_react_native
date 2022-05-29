@@ -11,7 +11,7 @@ import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin, AddDefau
 import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
 import ChildFreeBoolComponent from "../components/Settings/ChildFreeBoolComponent"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import PhotoComponent from "../components/PhotoComponent"
+// import PhotoComponent from "../components/PhotoComponent"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import avatars from '../types/IAvatars'
 import FullButtonComponent from "../components/FullButtonComponent"
@@ -32,7 +32,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'login'>
 
 const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
-    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, setDefaultSpace, fullName, setFullName, login, setLogin, setUserData, blank, setBlank } = useContext(UserContext)
+    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, setDefaultSpace, fullName, setFullName, login, setLogin, setUserData, blank, setBlank, userPoint, setUserPoint, userCoin, setUserCoin } = useContext(UserContext)
     const { yellowColor, greenColor } = useContext(ThemeContext)
     const [name, setName] = useState<any>("")
 
@@ -71,7 +71,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
         }
 
-        else  {setBlank(false), Alert.alert("Error", 'Account not created.', [{ text: "Cancel", style: "cancel" }]) }
+        else { setBlank(false), Alert.alert("Error", 'Account not created.', [{ text: "Cancel", style: "cancel" }]) }
 
     }
 
@@ -92,17 +92,21 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
             let defaultCollection = await GetUserDefaultSchedule(username)
             let userInfo = await GetUserByUsername(username)
+
+
             if (defaultCollection.length != 0) {
-                
+
                 setDefaultSpace(defaultCollection)
                 navigation.navigate('Nav', { screen: "Schedule" })
             } else {
-                
+
                 navigation.navigate('Nav', { screen: "Profile" })
 
             }
             if (userInfo) {
                 setUserData(userInfo)
+                setUserCoin(userInfo.coins)
+                setUserPoint(userInfo.points)
             }
             //console.log(typeof defaultCollection)
             //
@@ -132,7 +136,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
                 Alert.alert("Error", 'Please Enter password.', [{ text: "Cancel", style: "cancel" }]);
                 return;
             }
-            if(!fullName.trim()){
+            if (!fullName.trim()) {
                 Alert.alert("Error", 'Please Enter Full Name.', [{ text: "Cancel", style: "cancel" }]);
                 return;
             }

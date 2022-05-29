@@ -9,7 +9,7 @@ import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { ThemeContext } from "../../context/ThemeContext"
 import FullButtonComponent from "../FullButtonComponent"
 import ButtonModalComponent from "./ButtonModalComponent"
-import { UpdateUserTaskToCompleted, SubmitTaskChildApproval, ApproveTaskForCompletionChild, GetUserDefaultSchedule, NewCoinAmountDependent, UpdateChildCoinsAndPoints } from "../../services/dataService"
+import { UpdateUserTaskToCompleted, SubmitTaskChildApproval, ApproveTaskForCompletionChild, GetUserDefaultSchedule, NewCoinAmountDependent, UpdateChildCoinsAndPoints, UpdateUserPointAndCoin } from "../../services/dataService"
 import UserContext from "../../context/UserContext"
 import IRedeemCoinsChild from "../../Interfaces/IRedeemChildCoins"
 
@@ -34,7 +34,7 @@ interface ITaskInfoModal {
 
 const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild, taskedInfo, isButton, childInfo, userInfo }) => {
 
-    const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal } = useContext(UserContext)
+    const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal, childCoin, setChildCoin, childPoint, setChildPoint, userPoint, setUserPoint, userCoin, setUserCoin } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
 
@@ -42,12 +42,17 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
         //console.log("task Info:",task.id)
             if(!isChild){
              let result:any =  await UpdateUserTaskToCompleted(task.id)
+
            
              Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }])
              setModalVisible(false)
              setTaskModal(false)
              if(result){
                 let defaultCollection = await GetUserDefaultSchedule(userData.username)
+                await UpdateUserPointAndCoin(userInfo)
+
+                setUserCoin(Number(userCoin + userInfo.Coins))
+                setUserPoint(Number(userPoint +userInfo.Points))
                 if(defaultCollection!=null){
                     //Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])
                     setDefaultSpace(defaultCollection)
@@ -80,6 +85,8 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
         Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])
         
         let childUpdate = await UpdateChildCoinsAndPoints(childInfo)
+        setChildCoin(Number(childCoin + childInfo.DependentCoins))
+        setChildPoint(Number(childPoint + childInfo.DependentPoints))
         setRunAgain(true)
        } 
         console.log("approve task for child");

@@ -42,7 +42,7 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank,memberInfo, setMemberInfo, setIsEditImage, setRunAgain  } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank,memberInfo, setMemberInfo, setIsEditImage, setRunAgain, userPoint, setUserPoint, userCoin, setUserCoin   } = useContext(UserContext)
 
 
   //This is a test useState for populating create a new space
@@ -203,7 +203,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
         </Pressable>
         
           <View style={styles.coinContainer}>
-            <CoinsPointsDisplayContainer coins={`${userData.coins}`} points={userData.points}></CoinsPointsDisplayContainer>
+            <CoinsPointsDisplayContainer coins={`${userCoin}`} points={userPoint}></CoinsPointsDisplayContainer>
           </View>
         </View>
       </View>

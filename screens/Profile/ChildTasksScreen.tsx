@@ -28,19 +28,13 @@ import IchildCoinAndPoint from '../../Interfaces/IchildCoinAndPoint';
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setChangeFullName, setIsEditImage , setRunAgain} = useContext(UserContext)
+  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setChangeFullName, setIsEditImage, setRunAgain, childCoin, setChildCoin, childPoint, setChildPoint } = useContext(UserContext)
 
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
   // const [childDefaultSpace, setChildDefaultSpace] = useState<any>()
 
-  // const [todayDate, setTodayDate] = useState<any>()
+  /// const [todayDate, setTodayDate] = useState<any>()
 
-
-  // interface IchildCoinAndPoint {
-  //   Id: number;
-  //   DependentCoins: number;
-  //   DependentPoints: number
-  // }
 
   const [space, setSpace] = useState<String>("")
   const [location, setLocation] = useState<String>("")
@@ -58,8 +52,10 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   const [childSelectedRoom, setChildSelectedRoom] = useState<any>()
 
   const [childUpdateCoins, setChildUpdateCoins] = useState<IchildCoinAndPoint>()
+  
 
-
+  // const [childCoin, setChildCoin] = useState<any>("")
+  // const [childPoint, setChildPoint] = useState<any>("")
 
   // let newArr = ['bed', 'bathroom', 'kitchen']
   // let r = Math.floor(Math.random() * 7)
@@ -127,40 +123,47 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     console.log("child default space:", childDefault)
     setChildDefaultSpace(childDefault)
   }
+  
+  const ChildCoinPoint = ()=>{
+    setChildCoin(childPage.dependentCoins)
+    setChildPoint(childPage.dependentPoints)
+  }
 
 
   //need to refect the value of childPage for coins to change
 
   useEffect(() => {
     //repeat
-    // navigation.addListener('focus', () =>{
-    ChildDefault()
-    childTaskDate()
-    setRunAgain(false)
+     navigation.addListener('focus', () =>{
 
-    console.log("=====================+===================================================")
+    if (runAgain) {
+      ChildDefault()
+      childTaskDate()
+      setRunAgain(false)
+    }
 
-
-
-
-
-
+    else {
+      ChildCoinPoint()
+      ChildDefault()
+      childTaskDate()
+    }
+  })
 
 
   }, [runAgain])
 
 
-const changeChildFullName = () => {
+  const changeChildFullName = () => {
 
-  let newDetails= {
-    personId: childPage.Id,
-    username: "",
-    isChild: true,
+    let newDetails = {
+      personId: childPage.Id,
+      username: "",
+      isChild: true,
+    }
+    setChangeFullName(newDetails)
+    navigation.navigate('EditProfile')
+    setIsEditImage(false)
   }
-  setChangeFullName(newDetails)
-  navigation.navigate('EditProfile')
-  setIsEditImage(false)
-}
 
   return (
 
@@ -178,25 +181,25 @@ const changeChildFullName = () => {
 
           <View style={styles.nameAndCoinContainer}>
             <View style={styles.childName}>
-            <Pressable style={{flexDirection: 'row'}} onPress={()=>changeChildFullName()}>
-              <Text style={{ fontSize: 20 }}>{childPage.dependentName}</Text>
-              <View style={{marginLeft:5}}>
-          <FontAwesome5 name="edit" size={20} color={lilacColor} />
-          </View>
-        </Pressable>
+              <Pressable style={{ flexDirection: 'row' }} onPress={() => changeChildFullName()}>
+                <Text style={{ fontSize: 20 }}>{childPage.dependentName}</Text>
+                <View style={{ marginLeft: 5 }}>
+                  <FontAwesome5 name="edit" size={20} color={lilacColor} />
+                </View>
+              </Pressable>
             </View>
 
             <Text>{childPage.dependentAge} years old</Text>
 
 
             <View style={styles.coinContainer}>
-              <CoinsPointsDisplayContainer coins={childPage.dependentCoins} points={childPage.dependentPoints} ></CoinsPointsDisplayContainer>
+              <CoinsPointsDisplayContainer coins={childCoin} points={childPoint} ></CoinsPointsDisplayContainer>
             </View>
 
 
           </View>
           <View style={styles.unlockIconView}>
-            <Pressable onPress={() =>  setModalVisible(true) }>
+            <Pressable onPress={() => setModalVisible(true)}>
               <FontAwesome5 name="unlock" size={40} color={lilacColor} />
             </Pressable>
           </View>
@@ -268,28 +271,28 @@ const changeChildFullName = () => {
                           {
                             let childInfoCoin: IchildCoinAndPoint = {
                               Id: childPage.id,
-                              DependentCoins:taskName.task.coins,
-                              DependentPoints:taskName.task.coins
+                              DependentCoins: taskName.task.coins,
+                              DependentPoints: taskName.task.coins
                             }
                             setChildUpdateCoins(childInfoCoin)
                           }
-                          
+
                         }}>
 
-                    <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-                    <Text style={{ color: '#FFF', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name} 
+                          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text style={{ color: '#FFF', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
 
-                    </Text>
-                    {
-                      taskName.isCompleted?
-                      <AntDesign name="checksquare" size={30} color="#FFF" />
-                      :
-                      taskName.isRequestedApproval && !taskName.isCompleted?
-                      <Ionicons name="time-sharp" size={30} color="#FFF" />
-                      :
-                      null
-                    }
-                    </View>
+                            </Text>
+                            {
+                              taskName.isCompleted ?
+                                <AntDesign name="checksquare" size={30} color="#FFF" />
+                                :
+                                taskName.isRequestedApproval && !taskName.isCompleted ?
+                                  <Ionicons name="time-sharp" size={30} color="#FFF" />
+                                  :
+                                  null
+                            }
+                          </View>
 
                         </TaskSpaceRowComponent>
 
@@ -311,7 +314,7 @@ const changeChildFullName = () => {
 
         {modalVisible === true ?
           <ChildLockModalComponent /> : taskModal === true ?
-            <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} childInfo={ childUpdateCoins} userInfo={undefined} />
+            <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} childInfo={childUpdateCoins} userInfo={undefined} />
             : null}
 
 

@@ -77,11 +77,14 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       nextFiftyDays.push(nextDay.toISOString());
 
     }
+        let datesArr = [] as any
 
-    let nextTasks = defaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => nextFiftyDays.includes(task.dateScheduled)))
+          
+  
+          let nextTasks = defaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => nextFiftyDays.includes(task.dateScheduled)))
+
+        
     setScheduledTasks(nextTasks)
-    let datesArr = [] as any
-
 
     nextTasks.map((task: any) => task.map((taskone: any) => datesArr.push(taskone.dateScheduled)))
     datesArr = Array.from(new Set(datesArr.sort()))
@@ -90,6 +93,13 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       return dateF.toString()
     }))
 
+
+    
+
+  
+
+
+    
     if (datesArr.length > 0) {
 
 

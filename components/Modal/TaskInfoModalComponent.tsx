@@ -38,7 +38,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
     const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal, runScheduleAgain, setRunScheduleAgain, setUserData } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
-    useEffect(() => {console.log(task)},[])
+   
 
     const SubmitTaskForCompletion =async()=> {
         //console.log("task Info:",task.id)

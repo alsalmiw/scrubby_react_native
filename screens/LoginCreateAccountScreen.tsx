@@ -89,6 +89,10 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
           
             let defaultCollection = await GetUserDefaultSchedule(username)
             let userInfo = await GetUserByUsername(username)
+            if (userInfo) {
+                setUserData(userInfo)
+                setIsChildFree(userInfo.isChildFree)
+            }
             let invitesInfo = await GetInvitationByUsername(username)
             let dependents = await GetDependantsDTOByUsername(username)
             let scores = await GetScoreBoardByUsername(username)
@@ -139,10 +143,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
                 setChildrenData([])
             }
           
-            if (userInfo) {
-                setUserData(userInfo)
-                setIsChildFree(userInfo.isChildFree)
-            }
+           
            
             if(scores.length > 0){
                 setScoreBoardList(scores)

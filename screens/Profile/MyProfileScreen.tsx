@@ -7,17 +7,13 @@ import HeaderComponent from '../../components/HeaderComponent';
 import UserNameComponent from '../../components/UserNameComponent';
 import UnderlinedHeaderComponent from '../../components/UnderlinedHeaderComponent';
 import AddItemButtonComponent from '../../components/AddItemButtonComponent';
-
+import { FontAwesome5 } from '@expo/vector-icons'; 
 import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
-//import RootStackParamList from '../../types/INavigateProfile'
 import RootStackParamList from '../../types/INavigation'
-
 import UseTheme from '../../hooks/use-theme';
-// import { GetUserById } from '../../services/dataService';
-///
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetSpacesByCollectionID, GetSelectedTasksByUserID, GetChildDefaultSchedule } from '../../services/dataService';
-
+import { GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetSpacesByCollectionID, GetSelectedTasksByUserID, GetChildDefaultSchedule, GetDependantsDTOByUserId } from '../../services/dataService';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 //This is just testing
 import { Dimensions } from 'react-native';
@@ -30,6 +26,7 @@ import UserContext from '../../context/UserContext';
 import { ISpace } from '../../Interfaces/ISpace';
 import IChild from '../../Interfaces/IChild';
 import AvatarComponent from '../../components/AvatarComponent';
+import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 
 const windowWidth = Dimensions.get('window').width * 0.33;
 
@@ -44,18 +41,17 @@ interface newSpace {
 
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
-  const { bgColor, lilacColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms,setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childDefaultSpace, setChildDefaultSpace, setBlank } = useContext(UserContext)
+  const { bgColor, lilacColor, primaryTextColor } = useContext(ThemeContext)
+  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank,memberInfo, setMemberInfo, setIsEditImage, setRunAgain, childrenInfo, setChildrenInfo, myHouses, setMyHouses  } = useContext(UserContext)
+
 
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
+const [r, setR] = useState<number>(Math.floor(Math.random() * 7))
 
-
-
-  let r = Math.floor(Math.random() * 7)
 
   const handleAddChild = () => {
-    console.log('Plus Icon Works');
+    //console.log('Plus Icon Works');
     navigation.navigate('AddChild')
   }
 
@@ -65,16 +61,17 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   }
 
   const handleGoToSpaceRooms = async(space:any)=> {
-    console.log("collection id is "+space.id)
+   // console.log("collection id is "+space.id)
     let spaceRooms = await GetSpacesByCollectionID(space.id)
-    console.log("spacerooms" + spaceRooms)
+    console.log(space)
+   // console.log("spacerooms" + spaceRooms)
     setMySpace(space)
 
-    if (spaceRooms.length != 0){
+    if (spaceRooms.length != 0) {
       setMyRooms(spaceRooms)
       navigation.navigate('Rooms')
     }
-    else{
+    else {
       setMyRooms('')
       navigation.navigate('Rooms')
     }
@@ -90,95 +87,141 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   // }
 
   useEffect(() => {
-    setBlank(false)
+
+      
+    navigation.addListener('focus', ()=>{
+      setBlank(false)
+      setRunAgain(true)
+    })
+  
+
     // console.log(savedUsername)
     //AsyncGetSpaceCollectionById();
     //AsyncGetSpaceCollectionById();
-    
 
 
-  }, [])
 
-  const AsyncGetSpaceCollectionById = async () => {
+  }, [myHouses])
 
-    let userInfo: any = await AsyncStorage.getItem("Username");
-    if (userInfo) {
-      setSavedUsername(userInfo)
-      console.log(userInfo)
-    }
+  
 
-    let user = await GetUserByUsername(savedUsername)
-    console.log(user);
-    // console.log(user)
-    if (user.length != 0) {
-      setUserData(user)
-      let result = await GetSpaceCollectionByUserId(user.id);
-      // let children = await GetDependantByUserId(user.id);
-      //let usersTasks = await GetSelectedTasksByUserID(user.id)
-      //console.log(children)
-      if (result.length != 0) {
-        setNewSpace([...result])
-        setMySpaces(result)
-      }
-      // if (children.length != 0) {
-      //   console.log(children.length);
-      //   setChildrenData(children)
-      //   console.log("after");
-      // }
-    //   if(usersTasks.length!= 0)
-    // {
-    //   setUsersAddedTasks (usersTasks)
-    //   console.log(usersTasks)
-    // }
+  // const AsyncGetSpaceCollectionById = async () => {
 
-    }
+  //   let userInfo: any = await AsyncStorage.getItem("Username");
+  //   if (userInfo) {
+  //     setSavedUsername(userInfo)
+  //     //console.log(userInfo)
+  //   }
 
-  }
+  //   let user = await GetUserByUsername(savedUsername)
+  //   //console.log(user);
+  //   // console.log(user)
+  //   if (user.length != 0) {
+  //     setUserData(user)
+  //     let result = await GetSpaceCollectionByUserId(user.id);
+  //     // let children = await GetDependantByUserId(user.id);
+  //     //let usersTasks = await GetSelectedTasksByUserID(user.id)
+  //     //console.log(children)
+  //     if (result.length != 0) {
+  //       setNewSpace([...result])
+  //       setMySpaces(result)
+  //     }
+  //     // if (children.length != 0) {
+  //     //   console.log(children.length);
+  //     //   setChildrenData(children)
+  //     //   console.log("after");
+  //     // }
+  //     //   if(usersTasks.length!= 0)
+  //     // {
+  //     //   setUsersAddedTasks (usersTasks)
+  //     //   console.log(usersTasks)
+  //     // }
+
+  //   }
+
+  // }
 
   const handleGoToChildProfile= async(child:any)=> {
-    console.log("=======================================================================++")
-     console.log(child)
+   // console.log("=======================================================================++")
+     //console.log(child)
 
     setChildPage(child)
     let childDefault = await GetChildDefaultSchedule(child.id)
+   // console.log("Child fetch",childDefault)
     if(childDefault.length!= 0)
     {
       setChildDefaultSpace(childDefault)   
        navigation.navigate('ChildTasks')
-       console.log("got it");
+       //console.log("got it");
     }
-    else{
+    else {
       setChildDefaultSpace([])
+      //console.log("child Page",childPage)
       navigation.navigate('ChildTasks')
-      console.log('empty default space')
-      console.log(childDefault)
+      //console.log('empty default space')
+     // console.log("Child Default Space",childDefaultSpace)
     }
-    
+
     // console.log(child.scheduledTasks)
-   //setChildData(child)
+    //setChildData(child)
 
   }
 
+  const handleChangeInfo=(isChangeName:boolean) => {
+    let newDetails= {
+      personId: userData.Id,
+      username: userData.Username,
+      isChild: false,
+    }
+
+    setMemberInfo(newDetails)
+    navigation.navigate('EditProfile')
+
+    if(isChangeName)
+    {
+      setIsEditImage(false)
+    }
+    else{
+       setIsEditImage(true)
+    }
+    
+  }
+
+ 
   return (
 
     <ScrollView style={styles.container}>
 
       <HeaderComponent title="MY PROFILE"></HeaderComponent>
       <View style={styles.firstRow}>
+        <View>
         <AvatarComponent onPress={undefined} imageSource={userData.photo} />
+        <View style={{flexDirection:"row", alignItems: "center", padding:5}}>
+        <MaterialCommunityIcons name="image-edit-outline" size={20} color={lilacColor} />
+          <Text style={{color:"blue", paddingLeft:5}} onPress={() =>handleChangeInfo(false)}>Edit image?</Text>
+        </View>
+        
+        </View>
         <View style={styles.nameAndCoinContainer}>
-
-          <UserNameComponent name={userData.name}></UserNameComponent>
+        <Pressable style={{flexDirection: 'row'}} onPress={()=>handleChangeInfo(true)}>
+            <UserNameComponent name={userData.name}/>
+            <View style={{marginLeft:5}}>
+          <FontAwesome5 name="edit" size={15} color={lilacColor} />
+          </View>
+        </Pressable>
+        
           <View style={styles.coinContainer}>
             <CoinsPointsDisplayContainer coins={`${userData.coins}`} points={userData.points}></CoinsPointsDisplayContainer>
           </View>
         </View>
       </View>
 
-
-      <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo="" titleThree=""/>
+      <View style={styles.underlineContainer}>
+    <UnderlinedOneHeaderComponent titleFirst='My Spaces' />
+      </View>
+      {/* <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo="" titleThree="" /> */}
       <Pressable style={styles.secondRow} onPress={handleAddNewSpaceNavigation}>
-        <AddItemButtonComponent onPress={handleAddNewSpaceNavigation}>
+        <AddItemButtonComponent onPress={()=>{handleAddNewSpaceNavigation}}>
           <Entypo name="squared-plus" size={50} color={lilacColor} />
         </AddItemButtonComponent>
         <View style={styles.userNameContainer}>
@@ -187,51 +230,56 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       </Pressable>
       <View style={styles.newSpaceContainer}>
 
-        {mySpaces.length>0?
-        mySpaces.map((space:ISpace, idx:number) =>
+        {myHouses.length>0?
+        myHouses.map((space:ISpace, idx:number) =>
           <TaskSpaceRowTrash
             idx={r+idx}
             key={idx}
+            spaceId={space.id}
             onPress={()=>handleGoToSpaceRooms(space)}
           >
             {space.collectionName}
           </TaskSpaceRowTrash>
         
 
-        )
-        : null
+
+          )
+          : null
         }
 
       </View>
-{
-                !isChildFree? 
-                <>
-                          <UnderlinedHeaderComponent titleOne="Kids" titleTwo="" titleThree=""/>
-                            <View style={styles.thirdRow}>
-                                
-                                      <AddItemButtonComponent  onPress={handleAddChild}>
-                                        <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
-                                      </AddItemButtonComponent> 
+      {
+        !isChildFree ?
+          <>
+          <View style={styles.underlineContainer} >
+        <UnderlinedOneHeaderComponent titleFirst='Kids' />
+          </View>
+            {/* <UnderlinedHeaderComponent titleOne="Kids" titleTwo="" titleThree="" /> */}
+            <View style={styles.thirdRow}>
 
-                                      {childrenData.length!=0 ? 
-                                      childrenData.map((child:any, idx:number)=>{ 
-                                        return(
-                                      //     <AddItemButtonComponent key={idx} onPress={()=>handleGoToChildProfile(child)}>
-                                      //   <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />
-                                      // </AddItemButtonComponent>
-                                        <AvatarComponent key={idx} onPress={()=> {console.log(child), handleGoToChildProfile(child) }} imageSource={child.dependentPhoto} />
-                                        )
+              <AddItemButtonComponent onPress={handleAddChild}>
+                <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
+              </AddItemButtonComponent>
 
-                                      })
-                                      
-                                    : null}
-                              
-                            </View>
+              {childrenData.length != 0 ?
+                childrenData.map((child: any, idx: number) => {
+                  return (
+                    //     <AddItemButtonComponent key={idx} onPress={()=>handleGoToChildProfile(child)}>
+                    //   <Entypo name="squared-cross" size={windowWidth} color={lilacColor} />
+                    // </AddItemButtonComponent>
+                    <AvatarComponent key={idx} onPress={() => { handleGoToChildProfile(child) }} imageSource={child.dependentPhoto} />
+                  )
 
-                </>
-                :null
-              }
-    
+                })
+
+                : null}
+
+            </View>
+
+          </>
+          : null
+      }
+
     </ScrollView>
 
 
@@ -248,6 +296,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     // justifyContent: 'center',
     paddingTop: StatusBar.currentHeight,
+
   },
 
   firstRow: {
@@ -255,11 +304,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingLeft:'1%',
   },
 
   nameAndCoinContainer: {
     flex: 1,
     alignItems: 'center',
+    marginTop: 10,
   },
 
   coinContainer: {
@@ -286,13 +337,22 @@ const styles = StyleSheet.create({
   thirdRow: {
     flex: 1,
     flexDirection: 'row',
-   flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    paddingLeft:'2.5%',
+    paddingRight:'2.5%'
   },
   textStyle: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#FFF'
-  }
+  },
+  underlineContainer: {
+
+    flexDirection: 'row',
+    justifyContent: "space-between",
+    paddingLeft: '2.5%',
+    paddingRight: '2.5%'
+  },
 
 });
 

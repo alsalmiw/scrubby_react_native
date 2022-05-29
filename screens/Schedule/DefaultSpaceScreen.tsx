@@ -4,7 +4,7 @@ import { Button, Pressable, StyleSheet, Text, View, ScrollView, Image } from 're
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AddDefaultUserSpace, GetUserData } from '../../services/dataService';
 import UserContext from '../../context/UserContext';
-import ReactNativeCalendar from '../../components/ReactNativeCalendar';
+// import ReactNativeCalendar from '../../components/ReactNativeCalendar';
 import HeaderComponent from '../../components/HeaderComponent';
 import UserNameComponent from '../../components/UserNameComponent';
 import { ThemeContext } from '../../context/ThemeContext';
@@ -26,7 +26,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'DefaultOptions'>
 
 const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
 
-    const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, mySchedule, setRunAgain } = useContext(UserContext)
+    const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, mySchedule, setRunAgain, defaultScheduleOptions } = useContext(UserContext)
     const {secondaryTextColor, purpleColor} = useContext(ThemeContext)
     const [newSelection, setNewSelection] = useState<any>([])
 
@@ -74,7 +74,7 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
 
             <View>
             {
-                mySchedule.map((space:any, idx:number) =>
+                defaultScheduleOptions.map((space:any, idx:number) =>
                         space.rooms.length > 0?
                     <TaskSpaceRowComponent key={idx} idx={idx} onPress={()=>handleSetDefaultSchedule(space)}>
                         <View style={[styles.flexrow]}>

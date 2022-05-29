@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         paddingVertical: '2%',
         flexDirection: 'row',
+        bottom: 0,
     },
     buttonInnerContainer: {
         justifyContent: 'center',
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
         height: '100%',
         paddingVertical: '7%',
         width: 2,
-        backgroundColor: '#fff',
+        backgroundColor: 'white',
 
     }
 

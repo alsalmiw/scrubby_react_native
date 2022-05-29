@@ -118,7 +118,7 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route,}) => {
          
 
                     <Pressable onPress={handleDisplayAlert}>
-                        <FontAwesome name="trash-o" size={24} style={{ paddingLeft: 20 }} color="gray" />
+                        <FontAwesome name="trash-o" size={24} style={{ paddingLeft: 20 }} color="#414141" />
                         <Text>Delete User</Text>
                     </Pressable>
 

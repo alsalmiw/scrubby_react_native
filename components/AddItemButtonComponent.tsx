@@ -24,7 +24,10 @@ export default AddItemButtonComponent;
 
 const styles = StyleSheet.create({
     buttonOuterContainer: {
-        borderRadius: 24
+        borderRadius: 24,
+        margin:0,
+        padding:0
+
     },
 
     buttonInnerContainer: {

@@ -3,7 +3,7 @@ import { FC, useContext, useState } from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import {AddPhotoComponent} from '../../components/AddPhotoComponent';
-import RootStackParamList from '../../types/INavigateSettings'
+import RootStackParamList from '../../types/INavigation'
 import InputFieldComponent from '../../components/AddEdit/InputFieldComponent'
 import TitleComponent from '../../components/AddEdit/TitleComponent'
 import FullButtonComponent from '../../components/FullButtonComponent'
@@ -12,6 +12,7 @@ import {UpdateName} from '../../services/dataService'
 import UserContext from '../../context/UserContext';
 import INewName from '../../Interfaces/INewName'
 import { ThemeContext } from '../../context/ThemeContext';
+
 
 type Props = NativeStackScreenProps <RootStackParamList, 'EditProfile'>
 

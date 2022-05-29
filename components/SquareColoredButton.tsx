@@ -40,9 +40,12 @@ const styles = StyleSheet.create({
     container: {
         width:80,
         height: 80,
-        padding: 10,
-        borderRadius:5,
+        padding: 3,
+        paddingTop: 7,
+        borderRadius:10,
         margin: 3,
+        alignItems:"center",
+      
     },
     })
 

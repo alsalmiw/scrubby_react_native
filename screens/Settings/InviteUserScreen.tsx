@@ -91,13 +91,13 @@ const styles = StyleSheet.create({
     },
     usernameText: {
         fontSize: 20,
-        color: 'white',
+        color: '#FFF',
         paddingLeft: 40,
         fontWeight: 'bold'
     },
     inviteUserText: {
         fontSize: 30,
-        color: 'white',
+        color: '#FFF',
         padding: 10,
         marginTop: 50
     },

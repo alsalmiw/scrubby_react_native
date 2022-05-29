@@ -18,13 +18,14 @@ import { Dimensions } from 'react-native';
 import HeaderComponent from '../../components/HeaderComponent';
 import FullButtonComponent from '../../components/FullButtonComponent';
 import { ThemeContext } from '../../context/ThemeContext';
-import { AddSelectedTask, GetAllSpaceItems } from '../../services/dataService';
+import { AddSelectedTask, GetAllSpaceItems, GetTasksByRoomId } from '../../services/dataService';
 import RootStackParamList from '../../types/INavigateProfile'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 //
 interface taskInfo {
   description: string;
@@ -40,16 +41,20 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AddItems'>
 
 
 const AddItemsScreen: FC<Props> = ({ navigation }) => {
-  const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData, rState, setRState, myRoom } = useContext(UserContext)
+  const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData, rState, setRState, myRoom, storedAddedItems, setStoredAddedItems } = useContext(UserContext)
+
+  const[counter,setCounter] =useState<number>(0)
+  const [selectedCategory, setSelectedCategory] = useState<string>('Bathroom')
+ 
 
   //let r = Math.floor(Math.random() * 7)
 
 
-  const { purpleColor } = useContext(ThemeContext)
+  const { purpleColor, primaryTextColor, lilacColor, blueColor } = useContext(ThemeContext)
 
   useEffect(() => {
-    console.log(fetchSpaceInfo());
-
+    fetchSpaceInfo();
+   
 
 
   }, [])
@@ -57,23 +62,37 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
   const fetchSpaceInfo = async () => {
     let data = await GetAllSpaceItems();
     if (data.length != 0) {
-      setAllTask(data);
+      setAllTask(data); 
+      setTask(data.filter((aTask: taskInfo) => aTask.tags.includes("bathroom")))
     }
 
 
   }
   const AddItems = (name: string) => {
+    console.log(name)
     setTask(allTask.filter((aTask: taskInfo) => aTask.tags.includes(name.toLowerCase())))
   }
 
   const handleSelectedTasks = async () => {
-    navigation.navigate('AddedItems')
+   
+    let getAddedItems = await GetTasksByRoomId(myRoom.id)
+    if(getAddedItems.length>0){
+      let addedItemsWColor = [] as any
+      getAddedItems.map((task:any, idx: number)=>  addedItemsWColor.push({ ...task, 'color': (rState + idx+2), 'spaceId': myRoom.id }))
+     
+      setStoredAddedItems(addedItemsWColor)
+    }else{
+         setStoredAddedItems([])
+    }
 
+
+    navigation.navigate('AddedItems')
+    setCounter(0);
   }
 
   return (
-    <>
-      <View style={styles.container}>
+    <View style={{flex:1,  justifyContent: "space-between"}}>
+      <ScrollView style={styles.container}>
         <View style={styles.headTitle}>
           <HeaderComponent title={myRoom.spaceName}> </HeaderComponent>
         </View>
@@ -89,12 +108,12 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
                     {
                       icons.map((icon, idx) => {
                         return (
-                          <View key={idx} style={styles.categories}>
-                            <Pressable onPress={() => AddItems(icons[idx].Name)}>
+                          <View key={idx} style={[styles.categories, {borderColor:selectedCategory==icon.Name?blueColor:lilacColor}]}>
+                            <Pressable onPress={() => {AddItems(icons[idx].Name), setSelectedCategory(icon.Name)}}>
                               <View style={{ alignItems: 'center' }}>
                                 <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                               </View>
-                              <Text style={{ textAlign: 'center' }}>{icons[idx].NickName} </Text>
+                              <Text style={[{ textAlign: 'center', color:primaryTextColor }]}>{icons[idx].NickName} </Text>
                             </Pressable>
                           </View>
                         )
@@ -111,12 +130,12 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
                   {
                     icons.map((icon, idx) => {
                       return (
-                        <View key={idx} style={styles.categories2}>
-                          <Pressable onPress={() => AddItems(icons[idx].Name)}>
+                        <View key={idx} style={[styles.categories2, {borderColor:selectedCategory==icon.Name?blueColor:lilacColor}]}>
+                          <Pressable onPress={() => {AddItems(icons[idx].Name), setSelectedCategory(icon.Name)}}>
                             <View style={{ alignItems: 'center' }}>
                               <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                             </View>
-                            <Text style={{ textAlign: 'center', }}>{icons[idx].NickName} </Text>
+                            <Text style={{ textAlign: 'center',  color:primaryTextColor }}>{icons[idx].NickName} </Text>
                           </Pressable>
                         </View>
                       )
@@ -128,7 +147,7 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
         </>
 
         <View style={styles.underlineContainer}>
-          <UnderlinedOneHeaderComponent titleFirst={'Items'} />
+          <UnderlinedOneHeaderComponent titleFirst={'Items   '+counter } />
         </View>
         <ScrollView>
           <View style={styles.rest3}>
@@ -139,8 +158,8 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
               {
                 task.map((colorBtn: taskInfo, x: number) => {
                   return (
-                    <SquareColoredButton key={x} idx={rState + x} onPress={() => { colorBtn.UserId = userData.id, addTask.push({ ...colorBtn, 'color': (rState + x), 'spaceId': myRoom.id }), console.log(addTask) }} >
-                      <Entypo name="plus" size={45} color="white" style={styles.plusIconStyle} />
+                    <SquareColoredButton key={x} idx={rState + x} onPress={() => { colorBtn.UserId = userData.id, addTask.push({ ...colorBtn, 'color': (rState + x), 'spaceId': myRoom.id }), console.log(addTask), setCounter(counter + 1) }} >
+                      <Entypo name="plus" size={30} color="white" style={styles.plusIconStyle} />
                       <Text style={styles.plusIconText}>{colorBtn.name}</Text>
                     </SquareColoredButton>
                   )
@@ -153,25 +172,26 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
 
 
 
-      </View >
-      <FullButtonComponent radius={0} onPress={handleSelectedTasks} color={purpleColor}>
-        <Text>Done</Text>
-      </FullButtonComponent>
-    </>
+      </ScrollView >
+      <View></View>
+      <TwoFullButtonComponent text1={"Back"} text2={"Add"} onAcceptPress={handleSelectedTasks} onBackPress={()=>navigation.goBack()} color={purpleColor}/>
+      
+      
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     paddingTop: StatusBar.currentHeight,
-    position: 'absolute'
+    //position: 'absolute'
   },
   headTitle: {
 
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
-    marginTop: 40
+    marginTop: 0
   },
   clickText: {
     textDecorationLine: 'underline',
@@ -182,13 +202,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   categories: {
-    borderColor: 'black',
-    borderWidth: 2,
-    borderRadius: 8,
+    borderWidth: 3,
+    borderRadius: 10,
     padding: 10,
     minWidth: 83,
     maxWidth: 84,
-    marginRight: 10,
+    marginRight: 5,
     minHeight: 85,
     maxHeight: 85
 
@@ -204,14 +223,14 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   categories2: {
-    borderColor: 'black',
-    borderWidth: 2,
-    borderRadius: 8,
-    padding: 10,
+  
+    borderWidth: 3,
+    borderRadius: 10,
+    padding: 8,
     paddingBottom: 2,
     minWidth: 84,
     maxWidth: 84,
-    marginRight: 10,
+    marginRight: 5,
     marginBottom: 10,
     minHeight: 85,
     maxHeight: 85
@@ -219,8 +238,8 @@ const styles = StyleSheet.create({
   underlineContainer: {
     flexDirection: 'row',
     justifyContent: "space-between",
-    paddingLeft: 10,
-    paddingRight: 10
+    paddingLeft: "2.5%",
+    paddingRight: "2.5%"
   },
   rest3: {
 
@@ -238,6 +257,7 @@ const styles = StyleSheet.create({
   plusIconText: {
     color: 'white',
     textAlign: 'center',
+
     marginTop: 0
   }
 

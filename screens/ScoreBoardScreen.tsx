@@ -39,6 +39,7 @@ const ScoreBoardScreen: FC<Props> = ({ navigation, route }) => {
         {
           scoreBoardList.sort((a: any, b: any) => b.points - a.points).map((people: any, idx: number) => {
             return (
+              
               <View key={idx} style={styles.scoreBoardParent}>
                 <View style={styles.scoreBoardChild1}>
                   <View style={{ paddingRight: 10 }}>
@@ -48,18 +49,13 @@ const ScoreBoardScreen: FC<Props> = ({ navigation, route }) => {
                   <View style={{ paddingRight: 10 }}>
                     <Text style={{ fontSize: 20 }}>{people.name}</Text>
                   </View>
-
-
                 </View>
                 <View style={styles.parentForPoints}>
                   <View style={{ paddingRight: 10 }}><FontAwesome size={25} name="star" color={yellowColor} /></View>
                   <View style={{ paddingRight: 10 }}>
                     <Text style={{ fontSize: 20 }}>{people.points}</Text>
                   </View>
-
                 </View>
-
-
               </View>
             )
           })

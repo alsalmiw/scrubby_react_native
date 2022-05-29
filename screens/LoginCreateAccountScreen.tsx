@@ -7,11 +7,10 @@ import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentL
 import UserContext from "../context/UserContext"
 import INewUser from "../Interfaces/INewUser"
 import IUserLogin from "../Interfaces/IUserLogin"
-import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin, AddDefaultAvatar, GetUserByUsername } from "../services/dataService"
+import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin, GetUserByUsername, GetDependantsDTOByUserId, GetAcceptedInvitationsbyInviterId, GetDependantByUserId, GetInvitationByUsername, GetDependantsDTOByUsername, GetScoreBoardByUsername, GetCollectionByUsername, GetMyTaskedCollectionsByUsername, GetSpaceCollectionByUsername, GetDefaultOptionsByUsername, GetSharedCollectionsDetailsByUsername } from "../services/dataService"
 import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
 import ChildFreeBoolComponent from "../components/Settings/ChildFreeBoolComponent"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import PhotoComponent from "../components/PhotoComponent"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import avatars from '../types/IAvatars'
 import FullButtonComponent from "../components/FullButtonComponent"
@@ -19,18 +18,20 @@ import { ThemeContext } from "../context/ThemeContext"
 import RootStackParamList from '../types/INavigation'
 import { TextInput } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
+import SplashComponent from "../components/SplashComponent"
 
 
 // type RootStackParamList = {
 //     login: undefined,
 //     Nav: undefined,
 // }
+//
 
 type Props = NativeStackScreenProps<RootStackParamList, 'login'>
 
 const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
-    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, setDefaultSpace, fullName, setFullName, login, setLogin, setUserData, blank, setBlank } = useContext(UserContext)
+    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, setDefaultSpace, fullName, setFullName, login, setLogin, setUserData, blank, setBlank, setChildrenData, setMySpaces, setScoreBoardList, setInvited, setInviters, setAcceptedInvitations, setMySchedule, setTasksHistory, setIsChildFree, childrenInfo, setChildrenInfo, myHouses, setMyHouses, setDefaultScheduleOptions, setSharedSpacesInfo  } = useContext(UserContext)
     const { yellowColor, greenColor } = useContext(ThemeContext)
     const [name, setName] = useState<any>("")
 
@@ -57,19 +58,17 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             Photo: avatars[avR],
             Fullname: name,
         }
-        //console.log(userData)
         setSavedUsername(username);
         setSavedPassword(password);
 
         let result = await CreateAccount(userData);
-        // console.log(result.token)
         if (result) {
 
             userLogin()
 
         }
 
-        else { Alert.alert("Error", 'Invalid Username or Password.', [{ text: "Cancel", style: "cancel" }]) }
+        else  {setBlank(false), Alert.alert("Error", 'Account not created.', [{ text: "Cancel", style: "cancel" }]) }
 
     }
 
@@ -87,27 +86,88 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
             AsyncStorage.setItem("Token", result.token);
             AsyncStorage.setItem("Username", username);
-
+          
             let defaultCollection = await GetUserDefaultSchedule(username)
             let userInfo = await GetUserByUsername(username)
+            if (userInfo) {
+                setUserData(userInfo)
+                setIsChildFree(userInfo.isChildFree)
+            }
+            let invitesInfo = await GetInvitationByUsername(username)
+            let dependents = await GetDependantsDTOByUsername(username)
+            let scores = await GetScoreBoardByUsername(username)
+            let defaultOptions = await GetDefaultOptionsByUsername(username)
+            let sharedSpaces = await GetSharedCollectionsDetailsByUsername(username)
+          
+           
+            let collections = await GetSpaceCollectionByUsername(username)
+
+             if(invitesInfo.length!=0){
+                setInvited(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
+                setInviters(invitesInfo.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
+                setAcceptedInvitations(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
+            //  console.log(invitesInfo.sentInvites)
+            }else{
+                setInvited([])
+                setInviters([])
+                setAcceptedInvitations([])
+            }
+
+            if(sharedSpaces.length!==0) {
+
+                setSharedSpacesInfo(sharedSpaces)
+            }else{
+                setSharedSpacesInfo([])
+            }
+
+            if(defaultOptions.length != 0){
+                setDefaultScheduleOptions(defaultOptions)
+            }else{
+                setDefaultScheduleOptions([])
+            }
+
             if (defaultCollection.length != 0) {
+                
                 setDefaultSpace(defaultCollection)
                 navigation.navigate('Nav', { screen: "Schedule" })
             } else {
+                
                 navigation.navigate('Nav', { screen: "Profile" })
+                setDefaultSpace([])
 
             }
-            if (userInfo) {
-                setUserData(userInfo)
+          
+            if(dependents.length>0){
+                setChildrenData(dependents)
+            }else{
+                setChildrenData([])
             }
-            //console.log(typeof defaultCollection)
-            //
+          
+           
+           
+            if(scores.length > 0){
+                setScoreBoardList(scores)
+            }
+            else{
+                setScoreBoardList([])
+            }
+             
+            if(collections.length > 0){
+                setMyHouses(collections)
+            }else{
+                setMyHouses([])
+            }
+
+            
+           
+        
 
 
 
         }
         else {
             Alert.alert("Error", 'Incorrect Username or Password.', [{ text: "Cancel", style: "cancel" }])
+            setBlank(false)
             //console.log('fail')
         }
     }
@@ -125,6 +185,10 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             }
             if (!password.trim()) {
                 Alert.alert("Error", 'Please Enter password.', [{ text: "Cancel", style: "cancel" }]);
+                return;
+            }
+            if(!fullName.trim()){
+                Alert.alert("Error", 'Please Enter Full Name.', [{ text: "Cancel", style: "cancel" }]);
                 return;
             }
             if (regi.test(username)) {
@@ -167,67 +231,89 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
         }
     };
 
+    // const GetUserInfoByUsername = async () => {
+
+    //     let username: any = await AsyncStorage.getItem("Username");
+    //     if (username) {
+    //       setSavedUsername(username)
+    //       let userInfo = await GetUserData(username)
+    //       let dependent= await GetDependantsDTOByUserId(userInfo.userInfo.Id)
+    //       if(dependent.length!= 0){
+    //         setChildrenData(dependent)
+    //       }
+    //       let invites = await GetAcceptedInvitationsbyInviterId(userInfo.userInfo.Id)
+    //       if(invites.length!= 0){
+    //         setAcceptedInvitations(invites)
+    //       }
+    //       if (userInfo.length != 0) {
+    //         //setChildrenData(userInfo.children)
+    //         //setMySpaces(userInfo.spaces)
+    //         //setUserData(userInfo.userInfo)
+    //         // setScoreBoardList(userInfo.scoreBoard)
+    //         // setInvited(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
+    //         // setInviters(userInfo.invitations.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
+    //         // setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
+    //        // setMySchedule(userInfo.mySchedule)
+    //         setTasksHistory(userInfo.tasksHistory)
+    //         // setIsChildFree(userInfo.userInfo.isChildFree)
+    //       }
+    
+    //     }
+    
+    //   }
+    
+        
+
     return (
         <>
+            <SplashComponent>
+                {
+                    login
+                        ?
+                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                            <View style={styles.backgroundColor}>
+                                <View style={styles.loginContent}>
+                                    <Text style={styles.title}>Sign up</Text>
 
-            {blank ?
-                <View style={styles.spinBackgroundColor}>
-                    <View style={[styles.spinBackgroundColor, { justifyContent: 'center' }]}>
+                                    <View style={styles.inputPosition}>
 
-                        <SafeAreaView >
-                            <ActivityIndicator color='#FFF' size="large" />
-                        </SafeAreaView>
-
-                    </View>
-                </View>
-                :
-                <>
-                    {
-                        login
-                            ?
-                            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                                <View style={styles.backgroundColor}>
-                                    <View style={styles.loginContent}>
-                                        <Text style={styles.title}>Sign up</Text>
-
-                                        <View style={styles.inputPosition}>
-
-                                            <InputFieldComponentLogin />
-                                        </View>
-
-
-                                        <View>
-                                            <Text style={styles.loginTxt}>Already have an account. <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: 'blue' }}>Login here.</Text></Text>
-                                        </View>
+                                        <InputFieldComponentLogin />
                                     </View>
-                                    <View style={styles.btnStyle}>
-                                        <FullButtonComponent radius={15} color={yellowColor} onPress={() => checkTextInput()} > <Text>Create Account</Text></FullButtonComponent>
 
+
+                                    <View>
+                                        <Text style={styles.loginTxt}>Already have an account. <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: 'blue' }}>Login here.</Text></Text>
                                     </View>
                                 </View>
-                            </TouchableWithoutFeedback>
-                            :
-                            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                                <View style={styles.backgroundColor}>
-                                    <View style={styles.loginContent}>
-                                        <Text style={styles.title}>Login</Text>
+                                <View style={styles.btnStyle}>
+                                    <FullButtonComponent radius={15} color={yellowColor} onPress={() => checkTextInput()} > <Text>Create Account</Text></FullButtonComponent>
 
-                                        <View style={styles.inputPosition}>
-                                            <InputFieldComponentLogin />
-                                        </View>
-
-                                        <View>
-                                            <Text style={styles.loginTxt}>New here? <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: 'blue' }}>Create an Account</Text></Text>
-                                        </View>
-
-                                    </View>
-                                    <View style={styles.btnStyle}>
-                                        <FullButtonComponent radius={15} color={yellowColor} onPress={() => checkTextInput()} > <Text>Login</Text></FullButtonComponent>
-                                    </View>
                                 </View>
-                            </TouchableWithoutFeedback>
-                    }
-                </>}
+                            </View>
+                        </TouchableWithoutFeedback>
+                        :
+                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                            <View style={styles.backgroundColor}>
+                                <View style={styles.loginContent}>
+                                    <Text style={styles.title}>Login</Text>
+
+                                    <View style={styles.inputPosition}>
+                                        <InputFieldComponentLogin />
+                                    </View>
+
+                                    <View>
+                                        <Text style={styles.loginTxt}>New here? <Text onPress={() => { setLogin(!login), setPassword(""), setUsername("") }} style={{ color: 'blue' }}>Create an Account</Text></Text>
+                                    </View>
+
+                                </View>
+                                <View style={styles.btnStyle}>
+                                    <FullButtonComponent radius={15} color={yellowColor} onPress={() => checkTextInput()} > <Text>Login</Text></FullButtonComponent>
+                                </View>
+                            </View>
+                        </TouchableWithoutFeedback>
+                }
+
+            </SplashComponent>
         </>
     )
 }

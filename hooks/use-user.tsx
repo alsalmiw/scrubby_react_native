@@ -24,12 +24,17 @@ export default function UseUser() {
         fullName: string,
         isChild: boolean
     }
+    interface IChangeName {
+        personId: number
+        username: string
+        isChild: boolean
+    }
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [savedUsername, setSavedUsername] = useState('username')
     const [savedPassword, setSavedPassword] = useState('password')
-    const [seeAll, setSeeAll] = useState(false)
+    const [seeAll, setSeeAll] = useState(true)
     const [isChildFree, setIsChildFree] = useState(false)
     const [isChild, setIsChild] = useState(false)
     const [userData, setUserData] = useState<IUserData[]>([])
@@ -37,6 +42,7 @@ export default function UseUser() {
     const [childData, setChildData] = useState<IChild[]>([])
     const [childPage, setChildPage] = useState<IChild>()
     const [childrenData, setChildrenData] = useState<IChild[]>([])
+    const [childrenInfo, setChildrenInfo] =useState<IChild[]>([])
     const [mySpaces, setMySpaces] = useState<newSpace[]>([])
     const [mySpace, setMySpace] = useState<ISpace[]>([])
     const [newSpace, setNewSpace] = useState<ISpace[]>([]);
@@ -62,6 +68,11 @@ export default function UseUser() {
     const [roomTasks, setRoomTasks] = useState<ITask[]>([]);
     const [scoreBoardList, setScoreBoardList] = useState<IScoreBoard[]>([]);
     const [refresh, setRefresh] = useState<boolean>()
+    const [runScheduleAgain, setRunScheduleAgain] = useState<boolean>(false)
+    const [myHouses, setMyHouses] = useState<any[]>([])
+    const[noAddedItems, setNoAddedItems] = useState<boolean>(false)
+   
+
 
 
 
@@ -85,8 +96,16 @@ export default function UseUser() {
     const [login, setLogin] = useState<Boolean>(true);
     const [selectedTask, setSelectedTask] = useState<any[]>([])
     const [blank, setBlank] = useState<Boolean>(false)
+    const [memberInfo, setMemberInfo] = useState<IChangeName[]>([])
+    const [isEditImage, setIsEditImage]=useState<boolean>(false)
+    const [storedAddedItems, setStoredAddedItems] = useState<any[]>([])
+    const [defaultScheduleOptions, setDefaultScheduleOptions] = useState<any[]>([])
+    const [sharedSpacesInfo, setSharedSpacesInfo] = useState<any[]>([])
+    const [firstTime, setFirstTime] = useState<boolean>(true)
+    const [spacesRooms, setSpacesRoom] = useState<any[]>([])
 
-    return { username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree, userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask, mySpace, setMySpace, rState, setRState, invited, setInvited, inviters, setInviters, setChildrenData, childrenData, setNewSpace, usersAddedTasks, setUsersAddedTasks, myRoom, setMyRoom, tasksAPI, setTasksAPI, roomTasks, setRoomTasks, fullUserInfo, setFullUserInfo, refresh, setRefresh, scoreBoardList, setScoreBoardList, acceptedInvitations, setAcceptedInvitations, taskUser, setTaskUser, childPage, setChildPage, isChild, setIsChild, selectedUser, setSelectedUser, modalVisible, setModalVisible, scheduleTask, setScheduleTask, childPassCode, setChildPassCode, checkPassCode, setCheckPassCode, defaultSpace, setDefaultSpace, taskModal, setTaskModal, childRooms, setChildRooms, childDefaultSpace, setChildDefaultSpace, runAgain, setRunAgain, roomIdx, setRoomIDX, closeTasks, setCloseTasks, current, setCurrent, mySchedule, setMySchedule, fullName, setFullName, login, setLogin, selectedTask, setSelectedTask, blank, setBlank, tasksHistory, setTasksHistory, activeDate, setActiveDate, activeRoom, setActiveRoom, sentAcceptedInvitations, setSentAcceptedInvitations }
+    return { username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree, userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask, mySpace, setMySpace, rState, setRState, invited, setInvited, inviters, setInviters, setChildrenData, childrenData, setNewSpace, usersAddedTasks, setUsersAddedTasks, myRoom, setMyRoom, tasksAPI, setTasksAPI, roomTasks, setRoomTasks, fullUserInfo, setFullUserInfo, refresh, setRefresh, scoreBoardList, setScoreBoardList, acceptedInvitations, setAcceptedInvitations, taskUser, setTaskUser, childPage, setChildPage, isChild, setIsChild, selectedUser, setSelectedUser, modalVisible, setModalVisible, scheduleTask, setScheduleTask, childPassCode, setChildPassCode, checkPassCode, setCheckPassCode, defaultSpace, setDefaultSpace, taskModal, setTaskModal, childRooms, setChildRooms, childDefaultSpace, setChildDefaultSpace, runAgain, setRunAgain, roomIdx, setRoomIDX, closeTasks, setCloseTasks, current, setCurrent, mySchedule, setMySchedule, fullName, setFullName, login, setLogin, selectedTask, setSelectedTask, blank, setBlank, tasksHistory, setTasksHistory, activeDate, setActiveDate, activeRoom, setActiveRoom, memberInfo, setMemberInfo, isEditImage, setIsEditImage, sentAcceptedInvitations, setSentAcceptedInvitations, childrenInfo, setChildrenInfo, runScheduleAgain, setRunScheduleAgain, myHouses, setMyHouses,  storedAddedItems, setStoredAddedItems, noAddedItems, setNoAddedItems, defaultScheduleOptions, setDefaultScheduleOptions, sharedSpacesInfo, setSharedSpacesInfo, firstTime, setFirstTime, spacesRooms, setSpacesRoom }
+   // return { username, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree, userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, task, setTask, allTask, setAllTask, addTask, setAddTask, mySpace, setMySpace, rState, setRState, invited, setInvited, inviters, setInviters, setChildrenData, childrenData, setNewSpace, usersAddedTasks, setUsersAddedTasks, myRoom, setMyRoom, tasksAPI, setTasksAPI, roomTasks, setRoomTasks, fullUserInfo, setFullUserInfo, refresh, setRefresh, scoreBoardList, setScoreBoardList, acceptedInvitations, setAcceptedInvitations, taskUser, setTaskUser, childPage, setChildPage, isChild, setIsChild, selectedUser, setSelectedUser, modalVisible, setModalVisible, scheduleTask, setScheduleTask, childPassCode, setChildPassCode, checkPassCode, setCheckPassCode, defaultSpace, setDefaultSpace, taskModal, setTaskModal, childRooms, setChildRooms, childDefaultSpace, setChildDefaultSpace, runAgain, setRunAgain, roomIdx, setRoomIDX, closeTasks, setCloseTasks, current, setCurrent, mySchedule, setMySchedule, fullName, setFullName, login, setLogin, selectedTask, setSelectedTask, blank, setBlank, tasksHistory, setTasksHistory, activeDate, setActiveDate, activeRoom, setActiveRoom, }
 
 
 

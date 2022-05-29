@@ -2,9 +2,9 @@ import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useEffect, useState } from 'react';
 import { Button, Pressable, StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AddDefaultUserSpace, CreateChildDefaultSchedule, GetUserData } from '../../services/dataService';
+import { AddDefaultUserSpace, CreateChildDefaultSchedule, GetChildDefaultSchedule, GetUserData } from '../../services/dataService';
 import UserContext from '../../context/UserContext';
-import ReactNativeCalendar from '../../components/ReactNativeCalendar';
+//import ReactNativeCalendar from '../../components/ReactNativeCalendar';
 import HeaderComponent from '../../components/HeaderComponent';
 import UserNameComponent from '../../components/UserNameComponent';
 import { ThemeContext } from '../../context/ThemeContext';
@@ -21,13 +21,13 @@ import { Ionicons} from '@expo/vector-icons';
 import IDefaultSpace from '../../Interfaces/IDefaultSpace';
 import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 import IDefaultSpaceChild from '../../Interfaces/IDefaultSpaceChild';
-
+//
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DefaultChildOptions'>
 
 const DefaultSpaceChildScreen: FC<Props> = ({navigation})=> {
 
-    const { childDefaultSpace,setChildDefaultSpace, childPage, setRunAgain } = useContext(UserContext)
+    const { childDefaultSpace,setChildDefaultSpace, childPage, setRunAgain, myHouses, setSpacesRoom, spacesRooms } = useContext(UserContext)
     const {secondaryTextColor, purpleColor} = useContext(ThemeContext)
     const [newSelection, setNewSelection] = useState<any>([])
 
@@ -55,12 +55,19 @@ const DefaultSpaceChildScreen: FC<Props> = ({navigation})=> {
         let changeDefault = await CreateChildDefaultSchedule (newDefault)
         if(changeDefault)
         {
-            console.log(changeDefault)
-            setRunAgain(true)
-            setChildDefaultSpace(newSelection)
-            alert("You have successfully set the default schedule to " + newSelection.collectionName)
-            navigation.goBack()
-        }
+            //get child default page
+            let childDefault = await GetChildDefaultSchedule(childPage.id)
+   // console.log("Child fetch",childDefault)
+            if(childDefault.length!= 0)
+            {
+            setChildDefaultSpace(childDefault)   
+                    console.log(changeDefault)
+                    setRunAgain(true)
+                    //setChildDefaultSpace(newSelection)
+                    alert("You have successfully set the default schedule to " + newSelection.collectionName)
+                    navigation.goBack()
+                }
+            }
         
     }
 
@@ -75,7 +82,7 @@ const DefaultSpaceChildScreen: FC<Props> = ({navigation})=> {
 
             <View>
             {
-                childPage.scheduledTasks.map((space:any, idx:number) =>
+                spacesRooms.map((space:any, idx:number) =>
                         space.rooms.length > 0?
                     <TaskSpaceRowComponent key={idx} idx={idx} onPress={()=>handleSetDefaultSchedule(space)}>
                         <View style={[styles.flexrow]}>

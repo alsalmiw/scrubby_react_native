@@ -14,24 +14,62 @@ import AvatarComponent from '../../components/AvatarComponent';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 import UnderlinedHeaderComponent from '../../components/UnderlinedHeaderComponent';
 import TaskRowHistoryComponent from '../../components/TaskRowHistoryComponent';
+import { GetAllTasksHistoryForMembers } from '../../services/dataService';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'TasksHistory'>
 
 const TasksHistoryScreen: FC<Props> = ({navigation})=> {
   const {orangeColor, blueColor, fuchsiaColor, violetColor, greenColor, yellowColor, purpleColor, lilacColor} = useContext(ThemeContext)
-  const { mySpaces, userData, childData, childrenData, acceptedInvitations , taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser, seeAll, tasksHistory, setTasksHistory, current, setCurrent, isChildFree } = useContext(UserContext)
+  const { mySpaces, userData, childData, childrenData, acceptedInvitations , taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser, seeAll, tasksHistory, setTasksHistory, current, setCurrent, isChildFree, sharedSpacesInfo } = useContext(UserContext)
   const [allMembers, setAllMembers] = useState([])
+  const [historyDays, setHistoryDays] = useState<any[]>([])
+  const [tasksList, setTasksList] = useState<any[]>([])
+
   //const navigation = useNavigation();
 
  
 
   useEffect(() => {
-   
+    //getArchives()
     handleCreateUsersList()
+   
 
-  }, [childrenData, acceptedInvitations])
+  }, [childrenData, acceptedInvitations, tasksHistory])
 
+  // const getArchives = async ()=>{
+  //   let archives = await GetAllTasksHistoryForMembers (userData.Id)
+  //   if(archives.length!=0){
+  //     setTasksHistory(archives)
+      
+  //   }
+  // }
+
+  const GetTaskDates = () => {
+    let today = new Date();
+    var todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    var nextDay = new Date(+todayDate);
+
+    let pastThirtyDays = [] as any
+    pastThirtyDays.push(todayDate.toISOString())
+
+
+    for (let i = 30; i >= 0; i--) {
+      let endDate = nextDay.getDate() - 1;
+      nextDay.setDate(endDate);
+      pastThirtyDays.push(nextDay.toISOString());
+
+    }
+   
+    setHistoryDays(pastThirtyDays)
+
+
+    let filterdTasks = tasksHistory.filter((task:any)=> pastThirtyDays.includes(task.dateScheduled))
+   
+    let sortedTasks= filterdTasks.sort((a:any,b:any)=> a.dateScheduled > b.dateScheduled?-11:1)
+    setTasksList(sortedTasks)
+    console.log(sortedTasks)
+  }
  
 const handleCreateUsersList =  () => {
 let membersArr = [] as any
@@ -62,7 +100,7 @@ let membersArr = [] as any
 : null
 :null
 acceptedInvitations.length > 0?
-acceptedInvitations.map((person:any, idx:number)=> { mySpaces.map((space:any, idx:number)=> space.sharedWith.map((shared: any)=> 
+acceptedInvitations.map((person:any, idx:number)=> { sharedSpacesInfo.map((space:any, idx:number)=> space.sharedWith.map((shared: any)=> 
   {
   if(shared.invitedId == person.invitedId)
     {
@@ -75,7 +113,15 @@ acceptedInvitations.map((person:any, idx:number)=> { mySpaces.map((space:any, id
     isInvited:true
 
   }
-  membersArr.push(invited)
+  let foundmember = membersArr.some((member:any) => {
+    if(member.id==invited.id && member.isChild==false) {
+     return true
+    }
+  })
+  if(!foundmember)
+  {
+    membersArr.push(invited)
+  }
   }
 
   }
@@ -84,9 +130,10 @@ acceptedInvitations.map((person:any, idx:number)=> { mySpaces.map((space:any, id
 :null
 
 setAllMembers(membersArr)
-console.log(membersArr)
+GetTaskDates()
+//console.log(membersArr)
 
-console.log(membersArr)
+//console.log(membersArr)
 }
 
 
@@ -100,7 +147,7 @@ let r = Math.floor(Math.random() * 7)
       
         allMembers.map((member:any, idx:number)=> {
           return(
-          <Pressable key={idx} onPress={()=> {setSelectedUser(member), console.log(member)}}>
+          <Pressable key={idx} onPress={()=> {setSelectedUser(member)}}>
             <AvatarComponent  onPress={undefined} imageSource={member.photo} />
             <View style={[styles.fadedImage, {backgroundColor:"#FFF", opacity: selectedUser.id==member.id && selectedUser.isChild ==member.isChild ? 0:0.5}]} ></View>
             </Pressable>
@@ -144,7 +191,7 @@ let r = Math.floor(Math.random() * 7)
               
     </View>
  
-    <UnderlinedOneHeaderComponent titleFirst={'Last 50 days'}  />
+    <UnderlinedOneHeaderComponent titleFirst={'Last 30 days'}  />
    
     
     <View style = {styles.flexrow}>
@@ -155,11 +202,13 @@ let r = Math.floor(Math.random() * 7)
 
      {
          selectedUser!=null?
-         tasksHistory.length > 0?
+         tasksList!=null?
 
-         tasksHistory.map((task:any, idx: number) =>{ 
+         tasksList.map((task:any, idx: number) =>{ 
              return( 
             task.memberId==selectedUser.id && task.isChild == selectedUser.isChild?
+        
+             
             <View key={idx}>
             <TaskRowHistoryComponent r={r} key={idx} idx={idx} task={task} />
             <View style={[ {display:current===idx?"flex": "none", padding: 10}]}>
@@ -171,6 +220,7 @@ let r = Math.floor(Math.random() * 7)
              </View>
   
             </View>
+            
   
                  : null
              )
@@ -192,7 +242,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 60,
+    //paddingTop: 60,
     // justifyContent: 'center',
   },
   fadedImage: {

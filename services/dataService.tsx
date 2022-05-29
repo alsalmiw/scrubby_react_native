@@ -14,6 +14,7 @@ import IChildPassCode from '../Interfaces/IChildPassCode';
 import IAddAvatar from '../Interfaces/IAddAvatar';
 import IDefaultSpace from '../Interfaces/IDefaultSpace';
 import IDefaultSpaceChild from '../Interfaces/IDefaultSpaceChild';
+import IchildCoinAndPoint from '../Interfaces/IchildCoinAndPoint';
 
 
 let link = "https://scrubbyapi.azurewebsites.net"
@@ -85,7 +86,7 @@ async function UpdatePassword(newPassword: IUserLogin) {
         throw new Error (message)
     }
     let data = await res.json();
-    console.log(data)
+   // console.log(data)
    return data;
 }
 
@@ -104,7 +105,7 @@ async function AddNewRoom(room: IRoom) {
         throw new Error (message)
     }
     let data = await res.json();
-    console.log(data)
+    //console.log(data)
    return data;
 }
 async function AddChild(child: IChild) {
@@ -122,7 +123,7 @@ async function AddChild(child: IChild) {
         throw new Error (message)
     }
     let data = await res.json();
-    console.log(data)
+    //console.log(data)
    return data;
 }
 
@@ -192,11 +193,17 @@ async function GetUserByUsername(Username:string) {
     return data;
 }
 
-async function GetDependantByUserId (Id: number){
-let res = await fetch(`${link}/Dependent/GetDependantByUserId/${Id}`);
+async function GetDependantsDTOByUserId (Id: number){
+let res = await fetch(`${link}/Dependent/GetDependantsDTOByUserId/${Id}`);
 let data = await res.json();
 return data;
 }
+
+async function GetDependantByUserId (Id: number){
+    let res = await fetch(`${link}/Dependent/GetDependantByUserId/${Id}`);
+    let data = await res.json();
+    return data;
+    }
 
 async function GetSpacesByCollectionID (Id: number){
     let res = await fetch(`${link}/SpaceInfo/GetSpacesByCollectionID/${Id}`);
@@ -227,10 +234,29 @@ async function AddSelectedTask(newSelectedTask: any) {
     }
     let data = await res.json();
     console.log(data)
+    return data;
 }
 
 async function AllInvitesByInvitedUsername(username:string){
     let res = await fetch(`${link}/InviteUsers/AllInvitesByInvitedUsername/${username}`);
+    let data = await res.json();
+    return data;
+}
+
+async function GetSpaceCollectionByUsername(username:string){
+    let res = await fetch(`${link}/SpaceCollection/GetSpaceCollectionByUsername/${username}`);
+    let data = await res.json();
+    return data;
+}
+
+async function GetSpacesDTOByID(spaceId:number){
+    let res = await fetch(`${link}/SpaceInfo/GetSpacesDTOByID/${spaceId}`);
+    let data = await res.json();
+    return data;
+}
+
+async function GetAcceptedInvitationsbyInviterId(inviterId:number){
+    let res = await fetch(`${link}/InviteUsers/GetAcceptedInvitationsbyInviterId/${inviterId}`);
     let data = await res.json();
     return data;
 }
@@ -305,11 +331,37 @@ async function RedeemCoinsChild(newAmount:any) {
    
 }
 
+async function UpdateCoinsAndPointsUser(newAmount:any) {
+    let res= await fetch(`${link}/User/UpdateCoinsAndPoints`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newAmount)
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    console.log(data)
+    return data;
+   
+}
+
+async function GetDefaultOptionsByUsername(username:string){
+    let res = await fetch(`${link}/SpaceCollection/GetDefaultOptionsByUsername/${username}`)
+    let data = await res.json();
+
+    return data
+}
+
 
 async function GetInvitationByUsername(username:string){
     let res = await fetch(`${link}/InviteUsers/GetInvitationsByUsername/${username}`)
     let data = await res.json();
-    console.log(data)
+
     return data
 }
 
@@ -369,6 +421,24 @@ async function GetUserData(username:string){
     return data
 }
 
+async function GetScoreBoardByUsername(username:string){
+    let res = await fetch(`${link}/User/ScoreBoardList/${username}`)
+    let data = await res.json();
+    return data
+}
+
+async function GetCollectionByUsername(username:string){
+    let res = await fetch(`${link}/User/GetCollectionByUsername/${username}`)
+    let data = await res.json();
+    return data
+}
+
+async function GetMyTaskedCollectionsByUsername(username:string){
+    let res = await fetch(`${link}/User/GetMyTaskedCollectionsByUsername/${username}`)
+    let data = await res.json();
+    return data
+}
+
 async function GetTasksByRoomId(roomId:number){
     let res = await fetch(`${link}/SelectedTask/GetTasksBySpaceId/${roomId}`)
     let data = await res.json();
@@ -379,6 +449,18 @@ async function GetTasksByRoomId(roomId:number){
 
 async function GetUserDefaultSchedule(username:string){
     let res = await fetch(`${link}/DefaultCollection/UserDefaultSchedule/${username}`)
+    // let data = await res.json();
+    // return data
+    let data = []
+    if(res.status === 200)
+    {
+        data= await res.json();
+    }
+    return data;
+}
+
+async function GetUserDefaultScheduleByUserId(userId:number){
+    let res = await fetch(`${link}/DefaultCollection/GetUserDefaultScheduleByUserId/${userId}`)
     // let data = await res.json();
     // return data
     let data = []
@@ -457,12 +539,57 @@ async function GetSharedSpacesById(id:number){
     return data
 }
 
+async function GetDependantsDTOByUsername(username: string){
+    let res = await fetch(`${link}/Dependent/GetDependantsDTOByUsername/${username}`)
+    let data = await res.json();
+    return data
+}
+
 async function GetDependantDTOByChildId(childId:number){
     let res = await fetch(`${link}/Dependent/GetDependantDTOByChildId/${childId}`)
     let data = await res.json();
     return data
 }
 
+async function GetSharedCollectionsDetailsByUsername(username: string){
+    let res = await fetch(`${link}/SpaceCollection/GetSharedCollectionsDetailsByUsername/${username}`)
+    let data = []
+    if(res.status === 200)
+    {
+        data= await res.json();
+    }
+    return data;
+}
+
+async function GetAllTasksHistoryForMembers(userId:number){
+    let res = await fetch(`${link}/SpaceCollection/GetAllTasksHistoryForMembers/${userId}`)
+    let data = []
+    if(res.status === 200)
+    {
+        data= await res.json();
+    }
+    return data;
+}
+
+async function GetAllTasksHistoryForMembersByUsername(username:string){
+    let res = await fetch(`${link}/SpaceCollection/GetAllTasksHistoryForMembersByUsername/${username}`)
+    let data = []
+    if(res.status === 200)
+    {
+        data= await res.json();
+    }
+    return data;
+}
+
+async function GetCollectionsRoomsByUsername(username:string){
+    let res = await fetch(`${link}/SpaceCollection/GetCollectionsRoomsByUsername/${username}`)
+    let data = []
+    if(res.status === 200)
+    {
+        data= await res.json();
+    }
+    return data;
+}
 
 
 async function UpdateUserTaskToCompleted(taskId:number){
@@ -470,7 +597,10 @@ async function UpdateUserTaskToCompleted(taskId:number){
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({})
+
     })
+    let data = await res.json();
+    return data;
 }
 async function GetSharedSpacesByInvitedAndInviterUsername(invited:string, inviter:string) {
     let res = await fetch(`${link}/SharedSpaces/GetSharedSpacesByInvitedAndInviterUsername/${invited}/${inviter}`)
@@ -521,7 +651,7 @@ async function NewCoinAmountDependent(Dependent:IRedeemCoinsChild)
     return data;
 }
 
-async function NewCoinAmountNotDependent(User:IRedeemCoins)
+async function NewCoinAmountUser(User:IRedeemCoins)
 {
     let res= await fetch(`${link}/User/NewCoinAmount`, {
         method: "POST",
@@ -601,9 +731,9 @@ async function UpdateChildPassCode(updateInfo:IChildPassCode)
 }
 
 
-async function AddDefaultAvatar(Avatar:IAddAvatar)
+async function ChangeDependentAvatarImage(Avatar:IAddAvatar)
 {
-    let res = await fetch(`${link}/Dependent/UpdatePassCode`,{
+    let res = await fetch(`${link}/Dependent/ChangeDependentAvatarImage`,{
         method: "Post",
         headers: {
             "Content-Type": "application/json"
@@ -619,6 +749,26 @@ async function AddDefaultAvatar(Avatar:IAddAvatar)
     console.log(data)
     return data;
 }
+
+async function ChangeAvatarImage(Avatar:IAddAvatar)
+{
+    let res = await fetch(`${link}/User/ChangeAvatarImage`,{
+        method: "Post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(Avatar)
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    console.log(data)
+    return data;
+}
+
 
 async function AddDefaultUserSpace(newDefaultSpace:IDefaultSpace)
 {
@@ -658,10 +808,107 @@ async function CreateChildDefaultSchedule(newDefaultSpace:IDefaultSpaceChild)
     return data;
 }
 
+async function UpdateChildCoinsAndPoints(UpdateChildCoinsAndPoints:IchildCoinAndPoint)
+{
+    let res = await fetch(`${link}/Dependent/UpdateDependentCoinsAndPoints`,{
+        method: "Post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(UpdateChildCoinsAndPoints)
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:any = await res.json();
+    console.log(data)
+    return data;
+}
+
+async function DeleteSpaceCollectionById(spaceId:number)
+{
+    let res = await fetch(`${link}/SpaceCollection/DeleteSpaceCollectionById/ ${spaceId}`,{
+        method: "Post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({})
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    console.log(data)
+    return data;
+}
+
+
+
+async function DeleteInvitationByInvitedInviter(invitedUsername:string, inviterUsername:string)
+{
+    let res = await fetch(`${link}/SpaceCollection/DeleteInvitation/ ${invitedUsername}/${inviterUsername}`,{
+        method: "Post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({})
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    console.log(data)
+    return data;
+}
+
+async function UpdateChildName(NewName:any)
+{
+    let res = await fetch(`${link}/Dependent/ChangeChildName`,{
+        method: "Post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({NewName})
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    console.log(data)
+    return data;
+}
+
+async function DeleteTaskByTaskId(taskId:number)
+{
+    let res = await fetch(`${link}/SelectedTask/DeleteTaskByTaskId/${taskId}`,{
+        method: "Post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({})
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    console.log(data)
+    return data;
+}
 
 
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId, GetUserData, RedeemCoinsUser, RedeemCoinsChild, GetSharedSpacesById, DeleteInvitation, NewCoinAmountDependent, NewCoinAmountNotDependent, AddChildAssignedTasks, AddUserAssignedTasks, UpdateChildPassCode, GetUserDefaultSchedule, AddDefaultAvatar, GetChildDefaultSchedule, UpdateUserTaskToCompleted, ApproveTaskForCompletionChild, SubmitTaskChildApproval, AddDefaultUserSpace,  CreateSharedSpaces, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername, DeleteSharedSpacesById, GetDependantDTOByChildId, CreateChildDefaultSchedule, DeleteInvitationByInvitedAndInviterUsername }
+
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId, GetUserData, RedeemCoinsUser, RedeemCoinsChild, GetSharedSpacesById, DeleteInvitation, NewCoinAmountDependent, AddChildAssignedTasks, AddUserAssignedTasks, UpdateChildPassCode, GetUserDefaultSchedule,  GetChildDefaultSchedule, UpdateUserTaskToCompleted, ApproveTaskForCompletionChild, SubmitTaskChildApproval, AddDefaultUserSpace,  CreateSharedSpaces, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername, DeleteSharedSpacesById, GetDependantDTOByChildId, CreateChildDefaultSchedule, DeleteInvitationByInvitedAndInviterUsername, NewCoinAmountUser,  DeleteSpaceCollectionById, GetAllTasksHistoryForMembers, DeleteInvitationByInvitedInviter, UpdateChildName, UpdateChildCoinsAndPoints, ChangeAvatarImage, ChangeDependentAvatarImage, GetDependantsDTOByUserId, GetAcceptedInvitationsbyInviterId, GetDependantsDTOByUsername, GetScoreBoardByUsername, GetCollectionByUsername, GetMyTaskedCollectionsByUsername, GetUserDefaultScheduleByUserId, GetSpaceCollectionByUsername, GetSpacesDTOByID, UpdateCoinsAndPointsUser, DeleteTaskByTaskId, GetDefaultOptionsByUsername,  GetSharedCollectionsDetailsByUsername, GetAllTasksHistoryForMembersByUsername, GetCollectionsRoomsByUsername }
 
 

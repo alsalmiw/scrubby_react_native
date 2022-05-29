@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     buttonOuterContainer: {
         overflow: 'hidden',
         width: '100%',
-        position: 'absolute',
+        //position: 'absolute',
         bottom: 0,
     },
     buttonInnerContainer: {

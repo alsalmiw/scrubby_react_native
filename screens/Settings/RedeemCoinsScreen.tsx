@@ -14,7 +14,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 import IRedeemCoins from '../../Interfaces/IRedeemCoins';
 import IRedeemCoinsChild from '../../Interfaces/IRedeemChildCoins';
 import AvatarComponent from '../../components/AvatarComponent';
-import { GetDependantByUserId, GetUserByUsername, NewCoinAmountDependent, NewCoinAmountNotDependent } from '../../services/dataService';
+import { GetDependantByUserId, GetUserByUsername, NewCoinAmountDependent, NewCoinAmountUser } from '../../services/dataService';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'RedeemCoins'>
 //////
@@ -70,7 +70,7 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
         Coins: leftover,
       }
       const newAmount = async (userRedeem: IRedeemCoins) => {
-        await NewCoinAmountNotDependent(userRedeem)
+        await NewCoinAmountUser(userRedeem)
       }
       newAmount(userRedeem)
       setUserCoins(leftover)
@@ -102,17 +102,17 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
       Alert.alert("Success", `${aChild.dependentName} have redeemed ${redeemCoins} coins.`, [{ text: "Okay", style: "cancel", onPress: () => { setChildCoin(leftover) } }]);
     }
   }
-  const getUserandChild = async () => {
-    let user = await GetUserByUsername(savedUsername);
-    if (user.length != 0) {
-      setUserData(user)
-      let children = await GetDependantByUserId(user.id);
-      if (children.length != 0) {
-        setChildrenData(children)
-        console.log(children)
-      }
-    }
-  }
+  // const getUserandChild = async () => {
+  //   let user = await GetUserByUsername(savedUsername);
+  //   if (user.length != 0) {
+  //     setUserData(user)
+  //     let children = await GetDependantByUserId(user.id);
+  //     if (children.length != 0) {
+  //       setChildrenData(children)
+  //       console.log(children)
+  //     }
+  //   }
+  // }
 
   useEffect(() => {
     setSelectedUser({"id":userData.id, "isChild": false})

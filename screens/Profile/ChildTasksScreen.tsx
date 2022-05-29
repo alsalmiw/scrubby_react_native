@@ -14,7 +14,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import SquareColoredButton from '../../components/SquareColoredButton';
 import iconsMap from '../../types/IconsMap';
 import ChildLockModalComponent from '../../components/Modal/ChildLockModalComponent';
-import { GetTasksByRoomId } from '../../services/dataService';
+import { GetChildDefaultSchedule, GetTasksByRoomId } from '../../services/dataService';
 import TaskInfoModalComponent from '../../components/Modal/TaskInfoModalComponent';
 
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
@@ -22,16 +22,25 @@ import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeContext } from '../../context/ThemeContext';
+import IchildCoinAndPoint from '../../Interfaces/IchildCoinAndPoint';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, selectedTask, setSelectedTask, runAgain} = useContext(UserContext)
-  const {secondaryTextColor, lightLilacColor, lilacColor} = useContext(ThemeContext)
+  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setMemberInfo, setIsEditImage , setRunAgain} = useContext(UserContext)
+
+  const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
   // const [childDefaultSpace, setChildDefaultSpace] = useState<any>()
 
   // const [todayDate, setTodayDate] = useState<any>()
+
+
+  // interface IchildCoinAndPoint {
+  //   Id: number;
+  //   DependentCoins: number;
+  //   DependentPoints: number
+  // }
 
   const [space, setSpace] = useState<String>("")
   const [location, setLocation] = useState<String>("")
@@ -43,16 +52,17 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
   const [childScheduleTasks, setChildScheduleTasks] = useState<any>([])
- 
+
 
   const [childScheduleRooms, setChildScheduleRooms] = useState<any>()
   const [childSelectedRoom, setChildSelectedRoom] = useState<any>()
 
+  const [childUpdateCoins, setChildUpdateCoins] = useState<IchildCoinAndPoint>()
 
 
 
-  let newArr = ['bed', 'bathroom', 'kitchen']
-  let r = Math.floor(Math.random() * 7)
+  // let newArr = ['bed', 'bathroom', 'kitchen']
+  // let r = Math.floor(Math.random() * 7)
 
 
   const childTaskDate = () => {
@@ -81,7 +91,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     childDefaultSpace.rooms.map((room: any) => {
       let tempArr = [] as any;
       let tempRoomArr = [] as any;
-      console.log("Task:",childDefaultSpace)
+      console.log("Task:", childDefaultSpace)
       room.tasksAssigned.map((task: any) => {
         if (sevenDays.includes(task.dateScheduled)) {
           tempArr.push(task);
@@ -101,39 +111,63 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
       rooms.push({ id: room.id, spaceName: room.spaceName, spaceCategory: room.spaceCategory, todaysTasks: taskArr[idx] });
     });
 
-    setChildScheduleRooms(rooms != null || rooms.length !=0 ? rooms : 0)
-    setChildSelectedRoom(rooms[0] != null || rooms[0] !=0 ? rooms[0] : 0)
+    setChildScheduleRooms(rooms != null || rooms.length != 0 ? rooms : 0)
+    setChildSelectedRoom(rooms[0] != null || rooms[0] != 0 ? rooms[0] : 0)
     {
       rooms != 0 && rooms[0] != 0 ?
-      setSpace(rooms[0].spaceName)
-      :console.log('yess')
+        setSpace(rooms[0].spaceName)
+        : console.log('yess')
     }
 
     //setSpace(rooms[0].spaceName);
   }
 
+  const ChildDefault = async () => {
+    let childDefault = await GetChildDefaultSchedule(childPage.id)
+    console.log("child default space:", childDefault)
+    setChildDefaultSpace(childDefault)
+  }
+
+
+  //need to refect the value of childPage for coins to change
 
   useEffect(() => {
     //repeat
-    navigation.addListener('focus', () =>{
-     childTaskDate()
-    })
-    // console.log("=======================================================================++")
-    // console.log("hi")
-    //  console.log("Stuff:",childDefaultSpace)
-      // console.log("ChildPage:",childPage)
+    // navigation.addListener('focus', () =>{
+    ChildDefault()
+    childTaskDate()
+    setRunAgain(false)
+
     console.log("=====================+===================================================")
 
-  
-    
 
 
-    
+
+
+
+
 
   }, [runAgain])
 
 
+const handleChangeInfo = (isChangeName:boolean) => {
 
+  let newDetails= {
+    personId: childPage.Id,
+    username: "",
+    isChild: true,
+  }
+  setMemberInfo(newDetails)
+  navigation.navigate('EditProfile')
+  if(isChangeName)
+  {
+    setIsEditImage(false)
+  }
+  else{
+     setIsEditImage(true)
+  }
+ 
+}
 
   return (
 
@@ -145,13 +179,24 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.firstRow}>
-            <AvatarComponent onPress={() => {console.log(childScheduleRooms)}} imageSource={childPage.dependentPhoto} />
+            <View>
+            <AvatarComponent onPress={() => { console.log(childScheduleRooms) }} imageSource={childPage.dependentPhoto} />
+            <View style={{flexDirection:"row", justifyContent: "center"}}>
+            <MaterialCommunityIcons name="image-edit-outline" size={20} color={lilacColor} />
+            <Text style={{color:"blue"}} onPress={() =>handleChangeInfo(false)}>Edit image?</Text>
+            </View>
+            </View>
           </View>
 
 
           <View style={styles.nameAndCoinContainer}>
             <View style={styles.childName}>
+            <Pressable style={{flexDirection: 'row'}} onPress={()=>handleChangeInfo(true)}>
               <Text style={{ fontSize: 20 }}>{childPage.dependentName}</Text>
+              <View style={{marginLeft:5}}>
+          <FontAwesome5 name="edit" size={20} color={lilacColor} />
+          </View>
+        </Pressable>
             </View>
 
             <Text>{childPage.dependentAge} years old</Text>
@@ -165,7 +210,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
           </View>
           <View style={styles.unlockIconView}>
             <Pressable onPress={() =>  setModalVisible(true) }>
-              <FontAwesome5 name="unlock" size={40} color="grey" />
+              <FontAwesome5 name="unlock" size={40} color={lilacColor} />
             </Pressable>
           </View>
 
@@ -174,101 +219,119 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         </View>
         {/* Add GERE */}
         <View style={[styles.flexrow]}>
-   <Text style={[styles.mainHeader, {color:secondaryTextColor}]}>{childDefaultSpace.collectionName}</Text>
-   {
-     childPage.scheduledTasks.length>1?
+          <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{childDefaultSpace.collectionName}</Text>
+          {
+            childPage.scheduledTasks.length > 1 ?
 
-      < Pressable style={[styles.paddingL]} onPress={()=> navigation.navigate("DefaultChildOptions")}>
-   <MaterialCommunityIcons name="home-import-outline" size={30} color={secondaryTextColor}/>
-  </Pressable>
-  :null
-   }
-   </View>
- 
-
-        <View style={styles.underLineView}>
-          <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
-        </View>
-        {
-          childDefaultSpace!=null?
-          <>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
-          {childScheduleRooms != null ?
-            childScheduleRooms.map((room: any, x: number) => {
-              // missing logic to display task not completed and today and future task.
-
-              //fix space name and location
-              return (
-                <View key={x} style={styles.sqrBtn}>
-                  <SquareColoredButton idx={x + rState + 1} onPress={() => { console.log(childScheduleRooms.length),     console.log("=======================================================================++"), setChildSelectedRoom(room), setSpace(room.spaceName) }}>
-                    <View style={styles.sqrBtn}>
-                      <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
-                    </View>
-                    <View style={styles.sqrBtn}>
-                      <Text style={styles.sqrTxt}>{room.spaceCategory}</Text>
-                    </View>
-                  </SquareColoredButton>
-                </View>
-
-
-              )
-            })
-            // does not display even if they have nothing 
-            : <Text>You Have No Rooms</Text>
+              < Pressable style={[styles.paddingL]} onPress={() => navigation.navigate("DefaultChildOptions")}>
+                <MaterialCommunityIcons name="home-import-outline" size={30} color={secondaryTextColor} />
+              </Pressable>
+              : null
           }
-
-        </ScrollView>
-
-        <View style={styles.underLineView}>
-          <UnderlinedOneHeaderComponent titleFirst={'Tasks'}></UnderlinedOneHeaderComponent>
         </View>
-        <View style={styles.taskStyle}>
 
           {
-            childSelectedRoom != null ?
-            childSelectedRoom.todaysTasks.map((taskName: any, x: number) => {
+              childScheduleRooms.length>0 ?
+          <View style={styles.underLineView}>
+                  <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
+                </View>
+
+                :null
+
+          }
+
+     
+        {
+          childDefaultSpace != null ?
+            <>
+              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
+                {childScheduleRooms.length>0 ?
+                  childScheduleRooms.map((room: any, x: number) => {
+                    // missing logic to display task not completed and today and future task.
+
+                    //fix space name and location
+                    return (
+                      <View key={x} style={styles.sqrBtn}>
+                        <SquareColoredButton idx={x + rState + 1} onPress={() => { console.log(childScheduleRooms.length), console.log("=======================================================================++"), setChildSelectedRoom(room), setSpace(room.spaceName) }}>
+                          <View style={styles.sqrBtn}>
+                            <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
+                          </View>
+                          <View style={styles.sqrBtn}>
+                            <Text style={styles.sqrTxt}>{room.spaceCategory}</Text>
+                          </View>
+                        </SquareColoredButton>
+                      </View>
 
 
-                return (
+                    )
+                  })
+                  // does not display even if they have nothing 
+                  :null
+                }
 
-                  <TaskSpaceRowComponent key={x} idx={x} onPress={() => {console.log("=======================================================================++"), console.log(taskName),  setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name),  setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted?true:false)  }}>
+              </ScrollView>
+
+              <View style={styles.underLineView}>
+                <UnderlinedOneHeaderComponent titleFirst={'Seven Day Tasks'}></UnderlinedOneHeaderComponent>
+              </View>
+              <View style={styles.taskStyle}>
+
+                {
+                  childSelectedRoom != null ?
+                    childSelectedRoom.todaysTasks.map((taskName: any, x: number) => {
+
+
+                      return (
+
+                        <TaskSpaceRowComponent key={x} idx={x} onPress={() => {
+                          console.log("=======================================================================++"), console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted ? true : false)
+                          {
+                            let childInfoCoin: IchildCoinAndPoint = {
+                              Id: childPage.id,
+                              DependentCoins:taskName.task.coins,
+                              DependentPoints:taskName.task.coins
+                            }
+                            setChildUpdateCoins(childInfoCoin)
+                          }
+                          
+                        }}>
 
                     <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-                    <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name} 
+                    <Text style={{ color: '#FFF', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name} 
 
                     </Text>
                     {
                       taskName.isCompleted?
-                      <AntDesign name="checksquare" size={30} color="white" />
+                      <AntDesign name="checksquare" size={30} color="#FFF" />
                       :
                       taskName.isRequestedApproval && !taskName.isCompleted?
-                      <Ionicons name="time-sharp" size={30} color="white" />
+                      <Ionicons name="time-sharp" size={30} color="#FFF" />
                       :
                       null
                     }
                     </View>
 
-                  </TaskSpaceRowComponent>
+                        </TaskSpaceRowComponent>
 
 
 
 
-                )
-              })
-              :
-              <Text>Child has no upcoming tasks</Text>
-              // {Alert.alert("Error", 'You have no Task', [{ text: "Ok", style: "cancel" }])}
-          }
-        </View>
-        </>
-        :
-        <Text>There are no rooms or tasks</Text>
+                      )
+                    })
+                    :
+                    <Text>Child has no upcoming tasks</Text>
+                  // {Alert.alert("Error", 'You have no Task', [{ text: "Ok", style: "cancel" }])}
+                }
+              </View>
+            </>
+            :
+            <Text>There are no rooms or tasks</Text>
         }
-       
+
 
         {modalVisible === true ?
           <ChildLockModalComponent /> : taskModal === true ?
-            <TaskInfoModalComponent  Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval}/>
+            <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} childInfo={ childUpdateCoins}  />
             : null}
 
 
@@ -348,12 +411,12 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   mainHeader: {
-    fontSize:25,
-    fontWeight: "bold", 
-},
-paddingL:{
-  paddingLeft:10,
-}
+    fontSize: 25,
+    fontWeight: "bold",
+  },
+  paddingL: {
+    paddingLeft: 10,
+  }
 });
 
 export default ChildTasksScreen

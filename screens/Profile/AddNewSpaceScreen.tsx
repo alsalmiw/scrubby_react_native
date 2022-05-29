@@ -11,14 +11,14 @@ import InputFieldComponent from '../../components/AddEdit/InputFieldComponent';
 import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 import { ISpace } from '../../Interfaces/ISpace';
 import UserContext from '../../context/UserContext';
-import { AddNewSpace } from '../../services/dataService';
+import { AddNewSpace, GetCollectionByUsername, GetSpaceCollectionByUsername } from '../../services/dataService';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AddNewSpace'>
 
 const AddNewSpaceScreen: FC<Props> = ({ navigation, route }) => {
 
   const { purpleColor, greenColor } = useContext(ThemeContext)
-  const { userData, setMySpaces, mySpaces } = useContext(UserContext)
+  const { userData, setMySpaces, myHouses, setMyHouses } = useContext(UserContext)
 
   const [newSpace, setNewSpace] = useState('')
 
@@ -40,7 +40,12 @@ const AddNewSpaceScreen: FC<Props> = ({ navigation, route }) => {
       if (result) {
         Alert.alert("You have successfully added a new space")
         navigation.goBack()
-        setMySpaces([...mySpaces, space])
+       // setMyHouses([...myHouses, space])
+        let collections = await GetSpaceCollectionByUsername(userData.username)
+        if(collections.length > 0){
+          setMyHouses(collections)
+          console.log("they came")
+          }
       }
     }
   }
@@ -62,7 +67,7 @@ const AddNewSpaceScreen: FC<Props> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    //alignItems: 'center',
     justifyContent: "space-between",
     paddingTop: StatusBar.currentHeight
   },

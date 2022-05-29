@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useEffect, useState } from 'react';
 import { Button, Pressable, StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AddDefaultUserSpace, GetUserData } from '../../services/dataService';
+import { AddDefaultUserSpace, GetUserData, GetUserDefaultSchedule } from '../../services/dataService';
 import UserContext from '../../context/UserContext';
 // import ReactNativeCalendar from '../../components/ReactNativeCalendar';
 import HeaderComponent from '../../components/HeaderComponent';
@@ -36,7 +36,7 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
 
     const handleSetDefaultSchedule =async(space:any)=> {
         setNewSelection(space)
-        console.log(userData.username, space.id, space.collectionName)
+       // console.log(userData.username, space.id, space.collectionName)
       
     }
 
@@ -54,11 +54,17 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
         let changeDefault = await AddDefaultUserSpace (newDefault)
         if(changeDefault)
         {
-            console.log(changeDefault)
+            let newDefault = await GetUserDefaultSchedule(userData.username)
+            if(newDefault!=null)
+            {
+
+                   console.log(changeDefault)
             setRunAgain(true)
-            setDefaultSpace(newSelection)
+            setDefaultSpace(newDefault)
             alert("You have successfully set the default schedule to " + newSelection.collectionName)
             navigation.goBack()
+            }
+         
         }
         
     }

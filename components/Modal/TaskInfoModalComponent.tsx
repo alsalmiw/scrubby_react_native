@@ -38,6 +38,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
     const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal, runScheduleAgain, setRunScheduleAgain, setUserData } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
+    useEffect(() => {console.log(task)},[])
 
     const SubmitTaskForCompletion =async()=> {
         //console.log("task Info:",task.id)
@@ -47,9 +48,10 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
              let userRedeem: IRedeemCoins = {
 
                 Id: userData.id,
-                Coins: Number(task.Coins)
+                Coins: task.task.coins
               }
              //add coins
+             console.log(userRedeem)
              let updatedInfo = await UpdateCoinsAndPointsUser(userRedeem)
              if(updatedInfo != null)
              {

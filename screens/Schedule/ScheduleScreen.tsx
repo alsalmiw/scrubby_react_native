@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useEffect, useState } from 'react';
 import { Button, Pressable, StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GetUserData } from '../../services/dataService';
+import { GetCollectionByUsername, GetMyTaskedCollectionsByUsername, GetUserData } from '../../services/dataService';
 import UserContext from '../../context/UserContext';
 //import ReactNativeCalendar from '../../components/ReactNativeCalendar';
 import HeaderComponent from '../../components/HeaderComponent';
@@ -31,7 +31,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ScheduleScreen'>
 
 
 const ScheduleScreen: FC<Props> = ({ navigation }) => {
-  const { savedUsername, setSavedUsername, setMySpaces, mySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate, defaultCollection, runScheduleAgain, setRunScheduleAgain  } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, mySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate, defaultCollection, runScheduleAgain, setRunScheduleAgain, defaultScheduleOptions, firstTime, setFirstTime, username  } = useContext(UserContext)
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
 
   const [taskInfo, setTaskInfo] = useState() as any
@@ -52,9 +52,14 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
 
 
   useEffect(() => {
-
+   
     setBlank(false)
     GetTaskDates()
+   
+    if(firstTime){
+      GetUserInfoByUsername()
+    }
+
   }, [defaultSpace])
 
   const GetTaskDates = () => {
@@ -164,7 +169,26 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
 
 
 
-  // const GetUserInfoByUsername = async () => {
+  const GetUserInfoByUsername = async () => {
+    let username:any= await AsyncStorage.getItem("Username");
+    
+    let spaces = await GetCollectionByUsername(username)
+    let schedule = await GetMyTaskedCollectionsByUsername (username)
+    
+    if(spaces.length > 0){
+        setMySpaces(spaces)
+        setFirstTime(false)
+    }else{
+        setMySpaces([])
+        setFirstTime(false)
+    }
+    if(schedule.length > 0){
+      setMySchedule(schedule)
+      }else{
+      setMySchedule([])
+      }
+    
+     
 
   //   let username: any = await AsyncStorage.getItem("Username");
   //   if (username) {
@@ -186,7 +210,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
 
   //   }
 
-  // }
+  }
 
 
 
@@ -201,7 +225,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
         <View style={[styles.flexrow]}>
           <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{defaultSpace.collectionName}</Text>
           {
-            mySchedule.length > 1 ?
+            defaultScheduleOptions.length > 1 ?
 
               < Pressable style={[styles.paddingL]} onPress={() => navigation.navigate("DefaultOptions")}>
                 <MaterialCommunityIcons name="home-import-outline" size={30} color={secondaryTextColor} />

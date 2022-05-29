@@ -26,7 +26,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'DefaultOptions'>
 
 const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
 
-    const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, mySchedule, setRunAgain } = useContext(UserContext)
+    const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, mySchedule, setRunAgain, defaultScheduleOptions } = useContext(UserContext)
     const {secondaryTextColor, purpleColor} = useContext(ThemeContext)
     const [newSelection, setNewSelection] = useState<any>([])
 
@@ -74,7 +74,7 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
 
             <View>
             {
-                mySchedule.map((space:any, idx:number) =>
+                defaultScheduleOptions.map((space:any, idx:number) =>
                         space.rooms.length > 0?
                     <TaskSpaceRowComponent key={idx} idx={idx} onPress={()=>handleSetDefaultSchedule(space)}>
                         <View style={[styles.flexrow]}>

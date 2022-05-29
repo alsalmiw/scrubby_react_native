@@ -23,7 +23,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'TaskFamily'>
 const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
 
   const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor, greenColor } = useContext(ThemeContext);
-  const { mySpaces, userData, childData, childrenData, acceptedInvitations, taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser, seeAll, isChildFree, setChildrenData, setAcceptedInvitations } = useContext(UserContext)
+  const { mySpaces, userData, childData, childrenData, acceptedInvitations, taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser, seeAll, isChildFree, setChildrenData, setAcceptedInvitations, sharedSpacesInfo, setSharedSpacesInfo } = useContext(UserContext)
 
   const [isInvited, setIsInvited] = useState(false)
   const [allMembers, setAllMembers] = useState([]) as any
@@ -82,7 +82,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
         //console.log("membersArray",membersArr)
     acceptedInvitations.length > 0 ?
       acceptedInvitations.map((person: any, idx: number) => {
-        mySpaces.map((space: any, idx: number) => space.sharedWith.map((shared: any) => {
+        sharedSpacesInfo.map((space: any, idx: number) => space.sharedWith.map((shared: any) => {
           let invited=[] as any
           if (shared.invitedId == person.invitedId) {
             invited =

@@ -7,7 +7,7 @@ import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentL
 import UserContext from "../context/UserContext"
 import INewUser from "../Interfaces/INewUser"
 import IUserLogin from "../Interfaces/IUserLogin"
-import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin, GetUserByUsername, GetDependantsDTOByUserId, GetAcceptedInvitationsbyInviterId, GetDependantByUserId, GetInvitationByUsername, GetDependantsDTOByUsername, GetScoreBoardByUsername, GetCollectionByUsername, GetMyTaskedCollectionsByUsername, GetSpaceCollectionByUsername } from "../services/dataService"
+import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin, GetUserByUsername, GetDependantsDTOByUserId, GetAcceptedInvitationsbyInviterId, GetDependantByUserId, GetInvitationByUsername, GetDependantsDTOByUsername, GetScoreBoardByUsername, GetCollectionByUsername, GetMyTaskedCollectionsByUsername, GetSpaceCollectionByUsername, GetDefaultOptionsByUsername, GetSharedCollectionsDetailsByUsername } from "../services/dataService"
 import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
 import ChildFreeBoolComponent from "../components/Settings/ChildFreeBoolComponent"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
@@ -31,7 +31,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'login'>
 
 const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
-    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, setDefaultSpace, fullName, setFullName, login, setLogin, setUserData, blank, setBlank, setChildrenData, setMySpaces, setScoreBoardList, setInvited, setInviters, setAcceptedInvitations, setMySchedule, setTasksHistory, setIsChildFree, childrenInfo, setChildrenInfo, myHouses, setMyHouses  } = useContext(UserContext)
+    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, setDefaultSpace, fullName, setFullName, login, setLogin, setUserData, blank, setBlank, setChildrenData, setMySpaces, setScoreBoardList, setInvited, setInviters, setAcceptedInvitations, setMySchedule, setTasksHistory, setIsChildFree, childrenInfo, setChildrenInfo, myHouses, setMyHouses, setDefaultScheduleOptions, setSharedSpacesInfo  } = useContext(UserContext)
     const { yellowColor, greenColor } = useContext(ThemeContext)
     const [name, setName] = useState<any>("")
 
@@ -92,6 +92,8 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             let invitesInfo = await GetInvitationByUsername(username)
             let dependents = await GetDependantsDTOByUsername(username)
             let scores = await GetScoreBoardByUsername(username)
+            let defaultOptions = await GetDefaultOptionsByUsername(username)
+            let sharedSpaces = await GetSharedCollectionsDetailsByUsername(username)
           
            
             let collections = await GetSpaceCollectionByUsername(username)
@@ -101,6 +103,23 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
                 setInviters(invitesInfo.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
                 setAcceptedInvitations(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
             //  console.log(invitesInfo.sentInvites)
+            }else{
+                setInvited([])
+                setInviters([])
+                setAcceptedInvitations([])
+            }
+
+            if(sharedSpaces.length!==0) {
+
+                setSharedSpacesInfo(sharedSpaces)
+            }else{
+                setSharedSpacesInfo([])
+            }
+
+            if(defaultOptions.length != 0){
+                setDefaultScheduleOptions(defaultOptions)
+            }else{
+                setDefaultScheduleOptions([])
             }
 
             if (defaultCollection.length != 0) {
@@ -110,11 +129,14 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             } else {
                 
                 navigation.navigate('Nav', { screen: "Profile" })
+                setDefaultSpace([])
 
             }
-             let schedule = await GetMyTaskedCollectionsByUsername (username)
+          
             if(dependents.length>0){
                 setChildrenData(dependents)
+            }else{
+                setChildrenData([])
             }
           
             if (userInfo) {
@@ -125,17 +147,18 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             if(scores.length > 0){
                 setScoreBoardList(scores)
             }
-              if(schedule.length > 0){
-                setMySchedule(schedule)
+            else{
+                setScoreBoardList([])
             }
+             
             if(collections.length > 0){
                 setMyHouses(collections)
+            }else{
+                setMyHouses([])
             }
-            let spaces = await GetCollectionByUsername(username)
-            if(spaces.length > 0){
-                setMySpaces(spaces)
-            }
-          
+
+            
+           
         
 
 

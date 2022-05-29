@@ -12,7 +12,7 @@ import { Entypo } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import RootStackParamList from '../../types/INavigateProfile';
 import FullButtonComponent from '../../components/FullButtonComponent';
-import { AddSelectedTask } from '../../services/dataService'
+import { AddSelectedTask, GetTasksByRoomId } from '../../services/dataService'
 
 
 interface taskInfo {
@@ -42,7 +42,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AddedItems'>
 
 const AddedItemsScreen: FC<Props> = ({navigation}) => {
 
-  const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData, rState, setRState } = useContext(UserContext)
+  const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData, rState, setRState, setRoomTasks, myRoom } = useContext(UserContext)
 
   const { lilacColor, purpleColor } = useContext(ThemeContext)
   const windowWidth = Dimensions.get('window').width * 0.25;
@@ -52,8 +52,9 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
     console.log('Hello World');
     navigation.navigate("AddItems");
   }
+
   const handleNavigateDone = async () => {
-    navigation.navigate("AddedTasks");
+  
     //console.log('This is the done button');
     console.log(addTask);
 
@@ -78,14 +79,26 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
 
     //Now i just send newAddTask to the addSelectedTask
     let result = await AddSelectedTask(newAddTask)
-    console.log(result)
+    
+    console.log("result is " + result)
+    if(result)
+    {
+      let tasks = await GetTasksByRoomId(newAddTask[0].spaceId)
+    if(tasks.length!= 0){
+
+      setRoomTasks(tasks)
+      navigation.navigate('AddedTasks')
+      //console.log(tasks)
+    }
+       
+    }
 
     //I am assuming
     setAddTask([])
 
 
     //This is just a default location, need to ask where this exactly goes
-    navigation.navigate("MyProfile")
+ 
   }
 
   const handleDeleteItem = (id:number) => {
@@ -101,8 +114,9 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
   return (
     <View style={styles.container}>
       {/* This header component use font size 25, later must change to percentage based on device width */}
+     <View>
       <View>
-        <HeaderComponent title="Master Bathroom Items" />
+        <HeaderComponent title={myRoom.spaceName}/>
         
       </View>
       <View style={styles.underlineContainer}>
@@ -110,7 +124,7 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
       </View>
 
 
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: '2%' }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: '2%' , alignItems: 'center'}}>
        
           <AddItemButtonComponent onPress={handleNavigate}>
             <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
@@ -123,7 +137,7 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
             return (
               <View key={x}>
                 <SquareColoredButton key={colorBtn.id} idx={colorBtn.color}  onPress={handleDeleteItem.bind(this, x)} >
-                  <Entypo name="minus" size={45} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
+                  <Entypo name="minus" size={30} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
                   <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>{colorBtn.name}</Text>
                 </SquareColoredButton>
               </View>
@@ -132,7 +146,7 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
           })
         }
       </View>
-
+      </View>
         <FullButtonComponent radius={0} onPress={handleNavigateDone} color={purpleColor}>
           <Text>Done</Text>
         </FullButtonComponent>
@@ -146,7 +160,8 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight
+    paddingTop: StatusBar.currentHeight,
+    justifyContent: "space-between",
   },
   underlineContainer: {
     flexDirection: 'row',

@@ -234,6 +234,7 @@ async function AddSelectedTask(newSelectedTask: any) {
     }
     let data = await res.json();
     console.log(data)
+    return data;
 }
 
 async function AllInvitesByInvitedUsername(username:string){

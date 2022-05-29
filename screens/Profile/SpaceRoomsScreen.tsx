@@ -68,6 +68,7 @@ const SpaceRoomsScreen: FC<Props> = ({navigation})=> {
     }
     else{
       setRoomTasks([])
+      setMyRoom(room)
       navigation.navigate('AddedTasks')
     }
   

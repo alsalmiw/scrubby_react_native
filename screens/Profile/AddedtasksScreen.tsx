@@ -14,6 +14,7 @@ import { GetAllTasks, GetTasksByRoomId } from '../../services/dataService';
 import FullButtonComponent from '../../components/FullButtonComponent';
 import ITask from '../../Interfaces/ITask';
 import TaskRowFullInfoComponent from '../../components/TaskRowFullInfoComponent';
+import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 
 
 
@@ -69,6 +70,7 @@ const AddedTasksScreen: FC<Props> = ({navigation})=> {
       <ScrollView>
     <View style={styles.container}>
          <HeaderComponent title="MY Added Tasks" />
+         <UnderlinedOneHeaderComponent titleFirst={"My Room: "+ myRoom.spaceName} />
         
     </View>
      <View style={styles.addExtraContainer}>
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 60
+    
   },
   addExtraContainer:{
     alignItems: 'center',

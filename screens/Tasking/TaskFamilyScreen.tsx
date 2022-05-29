@@ -192,7 +192,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
             (mySpaces.length > 0 ?
               mySpaces.map((space: any, idx: number) => {
                 return (
-                  <>
+                  <View  key={idx}>
                   {
                     space.rooms.length > 0 ?
                  
@@ -205,7 +205,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
                   </TaskSpaceRowComponent>
                   :null
                    }
-                  </>
+                  </View>
                 )
               })
               : null

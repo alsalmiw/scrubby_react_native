@@ -6,7 +6,7 @@ import HeaderComponent from '../../components/HeaderComponent';
 import UserNameComponent from '../../components/UserNameComponent';
 import { Entypo, FontAwesome5 } from '@expo/vector-icons';
 import { ThemeContext } from '../../context/ThemeContext';
-import RootStackParamList from '../../types/INavigateProfile'
+import RootStackParamList from '../../types/INavigation'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import UserContext from '../../context/UserContext';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
@@ -26,13 +26,13 @@ const AddedTasksScreen: FC<Props> = ({navigation})=> {
     const [display, setDisplay] = useState(false)
   
 
-    useEffect(() => {
+    // useEffect(() => {
   
      
-     displayTasks()
+    //  //displayTasks()
      
   
-    }, [])
+    // }, [])
 
       let r = Math.floor(Math.random() * 7)
 
@@ -41,21 +41,24 @@ const AddedTasksScreen: FC<Props> = ({navigation})=> {
         navigation.navigate('AddItems')
       }
 
-      const displayTasks = async() => {
-          let tasks = await GetTasksByRoomId(myRoom.id)
-          console.log(myRoom.id)
-          console.log(tasks)
+      // const displayTasks = async() => {
+      //     let tasks = await GetTasksByRoomId(myRoom.id)
+      //     console.log(myRoom.id)
+      //     console.log(tasks)
 
-          if(tasks)
-          {
-            setRoomTasks(tasks)
-            console.log(tasks)
-          }
+      //     if(tasks.length > 0) 
+      //     {
+      //       setRoomTasks(tasks)
+      //       console.log(tasks)
+      //     }
+      //     else{
+      //       setRoomTasks([])
+      //     }
         
          
           
 
-      }
+     // }
 
       const displayTaskInfo =() => {
 
@@ -77,6 +80,7 @@ const AddedTasksScreen: FC<Props> = ({navigation})=> {
 
     {/*//map all items here} */}
     {
+      roomTasks.length > 0 ?
       roomTasks.map((task:ITask, idx:number)=>{
         return(
 
@@ -96,6 +100,9 @@ const AddedTasksScreen: FC<Props> = ({navigation})=> {
      
         )
       })
+      :
+      
+      <Text>You have no Tasks</Text>
     }
     
     

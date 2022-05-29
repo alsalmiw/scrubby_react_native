@@ -7,7 +7,7 @@ import InputFieldComponentLogin from "../components/AddEdit/InputFieldComponentL
 import UserContext from "../context/UserContext"
 import INewUser from "../Interfaces/INewUser"
 import IUserLogin from "../Interfaces/IUserLogin"
-import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin, GetUserByUsername, GetDependantsDTOByUserId, GetAcceptedInvitationsbyInviterId, GetDependantByUserId, GetInvitationByUsername, GetDependantsDTOByUsername, GetScoreBoardByUsername, GetCollectionByUsername, GetMyTaskedCollectionsByUsername } from "../services/dataService"
+import { CreateAccount, GetUserData, GetUserDefaultSchedule, UserLogin, GetUserByUsername, GetDependantsDTOByUserId, GetAcceptedInvitationsbyInviterId, GetDependantByUserId, GetInvitationByUsername, GetDependantsDTOByUsername, GetScoreBoardByUsername, GetCollectionByUsername, GetMyTaskedCollectionsByUsername, GetSpaceCollectionByUsername } from "../services/dataService"
 import InputFieldComponent from "../components/AddEdit/InputFieldComponent"
 import ChildFreeBoolComponent from "../components/Settings/ChildFreeBoolComponent"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
@@ -31,7 +31,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'login'>
 
 const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
 
-    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, setDefaultSpace, fullName, setFullName, login, setLogin, setUserData, blank, setBlank, setChildrenData, setMySpaces, setScoreBoardList, setInvited, setInviters, setAcceptedInvitations, setMySchedule, setTasksHistory, setIsChildFree, childrenInfo, setChildrenInfo  } = useContext(UserContext)
+    const { setModalVisible, username, setUsername, password, setPassword, savedUsername, setSavedUsername, savedPassword, setSavedPassword, fullUserInfo, setFullUserInfo, setDefaultSpace, fullName, setFullName, login, setLogin, setUserData, blank, setBlank, setChildrenData, setMySpaces, setScoreBoardList, setInvited, setInviters, setAcceptedInvitations, setMySchedule, setTasksHistory, setIsChildFree, childrenInfo, setChildrenInfo, myHouses, setMyHouses  } = useContext(UserContext)
     const { yellowColor, greenColor } = useContext(ThemeContext)
     const [name, setName] = useState<any>("")
 
@@ -92,14 +92,12 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             let invitesInfo = await GetInvitationByUsername(username)
             let dependents = await GetDependantsDTOByUsername(username)
             let scores = await GetScoreBoardByUsername(username)
-            let spaces = await GetCollectionByUsername(username)
-            let schedule = await GetMyTaskedCollectionsByUsername (username)
+          
+           
+            let collections = await GetSpaceCollectionByUsername(username)
+
             
 
-          
-            if(dependents.length>0){
-                setChildrenData(dependents)
-            }
             if (defaultCollection.length != 0) {
                 
                 setDefaultSpace(defaultCollection)
@@ -109,6 +107,11 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
                 navigation.navigate('Nav', { screen: "Profile" })
 
             }
+             let schedule = await GetMyTaskedCollectionsByUsername (username)
+            if(dependents.length>0){
+                setChildrenData(dependents)
+            }
+          
             if (userInfo) {
                 setUserData(userInfo)
                 setIsChildFree(userInfo.isChildFree)
@@ -122,12 +125,17 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
             if(scores.length > 0){
                 setScoreBoardList(scores)
             }
+              if(schedule.length > 0){
+                setMySchedule(schedule)
+            }
+            if(collections.length > 0){
+                setMyHouses(collections)
+            }
+            let spaces = await GetCollectionByUsername(username)
             if(spaces.length > 0){
                 setMySpaces(spaces)
             }
-            if(schedule.length > 0){
-                setMySchedule(schedule)
-            }
+          
         
 
 

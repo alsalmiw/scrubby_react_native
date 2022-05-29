@@ -42,7 +42,7 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor, primaryTextColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank,memberInfo, setMemberInfo, setIsEditImage, setRunAgain, childrenInfo, setChildrenInfo  } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank,memberInfo, setMemberInfo, setIsEditImage, setRunAgain, childrenInfo, setChildrenInfo, myHouses, setMyHouses  } = useContext(UserContext)
 
 
   //This is a test useState for populating create a new space
@@ -101,45 +101,45 @@ const [r, setR] = useState<number>(Math.floor(Math.random() * 7))
 
 
 
-  }, [])
+  }, [myHouses])
 
   
 
-  const AsyncGetSpaceCollectionById = async () => {
+  // const AsyncGetSpaceCollectionById = async () => {
 
-    let userInfo: any = await AsyncStorage.getItem("Username");
-    if (userInfo) {
-      setSavedUsername(userInfo)
-      //console.log(userInfo)
-    }
+  //   let userInfo: any = await AsyncStorage.getItem("Username");
+  //   if (userInfo) {
+  //     setSavedUsername(userInfo)
+  //     //console.log(userInfo)
+  //   }
 
-    let user = await GetUserByUsername(savedUsername)
-    //console.log(user);
-    // console.log(user)
-    if (user.length != 0) {
-      setUserData(user)
-      let result = await GetSpaceCollectionByUserId(user.id);
-      // let children = await GetDependantByUserId(user.id);
-      //let usersTasks = await GetSelectedTasksByUserID(user.id)
-      //console.log(children)
-      if (result.length != 0) {
-        setNewSpace([...result])
-        setMySpaces(result)
-      }
-      // if (children.length != 0) {
-      //   console.log(children.length);
-      //   setChildrenData(children)
-      //   console.log("after");
-      // }
-      //   if(usersTasks.length!= 0)
-      // {
-      //   setUsersAddedTasks (usersTasks)
-      //   console.log(usersTasks)
-      // }
+  //   let user = await GetUserByUsername(savedUsername)
+  //   //console.log(user);
+  //   // console.log(user)
+  //   if (user.length != 0) {
+  //     setUserData(user)
+  //     let result = await GetSpaceCollectionByUserId(user.id);
+  //     // let children = await GetDependantByUserId(user.id);
+  //     //let usersTasks = await GetSelectedTasksByUserID(user.id)
+  //     //console.log(children)
+  //     if (result.length != 0) {
+  //       setNewSpace([...result])
+  //       setMySpaces(result)
+  //     }
+  //     // if (children.length != 0) {
+  //     //   console.log(children.length);
+  //     //   setChildrenData(children)
+  //     //   console.log("after");
+  //     // }
+  //     //   if(usersTasks.length!= 0)
+  //     // {
+  //     //   setUsersAddedTasks (usersTasks)
+  //     //   console.log(usersTasks)
+  //     // }
 
-    }
+  //   }
 
-  }
+  // }
 
   const handleGoToChildProfile= async(child:any)=> {
    // console.log("=======================================================================++")
@@ -230,8 +230,8 @@ const [r, setR] = useState<number>(Math.floor(Math.random() * 7))
       </Pressable>
       <View style={styles.newSpaceContainer}>
 
-        {mySpaces.length>0?
-        mySpaces.map((space:ISpace, idx:number) =>
+        {myHouses.length>0?
+        myHouses.map((space:ISpace, idx:number) =>
           <TaskSpaceRowTrash
             idx={r+idx}
             key={idx}

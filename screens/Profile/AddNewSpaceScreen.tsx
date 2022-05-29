@@ -11,7 +11,7 @@ import InputFieldComponent from '../../components/AddEdit/InputFieldComponent';
 import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 import { ISpace } from '../../Interfaces/ISpace';
 import UserContext from '../../context/UserContext';
-import { AddNewSpace } from '../../services/dataService';
+import { AddNewSpace, GetCollectionByUsername } from '../../services/dataService';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AddNewSpace'>
 
@@ -41,6 +41,11 @@ const AddNewSpaceScreen: FC<Props> = ({ navigation, route }) => {
         Alert.alert("You have successfully added a new space")
         navigation.goBack()
         setMySpaces([...mySpaces, space])
+        let spaces = await GetCollectionByUsername(userData.username)
+        if(spaces.length > 0){
+          setMySpaces(spaces)
+          console.log("they came")
+          }
       }
     }
   }
@@ -62,7 +67,7 @@ const AddNewSpaceScreen: FC<Props> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    //alignItems: 'center',
     justifyContent: "space-between",
     paddingTop: StatusBar.currentHeight
   },

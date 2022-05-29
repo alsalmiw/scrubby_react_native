@@ -13,20 +13,21 @@ import SquareWhiteButton from '../../components/SquareWhiteButton';
 import icons from '../../types/Icons'
 import UserContext from '../../context/UserContext';
 import IRoom from '../../Interfaces/IRoom'
-import {AddNewRoom} from '../../services/dataService'
+import {AddNewRoom, GetCollectionByUsername} from '../../services/dataService'
 
 type Props = NativeStackScreenProps <RootStackParamList, 'AddNewSpace'>
 
 const AddNewRoomScreen: FC<Props> = ({navigation, route})=> {
   
     const {yellowColor, fuchsiaColor} = useContext(ThemeContext)
-    const { username, newSpace, setNewSpace, setUsername, password, setPassword, seeAll, setSeeAll, savedUsername, setSavedUsername, savedPassword, setSavedPassword, isChildFree, setIsChildFree,  userData, setUserData, childData, setChildData, mySpaces, setMySpaces, myRooms, setMyRooms, mySpace, setMySpace} = useContext(UserContext)
+    const { userData, setMySpaces, myRooms, setMyRooms, mySpace } = useContext(UserContext)
 
     const [category, setCategory] = useState('')
     const [roomName, setRoomName] = useState('')
+    const [selectedRoom, setSelectedRoom]= useState<string>('')
 
     const handleAddRoom = async() => {
-      console.log('myspace' + mySpace)
+     console.log(mySpace.id)
       
       let newRoom:IRoom = {
         id:0, 
@@ -42,6 +43,10 @@ const AddNewRoomScreen: FC<Props> = ({navigation, route})=> {
         Alert.alert("You have successfully added a new room")
         navigation.goBack()
         setMyRooms([...myRooms,newRoom])
+        let spaces = await GetCollectionByUsername(userData.username)
+        if(spaces.length > 0){
+          setMySpaces(spaces)
+      }
       }
    
 
@@ -50,6 +55,7 @@ const AddNewRoomScreen: FC<Props> = ({navigation, route})=> {
 const handleCategory = (name: string) => {
     setCategory(name)
     console.log(name);
+    setSelectedRoom(name)
    
 }
   return (
@@ -64,9 +70,9 @@ const handleCategory = (name: string) => {
         {
             icons.map((icon, idx)=> {
                 return (
-            <TouchableHighlight  activeOpacity={1} underlayColor="#A3A0B3" style={[styles.iconContainer ]} key={idx} onPress={()=>handleCategory(icon.Name)} >
+            <Pressable  style={[styles.iconContainer,{borderWidth:3, borderColor: selectedRoom==icon.Name?  fuchsiaColor:yellowColor}  ]} key={idx} onPress={()=>handleCategory(icon.Name)} >
             <Image style={styles.iconSize} source={icon.Link} />
-            </TouchableHighlight>
+            </Pressable>
             )
             })
         }
@@ -83,7 +89,7 @@ const handleCategory = (name: string) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent:"space-between",
   
   },
@@ -93,12 +99,13 @@ const styles = StyleSheet.create({
   iconsContainer: {
       flexDirection:"row",
       flexWrap: "wrap",
-      justifyContent: "space-evenly"
+      
+      //justifyContent: "space-evenly"
   },
   iconContainer:{
     backgroundColor: "#FFF",
     borderRadius:10,
-    margin: 5,
+    margin: 1,
     padding:10
   },
   iconSize:{

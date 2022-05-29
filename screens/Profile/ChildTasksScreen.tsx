@@ -181,7 +181,10 @@ const handleChangeInfo = (isChangeName:boolean) => {
           <View style={styles.firstRow}>
             <View>
             <AvatarComponent onPress={() => { console.log(childScheduleRooms) }} imageSource={childPage.dependentPhoto} />
+            <View style={{flexDirection:"row", justifyContent: "center"}}>
+            <MaterialCommunityIcons name="image-edit-outline" size={20} color={lilacColor} />
             <Text style={{color:"blue"}} onPress={() =>handleChangeInfo(false)}>Edit image?</Text>
+            </View>
             </View>
           </View>
 

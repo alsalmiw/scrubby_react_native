@@ -13,7 +13,7 @@ import RootStackParamList from '../../types/INavigation'
 import UseTheme from '../../hooks/use-theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetSpacesByCollectionID, GetSelectedTasksByUserID, GetChildDefaultSchedule, GetDependantsDTOByUserId } from '../../services/dataService';
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 //This is just testing
 import { Dimensions } from 'react-native';
@@ -41,16 +41,14 @@ interface newSpace {
 
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
-  const { bgColor, lilacColor } = useContext(ThemeContext)
+  const { bgColor, lilacColor, primaryTextColor } = useContext(ThemeContext)
   const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank,memberInfo, setMemberInfo, setIsEditImage, setRunAgain, childrenInfo, setChildrenInfo  } = useContext(UserContext)
 
 
   //This is a test useState for populating create a new space
   const [newSpace, setNewSpace] = useState<newSpace[]>([]);
+const [r, setR] = useState<number>(Math.floor(Math.random() * 7))
 
-
-
-  let r = Math.floor(Math.random() * 7)
 
   const handleAddChild = () => {
     //console.log('Plus Icon Works');
@@ -65,6 +63,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   const handleGoToSpaceRooms = async(space:any)=> {
    // console.log("collection id is "+space.id)
     let spaceRooms = await GetSpacesByCollectionID(space.id)
+    console.log(space)
    // console.log("spacerooms" + spaceRooms)
     setMySpace(space)
 
@@ -197,7 +196,11 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
       <View style={styles.firstRow}>
         <View>
         <AvatarComponent onPress={undefined} imageSource={userData.photo} />
-        <Text style={{color:"blue"}} onPress={() =>handleChangeInfo(false)}>Edit image?</Text>
+        <View style={{flexDirection:"row", alignItems: "center", padding:5}}>
+        <MaterialCommunityIcons name="image-edit-outline" size={20} color={lilacColor} />
+          <Text style={{color:"blue", paddingLeft:5}} onPress={() =>handleChangeInfo(false)}>Edit image?</Text>
+        </View>
+        
         </View>
         <View style={styles.nameAndCoinContainer}>
         <Pressable style={{flexDirection: 'row'}} onPress={()=>handleChangeInfo(true)}>

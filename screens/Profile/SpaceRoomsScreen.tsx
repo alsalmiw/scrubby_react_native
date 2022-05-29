@@ -25,22 +25,22 @@ const SpaceRoomsScreen: FC<Props> = ({navigation})=> {
   const { setUsersAddedTasks, usersAddedTasks, userData,  myRooms, setMyRooms, mySpace, setMySpace, myRoom, setMyRoom, tasksAPI, setTasksAPI, setRoomTasks} = useContext(UserContext)
 
   const windowWidth = Dimensions.get('window').width * 0.25;
-
+  const [r, setR] = useState<number>(Math.floor(Math.random() * 7))
   useEffect(() => {
    
-    console.log(myRooms)
+    //console.log(myRooms)
     GetAllTasksByUserID()
  
    }, [])
  
-   let r = Math.floor(Math.random() * 7)
+
 
    const GetAllTasksByUserID =async () => {
         
     let usersTasks = await GetSelectedTasksByUserID(userData.id)
     if(usersTasks.length!= 0)
     {     
-      console.log(usersTasks)
+      //console.log(usersTasks)
       setUsersAddedTasks (usersTasks)
     }
    
@@ -84,7 +84,7 @@ const windowWidth = Dimensions.get('window').width * 0.33;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
+    // paddingTop: 50,
     padding:10
   },
   roomsContainer:{

@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         paddingVertical: '2%',
         flexDirection: 'row',
+        bottom: 0,
     },
     buttonInnerContainer: {
         justifyContent: 'center',

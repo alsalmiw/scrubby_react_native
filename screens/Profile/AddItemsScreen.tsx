@@ -18,7 +18,7 @@ import { Dimensions } from 'react-native';
 import HeaderComponent from '../../components/HeaderComponent';
 import FullButtonComponent from '../../components/FullButtonComponent';
 import { ThemeContext } from '../../context/ThemeContext';
-import { AddSelectedTask, GetAllSpaceItems } from '../../services/dataService';
+import { AddSelectedTask, GetAllSpaceItems, GetTasksByRoomId } from '../../services/dataService';
 import RootStackParamList from '../../types/INavigateProfile'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -41,10 +41,11 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AddItems'>
 
 
 const AddItemsScreen: FC<Props> = ({ navigation }) => {
-  const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData, rState, setRState, myRoom } = useContext(UserContext)
+  const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData, rState, setRState, myRoom, storedAddedItems, setStoredAddedItems } = useContext(UserContext)
 
   const[counter,setCounter] =useState<number>(0)
-  const [selectedCategory, setSelectedCategory] = useState<string>('')
+  const [selectedCategory, setSelectedCategory] = useState<string>('Bathroom')
+ 
 
   //let r = Math.floor(Math.random() * 7)
 
@@ -52,8 +53,8 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
   const { purpleColor, primaryTextColor, lilacColor, blueColor } = useContext(ThemeContext)
 
   useEffect(() => {
-    console.log(fetchSpaceInfo());
-
+    fetchSpaceInfo();
+   
 
 
   }, [])
@@ -61,19 +62,32 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
   const fetchSpaceInfo = async () => {
     let data = await GetAllSpaceItems();
     if (data.length != 0) {
-      setAllTask(data);
+      setAllTask(data); 
+      setTask(data.filter((aTask: taskInfo) => aTask.tags.includes("bathroom")))
     }
 
 
   }
   const AddItems = (name: string) => {
+    console.log(name)
     setTask(allTask.filter((aTask: taskInfo) => aTask.tags.includes(name.toLowerCase())))
   }
 
   const handleSelectedTasks = async () => {
-    setCounter(0);
-    navigation.navigate('AddedItems')
+   
+    let getAddedItems = await GetTasksByRoomId(myRoom.id)
+    if(getAddedItems.length>0){
+      let addedItemsWColor = [] as any
+      getAddedItems.map((task:any, idx: number)=>  addedItemsWColor.push({ ...task, 'color': (rState + idx+2), 'spaceId': myRoom.id }))
+     
+      setStoredAddedItems(addedItemsWColor)
+    }else{
+         setStoredAddedItems([])
+    }
 
+
+    navigation.navigate('AddedItems')
+    setCounter(0);
   }
 
   return (

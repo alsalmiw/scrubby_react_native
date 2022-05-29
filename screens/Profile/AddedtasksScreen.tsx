@@ -15,6 +15,7 @@ import FullButtonComponent from '../../components/FullButtonComponent';
 import ITask from '../../Interfaces/ITask';
 import TaskRowFullInfoComponent from '../../components/TaskRowFullInfoComponent';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
+import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 
 
 
@@ -23,7 +24,7 @@ type Props = NativeStackScreenProps <RootStackParamList, 'AddedTasks'>
 
 const AddedTasksScreen: FC<Props> = ({navigation})=> {
     const {bgColor, lilacColor, purpleColor} = useContext(ThemeContext)
-    const { userData, usersAddedTasks, setTasksAPI, roomTasks, setRoomTasks, myRoom, tasksAPI, current, setCurrent } = useContext(UserContext)
+    const { userData, usersAddedTasks, setTasksAPI, roomTasks, setRoomTasks, myRoom, tasksAPI, current, setCurrent, setStoredAddedItems, rState, noAddedItems, setNoAddedItems } = useContext(UserContext)
     const [display, setDisplay] = useState(false)
   
 
@@ -61,8 +62,16 @@ const AddedTasksScreen: FC<Props> = ({navigation})=> {
 
      // }
 
-      const displayTaskInfo =() => {
-
+      const handleGoToAddedItems = async() => {
+        let getAddedItems = await GetTasksByRoomId(myRoom.id)
+        if(getAddedItems.length>0){
+          let addedItemsWColor = [] as any
+          getAddedItems.map((task:any, idx: number)=>  addedItemsWColor.push({ ...task, 'color': (rState + idx+2), 'spaceId': myRoom.id }))
+         
+          setStoredAddedItems(addedItemsWColor)
+          navigation.navigate('AddedItems')
+          setNoAddedItems(true)
+        }
       }
 
   return (
@@ -75,9 +84,12 @@ const AddedTasksScreen: FC<Props> = ({navigation})=> {
     </View>
      <View style={styles.addExtraContainer}>
      <AddItemButtonComponent onPress={displayAddIcon}>
+       <View style={{flexDirection: "row", alignItems: "center"}}>
        <Entypo name="squared-plus" size={50} color={lilacColor} />
-     </AddItemButtonComponent>
        <UserNameComponent name="Add Items For more tasks"></UserNameComponent>
+       </View>
+     </AddItemButtonComponent>
+       
    </View>
 
     {/*//map all items here} */}
@@ -88,7 +100,7 @@ const AddedTasksScreen: FC<Props> = ({navigation})=> {
 
           <View key={idx}>
           <TaskRowFullInfoComponent r={r} key={idx} idx={idx} task={task} />
-          <View style={[ {display:current===task.id?"flex": "none", padding: 10}]}>
+          <View style={[ {display:current===task.id?"none": "none", padding: 10}]}>
           <Text style={[styles.taskInfo ]}>Description: {task.task.description}</Text>
            <Text style={[styles.taskInfo ]}>Item: {task.item.name}</Text>
            <Text style={[styles.taskInfo ]}>Points: {task.task.coins} points</Text>
@@ -110,10 +122,19 @@ const AddedTasksScreen: FC<Props> = ({navigation})=> {
     
     
    </ScrollView>
-<FullButtonComponent radius ={0} onPress={()=>navigation.goBack()} color={purpleColor}>
+   {
+         roomTasks.length > 0 ?
+         <TwoFullButtonComponent color={purpleColor} text1={"Back"} text2={"Added Items"} onBackPress={()=>navigation.goBack()} onAcceptPress={handleGoToAddedItems} />
+
+         : 
+
+
+         <FullButtonComponent radius ={0} onPress={()=>navigation.goBack()} color={purpleColor}>
       {/* AddSelectedTask(addTask), console.log(AddSelectedTask(addTask) */}
         <Text>Back</Text>
       </FullButtonComponent>
+   }
+
 </>
 
   );

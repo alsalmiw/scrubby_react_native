@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
         text: {
             color:"#FFF", 
             fontWeight: 'bold', 
-            fontSize: 20
+            fontSize: 17
         }, 
         taskInfo: {
             fontSize: 20,

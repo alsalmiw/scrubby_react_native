@@ -9,9 +9,10 @@ import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { ThemeContext } from "../../context/ThemeContext"
 import FullButtonComponent from "../FullButtonComponent"
 import ButtonModalComponent from "./ButtonModalComponent"
-import { UpdateUserTaskToCompleted, SubmitTaskChildApproval, ApproveTaskForCompletionChild, GetUserDefaultSchedule, NewCoinAmountDependent, UpdateChildCoinsAndPoints } from "../../services/dataService"
+import { UpdateUserTaskToCompleted, SubmitTaskChildApproval, ApproveTaskForCompletionChild, GetUserDefaultSchedule, NewCoinAmountDependent, UpdateChildCoinsAndPoints, NewCoinAmountUser, UpdateCoinsAndPointsUser } from "../../services/dataService"
 import UserContext from "../../context/UserContext"
 import IRedeemCoinsChild from "../../Interfaces/IRedeemChildCoins"
+import IRedeemCoins from "../../Interfaces/IRedeemCoins"
 
 
 //
@@ -34,7 +35,7 @@ interface ITaskInfoModal {
 
 const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild,  isButton, childInfo }) => {
 
-    const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal, runScheduleAgain, setRunScheduleAgain } = useContext(UserContext)
+    const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal, runScheduleAgain, setRunScheduleAgain, setUserData } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
 
@@ -43,6 +44,18 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
             if(!isChild){
                 setRunScheduleAgain(true)
              let result:any =  await UpdateUserTaskToCompleted(task.id)
+             let userRedeem: IRedeemCoins = {
+
+                Id: userData.id,
+                Coins: Number(task.Coins)
+              }
+             //add coins
+             let updatedInfo = await UpdateCoinsAndPointsUser(userRedeem)
+             if(updatedInfo != null)
+             {
+                 setUserData(updatedInfo)
+             }
+            
            
              Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }])
              setModalVisible(false)

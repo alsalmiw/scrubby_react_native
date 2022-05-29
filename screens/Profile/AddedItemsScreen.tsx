@@ -12,7 +12,8 @@ import { Entypo } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import RootStackParamList from '../../types/INavigateProfile';
 import FullButtonComponent from '../../components/FullButtonComponent';
-import { AddSelectedTask, GetTasksByRoomId } from '../../services/dataService'
+import { AddSelectedTask, DeleteTaskByTaskId, GetTasksByRoomId } from '../../services/dataService'
+import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 
 
 interface taskInfo {
@@ -42,21 +43,21 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AddedItems'>
 
 const AddedItemsScreen: FC<Props> = ({navigation}) => {
 
-  const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData, rState, setRState, setRoomTasks, myRoom } = useContext(UserContext)
+  const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData, rState, setRState, setRoomTasks, myRoom, storedAddedItems, setStoredAddedItems, roomTasks, noAddedItems, setNoAddedItems } = useContext(UserContext)
 
   const { lilacColor, purpleColor } = useContext(ThemeContext)
   const windowWidth = Dimensions.get('window').width * 0.25;
   
 
   const handleNavigate = () => {
-    console.log('Hello World');
+    //console.log('Hello World');
     navigation.navigate("AddItems");
   }
 
   const handleNavigateDone = async () => {
   
     //console.log('This is the done button');
-    console.log(addTask);
+    //console.log(addTask);
 
     let newAddTask: noColorTaskInfo[] = [...addTask];
    
@@ -67,20 +68,20 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
     //Then with the newly formatted object without color property, send it to AddSelectedTask(newAddTask)
     //Then i must set the addTask to empty 
 
-    console.log('This is the new add task array of object');
-    console.log(newAddTask);
+    //console.log('This is the new add task array of object');
+    //console.log(newAddTask);
 
     newAddTask.forEach((task: noColorTaskInfo) => {
       delete task.color;
     })
 
-    console.log('This is the deleted color new Add Task');
-    console.log(newAddTask);
+    //console.log('This is the deleted color new Add Task');
+   //console.log(newAddTask);
 
     //Now i just send newAddTask to the addSelectedTask
     let result = await AddSelectedTask(newAddTask)
     
-    console.log("result is " + result)
+    //console.log("result is " + result)
     if(result)
     {
       let tasks = await GetTasksByRoomId(newAddTask[0].spaceId)
@@ -110,6 +111,17 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
     });
   
   }
+
+  const handleDeleteItemTask = async(task: any) => {
+    //console.log(task.id)
+    let isDelete = await DeleteTaskByTaskId(task.id)
+    if(isDelete){
+     // console.log(isDelete)
+      setStoredAddedItems(storedAddedItems.filter((addedtask: any)=> addedtask.id !== task.id))
+      setRoomTasks(roomTasks.filter((addedTask: any)=> addedTask.id !== task.id))
+    }
+
+  }
   
   return (
     <View style={styles.container}>
@@ -133,7 +145,7 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
         {
 
           addTask.map((colorBtn: taskInfo, x: number) => {
-            console.log(colorBtn);
+           // console.log(colorBtn);
             return (
               <View key={x}>
                 <SquareColoredButton key={colorBtn.id} idx={colorBtn.color}  onPress={handleDeleteItem.bind(this, x)} >
@@ -145,11 +157,36 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
             )
           })
         }
+        {
+          storedAddedItems.length > 0?
+
+          storedAddedItems.map((task: any, idx: number) =>{
+          return(
+            <View key={idx}>
+            <SquareColoredButton key={task.id} idx={task.color}  onPress={()=>handleDeleteItemTask(task)} >
+              <Entypo name="minus" size={30} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
+              <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>{task.item.name}</Text>
+            </SquareColoredButton>
+          </View>
+
+          )
+          })
+
+          : null
+        }
       </View>
       </View>
-        <FullButtonComponent radius={0} onPress={handleNavigateDone} color={purpleColor}>
-          <Text>Done</Text>
-        </FullButtonComponent>
+        {
+          noAddedItems?
+          <FullButtonComponent radius ={0} onPress={()=>{navigation.goBack(), setNoAddedItems(false)}} color={purpleColor}>
+            <Text>Back</Text>
+          </FullButtonComponent>
+          : 
+
+                <TwoFullButtonComponent color={purpleColor} text1={"Back"} text2={"Add"} onBackPress={()=>{navigation.navigate("AddedTasks"),  setAddTask([])}} onAcceptPress={handleNavigateDone} />
+        }
+
+      
 
 
 

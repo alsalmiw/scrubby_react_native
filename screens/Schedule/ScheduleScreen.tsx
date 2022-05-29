@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useEffect, useState } from 'react';
 import { Button, Pressable, StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GetCollectionByUsername, GetMyTaskedCollectionsByUsername, GetUserData } from '../../services/dataService';
+import { GetAllTasksHistoryForMembers, GetAllTasksHistoryForMembersByUsername, GetCollectionByUsername, GetMyTaskedCollectionsByUsername, GetUserData } from '../../services/dataService';
 import UserContext from '../../context/UserContext';
 //import ReactNativeCalendar from '../../components/ReactNativeCalendar';
 import HeaderComponent from '../../components/HeaderComponent';
@@ -174,6 +174,8 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
     
     let spaces = await GetCollectionByUsername(username)
     let schedule = await GetMyTaskedCollectionsByUsername (username)
+    let archives = await GetAllTasksHistoryForMembersByUsername (username)
+  
     
     if(spaces.length > 0){
         setMySpaces(spaces)
@@ -188,7 +190,10 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       setMySchedule([])
       }
     
-     
+       if(archives.length!=0){
+      setTasksHistory(archives)
+      
+    }
 
   //   let username: any = await AsyncStorage.getItem("Username");
   //   if (username) {

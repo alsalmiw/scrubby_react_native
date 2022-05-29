@@ -178,7 +178,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
                         <View style={styles.coinContainer}>
-                            <CoinsPointsDisplayContainer coins={childPage.dependentCoins} points={childPage.dependents} ></CoinsPointsDisplayContainer>
+                            <CoinsPointsDisplayContainer coins={childPage.dependentCoins} points={childPage.dependentPoints} ></CoinsPointsDisplayContainer>
                         </View>
 
 

@@ -230,15 +230,22 @@ const handleChangeInfo = (isChangeName:boolean) => {
           }
         </View>
 
+          {
+              childScheduleRooms.length>0 ?
+          <View style={styles.underLineView}>
+                  <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
+                </View>
 
-        <View style={styles.underLineView}>
-          <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
-        </View>
+                :null
+
+          }
+
+     
         {
           childDefaultSpace != null ?
             <>
               <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
-                {childScheduleRooms != null ?
+                {childScheduleRooms.length>0 ?
                   childScheduleRooms.map((room: any, x: number) => {
                     // missing logic to display task not completed and today and future task.
 
@@ -259,13 +266,13 @@ const handleChangeInfo = (isChangeName:boolean) => {
                     )
                   })
                   // does not display even if they have nothing 
-                  : <Text>You Have No Rooms</Text>
+                  :null
                 }
 
               </ScrollView>
 
               <View style={styles.underLineView}>
-                <UnderlinedOneHeaderComponent titleFirst={'Tasks'}></UnderlinedOneHeaderComponent>
+                <UnderlinedOneHeaderComponent titleFirst={'Seven Day Tasks'}></UnderlinedOneHeaderComponent>
               </View>
               <View style={styles.taskStyle}>
 

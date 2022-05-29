@@ -4,7 +4,7 @@ import TaskSpaceRowIconComponent from './TaskSpaceRowIconComponent';
 import TaskSpaceRowComponent from './TaskSpaceRowComponent';
 import { ThemeContext } from '../context/ThemeContext';
 import { Feather } from '@expo/vector-icons';
-import { DeleteSpaceCollectionById } from '../services/dataService';
+import { DeleteSpaceCollectionById, GetSpaceCollectionByUsername } from '../services/dataService';
 import UserContext from '../context/UserContext';
 
 
@@ -19,13 +19,17 @@ interface Props {
 const TaskSpaceRowTrash: FC<Props> = (props) => {
 
   const {bgColor, lilacColor} = useContext(ThemeContext)
-  const { setMySpaces, mySpaces } = useContext(UserContext)
+  const { setMySpaces, mySpaces, setMyHouses, myHouses, userData } = useContext(UserContext)
 
 
   const handleDeleteSpace = async () => {
     let result = await DeleteSpaceCollectionById(props.spaceId)
     if(result){
-      setMySpaces(mySpaces.filter((space:any) => space.id!=props.spaceId))
+      setMyHouses(myHouses.filter((space:any) => space.id!=props.spaceId))
+      let collections = await GetSpaceCollectionByUsername(userData.username)
+      if(collections.length > 0){
+        setMyHouses(collections)
+    }
     }
     console.log(props.spaceId)
     

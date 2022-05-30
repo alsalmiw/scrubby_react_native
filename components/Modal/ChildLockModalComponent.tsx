@@ -16,7 +16,7 @@ import { UpdateChildPassCode } from "../../services/dataService";
 
 const ChildLockModalComponent: FC = ({ }) => {
 
-    const { setModalVisible, childPage, checkPassCode, setCheckPassCode, childPassCode, setChildPassCode, setTaskModal, setRunAgain } = useContext(UserContext)
+    const { setModalVisible, childPage, checkPassCode, setCheckPassCode, childPassCode, setChildPassCode, setTaskModal, setRunAgain, setRefreshChildTask, refreshChildTask } = useContext(UserContext)
     const { blueColor } = useContext(ThemeContext)
     const [newCode, setNewCode] = useState<number>()
 
@@ -29,6 +29,7 @@ const ChildLockModalComponent: FC = ({ }) => {
             setModalVisible(false)
             setTaskModal(false)
             navigation.navigate("LockedChildTasks");
+            setRunAgain(true);
 
         }
         else {
@@ -44,6 +45,7 @@ const ChildLockModalComponent: FC = ({ }) => {
             setTaskModal(false)
             setModalVisible(false);
             navigation.navigate("ChildTasks");
+            // setRefreshChildTask(true);
             setRunAgain(true);
 
         }

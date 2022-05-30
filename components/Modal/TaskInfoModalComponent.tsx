@@ -35,7 +35,7 @@ interface ITaskInfoModal {
 
 const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild,  isButton, childInfo }) => {
 
-    const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal, runScheduleAgain, setRunScheduleAgain, setUserData } = useContext(UserContext)
+    const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal, runScheduleAgain, setRunScheduleAgain, setUserData, childPoints, setChildPoints, childCoins, setChildCoins, refreshChildTask, setRefreshChildTask } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
    
@@ -81,6 +81,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
               if(result){
                 Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }]);
                 setRunAgain(true)
+                
               }
             //  console.log("completed:",result)
               setRunAgain(true)
@@ -96,6 +97,9 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
         Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])
         
         let childUpdate = await UpdateChildCoinsAndPoints(childInfo)
+        await setChildCoins(childCoins + task.task.coins) 
+        await setChildPoints(childPoints + task.task.coins)
+        setRefreshChildTask(true)
         setRunAgain(true)
        } 
        // console.log("approve task for child");

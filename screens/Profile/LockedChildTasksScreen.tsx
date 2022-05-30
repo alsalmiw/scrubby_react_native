@@ -27,7 +27,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 type Props = NativeStackScreenProps<RootStackParamList, 'LockedChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-    const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, setChildDefaultSpace, selectedTask, setSelectedTask, runAgain, setRunAgain } = useContext(UserContext)
+    const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, setChildDefaultSpace, selectedTask, setSelectedTask, runAgain, setRunAgain, childPoints, setChildPoints, childCoins, setChildCoins, refreshChildTask, setRefreshChildTask } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
     const [space, setSpace] = useState<String>("")
@@ -46,8 +46,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
     const [childScheduleRooms, setChildScheduleRooms] = useState<any>()
-    const [childScheduleRoomsNotCompleted, setChildScheduleRoomsNotCompleted] = useState<any>()
-    const [childScheduleRoomsCompleted, setChildScheduleRoomsCompleted] = useState<any>()
+
     const [childSelectedRoom, setChildSelectedRoom] = useState<any>()
 
 
@@ -102,16 +101,15 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
             rooms.push({ id: room.id, spaceName: room.spaceName, spaceCategory: room.spaceCategory, todaysTasks: taskArr[idx] });
         });
 
-        let completedTask: any = []
-        let notCompletedTask: any = []
-        let newRooms = rooms.slice()
-        console.log("==============================================================================================")
-        console.log(newRooms)
-        newRooms.map((x: any) => x.todaysTasks.map((need: any) => need.isCompleted ? completedTask.push(need) : notCompletedTask.push(need)))
+        // let completedTask: any = []
+        // let notCompletedTask: any = []
+        // let newRooms = rooms.slice()
+
+        // newRooms.map((x: any) => x.todaysTasks.map((need: any) => need.isCompleted ? completedTask.push(need) : notCompletedTask.push(need)))
 
         setChildScheduleRooms(rooms != null || rooms.length != 0 ? rooms : 0)
-        setChildScheduleRoomsCompleted(completedTask != null || completedTask.length != 0 ? completedTask : 0)
-        setChildScheduleRoomsNotCompleted(notCompletedTask != null || notCompletedTask.length != 0 ? notCompletedTask : 0)
+        // setChildScheduleRoomsCompleted(completedTask != null || completedTask.length != 0 ? completedTask : 0)
+        // setChildScheduleRoomsNotCompleted(notCompletedTask != null || notCompletedTask.length != 0 ? notCompletedTask : 0)
         setChildSelectedRoom(rooms[0] != null || rooms[0] != 0 ? rooms[0] : 0)
         {
             rooms != 0 && rooms[0] != 0 ?
@@ -120,35 +118,18 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         }
 
         //setSpace(rooms[0].spaceName);
-    }
-    const getChildInformation = async (childId: number) => {
-        let childInfo = await GetDependantDTOByChildId(childId)
-        console.log("fetch", childInfo)
-        setChildCoin(childInfo.dependentCoins)
-        setChildPoint(childInfo.dependentPoints)
-        setChildPage(childInfo)
-        //setChildDefaultSpace(childInfo.scheduledTasks[1])
+        setRunAgain(false)
     }
 
-    const childDefaultSchedule = () => {
-        let childDefault = GetChildDefaultSchedule(childPage.id)
-        //console.log(childDefault)
-        setChildDefaultSpace(childDefault)
-    }
 
 
     useEffect(() => {
 
+        childTaskDate()
         if (runAgain) {
-            //childDefaultSchedule()
             childTaskDate()
-            setRunAgain(false)
         }
-        else {
-            //childDefaultSchedule()
-            childTaskDate()
-            console.log(childPage)
-        }
+
 
     }, [runAgain])
 
@@ -178,7 +159,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
                         <View style={styles.coinContainer}>
-                            <CoinsPointsDisplayContainer coins={childPage.dependentCoins} points={childPage.dependentPoints} ></CoinsPointsDisplayContainer>
+                            <CoinsPointsDisplayContainer coins={childCoins} points={childPoints} ></CoinsPointsDisplayContainer>
                         </View>
 
 
@@ -205,7 +186,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                             return (
                                 room != null ?
                                     <View key={x} style={styles.sqrBtn}>
-                                        <SquareColoredButton idx={x + rState + 1} onPress={() => { console.log(childScheduleRooms), console.log("=======================================================================++"), setChildSelectedRoom(room), setSpace(room.spaceName) }}>
+                                        <SquareColoredButton idx={x + rState + 1} onPress={() => {setChildSelectedRoom(room), setSpace(room.spaceName) }}>
                                             <View style={styles.sqrBtn}>
                                                 <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
                                             </View>
@@ -214,7 +195,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                                             </View>
                                         </SquareColoredButton>
                                     </View>
-                                    : <Text>You Have No Rooms</Text>
+                                    : x===0?<Text>You Have No Rooms</Text>:null
 
 
                             )
@@ -237,7 +218,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                                 return (
                                     !taskName.isCompleted ?
-                                        <TaskSpaceRowComponent key={x} idx={x} onPress={() => { console.log("=======================================================================++"), console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
+                                        <TaskSpaceRowComponent key={x} idx={x} onPress={() => { setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
 
                                             <View style={styles.centering}>
                                                 <View>
@@ -257,7 +238,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                                         </TaskSpaceRowComponent>
                                         :
-                                        <Text>You Have No Task Today</Text>
+                                        x < 1 && x===0 ?<Text key={x}>You Have No Task Today</Text>:null
 
 
 
@@ -286,7 +267,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                                 // !taskName.isCompleted
                                 return (
                                     taskName.isCompleted ?
-                                        <TaskSpaceRowComponent key={x} idx={x + 1} onPress={() => { console.log("=======================================================================++"), console.log(taskName.isCompleted), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
+                                        <TaskSpaceRowComponent key={x+1} idx={x + 1} onPress={() => { setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
 
                                             <View style={styles.centering}>
                                                 <View>
@@ -304,7 +285,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                                             </View>
                                         </TaskSpaceRowComponent>
                                         :
-                                        <Text>You Have No Completed Task Today</Text>
+                                        x < 1 && x===0 ?<Text key={x}>You Have No Completed Task Today</Text> :null
                                 )
 
 

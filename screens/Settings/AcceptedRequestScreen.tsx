@@ -17,7 +17,7 @@ import FullButtonComponent from '../../components/FullButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DeleteInvite, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername, GetSpaceCollectionByUserId } from '../../services/dataService';
 import { DeleteSharedSpacesById } from '../../services/dataService';
-import { DeleteInvitationByInvitedAndInviterUsername } from '../../services/dataService';
+import { DeleteInvitationByInvitedAndInviterUsername, DeleteInvitation } from '../../services/dataService';
 import TaskSpaceRowIconComponent from '../../components/TaskSpaceRowIconComponent';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
@@ -128,18 +128,14 @@ const AcceptedRequestScreen: FC<Props> = ({ navigation }) => {
         console.log(savedUsername);
         console.log(inviterInfo.inviterUsername)
 
+        console.log('This is the local storage request info');
+        console.log(inviterInfo.id);
+
         
-        let result = await DeleteInvitationByInvitedAndInviterUsername(savedUsername, inviterInfo.inviterUsername);
+        let result = await DeleteInvitation(inviterInfo.id);
         console.log(result);
         setRefresh((prevRefresh:boolean) => prevRefresh = true)
         navigation.navigate('ManageInvites');
-
-        
-
-       
-
-       
-
 
     }
 

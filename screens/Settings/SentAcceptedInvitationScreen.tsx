@@ -38,7 +38,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
 
 
     const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor } = useContext(ThemeContext);
-    const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh, acceptedInvitations, setAcceptedInvitations, rState, mySpaces, setMySpaces, sentAcceptedInvitations, setSentAcceptedInvitations, savedUsername } = useContext(UserContext)
+    const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh, acceptedInvitations, setAcceptedInvitations, rState, mySpaces, setMySpaces, sentAcceptedInvitations, setSentAcceptedInvitations, savedUsername, sharedSpacesInfo, myHouses } = useContext(UserContext)
 
     const [fullName, setFullName] = useState<string>("");
     const [invitedPhoto, setInvitedPhoto] = useState<any>();
@@ -73,8 +73,10 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
         let invitedUsername = (await AsyncStorage.getItem('Invited'))!;
 
         //Gets shared spaces shared by both invited and inviter
+       
         let result = await GetSharedSpacesByInvitedAndInviterUsername(invitedUsername, savedUsername);
-        setSharedSpaces(result.filter((sharedSpace: any) => sharedSpace.isDeleted === false));
+        console.log(result);
+        setSharedSpaces(result);
     }
 
     const handleAddSharedSpace = async (filteredMySpace: any) => {
@@ -87,7 +89,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
         let newSharedSpace:ISharedSpace = {
             id:0, 
             invitedUsername: invitedUsername,
-            inviterUsername: userData.username,
+            inviterUsername: savedUsername,
             collectionId: filteredMySpace.id,
             isDeleted: false,
             isAccepted: true
@@ -131,7 +133,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
              console.log(result);
             // setRefresh((prevRefresh:boolean) => prevRefresh = true)
             // navigation.navigate('ManageInvites');
-            console.log('shit')
+            console.log('scooby')
             console.log(userData.id)
             console.log(invitedUserToBeDeleted);
             
@@ -144,6 +146,8 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
     
     const handleAddSharedAlert = async (filteredMySpace: any) => {
 
+        console.log('scooby')
+        console.log(filteredMySpace)
 
         Alert.alert("Adding a Shared Space", "You are about to share a space, would you like to add?",
         [
@@ -157,7 +161,9 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
     }
 
     const handleDeleteSharedAlert = async (filteredSharedSpace: any) => {
+        console.log(filteredSharedSpace);
         Alert.alert("Deleting a Shared Space", "You are about to delete a shared Space, would you like to delete?",
+        
         [
             {text: "Cancel", onPress: undefined, style: "destructive"},
             {text: "Delete", onPress: handleDeleteSharedSpace.bind(this, filteredSharedSpace), style: 'default'}
@@ -222,7 +228,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
                     } */}
 
                     {
-                        mySpaces.filter((mySpace: any) => !sharedSpaces.map((sharedSpace: any) => sharedSpace.collectionId).includes(mySpace.id)).map((filteredMySpaces: any, idx: number) => 
+                        myHouses.filter((myHouse: any) => !sharedSpaces.map((sharedSpace: any) => sharedSpace.collectionId).includes(myHouse.id)).map((filteredMySpaces: any, idx: number) => 
                         <TaskSpaceRowPlus
                             idx={rState + idx}
                             key={filteredMySpaces.collectionName}
@@ -230,12 +236,18 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
                             {filteredMySpaces.collectionName}
 
                         </TaskSpaceRowPlus>)
+
+                        
+
+                       
+
+                        
                     }
 
 
 
                     {
-                        mySpaces.filter((mySpace: any) => sharedSpaces.map((sharedSpace: any) => sharedSpace.collectionId).includes(mySpace.id)).map((filteredSharedSpace: any, idx: number) => 
+                        myHouses.filter((myHouse: any) => sharedSpaces.map((sharedSpace: any) => sharedSpace.collectionId).includes(myHouse.id)).map((filteredSharedSpace: any, idx: number) => 
                         <TaskSpaceRowMinus
                             idx={rState + idx + mySpaces.length + 1}
                             key={filteredSharedSpace.id + 100}
@@ -243,6 +255,11 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
                             {filteredSharedSpace.collectionName}
 
                         </TaskSpaceRowMinus>)
+
+                        
+
+                        
+
                     }
 
 

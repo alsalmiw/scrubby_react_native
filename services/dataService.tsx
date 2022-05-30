@@ -640,8 +640,8 @@ async function NewCoinAmountDependent(Dependent:IRedeemCoinsChild)
         const message = `An Error has Occured ${res.status}`
         throw new Error (message)
     }
-    let data:boolean = await res.json();
-    console.log(data)
+    let data:any = await res.json();
+    //console.log(data)
     return data;
 }
 
@@ -660,8 +660,8 @@ async function NewCoinAmountUser(User:IRedeemCoins)
         const message = `An Error has Occured ${res.status}`
         throw new Error (message)
     }
-    let data:boolean = await res.json();
-    console.log(data)
+    let data:any= await res.json();
+    // console.log(data)
     return data;
 }
 

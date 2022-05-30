@@ -41,6 +41,7 @@ const SettingsNavigation: FC = ()=> {
           <Tab.Screen name="SentAcceptedInvitation" component={SentAcceptedInvitation} options={{headerShown: false}} />
           <Tab.Screen name="AcceptedRequest" component={AcceptedRequestScreen} options={{headerShown: false}} />
           <Tab.Screen name="TasksHistory" component={TasksHistoryScreen} options={{headerShown: false}} />
+          
         </Tab.Navigator>
   );
 }

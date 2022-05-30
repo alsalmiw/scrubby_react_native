@@ -6,4 +6,5 @@ export default interface IUserData{
     isDeleted:boolean;
     Name:string;
     Points:number;
+    isChildFree:boolean;
 }

@@ -89,7 +89,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
           
             let defaultCollection = await GetUserDefaultSchedule(username)
             let userInfo = await GetUserByUsername(username)
-            if (userInfo) {
+            if (userInfo!=null) {
                 setUserData(userInfo)
                 setIsChildFree(userInfo.isChildFree)
             }

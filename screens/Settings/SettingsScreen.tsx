@@ -16,7 +16,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'SettingsScreen'>
 
 const SettingsScreen: FC<Props> = ({navigation})=> {
   const {orangeColor, blueColor, fuchsiaColor, violetColor, greenColor, yellowColor, purpleColor} = useContext(ThemeContext)
-  const { isChildFree} = useContext(UserContext)
+  const { setUsername, setPassword, setSeeAll,setSavedUsername, setSavedPassword, isChildFree, setIsChildFree, setUserData, setChildData, setMySpaces,setMyRooms, setTask, setAllTask, setAddTask,  setMySpace, setRState, setInvited,  setInviters, setChildrenData, setNewSpace,  setUsersAddedTasks, setMyRoom, setTasksAPI, setRoomTasks, setFullUserInfo, setRefresh, setScoreBoardList,  setAcceptedInvitations, setTaskUser, setChildPage, setIsChild, setSelectedUser, setModalVisible, setScheduleTask, setChildPassCode, setCheckPassCode, setDefaultSpace, setTaskModal, setChildRooms, setChildDefaultSpace, setRunAgain, setRoomIDX, setCloseTasks, setCurrent, setMySchedule, setFullName, setLogin, setSelectedTask, setBlank, setTasksHistory, setActiveDate, setActiveRoom, setMemberInfo, setIsEditImage, setSentAcceptedInvitations, setChildrenInfo, setRunScheduleAgain, setMyHouses, setStoredAddedItems, setNoAddedItems, setDefaultScheduleOptions, setSharedSpacesInfo, setFirstTime, setSpacesRoom} = useContext(UserContext)
 
   //const navigation = useNavigation();
 
@@ -34,10 +34,76 @@ const SettingsScreen: FC<Props> = ({navigation})=> {
 const handleLogOut = () => {
   AsyncStorage.removeItem("Token");
   AsyncStorage.removeItem("username");
+  resetData()
   navigation.navigate('login')
 }
 
+const resetData = () => {
 
+   setUsername("")
+  setPassword("")  ('')
+  setSavedUsername('username')
+  setSavedPassword  ('password')
+setSeeAll  (true)
+setIsChildFree (false)
+ setIsChild (false)
+  setUserData ([])
+  setFullUserInfo  ([])
+setChildData([])
+  setChildPage('')
+ setChildrenData([])
+ setChildrenInfo([])
+setMySpaces([])
+ setMySpace([])
+  setNewSpace([]);
+   setInviters([])
+  setInvited([])
+  setAcceptedInvitations([]);
+ setSentAcceptedInvitations([]);
+setTask([]);
+   setAllTask([])
+ setAddTask([])
+setTaskUser([])
+setRState(Math.floor(Math.random() * 7));
+  setUsersAddedTasks([])
+   setActiveDate('') 
+ setActiveRoom(0) 
+    setMyRooms([])
+   setTasksAPI([])
+   setMyRoom([])
+  setRoomTasks([]);
+setScoreBoardList([]);
+setRefresh(false)
+    setRunScheduleAgain(false)
+setMyHouses([])
+setNoAddedItems(false)
+setSelectedUser([])
+setModalVisible(false);
+setTaskModal(false);
+setScheduleTask([])
+setMySchedule([]);
+setTasksHistory([]);
+ setChildPassCode(0)
+setCheckPassCode(true)
+setDefaultSpace([])
+setChildRooms([])
+ setChildDefaultSpace([])
+setRunAgain(false)
+ setRoomIDX(0)
+setCloseTasks(false)
+setCurrent(0)
+setFullName ("")
+setLogin(true);
+setSelectedTask([])
+setBlank(false)
+setMemberInfo([])
+ setIsEditImage(false)
+ setStoredAddedItems([])
+ setDefaultScheduleOptions([])
+setSharedSpacesInfo([])
+ setFirstTime(true)
+setSpacesRoom([])
+}
 
   return (
 
@@ -73,7 +139,7 @@ const handleLogOut = () => {
                 </SettingsLinkComponent>
 
                 <SettingsLinkComponent linkName='Tasks History' onPress={()=>navigation.navigate('TasksHistory')} >
-                  <Fontisto name={'archive'} size={25} style={{marginRight: 10, color: greenColor}} />
+                  <Fontisto name={'archive'} size={25} style={{marginRight: 10, color: violetColor}} />
                 </SettingsLinkComponent>
       
           

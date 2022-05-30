@@ -51,11 +51,11 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
         }
 
         console.log(newDefault);
-
+        setBlank(true)
         let changeDefault = await AddDefaultUserSpace (newDefault)
         if(changeDefault)
         {
-            setBlank(true)
+           
             let newDefault = await GetUserDefaultSchedule(userData.username)
             if(newDefault!=null)
             {

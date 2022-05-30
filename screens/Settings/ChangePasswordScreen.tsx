@@ -19,19 +19,20 @@ const ChangePasswordScreen: FC<Props> = ({navigation, route})=> {
     const {fuchsiaColor, yellowColor} = useContext(ThemeContext)
     const [newPassword, setNewPassword] = useState('')
     const [repeatNewPassword, setRepeatNewPassword] = useState('')
-    const {username} = useContext(UserContext)
+    const {userData} = useContext(UserContext)
 
 
   const changePassword = async () => {
+    console.log("came in")
       if(newPassword===repeatNewPassword)
       {
          let data:IUserLogin = {
-         Username: username,
+         Username: userData.username,
         Password: newPassword
         }
     let result = await UpdatePassword(data)
+ 
     if(result) {
-        console.log (result)
         alert("You have successfully updated your password")
         navigation.navigate('SettingsScreen')
     }
@@ -48,12 +49,17 @@ const ChangePasswordScreen: FC<Props> = ({navigation, route})=> {
   return (
  
     <View style={[styles.container, {backgroundColor:fuchsiaColor}]}>
+      <View style={[{ flex:1, justifyContent: 'center', alignItems: 'center'}]}>
         <TitleComponent title="Change Password" />
         <FontAwesome name='lock' size={100} style={{marginRight: 10, color: '#FFF', marginBottom:10}} />
+        <View style={[{justifyContent: 'center'}]}>
         <WhiteSubTitleComponent title="New Password" />
+        
         <InputFieldComponent value={""} maxLength={20} holder="new password" hide={true} onChangeText={(e: string)=>setNewPassword(e)} />
         <WhiteSubTitleComponent title="Repeat New Password" />
         <InputFieldComponent  value={""} maxLength={20} holder="new password" hide={true} onChangeText={(e: string)=>setRepeatNewPassword(e)} />
+        </View>
+        </View>
         <FullButtonComponent radius={0} onPress={handleSave} color={yellowColor}>
           <Text>Save</Text>
         </FullButtonComponent>
@@ -65,7 +71,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     paddingTop: StatusBar.currentHeight
   },
 });

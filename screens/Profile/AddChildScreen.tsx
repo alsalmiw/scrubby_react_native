@@ -32,13 +32,14 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
   const saveName = async () => {
     let regi = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g
     let regiLetters = /[a-zA-Z]/;
+    let regiNums= /[0-9]/;
 
-    if (newChildName.length == 0 || newChildName == null || Number(newChildAge)<=0 || newChildAge == null  || regi.test(newChildName) || regiLetters.test(newChildAge) || regi.test(newChildAge)) {
-      Alert.alert("Error", 'Please Enter Valid Name or Age. Try Again.', [{ text: "Cancel", style: "cancel" }]);
+    if (newChildName.length == 0 || newChildName == null || Number(newChildAge)<=0 || newChildAge == null  || regi.test(newChildName) || regiLetters.test(newChildAge) || regi.test(newChildAge) || regiNums.test(newChildName)) {
+      Alert.alert("Error", 'Please Enter a Valid Name or Age. Try Again.', [{ text: "Cancel", style: "cancel" }]);
     }
    
     else {
-    setWaiting(true)
+  
     let newChildData:IChild = {
         Id:0,
         UserID: userData.id,
@@ -53,6 +54,7 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
     let result = await AddChild(newChildData)
     if(result) {
       alert("You have successfully add a new child")
+       setWaiting(true)
       let dependents = await GetDependantsDTOByUsername(userData.username)
       if(dependents.length>0){
         setChildrenData(dependents)

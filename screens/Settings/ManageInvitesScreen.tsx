@@ -146,14 +146,14 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
                   // <Pressable key={idx} style={{ padding: 10 }} onPress={() => { AsyncStorage.setItem("Inviter", request.inviterUsername), request.inviterFullname !== null ? AsyncStorage.setItem("InviterFullName", request.inviterFullname) : AsyncStorage.setItem("InviterFullName", request.inviterUsername), console.log(request), navigation.navigate("AcceptRequest") }}>
                   //   <Text>{request.inviterUsername}</Text>
                   // </Pressable>
-                  <View style={{padding: 10}} key={idx}>
-                    <AvatarComponent onPress={handleToAcceptedRequestScreen.bind(this, request)} imageSource={request.inviterPhoto}/>
+                  <View style={{ padding: 10 }} key={idx}>
+                    <AvatarComponent onPress={handleToAcceptedRequestScreen.bind(this, request)} imageSource={request.inviterPhoto} />
                   </View>
                 )
               })
               : null
 
-              //{ AsyncStorage.setItem("Inviter", request.inviterUsername), AsyncStorage.setItem("InviterFullName", request.inviterFullname), AsyncStorage.setItem("InviterPhoto", request.inviterPhoto), navigation.navigate("AcceptRequest") }
+            //{ AsyncStorage.setItem("Inviter", request.inviterUsername), AsyncStorage.setItem("InviterFullName", request.inviterFullname), AsyncStorage.setItem("InviterPhoto", request.inviterPhoto), navigation.navigate("AcceptRequest") }
           }
         </View>
 
@@ -186,9 +186,9 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
                   // </Pressable>
 
                   <View style={{ padding: 10 }} key={idx}>
-                    <AvatarComponent onPress={() => {  AsyncStorage.setItem("Inviter", request.inviterUsername),  AsyncStorage.setItem("InviterFullName", request.inviterFullname),  AsyncStorage.setItem("InviterPhoto", request.inviterPhoto), AsyncStorage.setItem("AcceptedInviterRequest", JSON.stringify(request)), navigation.navigate("AcceptedRequest") }} 
+                    <AvatarComponent onPress={() => { AsyncStorage.setItem("Inviter", request.inviterUsername), AsyncStorage.setItem("InviterFullName", request.inviterFullname), AsyncStorage.setItem("InviterPhoto", request.inviterPhoto), AsyncStorage.setItem("AcceptedInviterRequest", JSON.stringify(request)), navigation.navigate("AcceptedRequest") }}
                       imageSource={request.inviterPhoto}
-                      />
+                    />
                   </View>
                 )
               })
@@ -196,13 +196,14 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
           }
         </View>
 
-
-
-
       </View>
-      <FullButtonComponent radius={0} onPress={() => handleBackToSettings()} color={purpleColor}>
-        <Text>Back</Text>
-      </FullButtonComponent>
+
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <FullButtonComponent radius={0} onPress={() => handleBackToSettings()} color={purpleColor}>
+          <Text>Back</Text>
+        </FullButtonComponent>
+      </View>
+
     </>
   );
 }

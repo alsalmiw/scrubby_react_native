@@ -14,7 +14,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ScoreBoard'>
 
 const ScoreBoardScreen: FC<Props> = ({ navigation, route }) => {
   const { purpleColor, yellowColor } = useContext(ThemeContext)
-  const { scoreBoardList } = useContext(UserContext)
+  const { scoreBoardList, isChildFree } = useContext(UserContext)
 
   const handleGoBack = () => {
     navigation.navigate("SettingsScreen")
@@ -22,10 +22,32 @@ const ScoreBoardScreen: FC<Props> = ({ navigation, route }) => {
   }
 
   useEffect(() => {
-    console.log(scoreBoardList)
+    
 
   }, [])
 
+  const ParticipantsList =(people: any, idx: number) => {
+    return(
+      <View key={idx} style={styles.scoreBoardParent}>
+      <View style={styles.scoreBoardChild1}>
+        <View style={{ paddingRight: 10 }}>
+          <Text style={{ fontSize: 20 }}>{people.idx + 1}</Text>
+        </View>
+        {/* missing image */}
+        <View style={{ paddingRight: 10 }}>
+          <Text style={{ fontSize: 20 }}>{people.people.name}</Text>
+        </View>
+      </View>
+      <View style={styles.parentForPoints}>
+        <View style={{ paddingRight: 10 }}><FontAwesome size={25} name="star" color={yellowColor} /></View>
+        <View style={{ paddingRight: 10 }}>
+          <Text style={{ fontSize: 20 }}>{people.people.points}</Text>
+        </View>
+      </View>
+    </View>
+
+    )
+  }
 
   return (
     <>
@@ -37,28 +59,18 @@ const ScoreBoardScreen: FC<Props> = ({ navigation, route }) => {
         </View>
 
         {
+          scoreBoardList.length!=0?
           scoreBoardList.sort((a: any, b: any) => b.points - a.points).map((people: any, idx: number) => {
             return (
-              
-              <View key={idx} style={styles.scoreBoardParent}>
-                <View style={styles.scoreBoardChild1}>
-                  <View style={{ paddingRight: 10 }}>
-                    <Text style={{ fontSize: 20 }}>{idx + 1}</Text>
-                  </View>
-                  {/* missing image */}
-                  <View style={{ paddingRight: 10 }}>
-                    <Text style={{ fontSize: 20 }}>{people.name}</Text>
-                  </View>
-                </View>
-                <View style={styles.parentForPoints}>
-                  <View style={{ paddingRight: 10 }}><FontAwesome size={25} name="star" color={yellowColor} /></View>
-                  <View style={{ paddingRight: 10 }}>
-                    <Text style={{ fontSize: 20 }}>{people.points}</Text>
-                  </View>
-                </View>
-              </View>
+              !isChildFree? 
+              <ParticipantsList people={people} idx={idx}/>
+         
+              :!people.isChild?
+              <ParticipantsList people={people} idx={idx}/>
+              :null
             )
           })
+          : null
         }
 
 

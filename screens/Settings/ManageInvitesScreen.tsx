@@ -55,6 +55,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   const fetchGetInvitesAndRequest = async () => {
 
     let data: any = await GetInvitationByUsername(userData.username);
+    console.log(data);
 
 
     //console.log(data)
@@ -198,11 +199,11 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
 
       </View>
 
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+      
         <FullButtonComponent radius={0} onPress={() => handleBackToSettings()} color={purpleColor}>
           <Text>Back</Text>
         </FullButtonComponent>
-      </View>
+     
 
     </>
   );

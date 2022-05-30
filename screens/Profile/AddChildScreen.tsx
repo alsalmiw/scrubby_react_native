@@ -1,39 +1,49 @@
 // import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useState } from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Alert } from 'react-native';
 import avatars from '../../types/IAvatars'
 import RootStackParamList from '../../types/INavigateProfile'
 import InputFieldComponent from '../../components/AddEdit/InputFieldComponent'
 import TitleComponent from '../../components/AddEdit/TitleComponent'
 import FullButtonComponent from '../../components/FullButtonComponent'
 import WhiteSubTitleComponent from '../../components/AddEdit/WhiteSubTitleComponent';
-import {AddChild} from '../../services/dataService'
+import {AddChild, GetDependantsDTOByUsername} from '../../services/dataService'
 import UserContext from '../../context/UserContext';
 import INewName from '../../Interfaces/INewName'
 import { ThemeContext } from '../../context/ThemeContext';
 import IChild from '../../Interfaces/IChild';
 import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 import { AddPhotoComponent } from '../../components/AddPhotoComponent';
+import SplashComponentFaded from '../../components/SplashComponentFaded';
 
 type Props = NativeStackScreenProps <RootStackParamList, 'AddChild'>
 
 const AddChildScreen: FC<Props> = ({navigation, route})=> {
   const {orangeColor, blueColor} = useContext(ThemeContext)
   const [newChildName, setNewChildName] = useState('')
-  const [newChildAge, setNewChildAge] = useState(0)
+  const [newChildAge, setNewChildAge] =  useState<string>('')
   let avR = Math.floor(Math.random() * 46)
 
 
-  const {username, userData, setChildData, childData} = useContext(UserContext)
+  const {username, userData, setChildData, childData, setChildrenData, setWaiting} = useContext(UserContext)
 
 
   const saveName = async () => {
+    let regi = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g
+    let regiLetters = /[a-zA-Z]/;
+
+    if (newChildName.length == 0 || newChildName == null || Number(newChildAge)<=0 || newChildAge == null  || regi.test(newChildName) || regiLetters.test(newChildAge) || regi.test(newChildAge)) {
+      Alert.alert("Error", 'Please Enter Valid Name or Age. Try Again.', [{ text: "Cancel", style: "cancel" }]);
+    }
+   
+    else {
+    setWaiting(true)
     let newChildData:IChild = {
         Id:0,
         UserID: userData.id,
         DependentName: newChildName,
-        DependentAge: newChildAge,
+        DependentAge: Number(newChildAge),
         DependentPhoto: avatars[avR],
         DependentCoins: 0,
         DependentPoints: 0,
@@ -43,11 +53,16 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
     let result = await AddChild(newChildData)
     if(result) {
       alert("You have successfully add a new child")
-      navigation.goBack()
-         console.log(childData)
-      setChildData([...childData, newChildData])
+      let dependents = await GetDependantsDTOByUsername(userData.username)
+      if(dependents.length>0){
+        setChildrenData(dependents)
+        setWaiting(false)
+        navigation.goBack()
+     
+    }
    
     }
+  }
   }
 
   const handleSave = () => {
@@ -55,7 +70,7 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
   }
   
   return (
- 
+   <SplashComponentFaded>
     <View style={[styles.container,{backgroundColor:orangeColor}]}>
         <TitleComponent title="Add New Child" />
      
@@ -65,7 +80,7 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
         </View>
         <View>
         <WhiteSubTitleComponent title="Age" />
-        <InputFieldComponent value={''} maxLength={20} holder="enter your childs age" hide={false} onChangeText={(e: number)=>setNewChildAge(e)} />
+        <InputFieldComponent value={''} maxLength={20} holder="enter your childs age" hide={false} onChangeText={(e: string)=>setNewChildAge(e)} />
         {/* <FullButtonComponent onPress={handleSave} color={blueColor}>
           <Text>Save</Text>
         </FullButtonComponent> */}
@@ -75,7 +90,7 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
         
     </View>
 
-    
+    </SplashComponentFaded>
   );
 }
 

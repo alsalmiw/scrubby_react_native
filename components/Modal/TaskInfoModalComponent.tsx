@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect } from "react"
+import { FC, useContext, useEffect, useState } from "react"
 import { Alert, StyleSheet, Text, View } from "react-native"
 import HeaderComponent from "../HeaderComponent"
 import ModalComponent from "../ModalComponent"
@@ -37,8 +37,11 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
 
     const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal, runScheduleAgain, setRunScheduleAgain, setUserData, childPoints, setChildPoints, childCoins, setChildCoins, refreshChildTask, setRefreshChildTask, setChildPage, setChildDefaultSpace } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
+  
 
-   
+    
+    
+
 
     const SubmitTaskForCompletion =async()=> {
         //console.log("task Info:",task.id)
@@ -51,7 +54,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                 Coins: task.task.coins
               }
              //add coins
-             console.log(userRedeem)
+             //console.log(userRedeem)
              let updatedInfo = await UpdateCoinsAndPointsUser(userRedeem)
              if(updatedInfo != null)
              {
@@ -104,7 +107,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
         await setChildCoins(childCoins + task.task.coins) 
         await setChildPoints(childPoints + task.task.coins)
         let childdefault = await GetChildDefaultSchedule(childInfo.Id)
-        console.log("Not sure what this is:",childInfo.Id)
+        //console.log("Not sure what this is:",childInfo.Id)
         if(childdefault !=null) await setChildDefaultSpace(childdefault)
         setRunAgain(true)
         Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])
@@ -163,6 +166,13 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                     <UnderlinedOneHeaderComponent titleFirst={'Instructions'}></UnderlinedOneHeaderComponent>
                     <View style={styles.txtRap}>
                         <Text>{task.task.description}</Text>
+                    </View>
+                </View>
+
+                <View style={styles.underlinedView}>
+                    <UnderlinedOneHeaderComponent titleFirst={'Completion by'}></UnderlinedOneHeaderComponent>
+                    <View style={styles.txtRap}>
+                        <Text>Date: {task.dateScheduled.slice(0,10)}</Text>
                     </View>
                 </View>
                 </View>

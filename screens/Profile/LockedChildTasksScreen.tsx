@@ -23,13 +23,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeContext } from '../../context/ThemeContext';
 import IchildCoinAndPoint from '../../Interfaces/IchildCoinAndPoint';
+import UserNameComponent from '../../components/UserNameComponent';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LockedChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     const { childPage, setChildPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, childDefaultSpace, setChildDefaultSpace, selectedTask, setSelectedTask, runAgain, setRunAgain, childPoints, setChildPoints, childCoins, setChildCoins, refreshChildTask, setRefreshChildTask } = useContext(UserContext)
-    const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
+    const { yellowColor, secondaryTextColor, primaryTextColor } = useContext(ThemeContext)
 
     const [space, setSpace] = useState<String>("")
     const [location, setLocation] = useState<String>("")
@@ -117,7 +118,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         {
             rooms != 0 && rooms[0] != 0 ?
                 setSpace(rooms[0].spaceName)
-                : console.log('yess')
+                : null
+                //console.log('yess')
         }
 
         //setSpace(rooms[0].spaceName);
@@ -129,8 +131,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     useEffect(() => {
 
         childTaskDate()
-        console.log("run again")
-        console.log(runAgain)
+        // console.log("run again")
+        // console.log(runAgain)
         if (runAgain) {
             childTaskDate()
             setRunAgain(false)
@@ -139,7 +141,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
     }, [runAgain])
 
-
+    
 
 
     return (
@@ -147,21 +149,22 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         <View style={styles.container}>
             <View>
                 <View>
-                    <HeaderComponent title='My Tasks'></HeaderComponent>
+                    <HeaderComponent title='My Tasks' ></HeaderComponent>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
                     <View style={styles.firstRow}>
-                        <AvatarComponent onPress={() => console.log(childDefaultSpace)} imageSource={childPage.dependentPhoto} />
+                        <AvatarComponent onPress={undefined} imageSource={childPage.dependentPhoto} />
                     </View>
 
 
                     <View style={styles.nameAndCoinContainer}>
                         <View style={styles.childName}>
-                            <Text style={{ fontSize: 20 }}>{childPage.dependentName}</Text>
+                            <UserNameComponent name={childPage.dependentName} />
                         </View>
 
-                        <Text>{childPage.dependentAge} years old</Text>
+                        <Text style={{ color: primaryTextColor}}>{childPage.dependentAge} years old</Text>
+                        {/* <Text style={{ color: primaryTextColor, paddingTop:5}}>{childDefaultSpace.collectionName}</Text> */}
 
 
                         <View style={styles.coinContainer}>
@@ -179,10 +182,18 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
                 </View>
-
-                <View style={styles.underLineView}>
-                    <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
+                <View>
+                <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{childDefaultSpace.collectionName}</Text>
                 </View>
+                {
+                    childSelectedRoom != null ?
+                        <View style={styles.underLineView}>
+                        <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
+                        </View>
+
+                    : null
+                }
+               
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
                     {childScheduleRooms != null ?
                         childScheduleRooms.map((room: any, x: number) => {
@@ -201,7 +212,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                                             </View>
                                         </SquareColoredButton>
                                     </View>
-                                    : x===0?<Text>You Have No Rooms</Text>:null
+                                    :null
 
 
                             )
@@ -211,10 +222,14 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                     }
 
                 </ScrollView>
+              
+                    <View style={styles.underLineView}>
+                     <UnderlinedOneHeaderComponent titleFirst={'Remaining Tasks'}></UnderlinedOneHeaderComponent>
+                     </View>
 
-                <View style={styles.underLineView}>
-                    <UnderlinedOneHeaderComponent titleFirst={'Remaining Tasks'}></UnderlinedOneHeaderComponent>
-                </View>
+                    
+                
+              
                 <ScrollView style={styles.taskStyle}>
 
                     {
@@ -235,44 +250,46 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                                             setChildUpdateCoins(childInfoCoin)
                                           }}}>
 
-                                            <View style={styles.centering}>
-                                                <View>
-                                                    <Text>Image</Text>
-                                                </View>
-                                                <View style={{ justifyContent: 'space-between' }}>
-                                                    <View style={styles.centering}>
-                                                        <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
+                                            <View style={[{flexDirection: 'row'}]}>
+                                              
+                                              
+                                                    <View style={[{width: '85%',}]}>
+                                                        <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>{taskName.task.name + " " + taskName.item.name}
 
                                                         </Text>
                                                     </View>
-                                                    <View style={styles.centering}>
-                                                        <Text style={[{ color: 'white', fontSize: 20 }]}> <FontAwesome5 name="coins" color='white' />  {taskName.task.coins}</Text>
+                                                    <View style={[{width: '15%', justifyContent:'flex-end'}]}>
+                                                        {
+                                                             taskName.isRequestedApproval && !taskName.isCompleted?
+                                                             <Ionicons name="time-sharp" size={30} color="#FFF" />
+
+                                                             : 
+                                                            
+                                                        <Text style={[{ color: 'white', fontSize: 18, fontWeight: 'bold'  }]}> 
+                                                        <FontAwesome5 name="coins" color='white' />  {taskName.task.coins}</Text>
+                                                        }
+                                                     
                                                     </View>
-                                                </View>
+                                               
                                             </View>
 
                                         </TaskSpaceRowComponent>
                                         :
-                                        x < 1 && x===0 ?<Text key={x}>You Have No Task Today</Text>:null
-
-
-
+                                        x < 1 && x===0 ?<Text key={x} style={[{color:primaryTextColor}]}>You Have No Task Today</Text>:null
                                 )
-
-
-
                             })
-
-
                             :
-                            null
+                            <Text style={[{color:primaryTextColor}]}> You have no tasks today</Text>
 
                     }
                 </ScrollView>
-
+                {
+                    childSelectedRoom != null ?
                 <View style={styles.underLineView}>
                     <UnderlinedOneHeaderComponent titleFirst={'Completed Tasks '}></UnderlinedOneHeaderComponent>
                 </View>
+                : null
+                }
                 <ScrollView style={styles.taskStyle}>
 
                     {
@@ -285,9 +302,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                                         <TaskSpaceRowComponent key={x+1} idx={x + 1} onPress={() => { setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
 
                                             <View style={styles.centering}>
-                                                <View>
-                                                    <Text>Image</Text>
-                                                </View>
+                                                
                                                 <View style={{ justifyContent: 'center' }}>
                                                     <View style={{ justifyContent: 'center' }}>
                                                         <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
@@ -300,7 +315,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                                             </View>
                                         </TaskSpaceRowComponent>
                                         :
-                                        x < 1 && x===0 ?<Text key={x}>You Have No Completed Task Today</Text> :null
+                                        x < 1 && x===0 ?<Text key={x} style={[{color:primaryTextColor}]}>You Have No Completed Task Today</Text> :null
                                 )
 
 
@@ -392,7 +407,12 @@ const styles = StyleSheet.create({
     centering: {
         flexDirection: 'row',
         justifyContent: 'center'
-    }
+    }, 
+    mainHeader: {
+        fontSize: 25,
+        fontWeight: "bold",
+        padding:10
+      },
 });
 
 export default ChildTasksScreen

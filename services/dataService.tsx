@@ -262,8 +262,20 @@ async function GetAcceptedInvitationsbyInviterId(inviterId:number){
 }
 
 async function DeleteInvitation(inviteId:number){
-    let res = await fetch(`${link}/InviteUsers/DeleteInvitation/${inviteId}`);
-    let data = await res.json();
+    let res = await fetch(`${link}/InviteUsers/DeleteInvitation/${inviteId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({})
+    });
+    if(!res.ok)
+    {
+        const message = `An Error has Occured ${res.status}`
+        throw new Error (message)
+    }
+    let data:boolean = await res.json();
+    console.log(data)
     return data;
 }
 
@@ -566,7 +578,11 @@ async function GetAllTasksHistoryForMembers(userId:number){
 }
 
 async function DeleteChildByChildID(childId:number){
-    let res = await fetch(`${link}/Dependent/DeleteChildByChildID/${childId}`)
+    let res = await fetch(`${link}/Dependent/DeleteChildByChildID/${childId}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({})
+    })
     let data = await res.json();
     return data
 }

@@ -140,13 +140,6 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
     console.log("=====================+===================================================")
 
-
-
-
-
-
-
-
   }, [runAgain])
 
 
@@ -245,7 +238,7 @@ const handleChangeInfo = (isChangeName:boolean) => {
                     //fix space name and location
                     return (
                       <View key={x} style={styles.sqrBtn}>
-                        <SquareColoredButton idx={x + rState + 1} onPress={() => { console.log(childScheduleRooms.length), console.log("=======================================================================++"), setChildSelectedRoom(room), setSpace(room.spaceName) }}>
+                        <SquareColoredButton idx={x + rState + 1} onPress={() => {setChildSelectedRoom(room), setSpace(room.spaceName) }}>
                           <View style={styles.sqrBtn}>
                             <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
                           </View>

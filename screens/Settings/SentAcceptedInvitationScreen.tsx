@@ -133,7 +133,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
              console.log(result);
             // setRefresh((prevRefresh:boolean) => prevRefresh = true)
             // navigation.navigate('ManageInvites');
-            console.log('shit')
+            console.log('scooby')
             console.log(userData.id)
             console.log(invitedUserToBeDeleted);
             
@@ -146,7 +146,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
     
     const handleAddSharedAlert = async (filteredMySpace: any) => {
 
-        console.log('asdfasdf')
+        console.log('scooby')
         console.log(filteredMySpace)
 
         Alert.alert("Adding a Shared Space", "You are about to share a space, would you like to add?",

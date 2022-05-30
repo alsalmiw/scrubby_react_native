@@ -28,7 +28,7 @@ import IchildCoinAndPoint from '../../Interfaces/IchildCoinAndPoint';
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setMemberInfo, setIsEditImage , setRunAgain} = useContext(UserContext)
+  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setMemberInfo, setIsEditImage , setRunAgain, childPoints, setChildPoints, childCoins, setChildCoins, refreshChildTask, setRefreshChildTask} = useContext(UserContext)
 
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
   // const [childDefaultSpace, setChildDefaultSpace] = useState<any>()
@@ -118,7 +118,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         setSpace(rooms[0].spaceName)
         : null
     }
-
+    setRunAgain(false)
+    setRefreshChildTask(false)
     //setSpace(rooms[0].spaceName);
   }
 
@@ -127,10 +128,14 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     if(childDefault.length > 0)
     {
     setChildDefaultSpace(childDefault)   
-     setRunAgain(false)
+     
     }
     //console.log("child default space:", childDefault)
    
+  }
+  const childCoinPoint = async ()=>{
+    await setChildCoins(childPage.dependentCoins)
+    await setChildPoints(childPage.dependentPoints)
   }
 
 
@@ -140,14 +145,18 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     //repeat
     // navigation.addListener('focus', () =>{
    console.log(runAgain)
-    childTaskDate()
-    if(runAgain)
+    
+   
+   childCoinPoint()
+    if(runAgain )
     {
      ChildDefault()
+     childTaskDate()
     }
+
    
 
-  }, [runAgain])
+  }, [ runAgain])
 
 
 const handleChangeInfo = (isChangeName:boolean) => {
@@ -203,7 +212,7 @@ const handleChangeInfo = (isChangeName:boolean) => {
 
 
             <View style={styles.coinContainer}>
-              <CoinsPointsDisplayContainer coins={childPage.dependentCoins} points={childPage.dependentPoints} ></CoinsPointsDisplayContainer>
+              <CoinsPointsDisplayContainer coins={childCoins} points={childPoints} ></CoinsPointsDisplayContainer>
             </View>
 
 

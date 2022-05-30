@@ -17,7 +17,7 @@ import RootStackParamList from '../../types/INavigation'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import FullButtonComponent from '../../components/FullButtonComponent';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
-import { Ionicons} from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import IDefaultSpace from '../../Interfaces/IDefaultSpace';
 import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 import IDefaultSpaceChild from '../../Interfaces/IDefaultSpaceChild';
@@ -25,124 +25,122 @@ import IDefaultSpaceChild from '../../Interfaces/IDefaultSpaceChild';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DefaultChildOptions'>
 
-const DefaultSpaceChildScreen: FC<Props> = ({navigation})=> {
+const DefaultSpaceChildScreen: FC<Props> = ({ navigation }) => {
 
-    const { childDefaultSpace,setChildDefaultSpace, childPage, setRunAgain, myHouses, setSpacesRoom, spacesRooms } = useContext(UserContext)
-    const {secondaryTextColor, purpleColor} = useContext(ThemeContext)
+    const { childDefaultSpace, setChildDefaultSpace, childPage, setRunAgain, myHouses, setSpacesRoom, spacesRooms } = useContext(UserContext)
+    const { secondaryTextColor, purpleColor } = useContext(ThemeContext)
     const [newSelection, setNewSelection] = useState<any>([])
 
     useEffect(() => {
         setNewSelection(childDefaultSpace)
-    },[])
+    }, [])
 
-    const handleSetDefaultSchedule =async(space:any)=> {
+    const handleSetDefaultSchedule = async (space: any) => {
         setNewSelection(space)
         console.log(childPage.dependentName, space.id, space.collectionName)
-      
+
     }
 
     const handleConfirm = async () => {
-        let newDefault:IDefaultSpaceChild = {
-            Id:0,
-            ChildId:childPage.id,
-            CollectionId:newSelection.id,
-            IsDefault:true, 
-            IsDelete:false
+        let newDefault: IDefaultSpaceChild = {
+            Id: 0,
+            ChildId: childPage.id,
+            CollectionId: newSelection.id,
+            IsDefault: true,
+            IsDelete: false
         }
 
         console.log(newDefault);
 
-        let changeDefault = await CreateChildDefaultSchedule (newDefault)
-        if(changeDefault)
-        {
+        let changeDefault = await CreateChildDefaultSchedule(newDefault)
+        if (changeDefault) {
             //get child default page
             let childDefault = await GetChildDefaultSchedule(childPage.id)
-   // console.log("Child fetch",childDefault)
-            if(childDefault.length!= 0)
-            {
-            setChildDefaultSpace(childDefault)   
-                    console.log(changeDefault)
-                    setRunAgain(true)
-                    //setChildDefaultSpace(newSelection)
-                    alert("You have successfully set the default schedule to " + newSelection.collectionName)
-                    navigation.goBack()
-                }
+            // console.log("Child fetch",childDefault)
+            if (childDefault.length != 0) {
+                setChildDefaultSpace(childDefault)
+                console.log(changeDefault)
+                setRunAgain(true)
+                //setChildDefaultSpace(newSelection)
+                alert("You have successfully set the default schedule to " + newSelection.collectionName)
+                navigation.goBack()
             }
-        
+        }
+
     }
 
-    const handleBackPress =()=> {
+    const handleBackPress = () => {
         navigation.goBack()
     }
-    return(
+    return (
         <View style={styles.container}>
             <ScrollView>
-            <HeaderComponent title="Set Default Schedule"/>
-            <UnderlinedTwoHeaderComponent titleFirst={"Child's Spaces"} titleTwo={"Set Default"}/>
+                <HeaderComponent title="Set Default Schedule" />
+                <UnderlinedTwoHeaderComponent titleFirst={"Child's Spaces"} titleTwo={"Set Default"} />
 
-            <View>
-            {
-                spacesRooms.map((space:any, idx:number) =>
-                        space.rooms.length > 0?
-                    <TaskSpaceRowComponent key={idx} idx={idx} onPress={()=>handleSetDefaultSchedule(space)}>
-                        <View style={[styles.flexrow]}>
-                        <Text style={[styles.spacesFont]}>{space.collectionName}</Text>
-                        {
-                          
-                          newSelection.id==space.id?
-                            <Ionicons name="radio-button-on" size={24} color="#FFF" />
-                             :
-                             <Ionicons name="radio-button-off" size={24} color="#FFF" />
-                             
-                          
-                             
-                        }
-                       
-                        </View>
-                    </TaskSpaceRowComponent>
-                    :
-                    <TaskSpaceRowComponent key={idx} idx={idx} onPress={undefined}>
-                         <View style={[styles.flexrow]}>
-                        <Text style={[styles.spacesFont]}>{space.collectionName}</Text>
-                        <Text style={{color: '#FFF', fontSize:15}}>Not Available</Text>
-                        </View>
-                        </TaskSpaceRowComponent>
+                <View>
+                    {
+                        spacesRooms.map((space: any, idx: number) =>
+                            space.rooms.length > 0 ?
+                                <TaskSpaceRowComponent key={idx} idx={idx} onPress={() => handleSetDefaultSchedule(space)}>
+                                    <View style={[styles.flexrow]}>
+                                        <Text style={[styles.spacesFont]}>{space.collectionName}</Text>
+                                        {
+
+                                            newSelection.id == space.id ?
+                                                <Ionicons name="radio-button-on" size={24} color="#FFF" />
+                                                :
+                                                <Ionicons name="radio-button-off" size={24} color="#FFF" />
 
 
-                )
-            }
 
-            </View>
+                                        }
+
+                                    </View>
+                                </TaskSpaceRowComponent>
+                                :
+                                <TaskSpaceRowComponent key={idx} idx={idx} onPress={undefined}>
+                                    <View style={[styles.flexrow]}>
+                                        <Text style={[styles.spacesFont]}>{space.collectionName}</Text>
+                                        <Text style={{ color: '#FFF', fontSize: 15 }}>Not Available</Text>
+                                    </View>
+                                </TaskSpaceRowComponent>
+
+
+                        )
+                    }
+
+                </View>
             </ScrollView>
 
-        <View>
-            <TwoFullButtonComponent text1={"Back"} text2={"Confirm"} onAcceptPress={()=>handleConfirm()} color={purpleColor} onBackPress={()=>handleBackPress()} />
+            <View>
+                <TwoFullButtonComponent text1={"Back"} text2={"Confirm"} onAcceptPress={() => handleConfirm()} color={purpleColor} onBackPress={() => handleBackPress()} />
+
+            </View>
+
 
         </View>
-     
 
-        </View>
-   
     )
 
 }
 
 const styles = StyleSheet.create({
     container: {
-    flex: 1,
-    paddingTop:20,
-    justifyContent: "space-between"
+        flex: 1,
+        paddingTop: 20,
+        justifyContent: "space-between"
     },
     flexrow: {
         flexDirection: "row",
         justifyContent: "space-between"
-      },
-      spacesFont:{
-          color:"#FFF",
-          fontSize: 18,
-          fontWeight: "bold"
+    },
+    spacesFont: {
+        color: "#FFF",
+        fontSize: 18,
+        fontWeight: "bold"
 
-      }
+    }
 })
 
 export default DefaultSpaceChildScreen

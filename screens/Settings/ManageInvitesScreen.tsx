@@ -26,7 +26,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh, acceptedInvitations, setAcceptedInvitations, sentAcceptedInvitations, setSentAcceptedInvitations } = useContext(UserContext)
 
 
-  const windowWidth = Dimensions.get('window').width * 0.25;
+  const windowWidth = Dimensions.get('window').width * 0.30;
 
 
 
@@ -95,8 +95,8 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
           <HeaderComponent title='MANAGE INVITATIONS' />
         </View>
 
-        <View style={{ alignItems: 'center' }}>
-          <UnderlinedOneHeaderComponent titleFirst={'Invited'} />
+        <View style={{ alignItems: 'center' , padding:10}}>
+          <UnderlinedOneHeaderComponent titleFirst={'My Sent Invitations'} />
         </View>
 
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', }}>
@@ -122,8 +122,8 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
           }
         </View>
 
-        <View style={{ alignItems: 'center' }}>
-          <UnderlinedOneHeaderComponent titleFirst='Accepted Invitation' />
+        <View style={{ alignItems: 'center' , padding:10}}>
+          <UnderlinedOneHeaderComponent titleFirst='Accepted Sent Invitation' />
         </View>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', }}>
           {
@@ -140,10 +140,13 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
               : null
           }
         </View>
-
-        <View style={{ alignItems: 'center' }}>
-          <UnderlinedOneHeaderComponent titleFirst='Request' />
+        {
+            inviters.length > 0 ?
+        <View style={{ alignItems: 'center', padding: 10 }}>
+          <UnderlinedOneHeaderComponent titleFirst='Recieved Requests' />
         </View>
+        :null
+        }
         <View style={styles.underlineContainer}>
           {
             inviters != null ?
@@ -181,8 +184,10 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
           }
         </View> */}
 
-        <View style={[styles.underlineContainer, { marginTop: '10%' }]}>
-          <UnderlinedOneHeaderComponent titleFirst='Accepted Requests'></UnderlinedOneHeaderComponent>
+        <View style={[styles.underlineContainer, { padding:10}]}>
+        {acceptedInvitations != null ?
+          <UnderlinedOneHeaderComponent titleFirst='Accepted Recieved Requests'></UnderlinedOneHeaderComponent>
+          :null}
           {
             acceptedInvitations != null ?
               acceptedInvitations.map((request: any, idx: number) => {

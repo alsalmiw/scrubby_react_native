@@ -27,7 +27,7 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
 
 
 
-    const { purpleColor } = useContext(ThemeContext)
+    const { purpleColor, lilacColor} = useContext(ThemeContext)
     const {invited, setInvited, allRequestName, setAllRequestName, userData, refresh, setRefresh} =useContext(UserContext)
     const [fullName, setFullName] = useState<string | null>("");
     const [invitedPhoto, setInvitedPhoto] = useState<string>("?")
@@ -38,7 +38,7 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
     //     AsyncStorage.setItem('Inviter', userData.username);
     //     let inviter = await AsyncStorage.getItem('Inviter');
 
-         console.log(invited);
+         //console.log(invited);
     //    console.log(userData)
     //     setName(invited);
 
@@ -108,7 +108,7 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
 
     const handleDisplayAlert = () => {
         console.log('This item is fake deleted');
-        Alert.alert('Warning', 'This action will result in deleting the user and all of their chores will be saved as unassigned. Are you sure you want to delete user?',[ {
+        Alert.alert('Warning', 'This action will result in deleting the user and all of their chores will be deleted. Are you sure you want to delete this user?',[ {
             text: "Cancel",
             onPress: () => console.log("Cancel Pressed"),
             style: "cancel"
@@ -135,15 +135,17 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
 
     return (
         <View style={styles.container}>
+            <View>
             <HeaderComponent title="Add To My Space" />
+            
             <View style={styles.firstRowContainer}>
                 <AvatarComponent onPress={undefined} imageSource={invitedPhoto}/>
                 <View style={styles.insideFirstRowContainer1}>
                     <UserNameComponent name={fullName}></UserNameComponent>
-                    <View style={styles.insideFirstRowContainer2}>
-                        <Feather name="trash-2" size={40} color='#000' onPress={handleDisplayAlert}/>
+                    <Pressable style={styles.insideFirstRowContainer2} onPress={handleDisplayAlert}>
+                        <Feather name="trash-2" size={30} color={lilacColor} />
                         <UserNameComponent name="Delete User"></UserNameComponent>
-                    </View>
+                    </Pressable>
                 </View>
             </View>
             
@@ -153,7 +155,7 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
                     <UserNameComponent name="This user has not accepted your invitation yet to share responsibilities."></UserNameComponent>
                 </View>
             </View>
-
+            </View>
             <FullButtonComponent  radius={0} onPress={handleNavigateBack} color={purpleColor}>
                 <Text>Back</Text>
             </FullButtonComponent>
@@ -169,7 +171,7 @@ export default InviteUserPendingScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: StatusBar.currentHeight,
+       justifyContent:"space-between"
     },
     firstRowContainer: {
         flexDirection: 'row',

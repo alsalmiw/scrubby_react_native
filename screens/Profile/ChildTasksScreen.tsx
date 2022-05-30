@@ -124,8 +124,13 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
   const ChildDefault = async () => {
     let childDefault = await GetChildDefaultSchedule(childPage.id)
+    if(childDefault.length > 0)
+    {
+    setChildDefaultSpace(childDefault)   
+     setRunAgain(false)
+    }
     //console.log("child default space:", childDefault)
-    setChildDefaultSpace(childDefault)
+   
   }
 
 
@@ -134,17 +139,13 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   useEffect(() => {
     //repeat
     // navigation.addListener('focus', () =>{
-    ChildDefault()
+   console.log(runAgain)
     childTaskDate()
-    setRunAgain(false)
-
-
-
-
-
-
-
-
+    if(runAgain)
+    {
+     ChildDefault()
+    }
+   
 
   }, [runAgain])
 
@@ -230,7 +231,7 @@ const handleChangeInfo = (isChangeName:boolean) => {
         </View>
 
           {
-              childScheduleRooms.length>0 ?
+              childScheduleRooms!=null ?
           <View style={styles.underLineView}>
                   <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
                 </View>
@@ -244,7 +245,7 @@ const handleChangeInfo = (isChangeName:boolean) => {
           childDefaultSpace != null ?
             <>
               <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
-                {childScheduleRooms.length>0 ?
+                {childScheduleRooms!=null ?
                   childScheduleRooms.map((room: any, x: number) => {
                     // missing logic to display task not completed and today and future task.
 

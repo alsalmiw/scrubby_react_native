@@ -14,7 +14,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import SquareColoredButton from '../../components/SquareColoredButton';
 import iconsMap from '../../types/IconsMap';
 import ChildLockModalComponent from '../../components/Modal/ChildLockModalComponent';
-import { GetChildDefaultSchedule, GetTasksByRoomId } from '../../services/dataService';
+import { DeleteChildByChildID, GetChildDefaultSchedule, GetDependantsDTOByUsername, GetTasksByRoomId } from '../../services/dataService';
 import TaskInfoModalComponent from '../../components/Modal/TaskInfoModalComponent';
 
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
@@ -28,7 +28,7 @@ import IchildCoinAndPoint from '../../Interfaces/IchildCoinAndPoint';
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setMemberInfo, setIsEditImage , setRunAgain} = useContext(UserContext)
+  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, setChildrenData, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setMemberInfo, setIsEditImage , setRunAgain} = useContext(UserContext)
 
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
   // const [childDefaultSpace, setChildDefaultSpace] = useState<any>()
@@ -169,18 +169,38 @@ const handleChangeInfo = (isChangeName:boolean) => {
  
 }
 
+const handleDeleteChild= async()=> {
+console.log("delete this kid")
+console.log(childPage.id)
+let deleted = await DeleteChildByChildID(childPage.id)
+if(deleted)
+{
+  console.log(deleted)
+  let dependents = await GetDependantsDTOByUsername(userData.username)
+  if(dependents!=null){
+    setChildrenData(dependents)
+    navigation.navigate('MyProfile')
+  }
+}
+}
+
   return (
 
     <ScrollView style={styles.container}>
       <View>
         <View>
-          <HeaderComponent title='My Tasks'></HeaderComponent>
+          <HeaderComponent title='Child Tasks'></HeaderComponent>
         </View>
 
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.firstRow}>
             <View>
+            <View>
             <AvatarComponent onPress={() => {undefined}} imageSource={childPage.dependentPhoto} />
+              <Pressable  style={styles.deleteChild} onPress={() =>handleDeleteChild()}>
+              <FontAwesome5 name="user-times" size={20} color={lilacColor} />
+              </Pressable>
+             </View>
             <View style={{flexDirection:"row", justifyContent: "center"}}>
             <MaterialCommunityIcons name="image-edit-outline" size={20} color={lilacColor} />
             <Text style={{color:"blue"}} onPress={() =>handleChangeInfo(false)}>Edit image?</Text>
@@ -191,6 +211,7 @@ const handleChangeInfo = (isChangeName:boolean) => {
 
           <View style={styles.nameAndCoinContainer}>
             <View style={styles.childName}>
+              
             <Pressable style={{flexDirection: 'row'}} onPress={()=>handleChangeInfo(true)}>
               <Text style={{ fontSize: 20 }}>{childPage.dependentName}</Text>
               <View style={{marginLeft:5}}>
@@ -345,6 +366,16 @@ const handleChangeInfo = (isChangeName:boolean) => {
 const styles = StyleSheet.create({
   container: {
     paddingTop: StatusBar.currentHeight
+  },
+  deleteChild:{
+    position: 'absolute',
+    top:0,
+    right:-5,
+    backgroundColor:"white",
+    padding:5,
+    borderRadius: 30,
+    
+   
   },
   coinContainer: {
     marginTop: '6%',

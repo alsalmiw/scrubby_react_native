@@ -101,7 +101,7 @@ const [r, setR] = useState<number>(Math.floor(Math.random() * 7))
 
 
 
-  }, [myHouses])
+  }, [myHouses, childrenData]);
 
   
 
@@ -339,7 +339,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingLeft:'2.5%',
-    paddingRight:'2.5%'
+    paddingRight:'2.5%',
+    alignItems: 'center'
   },
   textStyle: {
     fontSize: 20,

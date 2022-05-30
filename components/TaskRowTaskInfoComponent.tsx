@@ -12,7 +12,7 @@ import { ThemeContext } from '../context/ThemeContext';
 import UnderlinedOneHeaderComponent from './UnderlinedOneHeaderComponent';
 import UserNameComponent from './UserNameComponent';
 //import ReactNativeCalendar from './ReactNativeCalendar';
-import { AddChildAssignedTasks, AddUserAssignedTasks, GetCollectionByUsername, GetUserDefaultScheduleByUserId } from '../services/dataService';
+import { AddChildAssignedTasks, AddUserAssignedTasks, GetCollectionByUsername, GetCollectionDTOByCollectionID, GetUserDefaultScheduleByUserId } from '../services/dataService';
 import DatePicker from 'react-native-datepicker';
 import { getDate } from 'date-fns';
   registerTranslation('en', en)
@@ -29,7 +29,7 @@ interface taskProp {
 
 const TaskRowTaskInfoComponent: FC<taskProp> = ({task, idx, r, selectedSpaceId}) => {
 
-    const { modalVisible, setModalVisible, scheduleTask, setScheduleTask, selectedUser, userData, myRoom, setRunAgain,  defaultSpace, mySpace, setDefaultSpace, setMySpaces, mySpaces} = useContext(UserContext)
+    const { modalVisible, setModalVisible, scheduleTask, setScheduleTask, selectedUser, userData, myRoom, setRunAgain,  defaultSpace, mySpace, setDefaultSpace, setMySpaces, mySpaces, setMySpace} = useContext(UserContext)
     const {secondaryTextColor, lightLilacColor, yellowColor, blueColor} = useContext(ThemeContext)
 
    
@@ -158,13 +158,19 @@ let sendDates=[] as any
                           }
 
                         }
-                        let spaces = await GetCollectionByUsername(userData.username)
-                        if(spaces.length > 0){
-                          setMySpaces(spaces)
-                          console.log("they came")
-                      }
+                      //   let spaces = await GetCollectionByUsername(userData.username)
+                      //   if(spaces.length > 0){
+                      //     setMySpaces(spaces)
+                      //     console.log("they came")
+                      // }
 
-                      }
+                      let spaceInfo = await GetCollectionDTOByCollectionID(mySpace.id)
+                            if(spaceInfo!=null){
+                            setMySpace(spaceInfo)
+                            console.log("they came")
+
+                            }
+                          }
                       
             }
             

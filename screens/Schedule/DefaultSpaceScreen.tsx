@@ -20,14 +20,14 @@ import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import { Ionicons} from '@expo/vector-icons';
 import IDefaultSpace from '../../Interfaces/IDefaultSpace';
 import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
-import SplashComponent from '../../components/SplashComponent';
+import SplashComponentFaded from '../../components/SplashComponentFaded';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DefaultOptions'>
 
 const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
 
-    const { savedUsername, setSavedUsername, setBlank, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, mySchedule, setRunAgain, defaultScheduleOptions } = useContext(UserContext)
+    const { savedUsername, setSavedUsername, setWaiting, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, mySchedule, setRunAgain, defaultScheduleOptions } = useContext(UserContext)
     const {secondaryTextColor, purpleColor} = useContext(ThemeContext)
     const [newSelection, setNewSelection] = useState<any>([])
 
@@ -51,7 +51,7 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
         }
 
         console.log(newDefault);
-        setBlank(true)
+        setWaiting(true)
         let changeDefault = await AddDefaultUserSpace (newDefault)
         if(changeDefault)
         {
@@ -59,7 +59,7 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
             let newDefault = await GetUserDefaultSchedule(userData.username)
             if(newDefault!=null)
             {
-                setBlank(false)
+                setWaiting(false)
 
                    console.log(changeDefault)
             setRunAgain(true)
@@ -78,7 +78,7 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
         navigation.goBack()
     }
     return(
-          <SplashComponent>
+          <SplashComponentFaded>
         <View style={styles.container}>
           
               
@@ -128,7 +128,7 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
      
      
         </View>
-      </SplashComponent>
+      </SplashComponentFaded>
     )
 
 }

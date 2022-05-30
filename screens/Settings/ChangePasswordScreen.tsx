@@ -12,6 +12,7 @@ import UserContext from '../../context/UserContext';
 import IUserLogin from '../../Interfaces/IUserLogin';
 import { FontAwesome } from '@expo/vector-icons';
 import { ThemeContext } from '../../context/ThemeContext';
+import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 
 type Props = NativeStackScreenProps <RootStackParamList, 'ChangePassword'>
 
@@ -60,9 +61,11 @@ const ChangePasswordScreen: FC<Props> = ({navigation, route})=> {
         <InputFieldComponent  value={""} maxLength={20} holder="new password" hide={true} onChangeText={(e: string)=>setRepeatNewPassword(e)} />
         </View>
         </View>
-        <FullButtonComponent radius={0} onPress={handleSave} color={yellowColor}>
+
+        <TwoFullButtonComponent color={yellowColor} text1={"Back"} text2={"Save"} onBackPress={()=>{navigation.goBack()}} onAcceptPress={handleSave} />
+        {/* <FullButtonComponent radius={0} onPress={handleSave} color={yellowColor}>
           <Text>Save</Text>
-        </FullButtonComponent>
+        </FullButtonComponent> */}
     </View>
   );
 }

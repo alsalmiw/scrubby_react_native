@@ -12,9 +12,10 @@ import UserContext from '../../context/UserContext';
 import IChild from '../../Interfaces/IChild';
 import IInviteUser from '../../Interfaces/IInviteUser';
 import { ISpace } from '../../Interfaces/ISpace';
-import { GetAcceptedInvitationsbyInviterId, GetDependantsDTOByUserId, GetSharedSpacesById, GetSpacesByCollectionID } from '../../services/dataService';
+import { GetAcceptedInvitationsbyInviterId, GetCollectionDTOByCollectionID, GetDependantsDTOByUserId, GetSharedSpacesById, GetSpacesByCollectionID } from '../../services/dataService';
 import { ISpaceArr } from '../../Interfaces/ISpaceArr';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
+import SplashComponentFaded from '../../components/SplashComponentFaded';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'TaskFamily'>
@@ -23,19 +24,24 @@ type Props = NativeStackScreenProps<RootStackParamList, 'TaskFamily'>
 const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
 
   const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor, greenColor } = useContext(ThemeContext);
-  const { mySpaces, userData, childData, childrenData, acceptedInvitations, taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser, seeAll, isChildFree, setChildrenData, setAcceptedInvitations, sharedSpacesInfo, setSharedSpacesInfo } = useContext(UserContext)
+  const { mySpaces, userData, childData, childrenData, acceptedInvitations, taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser, seeAll, isChildFree, setChildrenData, setAcceptedInvitations, sharedSpacesInfo, setSharedSpacesInfo, spacesRooms, setWaiting, waiting } = useContext(UserContext)
 
   const [isInvited, setIsInvited] = useState(false)
   const [allMembers, setAllMembers] = useState([]) as any
+  const [firstTime, setFirstTime] = useState<boolean>(true)
 
 
   useEffect(() => {
    
     handleCreateUsersList()
+  
 
-  }, [childrenData, acceptedInvitations])
+    
+    
+  }, [childrenData, acceptedInvitations, sharedSpacesInfo, spacesRooms,])
 
   const getUsers =async () => {
+
     let dependent= await GetDependantsDTOByUserId(userData.Id)
     if(dependent.length!= 0){
       setChildrenData(dependent)
@@ -121,12 +127,15 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
 
   let r = Math.floor(Math.random() * 7)
 
-  const handleGoToSpaceRooms = (space: any) => {
-    // console.log("collection id is "+space.id)
-    setMySpace(space)
-    // fetchSpace(space.id)
-    navigation.navigate('TaskMember')
-    //console.log(selectedUser)
+  const handleGoToSpaceRooms = async (space: any) => {
+        console.log("collection id is "+space.id)
+        setWaiting(true)
+    let spaceInfo = await GetCollectionDTOByCollectionID(space.id)
+    if(spaceInfo!=null){
+        setMySpace(spaceInfo)
+       navigation.navigate('TaskMember')
+      
+    }
 
   }
 
@@ -149,6 +158,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
   }
 
   return (
+    <SplashComponentFaded>
 
     <ScrollView style={styles.container}>
       <HeaderComponent title="Task Family" />
@@ -189,12 +199,12 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
 
           !taskUser.isInvited ?
 
-            (mySpaces.length > 0 ?
-              mySpaces.map((space: any, idx: number) => {
+            (spacesRooms.length > 0 ?
+              spacesRooms.map((space: any, idx: number) => {
                 return (
                   <View  key={idx}>
                   {
-                    space.rooms.length > 0 ?
+                    space.rooms!=null ?
                  
                   <TaskSpaceRowComponent
                     idx={r + idx}
@@ -208,16 +218,16 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
                   </View>
                 )
               })
-              : null
+              : <Text style={{paddingLeft:10}}>Loading ... or you have no spaces</Text>
             )
 
             :
 
-            (mySpaces.length > 0 ?
-              mySpaces.map((space: any, idx: number) => space.sharedWith.map((shared: any) => {
+            (sharedSpacesInfo.length > 0 ?
+              sharedSpacesInfo.map((space: any, idx: number) => space.sharedWith.map((shared: any) => {
                 return (
                   shared.invitedId == taskUser.id ?
-                  space.rooms.length > 0 ?
+                  space.rooms!= null?
                     <TaskSpaceRowComponent
                       idx={r + idx}
                       key={idx}
@@ -230,7 +240,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
 
                 )
               }))
-              : null
+              : <Text style={{paddingLeft:10}}>Loading ... or you have no spaces</Text>
             )
 
 
@@ -241,6 +251,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
       </View>
 
     </ScrollView>
+    </SplashComponentFaded>
   );
 }
 

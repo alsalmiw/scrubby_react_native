@@ -54,7 +54,11 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
 
   const fetchGetInvitesAndRequest = async () => {
 
-    let data: any = await GetInvitationByUsername(userData.username);
+    let username = await AsyncStorage.getItem("Username");
+    console.log(username);
+    let data: any = await GetInvitationByUsername(username!);
+    let result = await AsyncStorage.getAllKeys();
+    console.log(result);
     console.log(data);
 
 
@@ -78,7 +82,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   useEffect(() => {
     fetchGetInvitesAndRequest()
 
-    console.log(invited)
+    
     setRefresh(false)
 
   }, [refresh])

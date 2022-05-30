@@ -39,7 +39,7 @@ const AcceptedRequestScreen: FC<Props> = ({ navigation }) => {
 
 
     const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor } = useContext(ThemeContext);
-    const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh, acceptedInvitations, setAcceptedInvitations, rState, mySpaces, setMySpaces, sentAcceptedInvitations, setSentAcceptedInvitations, savedUsername } = useContext(UserContext)
+    const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh, acceptedInvitations, setAcceptedInvitations, rState, mySpaces, setMySpaces, sentAcceptedInvitations, setSentAcceptedInvitations, savedUsername, myHouse } = useContext(UserContext)
 
     const [sharedSpaces, setSharedSpaces] = useState<any>([]);
     const [refreshLocalUseEffect, setRefreshLocalUseEffect] = useState<boolean>(false);

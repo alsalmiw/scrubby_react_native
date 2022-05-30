@@ -44,8 +44,9 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
     const [invitedPhoto, setInvitedPhoto] = useState<any>();
     const [sharedSpaces, setSharedSpaces] = useState<any>([]);
     const [refreshLocalUseEffect, setRefreshLocalUseEffect] = useState<boolean>(false);
+    const [r, setR]=useState<number>(Math.floor(Math.random() * 7))
 
-    let r = Math.floor(Math.random() * 7)
+
 
     const handleDisplayFullName = async () => {
         console.log(sentAcceptedInvitations);
@@ -196,16 +197,17 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <View>
             <HeaderComponent title={'Add To My Space'}></HeaderComponent>
             <View style={styles.firstRowContainer}>
                 <AvatarComponent onPress={undefined} imageSource={invitedPhoto} />
                 <View style={styles.insideFirstRowContainer1}>
                     <UserNameComponent name={fullName}></UserNameComponent>
-                    <View style={styles.insideFirstRowContainer2}>
+                    <Pressable style={styles.insideFirstRowContainer2} onPress={handleDeleteUserAlert} >
                         {/* The hello there is just a test, i will remove later when done adding changes */}
-                        <Feather name="trash-2" size={40} color='black' onPress={handleDeleteUserAlert} />
+                        <Feather name="trash-2" size={30} color={lilacColor} />
                         <UserNameComponent name="Delete User"></UserNameComponent>
-                    </View>
+                    </Pressable>
                 </View>
             </View>
 
@@ -267,7 +269,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
                 </View>
 
             </View>
-
+            </View>
             <FullButtonComponent onPress={handleNavigateBack} radius={0} color={purpleColor}>
                 <Text>Back</Text>
             </FullButtonComponent>
@@ -281,6 +283,7 @@ export default SentAcceptedInvitation;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        justifyContent: "space-between",
         paddingTop: StatusBar.currentHeight,
     },
     firstRowContainer: {

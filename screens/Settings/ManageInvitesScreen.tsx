@@ -55,11 +55,11 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   const fetchGetInvitesAndRequest = async () => {
 
     let username = await AsyncStorage.getItem("Username");
-    console.log(username);
+    //console.log(username);
     let data: any = await GetInvitationByUsername(username!);
     let result = await AsyncStorage.getAllKeys();
-    console.log(result);
-    console.log(data);
+    //console.log(result);
+    //console.log(data);
 
 
     //console.log(data)
@@ -94,8 +94,8 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
         <View >
           <HeaderComponent title='MANAGE INVITATIONS' />
         </View>
-
-        <View style={{ alignItems: 'center' , padding:10}}>
+        <View style={{padding:10}}>
+        <View style={{ alignItems: 'center'}}>
           <UnderlinedOneHeaderComponent titleFirst={'My Sent Invitations'} />
         </View>
 
@@ -122,7 +122,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
           }
         </View>
 
-        <View style={{ alignItems: 'center' , padding:10}}>
+        <View style={{ alignItems: 'center' }}>
           <UnderlinedOneHeaderComponent titleFirst='Accepted Sent Invitation' />
         </View>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', }}>
@@ -130,7 +130,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
             sentAcceptedInvitations != null ?
               sentAcceptedInvitations.map((invitation: any, idx: number) => {
                 return (
-                  <View style={{ padding: 10 }} key={idx}>
+                  <View key={idx}>
                     <AvatarComponent onPress={() => { AsyncStorage.setItem("Invited", invitation.invitedUsername), navigation.navigate("SentAcceptedInvitation") }} imageSource={invitation.invitedPhoto} />
                   </View>
 
@@ -142,7 +142,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
         </View>
         {
             inviters.length > 0 ?
-        <View style={{ alignItems: 'center', padding: 10 }}>
+        <View style={{ alignItems: 'center' }}>
           <UnderlinedOneHeaderComponent titleFirst='Recieved Requests' />
         </View>
         :null
@@ -155,7 +155,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
                   // <Pressable key={idx} style={{ padding: 10 }} onPress={() => { AsyncStorage.setItem("Inviter", request.inviterUsername), request.inviterFullname !== null ? AsyncStorage.setItem("InviterFullName", request.inviterFullname) : AsyncStorage.setItem("InviterFullName", request.inviterUsername), console.log(request), navigation.navigate("AcceptRequest") }}>
                   //   <Text>{request.inviterUsername}</Text>
                   // </Pressable>
-                  <View style={{ padding: 10 }} key={idx}>
+                  <View  key={idx}>
                     <AvatarComponent onPress={handleToAcceptedRequestScreen.bind(this, request)} imageSource={request.inviterPhoto} />
                   </View>
                 )
@@ -184,7 +184,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
           }
         </View> */}
 
-        <View style={[styles.underlineContainer, { padding:10}]}>
+        <View style={[styles.underlineContainer]}>
         {acceptedInvitations != null ?
           <UnderlinedOneHeaderComponent titleFirst='Accepted Recieved Requests'></UnderlinedOneHeaderComponent>
           :null}
@@ -196,7 +196,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
                   //   <AvatarComponent onPress={undefined} imageSource={request.inviterPhoto} />
                   // </Pressable>
 
-                  <View style={{ padding: 10 }} key={idx}>
+                  <View  key={idx}>
                     <AvatarComponent onPress={() => { AsyncStorage.setItem("Inviter", request.inviterUsername), AsyncStorage.setItem("InviterFullName", request.inviterFullname), AsyncStorage.setItem("InviterPhoto", request.inviterPhoto), AsyncStorage.setItem("AcceptedInviterRequest", JSON.stringify(request)), navigation.navigate("AcceptedRequest") }}
                       imageSource={request.inviterPhoto}
                     />
@@ -205,6 +205,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
               })
               : null
           }
+        </View>
         </View>
           </View>
 

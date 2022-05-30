@@ -34,8 +34,8 @@ const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
             IsAccepted: false,
             IsDeleted: false
         }
-        console.log(inviteUser)
-        console.log(userData);
+       // console.log(inviteUser)
+      //  console.log(userData);
         if (userData.username === e) {
             Alert.alert("Error", `You can't invite yourself`, [{ text: "Cancel", style: "cancel" }]);
         }
@@ -50,7 +50,7 @@ const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
             }
             else if (!invitedUser) {
                 Alert.alert("Error", `User ${e} is not found or is already invited`, [{ text: "Cancel", style: "cancel" }]);
-                console.log(invitedUser);
+               // console.log(invitedUser);
             }
         }
 

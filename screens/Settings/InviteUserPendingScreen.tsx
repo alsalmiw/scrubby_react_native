@@ -107,7 +107,7 @@ const InviteUserPendingScreen:FC<Props> = ({navigation}) => {
     }
 
     const handleDisplayAlert = () => {
-        console.log('This item is fake deleted');
+     //   console.log('This item is fake deleted');
         Alert.alert('Warning', 'This action will result in deleting the user and all of their chores will be deleted. Are you sure you want to delete this user?',[ {
             text: "Cancel",
             onPress: () => console.log("Cancel Pressed"),

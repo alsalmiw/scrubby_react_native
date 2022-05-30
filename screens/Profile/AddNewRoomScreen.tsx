@@ -13,14 +13,14 @@ import SquareWhiteButton from '../../components/SquareWhiteButton';
 import icons from '../../types/Icons'
 import UserContext from '../../context/UserContext';
 import IRoom from '../../Interfaces/IRoom'
-import {AddNewRoom, GetCollectionByUsername, GetSpaceCollectionByUsername, GetSpacesByCollectionID} from '../../services/dataService'
+import {AddNewRoom, GetCollectionByUsername, GetCollectionsRoomsByUsername, GetSpaceCollectionByUsername, GetSpacesByCollectionID} from '../../services/dataService'
 
 type Props = NativeStackScreenProps <RootStackParamList, 'AddNewSpace'>
 
 const AddNewRoomScreen: FC<Props> = ({navigation, route})=> {
   
     const {yellowColor, fuchsiaColor} = useContext(ThemeContext)
-    const { userData, setMySpaces, myRooms, setMyRooms, mySpace, setMyHouses, setMySpace } = useContext(UserContext)
+    const { userData, setMySpaces, myRooms, setMyRooms, mySpace, setMyHouses, setMySpace, setSpacesRoom } = useContext(UserContext)
 
     const [category, setCategory] = useState('')
     const [roomName, setRoomName] = useState('')
@@ -47,6 +47,10 @@ const AddNewRoomScreen: FC<Props> = ({navigation, route})=> {
         if(spaceRooms.length > 0){
           setMyRooms(spaceRooms)
           console.log(spaceRooms)
+        }
+        let spacesWRooms = await GetCollectionsRoomsByUsername(userData.username)
+        if(spacesWRooms.length > 0){
+          setSpacesRoom(spacesWRooms)
         }
       }
    

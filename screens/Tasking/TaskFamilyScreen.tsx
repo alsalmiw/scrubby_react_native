@@ -218,7 +218,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
                   </View>
                 )
               })
-              : <Text style={{paddingLeft:10}}>Loading ... or you have no spaces</Text>
+              : <Text style={{padding:10}}>Loading ... or you have no spaces</Text>
             )
 
             :
@@ -240,7 +240,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
 
                 )
               }))
-              : <Text style={{paddingLeft:10}}>Loading ... or you have no spaces</Text>
+              : <Text style={{padding:10}}>Loading ... or you have no spaces</Text>
             )
 
 

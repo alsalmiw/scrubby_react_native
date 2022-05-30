@@ -11,14 +11,14 @@ import InputFieldComponent from '../../components/AddEdit/InputFieldComponent';
 import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 import { ISpace } from '../../Interfaces/ISpace';
 import UserContext from '../../context/UserContext';
-import { AddNewSpace, GetCollectionByUsername, GetSpaceCollectionByUsername } from '../../services/dataService';
+import { AddNewSpace, GetCollectionByUsername, GetCollectionsRoomsByUsername, GetSpaceCollectionByUsername } from '../../services/dataService';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AddNewSpace'>
 
 const AddNewSpaceScreen: FC<Props> = ({ navigation, route }) => {
 
   const { purpleColor, greenColor } = useContext(ThemeContext)
-  const { userData, setMySpaces, myHouses, setMyHouses } = useContext(UserContext)
+  const { userData, setMySpaces, myHouses, setMyHouses, setSpacesRoom } = useContext(UserContext)
 
   const [newSpace, setNewSpace] = useState('')
 
@@ -42,6 +42,12 @@ const AddNewSpaceScreen: FC<Props> = ({ navigation, route }) => {
         navigation.goBack()
        // setMyHouses([...myHouses, space])
         let collections = await GetSpaceCollectionByUsername(userData.username)
+        let spacesWRooms = await GetCollectionsRoomsByUsername(userData.username)
+        if(spacesWRooms.length > 0){
+          setSpacesRoom(spacesWRooms)
+        }
+
+
         if(collections.length > 0){
           setMyHouses(collections)
           console.log("they came")

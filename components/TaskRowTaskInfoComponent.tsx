@@ -279,9 +279,9 @@ let sendDates=[] as any
           <View style={[styles.flexrow]}>
               {
                   !isAdded?
-                   <FontAwesome5 name={'plus'} size={25} style={{marginRight: 10, color: "#FFF"}} />
+                   <FontAwesome5 name={'plus'} size={20} style={{marginRight: 10, color: "#FFF"}} />
                    : 
-                   <FontAwesome5 name={'minus'} size={25} style={{marginRight: 10, color: "#FFF"}} />
+                   <FontAwesome5 name={'minus'} size={20} style={{marginRight: 10, color: "#FFF"}} />
               }
          
           <Text style={[styles.text, ]}>{task.task.coins} coins</Text>
@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
         text: {
             color:"#FFF", 
             fontWeight: 'bold', 
-            fontSize: 20
+            fontSize: 18
         }, 
         taskInfo: {
             fontSize: 20,

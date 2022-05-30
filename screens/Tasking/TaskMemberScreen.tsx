@@ -75,7 +75,7 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
                 <AvatarComponent onPress={undefined} imageSource={selectedUser.photo}/>
                 <View style={styles.insideFirstRowContainer1}>
                     <UserNameComponent name={selectedUser.fullName}/>
-                    <Text style={{color:primaryTextColor}}>{mySpace.collectionName}</Text>
+                    <Text style={{color:primaryTextColor, paddingTop:4}}>Space: {mySpace.collectionName}</Text>
                 </View>
              
             </View>

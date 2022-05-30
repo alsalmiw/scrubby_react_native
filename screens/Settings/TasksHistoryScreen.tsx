@@ -203,7 +203,7 @@ let r = Math.floor(Math.random() * 7)
 
      {
          selectedUser!=null?
-         tasksList!=null?
+         tasksList.length!=0?
 
          tasksList.map((task:any, idx: number) =>{ 
              return( 
@@ -227,7 +227,7 @@ let r = Math.floor(Math.random() * 7)
              )
          })
          
-         : <Text>You have no Task History</Text>
+         : <Text style={{padding:10}}>Loading .... or you have no Task History</Text>
          :null
      }
 

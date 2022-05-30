@@ -187,18 +187,18 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
   const GetUserInfoByUsername = async () => {
     let username:any= await AsyncStorage.getItem("Username");
     
-    let spaces = await GetCollectionByUsername(username)
+    //let spaces = await GetCollectionByUsername(username)
     let schedule = await GetMyTaskedCollectionsByUsername (username)
     let archives = await GetAllTasksHistoryForMembersByUsername (username)
     let spacesWRooms = await GetCollectionsRoomsByUsername(username)
     
-    if(spaces.length > 0){
-        setMySpaces(spaces)
-        setFirstTime(false)
-    }else{
-        setMySpaces([])
-        setFirstTime(false)
-    }
+    // if(spaces.length > 0){
+    //     setMySpaces(spaces)
+    //     setFirstTime(false)
+    // }else{
+    //     setMySpaces([])
+    //     setFirstTime(false)
+    // }
     if(schedule.length > 0){
       setMySchedule(schedule)
       }else{
@@ -212,7 +212,9 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
 
     if(spacesWRooms.length > 0){
       setSpacesRoom(spacesWRooms)
-    }else{setSpacesRoom([])}
+      setFirstTime(false)
+    }else{setSpacesRoom([])
+      setFirstTime(false)}
 
   //   let username: any = await AsyncStorage.getItem("Username");
   //   if (username) {

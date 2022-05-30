@@ -8,6 +8,7 @@ import FullButtonComponent from "./FullButtonComponent";
 import UserContext from "../context/UserContext";
 import { ChangeAvatarImage, ChangeDependentAvatarImageawait } from "../services/dataService";
 import { useNavigation } from "@react-navigation/native";
+import TwoFullButtonComponent from './TwoFullButtonComponent';
 
 
 const AddPhotoComponent = () => {
@@ -129,6 +130,8 @@ const AddPhotoComponent = () => {
 
     return(
         <>
+        <View></View>
+        <View>
         <TitleComponent title={memberInfo.isChild?"Edit Child's Photo":"Edit Profile Photo"} />
         <Pressable style={[styles.container]} onPress={selectPhoto}>
             {
@@ -138,13 +141,14 @@ const AddPhotoComponent = () => {
                  <FontAwesome name="photo" color={lilacColor} size={50}  />
 
             }
-            
+         
            
         </Pressable>
+             </View>
 
-<FullButtonComponent radius={0} onPress={handleSaveImage} color={blueColor}>
-<Text>Save</Text>
-</FullButtonComponent>
+
+<TwoFullButtonComponent text1={"Back"} text2={"Save"} onAcceptPress={handleSaveImage} onBackPress={()=>navigation.goBack()} color={blueColor}/>
+
 </>
     )
 }

@@ -102,7 +102,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
 
 
-  }, [myHouses])
+  }, [myHouses, childrenData]);
 
 
 
@@ -348,8 +348,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingLeft: '2.5%',
-    paddingRight: '2.5%'
+    paddingLeft:'2.5%',
+    paddingRight:'2.5%',
+    alignItems: 'center'
   },
   textStyle: {
     fontSize: 20,

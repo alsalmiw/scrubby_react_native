@@ -52,13 +52,17 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
 
 
   useEffect(() => {
-   
+   if(defaultSpace.length!=0)
+   {
+
     setBlank(false)
     GetTaskDates()
    
     if(firstTime){
       GetUserInfoByUsername()
     }
+   }
+    
 
   }, [defaultSpace])
 
@@ -241,6 +245,9 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
 
       <View style={styles.container}>
         <HeaderComponent title="My Schedule" />
+        {
+          defaultSpace.length!=0?
+        <>
         <View style={[styles.flexrow]}>
           <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{defaultSpace.collectionName}</Text>
           {
@@ -364,13 +371,12 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
               : null
           }
         </View>
-
-        {/* <Button
-  onPress={() =>console.log(scheduledDates)}
-  title="Learn More"
-  color="#841584"
-  accessibilityLabel="Learn more about this purple button"
-/> */}
+    </>
+            : 
+            <View style={{paddingLeft:10}}>
+            <Text>You have no schedule.</Text>
+            </View>
+}
       </View>
 
 

@@ -86,7 +86,7 @@ export default function UseUser() {
     const [runAgain, setRunAgain] = useState<boolean>(false)
     const [roomIdx, setRoomIDX] = useState<number>(0)
     const [closeTasks, setCloseTasks] = useState<boolean>(false)
-    const [current, setCurrent] = useState(0)
+    const [current, setCurrent] = useState()
     const [fullName, setFullName] = useState("")
     const [login, setLogin] = useState<Boolean>(true);
     const [selectedTask, setSelectedTask] = useState<any[]>([])

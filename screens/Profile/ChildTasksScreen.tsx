@@ -28,7 +28,7 @@ import IchildCoinAndPoint from '../../Interfaces/IchildCoinAndPoint';
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setMemberInfo, setIsEditImage , setRunAgain, childPoints, setChildPoints, childCoins, setChildCoins, refreshChildTask, setRefreshChildTask} = useContext(UserContext)
+  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setMemberInfo, setIsEditImage , setRunAgain, childPoints, setChildPoints, childCoins, setChildCoins, refreshChildTask, setRefreshChildTask, setBlank} = useContext(UserContext)
 
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
   // const [childDefaultSpace, setChildDefaultSpace] = useState<any>()
@@ -119,7 +119,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         : null
     }
     setRunAgain(false)
-    setRefreshChildTask(false)
+    // setRefreshChildTask(false)
     //setSpace(rooms[0].spaceName);
   }
 
@@ -128,15 +128,12 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     if(childDefault.length > 0)
     {
     setChildDefaultSpace(childDefault)   
-     
     }
-    //console.log("child default space:", childDefault)
-   
   }
-  const childCoinPoint = async ()=>{
-    await setChildCoins(childPage.dependentCoins)
-    await setChildPoints(childPage.dependentPoints)
-  }
+
+  //I have a feeling this is running more than once thats why the value isnt changing. 
+
+
 
 
   //need to refect the value of childPage for coins to change
@@ -144,19 +141,24 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   useEffect(() => {
     //repeat
     // navigation.addListener('focus', () =>{
+      console.log("===============================")
    console.log(runAgain)
+
+   //all the child info:
+  //  console.log("child Page:", childPage)
     
+  setBlank(false)
    
-   childCoinPoint()
-    if(runAgain )
+    if(runAgain)
     {
      ChildDefault()
      childTaskDate()
     }
 
+
    
 
-  }, [ runAgain])
+  }, [runAgain])
 
 
 const handleChangeInfo = (isChangeName:boolean) => {

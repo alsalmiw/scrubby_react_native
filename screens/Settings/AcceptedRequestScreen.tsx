@@ -131,11 +131,11 @@ const AcceptedRequestScreen: FC<Props> = ({ navigation }) => {
         console.log('This is the local storage request info');
         console.log(inviterInfo.id);
 
-        
-        let result = await DeleteInvitation(inviterInfo.id);
-        console.log(result);
-        setRefresh((prevRefresh:boolean) => prevRefresh = true)
-        navigation.navigate('ManageInvites');
+        //Need to test this after walaa checks invites
+        // let result = await DeleteInvitation(inviterInfo.id);
+        // console.log(result);
+        // setRefresh((prevRefresh:boolean) => prevRefresh = true)
+        // navigation.navigate('ManageInvites');
 
     }
 

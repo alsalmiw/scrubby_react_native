@@ -41,7 +41,7 @@ const handleLogOut = () => {
 const resetData = () => {
 
    setUsername("")
-  setPassword("")  ('')
+  setPassword("") 
   setSavedUsername('username')
   setSavedPassword  ('password')
 setSeeAll  (true)

@@ -13,6 +13,7 @@ import UserContext from '../../context/UserContext';
 import INewName from '../../Interfaces/INewName'
 import { ThemeContext } from '../../context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
+import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 
 
 
@@ -81,14 +82,16 @@ const EditProfileScreen: FC<Props> = ({navigation})=> {
      {
    !isEditImage?
    <>
+        <View></View>
+        <View style={[{alignItems: 'center'}]}> 
         <TitleComponent title="Edit FullName" />
         <Ionicons name="person" size={100} color="#FFF" />
+        </View>
+        <View>
         <WhiteSubTitleComponent title={!memberInfo.isChild?"New Name": "Child's New Name"} />
         <InputFieldComponent maxLength={20} value={""} holder="enter new name" hide={false} onChangeText={(e: string)=>setNewName(e)} />
- 
-           <FullButtonComponent radius={0} onPress={handleSave} color={blueColor}>
-          <Text>Save</Text>
-        </FullButtonComponent>
+        </View>
+        <TwoFullButtonComponent text1={"Back"} text2={"Save"} onAcceptPress={handleSave} onBackPress={()=>navigation.goBack()} color={blueColor}/>
        </> 
 
     :
@@ -105,7 +108,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     marginTop: StatusBar.currentHeight
   },
 });

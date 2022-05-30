@@ -31,7 +31,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ScheduleScreen'>
 
 
 const ScheduleScreen: FC<Props> = ({ navigation }) => {
-  const { savedUsername, setSavedUsername, setMySpaces, mySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate, defaultCollection, runScheduleAgain, setRunScheduleAgain, defaultScheduleOptions, firstTime, setFirstTime, setSpacesRoom  } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, mySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate, defaultCollection, runScheduleAgain, setRunScheduleAgain, defaultScheduleOptions, firstTime, setFirstTime, setSpacesRoom, setWaiting , waiting } = useContext(UserContext)
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
 
   const [taskInfo, setTaskInfo] = useState() as any
@@ -52,13 +52,18 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
 
 
   useEffect(() => {
-   
+  
+   if(defaultSpace.length!=0)
+   {
+
     setBlank(false)
     GetTaskDates()
    
     if(firstTime){
       GetUserInfoByUsername()
     }
+   }
+    
 
   }, [defaultSpace])
 
@@ -182,18 +187,18 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
   const GetUserInfoByUsername = async () => {
     let username:any= await AsyncStorage.getItem("Username");
     
-    let spaces = await GetCollectionByUsername(username)
+    //let spaces = await GetCollectionByUsername(username)
     let schedule = await GetMyTaskedCollectionsByUsername (username)
     let archives = await GetAllTasksHistoryForMembersByUsername (username)
     let spacesWRooms = await GetCollectionsRoomsByUsername(username)
     
-    if(spaces.length > 0){
-        setMySpaces(spaces)
-        setFirstTime(false)
-    }else{
-        setMySpaces([])
-        setFirstTime(false)
-    }
+    // if(spaces.length > 0){
+    //     setMySpaces(spaces)
+    //     setFirstTime(false)
+    // }else{
+    //     setMySpaces([])
+    //     setFirstTime(false)
+    // }
     if(schedule.length > 0){
       setMySchedule(schedule)
       }else{
@@ -207,7 +212,9 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
 
     if(spacesWRooms.length > 0){
       setSpacesRoom(spacesWRooms)
-    }else{setSpacesRoom([])}
+      setFirstTime(false)
+    }else{setSpacesRoom([])
+      setFirstTime(false)}
 
   //   let username: any = await AsyncStorage.getItem("Username");
   //   if (username) {
@@ -241,6 +248,9 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
 
       <View style={styles.container}>
         <HeaderComponent title="My Schedule" />
+        {
+          defaultSpace.length!=0?
+        <>
         <View style={[styles.flexrow]}>
           <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{defaultSpace.collectionName}</Text>
           {
@@ -364,13 +374,12 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
               : null
           }
         </View>
-
-        {/* <Button
-  onPress={() =>console.log(scheduledDates)}
-  title="Learn More"
-  color="#841584"
-  accessibilityLabel="Learn more about this purple button"
-/> */}
+    </>
+            : 
+            <View style={{paddingLeft:10}}>
+            <Text>You have no schedule.</Text>
+            </View>
+}
       </View>
 
 

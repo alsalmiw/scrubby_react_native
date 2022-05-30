@@ -13,20 +13,31 @@ import SquareWhiteButton from '../../components/SquareWhiteButton';
 import icons from '../../types/Icons'
 import UserContext from '../../context/UserContext';
 import IRoom from '../../Interfaces/IRoom'
-import {AddNewRoom, GetCollectionByUsername, GetSpaceCollectionByUsername, GetSpacesByCollectionID} from '../../services/dataService'
+import {AddNewRoom, GetCollectionByUsername, GetCollectionsRoomsByUsername, GetDefaultOptionsByUsername, GetSpaceCollectionByUsername, GetSpacesByCollectionID} from '../../services/dataService'
 
 type Props = NativeStackScreenProps <RootStackParamList, 'AddNewSpace'>
 
 const AddNewRoomScreen: FC<Props> = ({navigation, route})=> {
   
     const {yellowColor, fuchsiaColor} = useContext(ThemeContext)
-    const { userData, setMySpaces, myRooms, setMyRooms, mySpace, setMyHouses, setMySpace } = useContext(UserContext)
+    const { userData, setMySpaces, myRooms, setMyRooms, mySpace, setMyHouses, setMySpace, setSpacesRoom, setDefaultScheduleOptions } = useContext(UserContext)
 
     const [category, setCategory] = useState('')
     const [roomName, setRoomName] = useState('')
     const [selectedRoom, setSelectedRoom]= useState<string>('')
 
     const handleAddRoom = async() => {
+
+      let regi = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g
+
+    if (roomName.length == 0 || roomName == null) {
+      Alert.alert("Error", 'Invalid Room Name. Try Again.', [{ text: "Cancel", style: "cancel" }]);
+    }
+    else if (regi.test(roomName) ) {
+      Alert.alert("Error", `Invalid Room Name. Try Again.`, [{ text: "Okay", style: "cancel" }]);
+    }
+
+    else {
      console.log(mySpace.id)
       
       let newRoom:IRoom = {
@@ -48,7 +59,17 @@ const AddNewRoomScreen: FC<Props> = ({navigation, route})=> {
           setMyRooms(spaceRooms)
           console.log(spaceRooms)
         }
+        let spacesWRooms = await GetCollectionsRoomsByUsername(userData.username)
+        if(spacesWRooms.length > 0){
+          setSpacesRoom(spacesWRooms)
+        }
+
+        let defaultOptions = await GetDefaultOptionsByUsername(userData.username)
+        if(defaultOptions.length != 0){
+          setDefaultScheduleOptions(defaultOptions)
       }
+      }
+    }
    
 
 }
@@ -65,7 +86,7 @@ const handleCategory = (name: string) => {
          <TitleComponent title="My New Room" />
          <View style={[styles.contentContainer]}>
          <WhiteSubTitleComponent title="Name" />
-        <InputFieldComponent value={''} maxLength={10} holder="enter new room" hide={false} onChangeText={(e: string)=>setRoomName(e)} />
+        <InputFieldComponent value={''} maxLength={8} holder="enter new room" hide={false} onChangeText={(e: string)=>setRoomName(e)} />
         <WhiteSubTitleComponent title="Select Icon" />
         <View style={styles.iconsContainer}>
         {

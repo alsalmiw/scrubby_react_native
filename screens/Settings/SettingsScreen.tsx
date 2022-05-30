@@ -16,13 +16,13 @@ type Props = NativeStackScreenProps<RootStackParamList, 'SettingsScreen'>
 
 const SettingsScreen: FC<Props> = ({navigation})=> {
   const {orangeColor, blueColor, fuchsiaColor, violetColor, greenColor, yellowColor, purpleColor} = useContext(ThemeContext)
-  const { setUsername, setPassword, setSeeAll,setSavedUsername, setSavedPassword, isChildFree, setIsChildFree, setUserData, setChildData, setMySpaces,setMyRooms, setTask, setAllTask, setAddTask,  setMySpace, setRState, setInvited,  setInviters, setChildrenData, setNewSpace,  setUsersAddedTasks, setMyRoom, setTasksAPI, setRoomTasks, setFullUserInfo, setRefresh, setScoreBoardList,  setAcceptedInvitations, setTaskUser, setChildPage, setIsChild, setSelectedUser, setModalVisible, setScheduleTask, setChildPassCode, setCheckPassCode, setDefaultSpace, setTaskModal, setChildRooms, setChildDefaultSpace, setRunAgain, setRoomIDX, setCloseTasks, setCurrent, setMySchedule, setFullName, setLogin, setSelectedTask, setBlank, setTasksHistory, setActiveDate, setActiveRoom, setMemberInfo, setIsEditImage, setSentAcceptedInvitations, setChildrenInfo, setRunScheduleAgain, setMyHouses, setStoredAddedItems, setNoAddedItems, setDefaultScheduleOptions, setSharedSpacesInfo, setFirstTime, setSpacesRoom} = useContext(UserContext)
+  const { setUsername, setPassword, setSeeAll,setSavedUsername, setSavedPassword, isChildFree, setIsChildFree, setUserData, setChildData, setMySpaces,setMyRooms, setTask, setAllTask, setAddTask,  setMySpace, setRState, setInvited,  setInviters, setChildrenData, setNewSpace,  setUsersAddedTasks, setMyRoom, setTasksAPI, setRoomTasks, setFullUserInfo, setRefresh, setScoreBoardList,  setAcceptedInvitations, setTaskUser, setChildPage, setIsChild, setSelectedUser, setModalVisible, setScheduleTask, setChildPassCode, setCheckPassCode, setDefaultSpace, setTaskModal, setChildRooms, setChildDefaultSpace, setRunAgain, setRoomIDX, setCloseTasks, setCurrent, setMySchedule, setFullName, setLogin, setSelectedTask, setBlank, setTasksHistory, setActiveDate, setActiveRoom, setMemberInfo, setIsEditImage, setSentAcceptedInvitations, setChildrenInfo, setRunScheduleAgain, setMyHouses, setStoredAddedItems, setNoAddedItems, setDefaultScheduleOptions, setSharedSpacesInfo, setFirstTime, setSpacesRoom, setWaiting, waiting} = useContext(UserContext)
 
   //const navigation = useNavigation();
 
   useEffect(() => {
     // console.log(savedUsername)
-   
+
     // getLocalStorageInfo()
 
   }, [])

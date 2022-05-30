@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         }, 
         headerContainer:{
           
-            
+           
             flexDirection: "row",
             justifyContent: "center",
             marginBottom:30,

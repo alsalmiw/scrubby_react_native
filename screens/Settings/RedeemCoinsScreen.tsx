@@ -16,6 +16,7 @@ import IRedeemCoinsChild from '../../Interfaces/IRedeemChildCoins';
 import AvatarComponent from '../../components/AvatarComponent';
 import { GetDependantByUserId, GetDependantsDTOByUsername, GetUserByUsername, NewCoinAmountDependent, NewCoinAmountUser } from '../../services/dataService';
 import { FontAwesome5 } from '@expo/vector-icons';
+import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'RedeemCoins'>
 //////
@@ -213,11 +214,11 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
                       <InputFieldComponent maxLength={80} value={amountEntered} holder="Redeem Coins" hide={false} onChangeText={(e: string) => setAmountEntered(e)} />
                     </View>
                 
-                        <View style={styles.buttonContent}>
+                        {/* <View style={styles.buttonContent}>
                           <Pressable style={[{backgroundColor:orangeColor, borderRadius:15, padding:20, marginTop:10}]}  onPress={() => { handleRedeem(), console.log(selectedUser) }}>
                             <Text style={[{color:"white", textAlign: 'center',fontSize: 25}]}> Redeem </Text>
                             </Pressable>
-                        </View>
+                        </View> */}
               </>
             : null
             
@@ -228,7 +229,8 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
           </ScrollView>
         </View>
       </TouchableWithoutFeedback>
-      <FullButtonComponent radius={0} color={purpleColor} onPress={() => handleGoBack()}><Text> Back </Text></FullButtonComponent>
+      <TwoFullButtonComponent color={purpleColor} text1={"Back"} text2={"Redeem"} onBackPress={()=>{navigation.goBack()}} onAcceptPress={handleRedeem} />
+      {/* <FullButtonComponent radius={0} color={purpleColor} onPress={() => handleGoBack()}><Text> Back </Text></FullButtonComponent> */}
     </>
   );
 }

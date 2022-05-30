@@ -85,6 +85,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
   return (
     <>
       <View style={styles.container}>
+      <View>
         <View >
           <HeaderComponent title='MANAGE INVIATIONS' />
         </View>
@@ -195,14 +196,15 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
               : null
           }
         </View>
+          </View>
 
-
-
-
-      </View>
-      <FullButtonComponent radius={0} onPress={() => handleBackToSettings()} color={purpleColor}>
+ <FullButtonComponent radius={0} onPress={() => handleBackToSettings()} color={purpleColor}>
         <Text>Back</Text>
       </FullButtonComponent>
+
+      </View>
+      
+     
     </>
   );
 }
@@ -211,9 +213,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     paddingTop: StatusBar.currentHeight,
-    position: 'absolute'
+   // position: 'absolute'
   },
   underlineContainer: {
     flexDirection: 'row',

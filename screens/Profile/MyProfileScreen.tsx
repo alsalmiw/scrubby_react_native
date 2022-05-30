@@ -27,7 +27,7 @@ import { ISpace } from '../../Interfaces/ISpace';
 import IChild from '../../Interfaces/IChild';
 import AvatarComponent from '../../components/AvatarComponent';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
-import SplashComponent from '../../components/SplashComponent';
+import SplashComponentFaded from '../../components/SplashComponentFaded';
 
 const windowWidth = Dimensions.get('window').width * 0.33;
 
@@ -43,7 +43,7 @@ interface newSpace {
 const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   const { bgColor, lilacColor, primaryTextColor } = useContext(ThemeContext)
-  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank, memberInfo, setMemberInfo, setIsEditImage, setRunAgain, childrenInfo, setChildrenInfo, myHouses, setMyHouses, setChildCoins, setChildPoints } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, isChildFree, userData, setUserData, childData, setChildData, myRooms, setMyRooms, setMySpace, setMySpaces, mySpaces, childrenData, setChildrenData, setUsersAddedTasks, setChildPage, childPage, childDefaultSpace, setChildDefaultSpace, setBlank, memberInfo, setMemberInfo, setIsEditImage, setRunAgain, childrenInfo, setChildrenInfo, myHouses, setMyHouses, setChildCoins, setChildPoints, setWaiting, waiting } = useContext(UserContext)
 
 
   //This is a test useState for populating create a new space
@@ -89,7 +89,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   useEffect(() => {
 
-
+    
     navigation.addListener('focus', () => {
       setBlank(false)
       setRunAgain(true)
@@ -102,7 +102,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
 
 
-  }, [myHouses])
+  }, [myHouses, childrenData]);
 
 
 
@@ -144,7 +144,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
 
   const handleGoToChildProfile = async (child: any) => {
-    setBlank(true)
+    setWaiting(true)
     // console.log("=======================================================================++")
     //console.log(child)
 
@@ -156,6 +156,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     if (childDefault.length != 0) {
       setChildDefaultSpace(childDefault)
       navigation.navigate('ChildTasks')
+      setWaiting(false)
       //console.log("got it");
     }
     else {
@@ -195,7 +196,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
   return (
     <>
-      <SplashComponent>
+      <SplashComponentFaded>
         <ScrollView style={styles.container}>
 
           <HeaderComponent title="MY PROFILE"></HeaderComponent>
@@ -287,7 +288,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
           }
 
         </ScrollView>
-      </SplashComponent>
+      </SplashComponentFaded>
     </>
 
 
@@ -348,8 +349,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingLeft: '2.5%',
-    paddingRight: '2.5%'
+    paddingLeft:'2.5%',
+    paddingRight:'2.5%',
+    alignItems: 'center'
   },
   textStyle: {
     fontSize: 20,

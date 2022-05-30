@@ -35,7 +35,7 @@ const TasksHistoryScreen: FC<Props> = ({navigation})=> {
     handleCreateUsersList()
    
 
-  }, [childrenData, acceptedInvitations, tasksHistory])
+  }, [childrenData, acceptedInvitations, tasksHistory, sharedSpacesInfo])
 
   // const getArchives = async ()=>{
   //   let archives = await GetAllTasksHistoryForMembers (userData.Id)
@@ -102,9 +102,10 @@ let membersArr = [] as any
 acceptedInvitations.length > 0?
 acceptedInvitations.map((person:any, idx:number)=> { sharedSpacesInfo.map((space:any, idx:number)=> space.sharedWith.map((shared: any)=> 
   {
+  let invited = [] as any;
   if(shared.invitedId == person.invitedId)
     {
-  let invited = 
+      invited = 
   {
     id: person.invitedId,
     fullName: person.invitedFullname,
@@ -202,7 +203,7 @@ let r = Math.floor(Math.random() * 7)
 
      {
          selectedUser!=null?
-         tasksList!=null?
+         tasksList.length!=0?
 
          tasksList.map((task:any, idx: number) =>{ 
              return( 
@@ -226,7 +227,7 @@ let r = Math.floor(Math.random() * 7)
              )
          })
          
-         : <Text>You have no Task History</Text>
+         : <Text style={{padding:10}}>Loading .... or you have no Task History</Text>
          :null
      }
 

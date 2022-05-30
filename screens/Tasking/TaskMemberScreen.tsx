@@ -18,11 +18,12 @@ import ModalComponent from '../../components/ModalComponent';
 
 
 
+
 type Props = NativeStackScreenProps <RootStackParamList, 'TaskMember'>
 
 const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
-  const { purpleColor} = useContext(ThemeContext)
-  const { seeAll, setSeeAll,  mySpace, taskUser, isChild, setIsChild, selectedUser, setSelectedUser, setMyRoom} = useContext(UserContext)
+  const { purpleColor, primaryTextColor} = useContext(ThemeContext)
+  const { seeAll, setSeeAll,  mySpace, taskUser, isChild, setIsChild, selectedUser, setSelectedUser, setMyRoom, setWaiting} = useContext(UserContext)
 
   const [tasks, setTasks] = useState([])
   const [r, setR] = useState(Math.floor(Math.random() * 7))
@@ -30,6 +31,7 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
 
 
   useEffect(() => {
+    setWaiting(false)
     console.log("im at the useEffect " + activeRoom)
     setSeeAll(true)
     //console.log(mySpace.rooms[0])
@@ -63,6 +65,7 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
   }
   
   return (
+
  <View style={styles.container}>
 
     <ScrollView style={{flex:0.8}}>
@@ -72,8 +75,9 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
                 <AvatarComponent onPress={undefined} imageSource={selectedUser.photo}/>
                 <View style={styles.insideFirstRowContainer1}>
                     <UserNameComponent name={selectedUser.fullName}/>
-                 
+                    <Text style={{color:primaryTextColor, paddingTop:4}}>Space: {mySpace.collectionName}</Text>
                 </View>
+             
             </View>
 
            
@@ -134,7 +138,7 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
 
     </ScrollView>
            <FullButtonComponent radius={0} color={purpleColor} onPress={()=>navigation.goBack()} >Back</FullButtonComponent>
-         
+          
     </View>
     
   );
@@ -149,7 +153,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
   },
   insideFirstRowContainer1: {
-      justifyContent: 'space-around',
+      justifyContent: 'center',
       paddingLeft: '3%'
   },
   insideFirstRowContainer2: {

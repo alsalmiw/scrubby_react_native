@@ -74,6 +74,8 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
   return (
    <SplashComponentFaded>
     <View style={[styles.container,{backgroundColor:orangeColor}]}>
+      <View></View>
+      <View style={[{alignItems: 'center'}]}>
         <TitleComponent title="Add New Child" />
      
         <View>
@@ -87,6 +89,7 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
           <Text>Save</Text>
         </FullButtonComponent> */}
         </View>
+        </View>
         <TwoFullButtonComponent text1="Back" text2="Add" color={blueColor} onAcceptPress={()=>handleSave()} onBackPress={()=>navigation.goBack()}/>
 
         
@@ -99,7 +102,7 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+   // alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: StatusBar.currentHeight
   },

@@ -147,17 +147,17 @@ const [r, setR] = useState<number>(Math.floor(Math.random() * 7))
 
     setChildPage(child)
     let childDefault = await GetChildDefaultSchedule(child.id)
-   // console.log("Child fetch",childDefault)
+   console.log("Child fetch",childDefault)
     if(childDefault.length!= 0)
     {
       setChildDefaultSpace(childDefault)   
-       navigation.navigate('ChildTasks')
+      navigation.navigate('ChildTasks')
        //console.log("got it");
     }
     else {
       setChildDefaultSpace([])
       //console.log("child Page",childPage)
-      navigation.navigate('ChildTasks')
+     navigation.navigate('ChildTasks')
       //console.log('empty default space')
      // console.log("Child Default Space",childDefaultSpace)
     }

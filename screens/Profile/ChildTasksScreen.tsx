@@ -139,11 +139,11 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   useEffect(() => {
     //repeat
     // navigation.addListener('focus', () =>{
-   
+   console.log(runAgain)
     childTaskDate()
     if(runAgain)
     {
-     // ChildDefault()
+     ChildDefault()
     }
    
 

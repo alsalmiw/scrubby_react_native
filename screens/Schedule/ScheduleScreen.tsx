@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useEffect, useState } from 'react';
 import { Button, Pressable, StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GetCollectionByUsername, GetMyTaskedCollectionsByUsername, GetUserData } from '../../services/dataService';
+import { GetAllTasksHistoryForMembers, GetAllTasksHistoryForMembersByUsername, GetCollectionByUsername, GetCollectionsRoomsByUsername, GetMyTaskedCollectionsByUsername, GetUserData } from '../../services/dataService';
 import UserContext from '../../context/UserContext';
 //import ReactNativeCalendar from '../../components/ReactNativeCalendar';
 import HeaderComponent from '../../components/HeaderComponent';
@@ -31,7 +31,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ScheduleScreen'>
 
 
 const ScheduleScreen: FC<Props> = ({ navigation }) => {
-  const { savedUsername, setSavedUsername, setMySpaces, mySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate, defaultCollection, runScheduleAgain, setRunScheduleAgain, defaultScheduleOptions, firstTime, setFirstTime, username  } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, mySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate, defaultCollection, runScheduleAgain, setRunScheduleAgain, defaultScheduleOptions, firstTime, setFirstTime, setSpacesRoom  } = useContext(UserContext)
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
 
   const [taskInfo, setTaskInfo] = useState() as any
@@ -77,11 +77,14 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       nextFiftyDays.push(nextDay.toISOString());
 
     }
+        let datesArr = [] as any
 
-    let nextTasks = defaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => nextFiftyDays.includes(task.dateScheduled)))
+          
+  
+          let nextTasks = defaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => nextFiftyDays.includes(task.dateScheduled)))
+
+        
     setScheduledTasks(nextTasks)
-    let datesArr = [] as any
-
 
     nextTasks.map((task: any) => task.map((taskone: any) => datesArr.push(taskone.dateScheduled)))
     datesArr = Array.from(new Set(datesArr.sort()))
@@ -90,6 +93,13 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       return dateF.toString()
     }))
 
+
+    
+
+  
+
+
+    
     if (datesArr.length > 0) {
 
 
@@ -174,6 +184,8 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
     
     let spaces = await GetCollectionByUsername(username)
     let schedule = await GetMyTaskedCollectionsByUsername (username)
+    let archives = await GetAllTasksHistoryForMembersByUsername (username)
+    let spacesWRooms = await GetCollectionsRoomsByUsername(username)
     
     if(spaces.length > 0){
         setMySpaces(spaces)
@@ -188,7 +200,14 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       setMySchedule([])
       }
     
-     
+       if(archives.length!=0){
+      setTasksHistory(archives)
+      
+    }
+
+    if(spacesWRooms.length > 0){
+      setSpacesRoom(spacesWRooms)
+    }else{setSpacesRoom([])}
 
   //   let username: any = await AsyncStorage.getItem("Username");
   //   if (username) {

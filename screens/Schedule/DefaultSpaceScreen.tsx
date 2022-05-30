@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useEffect, useState } from 'react';
 import { Button, Pressable, StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AddDefaultUserSpace, GetUserData } from '../../services/dataService';
+import { AddDefaultUserSpace, GetUserData, GetUserDefaultSchedule } from '../../services/dataService';
 import UserContext from '../../context/UserContext';
 // import ReactNativeCalendar from '../../components/ReactNativeCalendar';
 import HeaderComponent from '../../components/HeaderComponent';
@@ -20,13 +20,14 @@ import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import { Ionicons} from '@expo/vector-icons';
 import IDefaultSpace from '../../Interfaces/IDefaultSpace';
 import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
+import SplashComponent from '../../components/SplashComponent';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DefaultOptions'>
 
 const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
 
-    const { savedUsername, setSavedUsername, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, mySchedule, setRunAgain, defaultScheduleOptions } = useContext(UserContext)
+    const { savedUsername, setSavedUsername, setBlank, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, mySchedule, setRunAgain, defaultScheduleOptions } = useContext(UserContext)
     const {secondaryTextColor, purpleColor} = useContext(ThemeContext)
     const [newSelection, setNewSelection] = useState<any>([])
 
@@ -36,7 +37,7 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
 
     const handleSetDefaultSchedule =async(space:any)=> {
         setNewSelection(space)
-        console.log(userData.username, space.id, space.collectionName)
+       // console.log(userData.username, space.id, space.collectionName)
       
     }
 
@@ -54,11 +55,21 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
         let changeDefault = await AddDefaultUserSpace (newDefault)
         if(changeDefault)
         {
-            console.log(changeDefault)
+            setBlank(true)
+            let newDefault = await GetUserDefaultSchedule(userData.username)
+            if(newDefault!=null)
+            {
+                setBlank(false)
+
+                   console.log(changeDefault)
             setRunAgain(true)
-            setDefaultSpace(newSelection)
+            setDefaultSpace(newDefault)
+            
             alert("You have successfully set the default schedule to " + newSelection.collectionName)
             navigation.goBack()
+
+            }
+         
         }
         
     }
@@ -67,7 +78,10 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
         navigation.goBack()
     }
     return(
+          <SplashComponent>
         <View style={styles.container}>
+          
+              
             <ScrollView>
             <HeaderComponent title="Set Default Schedule"/>
             <UnderlinedTwoHeaderComponent titleFirst={"My Spaces"} titleTwo={"Set Default"}/>
@@ -112,9 +126,9 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
 
         </View>
      
-
+     
         </View>
-   
+      </SplashComponent>
     )
 
 }

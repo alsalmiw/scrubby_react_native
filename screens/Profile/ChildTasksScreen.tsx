@@ -91,7 +91,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     childDefaultSpace.rooms.map((room: any) => {
       let tempArr = [] as any;
       let tempRoomArr = [] as any;
-      console.log("Task:", childDefaultSpace)
+      //console.log("Task:", childDefaultSpace)
       room.tasksAssigned.map((task: any) => {
         if (sevenDays.includes(task.dateScheduled)) {
           tempArr.push(task);
@@ -116,7 +116,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     {
       rooms != 0 && rooms[0] != 0 ?
         setSpace(rooms[0].spaceName)
-        : console.log('yess')
+        : null
     }
 
     //setSpace(rooms[0].spaceName);
@@ -124,8 +124,13 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
   const ChildDefault = async () => {
     let childDefault = await GetChildDefaultSchedule(childPage.id)
-    console.log("child default space:", childDefault)
-    setChildDefaultSpace(childDefault)
+    if(childDefault.length > 0)
+    {
+    setChildDefaultSpace(childDefault)   
+     setRunAgain(false)
+    }
+    //console.log("child default space:", childDefault)
+   
   }
 
 
@@ -134,11 +139,14 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   useEffect(() => {
     //repeat
     // navigation.addListener('focus', () =>{
-    ChildDefault()
+   console.log(runAgain)
     childTaskDate()
-    setRunAgain(false)
 
-    console.log("=====================+===================================================")
+    if(runAgain)
+    {
+     ChildDefault()
+    }
+   
 
   }, [runAgain])
 
@@ -173,7 +181,7 @@ const handleChangeInfo = (isChangeName:boolean) => {
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.firstRow}>
             <View>
-            <AvatarComponent onPress={() => { console.log(childScheduleRooms) }} imageSource={childPage.dependentPhoto} />
+            <AvatarComponent onPress={() => {undefined}} imageSource={childPage.dependentPhoto} />
             <View style={{flexDirection:"row", justifyContent: "center"}}>
             <MaterialCommunityIcons name="image-edit-outline" size={20} color={lilacColor} />
             <Text style={{color:"blue"}} onPress={() =>handleChangeInfo(false)}>Edit image?</Text>
@@ -223,15 +231,22 @@ const handleChangeInfo = (isChangeName:boolean) => {
           }
         </View>
 
+          {
+              childScheduleRooms!=null ?
+          <View style={styles.underLineView}>
+                  <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
+                </View>
 
-        <View style={styles.underLineView}>
-          <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
-        </View>
+                :null
+
+          }
+
+     
         {
           childDefaultSpace != null ?
             <>
               <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
-                {childScheduleRooms != null ?
+                {childScheduleRooms!=null ?
                   childScheduleRooms.map((room: any, x: number) => {
                     // missing logic to display task not completed and today and future task.
 
@@ -252,13 +267,13 @@ const handleChangeInfo = (isChangeName:boolean) => {
                     )
                   })
                   // does not display even if they have nothing 
-                  : <Text>You Have No Rooms</Text>
+                  :null
                 }
 
               </ScrollView>
 
               <View style={styles.underLineView}>
-                <UnderlinedOneHeaderComponent titleFirst={'Tasks'}></UnderlinedOneHeaderComponent>
+                <UnderlinedOneHeaderComponent titleFirst={'Seven Day Tasks'}></UnderlinedOneHeaderComponent>
               </View>
               <View style={styles.taskStyle}>
 
@@ -270,7 +285,7 @@ const handleChangeInfo = (isChangeName:boolean) => {
                       return (
 
                         <TaskSpaceRowComponent key={x} idx={x} onPress={() => {
-                          console.log("=======================================================================++"), console.log(taskName), setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted ? true : false)
+                        setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted ? true : false)
                           {
                             let childInfoCoin: IchildCoinAndPoint = {
                               Id: childPage.id,

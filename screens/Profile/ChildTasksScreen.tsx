@@ -16,22 +16,23 @@ import iconsMap from '../../types/IconsMap';
 import ChildLockModalComponent from '../../components/Modal/ChildLockModalComponent';
 import { DeleteChildByChildID, GetChildDefaultSchedule, GetDependantsDTOByUsername, GetTasksByRoomId } from '../../services/dataService';
 import TaskInfoModalComponent from '../../components/Modal/TaskInfoModalComponent';
-
+import SplashComponentFaded from '../../components/SplashComponentFaded';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeContext } from '../../context/ThemeContext';
 import IchildCoinAndPoint from '../../Interfaces/IchildCoinAndPoint';
+import UserNameComponent from '../../components/UserNameComponent';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setMemberInfo, setIsEditImage , setRunAgain, childPoints, setChildPoints, childCoins, setChildCoins, refreshChildTask, setRefreshChildTask, setBlank, setChildrenData} = useContext(UserContext)
+  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setMemberInfo, setIsEditImage , setRunAgain, childPoints, setChildPoints, childCoins, setChildCoins, refreshChildTask, setRefreshChildTask, setBlank, setChildrenData, waiting, setWaiting} = useContext(UserContext)
 
 
-  const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
+  const { secondaryTextColor, primaryTextColor, lilacColor } = useContext(ThemeContext)
   // const [childDefaultSpace, setChildDefaultSpace] = useState<any>()
 
   // const [todayDate, setTodayDate] = useState<any>()
@@ -142,8 +143,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   useEffect(() => {
     //repeat
     // navigation.addListener('focus', () =>{
-      console.log("===============================")
-   console.log(runAgain)
+  //     console.log("===============================")
+  //  console.log(runAgain)
 
    //all the child info:
   //  console.log("child Page:", childPage)
@@ -182,22 +183,26 @@ const handleChangeInfo = (isChangeName:boolean) => {
 }
 
 const handleDeleteChild= async()=> {
-console.log("delete this kid")
-console.log(childPage.id)
+// console.log("delete this kid")
+ //console.log(childPage.id)
+setWaiting(true)
 let deleted = await DeleteChildByChildID(childPage.id)
 if(deleted)
 {
-  console.log(deleted)
+ 
   let dependents = await GetDependantsDTOByUsername(userData.username)
   if(dependents!=null){
     setChildrenData(dependents)
     navigation.navigate('MyProfile')
+    setWaiting(false)
   }
+}else{
+  setWaiting(false)
 }
 }
 
   return (
-
+    <SplashComponentFaded>
     <ScrollView style={styles.container}>
       <View>
         <View>
@@ -225,14 +230,14 @@ if(deleted)
             <View style={styles.childName}>
               
             <Pressable style={{flexDirection: 'row'}} onPress={()=>handleChangeInfo(true)}>
-              <Text style={{ fontSize: 20 }}>{childPage.dependentName}</Text>
+            <UserNameComponent name={childPage.dependentName} />
               <View style={{marginLeft:5}}>
           <FontAwesome5 name="edit" size={20} color={lilacColor} />
           </View>
         </Pressable>
             </View>
 
-            <Text>{childPage.dependentAge} years old</Text>
+            <Text style={{ color: primaryTextColor}}>{childPage.dependentAge} years old</Text>
 
 
             <View style={styles.coinContainer}>
@@ -251,7 +256,7 @@ if(deleted)
 
         </View>
         {/* Add GERE */}
-        <View style={[styles.flexrow]}>
+        <View style={[styles.flexrow, {padding:10}]}>
           <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{childDefaultSpace.collectionName}</Text>
           {
             childPage.scheduledTasks.length > 1 ?
@@ -264,7 +269,7 @@ if(deleted)
         </View>
 
           {
-              childScheduleRooms!=null ?
+             childSelectedRoom != null ?
           <View style={styles.underLineView}>
                   <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
                 </View>
@@ -352,13 +357,13 @@ if(deleted)
                       )
                     })
                     :
-                    <Text>Child has no upcoming tasks</Text>
+                    <Text style={[{color:primaryTextColor}]}>Child has no upcoming tasks</Text>
                   // {Alert.alert("Error", 'You have no Task', [{ text: "Ok", style: "cancel" }])}
                 }
               </View>
             </>
             :
-            <Text>There are no rooms or tasks</Text>
+            <Text style={[{color:primaryTextColor}]}>There are no rooms or tasks</Text>
         }
 
 
@@ -372,6 +377,7 @@ if(deleted)
       </View>
 
     </ScrollView>
+    </SplashComponentFaded>
   );
 }
 

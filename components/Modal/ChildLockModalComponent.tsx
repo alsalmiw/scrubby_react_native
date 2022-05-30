@@ -17,7 +17,7 @@ import { UpdateChildPassCode } from "../../services/dataService";
 const ChildLockModalComponent: FC = ({ }) => {
 
     const { setModalVisible, childPage, checkPassCode, setCheckPassCode, childPassCode, setChildPassCode, setTaskModal, setRunAgain, setRefreshChildTask, refreshChildTask } = useContext(UserContext)
-    const { blueColor } = useContext(ThemeContext)
+    const { blueColor, primaryTextColor } = useContext(ThemeContext)
     const [newCode, setNewCode] = useState<number>()
 
     const navigation = useNavigation<any>();
@@ -70,13 +70,13 @@ const ChildLockModalComponent: FC = ({ }) => {
                 <ModalComponent>
 
 
-                    <Text style={styles.modalText}>ACTIVATE CHILD LOCK</Text>
+                    <Text style={[styles.modalText, {color:primaryTextColor, fontWeight: "bold"}]}>ACTIVATE CHILD LOCK</Text>
 
                     {
                         checkPassCode ?
                             <>
                                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                    <Text>Create a 5 digit code</Text>
+                                    <Text  style={[styles.modalText, {color:primaryTextColor}]}>Create a 5 digit code</Text>
                                 </View>
 
                                 <View style={styles.codeInput}>
@@ -102,7 +102,7 @@ const ChildLockModalComponent: FC = ({ }) => {
                             <>
                                 {/* havent test out logic yet */}
                                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                    <Text>Enter your 5 digit code</Text>
+                                    <Text  style={[styles.modalText, {color:primaryTextColor}]}>Enter your 5 digit code</Text>
                                 </View>
                                 <View style={styles.codeInput}>
                                     <CodeInput

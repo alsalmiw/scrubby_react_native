@@ -33,7 +33,8 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
 
     useEffect(() => {
         setNewSelection(defaultSpace)
-    },[])
+        DisplayDefaultOptions()
+    },[defaultScheduleOptions])
 
     const handleSetDefaultSchedule =async(space:any)=> {
         setNewSelection(space)
@@ -77,16 +78,11 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
     const handleBackPress =()=> {
         navigation.goBack()
     }
-    return(
-          <SplashComponentFaded>
-        <View style={styles.container}>
-          
-              
-            <ScrollView>
-            <HeaderComponent title="Set Default Schedule"/>
-            <UnderlinedTwoHeaderComponent titleFirst={"My Spaces"} titleTwo={"Set Default"}/>
 
-            <View>
+    const DisplayDefaultOptions = () => {
+        return(
+
+<View>
             {
                 defaultScheduleOptions.map((space:any, idx:number) =>
                         space.rooms.length > 0?
@@ -119,6 +115,19 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
             }
 
             </View>
+
+        )
+    }
+    return(
+          <SplashComponentFaded>
+        <View style={styles.container}>
+          
+              
+            <ScrollView>
+            <HeaderComponent title="Set Default Schedule"/>
+            <UnderlinedTwoHeaderComponent titleFirst={"My Spaces"} titleTwo={"Set Default"}/>
+
+            <DisplayDefaultOptions/>
             </ScrollView>
 
         <View>

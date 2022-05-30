@@ -34,11 +34,11 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
   useEffect(() => {
    
     handleCreateUsersList()
-  
+    ShowMembers()
 
     
     
-  }, [childrenData, acceptedInvitations, sharedSpacesInfo, spacesRooms,])
+  }, [childrenData, acceptedInvitations, sharedSpacesInfo, spacesRooms])
 
   const getUsers =async () => {
 

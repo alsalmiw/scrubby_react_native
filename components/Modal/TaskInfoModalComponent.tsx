@@ -9,7 +9,7 @@ import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { ThemeContext } from "../../context/ThemeContext"
 import FullButtonComponent from "../FullButtonComponent"
 import ButtonModalComponent from "./ButtonModalComponent"
-import { UpdateUserTaskToCompleted, SubmitTaskChildApproval, ApproveTaskForCompletionChild, GetUserDefaultSchedule, NewCoinAmountDependent, UpdateChildCoinsAndPoints, NewCoinAmountUser, UpdateCoinsAndPointsUser } from "../../services/dataService"
+import { UpdateUserTaskToCompleted, SubmitTaskChildApproval, ApproveTaskForCompletionChild, GetUserDefaultSchedule, NewCoinAmountDependent, UpdateChildCoinsAndPoints, NewCoinAmountUser, UpdateCoinsAndPointsUser, GetChildDefaultSchedule } from "../../services/dataService"
 import UserContext from "../../context/UserContext"
 import IRedeemCoinsChild from "../../Interfaces/IRedeemChildCoins"
 import IRedeemCoins from "../../Interfaces/IRedeemCoins"
@@ -35,7 +35,7 @@ interface ITaskInfoModal {
 
 const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild,  isButton, childInfo }) => {
 
-    const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal, runScheduleAgain, setRunScheduleAgain, setUserData, childPoints, setChildPoints, childCoins, setChildCoins, refreshChildTask, setRefreshChildTask } = useContext(UserContext)
+    const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal, runScheduleAgain, setRunScheduleAgain, setUserData, childPoints, setChildPoints, childCoins, setChildCoins, refreshChildTask, setRefreshChildTask, setChildPage, setChildDefaultSpace } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
 
    
@@ -79,8 +79,11 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
                     //submit task for approval
               let result= await SubmitTaskChildApproval(task.id)
               if(result){
-                Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }]);
                 setRunAgain(true)
+                let childRefesh = await GetChildDefaultSchedule(childInfo.Id)
+                if(childRefesh !=null) await setChildDefaultSpace(childRefesh)
+                Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }]);
+                
                 
               }
             //  console.log("completed:",result)
@@ -93,14 +96,22 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
 
     const ApproveSubmittedTask = async()=> {
        let result = await ApproveTaskForCompletionChild(task.id)
+       
+       //may need to refetch child Page
        if(result){
-        Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])
         
-        let childUpdate = await UpdateChildCoinsAndPoints(childInfo)
+        await UpdateChildCoinsAndPoints(childInfo)
         await setChildCoins(childCoins + task.task.coins) 
         await setChildPoints(childPoints + task.task.coins)
-        setRefreshChildTask(true)
+        let childdefault = await GetChildDefaultSchedule(childInfo.Id)
+        console.log("Not sure what this is:",childInfo.Id)
+        if(childdefault !=null) await setChildDefaultSpace(childdefault)
         setRunAgain(true)
+        Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])
+        
+
+        // setRefreshChildTask(true)
+        
        } 
        // console.log("approve task for child");
         setModalVisible(false)

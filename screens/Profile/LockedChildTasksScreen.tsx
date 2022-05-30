@@ -22,6 +22,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeContext } from '../../context/ThemeContext';
+import IchildCoinAndPoint from '../../Interfaces/IchildCoinAndPoint';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LockedChildTasks'>
@@ -48,6 +49,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     const [childScheduleRooms, setChildScheduleRooms] = useState<any>()
 
     const [childSelectedRoom, setChildSelectedRoom] = useState<any>()
+
+    const [childUpdateCoins, setChildUpdateCoins] = useState<IchildCoinAndPoint>()
 
 
 
@@ -118,7 +121,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         }
 
         //setSpace(rooms[0].spaceName);
-        setRunAgain(false)
+        
     }
 
 
@@ -126,8 +129,11 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     useEffect(() => {
 
         childTaskDate()
+        console.log("run again")
+        console.log(runAgain)
         if (runAgain) {
             childTaskDate()
+            setRunAgain(false)
         }
 
 
@@ -218,7 +224,16 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                                 return (
                                     !taskName.isCompleted ?
-                                        <TaskSpaceRowComponent key={x} idx={x} onPress={() => { setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
+                                        <TaskSpaceRowComponent key={x} idx={x} onPress={() => { setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false)
+                                        
+                                        {
+                                            let childInfoCoin: IchildCoinAndPoint = {
+                                              Id: childPage.id,
+                                              DependentCoins:taskName.task.coins,
+                                              DependentPoints:taskName.task.coins
+                                            }
+                                            setChildUpdateCoins(childInfoCoin)
+                                          }}}>
 
                                             <View style={styles.centering}>
                                                 <View>
@@ -298,7 +313,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                 {modalVisible === true ?
                     <ChildLockModalComponent /> : taskModal === true ?
-                        <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} childInfo={undefined} />
+                        <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} childInfo={childUpdateCoins} />
                         : null}
 
 

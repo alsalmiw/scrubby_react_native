@@ -5,27 +5,20 @@ import { ActivityIndicator, Alert, Image, Pressable, SafeAreaView, ScrollView, S
 
 
 const SplashComponent: FC<any> = ({ children }) => {
-    const {blank, setBlank} = useContext(UserContext)
-
-
-
+    const { blank, setBlank } = useContext(UserContext)
 
     return (
         <>
-
             {blank ?
                 <View style={styles.spinBackgroundColor}>
                     <View style={[styles.spinBackgroundColor, { justifyContent: 'center' }]}>
-
                         <SafeAreaView >
                             <ActivityIndicator color='#FFF' size="large" />
-                            <View style={{flexDirection:'row', justifyContent:'center'}}>
-                            <Text style={{color:'white'}}>Loading</Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                <Text style={{ color: 'white' }}>Loading</Text>
                             </View>
 
                         </SafeAreaView>
-                        
-
                     </View>
                 </View>
                 :
@@ -34,9 +27,6 @@ const SplashComponent: FC<any> = ({ children }) => {
                 </>
             }
         </>
-
-
-
 
     )
 }

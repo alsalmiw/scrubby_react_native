@@ -15,7 +15,7 @@ import { black } from 'react-native-paper/lib/typescript/styles/colors';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 import FullButtonComponent from '../../components/FullButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { DeleteInvite, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername } from '../../services/dataService';
+import { DeleteInvite, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername, GetInvitationByUsername, GetSharedCollectionsDetailsByUsername } from '../../services/dataService';
 import { DeleteSharedSpacesById } from '../../services/dataService';
 import TaskSpaceRowIconComponent from '../../components/TaskSpaceRowIconComponent';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
@@ -38,7 +38,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
 
 
     const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor } = useContext(ThemeContext);
-    const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh, acceptedInvitations, setAcceptedInvitations, rState, mySpaces, setMySpaces, sentAcceptedInvitations, setSentAcceptedInvitations, savedUsername, sharedSpacesInfo, myHouses } = useContext(UserContext)
+    const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh, acceptedInvitations, setAcceptedInvitations, rState, mySpaces, setMySpaces, sentAcceptedInvitations, setSentAcceptedInvitations, savedUsername, sharedSpacesInfo, myHouses, refreshTaskPage, setRefreshTaskPage, setSharedSpacesInfo } = useContext(UserContext)
 
     const [fullName, setFullName] = useState<string>("");
     const [invitedPhoto, setInvitedPhoto] = useState<any>();
@@ -49,7 +49,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
 
 
     const handleDisplayFullName = async () => {
-        console.log(sentAcceptedInvitations);
+       // console.log(sentAcceptedInvitations);
 
         let invitedUserNameAsyncStorage = (await AsyncStorage.getItem('Invited'))!;
 
@@ -76,7 +76,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
         //Gets shared spaces shared by both invited and inviter
        
         let result = await GetSharedSpacesByInvitedAndInviterUsername(invitedUsername, savedUsername);
-        console.log(result);
+       // console.log(result);
         setSharedSpaces(result);
     }
 
@@ -85,7 +85,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
 
         //This will be how we add create shared Space
 
-        console.log(filteredMySpace);
+       // console.log(filteredMySpace);
          
         let newSharedSpace:ISharedSpace = {
             id:0, 
@@ -95,32 +95,69 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
             isDeleted: false,
             isAccepted: true
         }
-        console.log(newSharedSpace)
+       // console.log(newSharedSpace)
 
         let result = await CreateSharedSpaces(newSharedSpace)
         
         if (result) {
             console.log("You added a new shared space")
             setRefreshLocalUseEffect((prevState: boolean) => !prevState);
+            let invitesInfo = await GetInvitationByUsername(userData.username)
+            if(invitesInfo.length!=0){
+                setInvited(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
+                setInviters(invitesInfo.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
+                setAcceptedInvitations(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
+            //  console.log(invitesInfo.sentInvites)
+                setRefreshTaskPage(true)
+                console.log("I resetted wiith info")
+            }else{
+                setInvited([])
+                setInviters([])
+                setAcceptedInvitations([])
+            }
+            setRefreshTaskPage(true)
         }
 
     }
 
     const handleDeleteSharedSpace = async (filteredSharedSpace: any) => {
         console.log("You deleted a shared space");
-        console.log(filteredSharedSpace.id)
-        console.log(sharedSpaces);
+        // console.log(filteredSharedSpace.id)
+        // console.log(sharedSpaces);
 
         let findSharedSpace = sharedSpaces.find((sharedSpace:any) => sharedSpace.collectionId === filteredSharedSpace.id);
-        console.log(findSharedSpace);
+        // console.log(findSharedSpace);
 
 
         let result = await DeleteSharedSpacesById(findSharedSpace);
-        console.log(result);
+        // console.log(result);
         
         if (result) {
             console.log("You deleted a shared Space")
             setRefreshLocalUseEffect((prevState: boolean) => !prevState);
+            let sharedSpaces = await GetSharedCollectionsDetailsByUsername(userData.username)
+            let invitesInfo = await GetInvitationByUsername(userData.username)
+            if(sharedSpaces.length!==0) {
+               
+                setSharedSpacesInfo(sharedSpaces)
+                   setRefreshTaskPage(true)
+            }else{
+                setSharedSpacesInfo([])
+                setRefreshTaskPage(true)
+            }
+            if(invitesInfo.length!=0){
+                setInvited(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
+                setInviters(invitesInfo.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
+                setAcceptedInvitations(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
+                console.log("I resetted wiith info")
+            
+            }else{
+                setInvited([])
+                setInviters([])
+                setAcceptedInvitations([])
+            }
+           
+         
         }
         
     }
@@ -131,12 +168,12 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
         
         const DeleteInviteFetch = async() => {
             let result = await DeleteInvite(userData.id, invitedUserToBeDeleted!);
-             console.log(result);
+             //console.log(result);
             // setRefresh((prevRefresh:boolean) => prevRefresh = true)
             // navigation.navigate('ManageInvites');
-            console.log('scooby')
-            console.log(userData.id)
-            console.log(invitedUserToBeDeleted);
+            // console.log('scooby')
+            // console.log(userData.id)
+            // console.log(invitedUserToBeDeleted);
             
         }
         
@@ -147,8 +184,8 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
     
     const handleAddSharedAlert = async (filteredMySpace: any) => {
 
-        console.log('scooby')
-        console.log(filteredMySpace)
+        // console.log('scooby')
+        // console.log(filteredMySpace)
 
         Alert.alert("Adding a Shared Space", "You are about to share a space, would you like to add?",
         [
@@ -162,7 +199,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
     }
 
     const handleDeleteSharedAlert = async (filteredSharedSpace: any) => {
-        console.log(filteredSharedSpace);
+        // console.log(filteredSharedSpace);
         Alert.alert("Deleting a Shared Space", "You are about to delete a shared Space, would you like to delete?",
         
         [
@@ -191,7 +228,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
     useEffect(() => {
         handleDisplayFullName();
         handleDisplaySharedSpaces();
-        console.log(sharedSpaces);
+       // console.log(sharedSpaces);
 
     }, [refreshLocalUseEffect])
 
@@ -200,7 +237,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
             <View>
             <HeaderComponent title={'Add To My Space'}></HeaderComponent>
             <View style={styles.firstRowContainer}>
-                <AvatarComponent onPress={undefined} imageSource={invitedPhoto} />
+                <AvatarComponent onPress={()=>console.log("addedpeople")} imageSource={invitedPhoto} />
                 <View style={styles.insideFirstRowContainer1}>
                     <UserNameComponent name={fullName}></UserNameComponent>
                     <Pressable style={styles.insideFirstRowContainer2} onPress={handleDeleteUserAlert} >

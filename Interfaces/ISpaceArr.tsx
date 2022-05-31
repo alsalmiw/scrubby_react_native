@@ -1,17 +1,17 @@
 export declare interface ISpaceArr {
-    id:number,
+    id: number,
     collectionName: string,
     isDeleted: boolean,
-    rooms:{
-        id:number,
+    rooms: {
+        id: number,
         spaceName: string,
         spaceCategory: string,
-        tasks:{}[]
+        tasks: {}[]
     }[]
-    sharedWith:{
-        id:number,
+    sharedWith: {
+        id: number,
         invitedId: number,
-        invitedUsername:string,
-        invitedName:string
+        invitedUsername: string,
+        invitedName: string
     }[]
 }

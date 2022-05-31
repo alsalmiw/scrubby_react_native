@@ -1,9 +1,9 @@
-export default interface ISelectedTask{
-    Id:number;
-    UserId:number;
+export default interface ISelectedTask {
+    Id: number;
+    UserId: number;
     SpaceId: number
-    Description:string;
-    Name:string;
-    Tags:string;
-    
+    Description: string;
+    Name: string;
+    Tags: string;
+
 }

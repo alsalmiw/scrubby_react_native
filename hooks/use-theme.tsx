@@ -1,7 +1,7 @@
 import { useState } from "react";
-import {StyleSheet} from "react-native"
+import { StyleSheet } from "react-native"
 
-export default function UseTheme(){
+export default function UseTheme() {
 
     const [primaryTextColor, setPrimaryTextColor] = useState("#454444")
     const [secondaryTextColor, setSecondaryTextColor] = useState("#5D5D5D")
@@ -16,9 +16,9 @@ export default function UseTheme(){
     const [yellowColor, setYellowColor] = useState("#F8AA07")
     const [blueColor, setBlueColor] = useState("#1699B1")
     const [primaryFont, setPrimaryFont] = useState("")
-    const [bgColor, setBgColor]= useState('#000')
+    const [bgColor, setBgColor] = useState('#000')
 
 
-return{primaryColor, secondaryTextColor, primaryTextColor, lightLilacColor, lilacColor, orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor, bgColor, setBgColor }
+    return { primaryColor, secondaryTextColor, primaryTextColor, lightLilacColor, lilacColor, orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor, bgColor, setBgColor }
 }
 

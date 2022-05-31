@@ -14,210 +14,168 @@ import UserContext from "../../context/UserContext"
 import IRedeemCoinsChild from "../../Interfaces/IRedeemChildCoins"
 import IRedeemCoins from "../../Interfaces/IRedeemCoins"
 
-
-//
-
-
 interface ITaskInfoModal {
-    
+
     Space: String;
     Location: String;
     task: any;
     isChild: boolean;
-    taskedInfo:any;
+    taskedInfo: any;
     isButton: boolean;
-    childInfo:any;
-
-    // userCoins:any;
-    // userPoints:any;
-
+    childInfo: any;
 }
 
-const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild,  isButton, childInfo }) => {
+const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isChild, isButton, childInfo }) => {
 
     const { setModalVisible, setDefaultSpace, defaultSpace, userData, runAgain, setRunAgain, setTaskModal, runScheduleAgain, setRunScheduleAgain, setUserData, childPoints, setChildPoints, childCoins, setChildCoins, refreshChildTask, setRefreshChildTask, setChildPage, setChildDefaultSpace } = useContext(UserContext)
     const { yellowColor, secondaryTextColor } = useContext(ThemeContext)
-  
 
-    
-    
+    const SubmitTaskForCompletion = async () => {
 
-
-    const SubmitTaskForCompletion =async()=> {
-        //console.log("task Info:",task.id)
-            if(!isChild){
-                setRunScheduleAgain(true)
-             let result:any =  await UpdateUserTaskToCompleted(task.id)
-             let userRedeem: IRedeemCoins = {
+        if (!isChild) {
+            setRunScheduleAgain(true)
+            let result: any = await UpdateUserTaskToCompleted(task.id)
+            let userRedeem: IRedeemCoins = {
 
                 Id: userData.id,
                 Coins: task.task.coins
-              }
-             //add coins
-             //console.log(userRedeem)
-             let updatedInfo = await UpdateCoinsAndPointsUser(userRedeem)
-             if(updatedInfo != null)
-             {
-                 setUserData(updatedInfo)
-             }
-            
-           
-             Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }])
-             setModalVisible(false)
-             setTaskModal(false)
-             if(result){
+            }
+
+            let updatedInfo = await UpdateCoinsAndPointsUser(userRedeem)
+            if (updatedInfo != null) {
+                setUserData(updatedInfo)
+            }
+
+
+            Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () => setTaskModal(false) }])
+            setModalVisible(false)
+            setTaskModal(false)
+            if (result) {
                 let defaultCollection = await GetUserDefaultSchedule(userData.username)
-                if(defaultCollection!=null){
-                    //Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])
+                if (defaultCollection != null) {
+
                     setDefaultSpace(defaultCollection)
                     setRunAgain(true)
-                    //console.log("did it close?");
                 }
-                
-             }
-        
-               
+            }
 
-            }else{  
-                    //submit task for approval
-              let result= await SubmitTaskChildApproval(task.id)
-              if(result){
+        } else {
+    
+            let result = await SubmitTaskChildApproval(task.id)
+            if (result) {
                 setRunAgain(true)
                 let childRefesh = await GetChildDefaultSchedule(childInfo.Id)
-                if(childRefesh !=null) await setChildDefaultSpace(childRefesh)
-                Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }]);
-                
-                
-              }
-            //  console.log("completed:",result)
-              setRunAgain(true)
-              //console.log("submit task for approval child");
-              setModalVisible(false)
-                    
+                if (childRefesh != null) await setChildDefaultSpace(childRefesh)
+                Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () => setTaskModal(false) }]);
+
+
             }
+            
+            setRunAgain(true)
+            setModalVisible(false)
+        }
     }
 
-    const ApproveSubmittedTask = async()=> {
-       let result = await ApproveTaskForCompletionChild(task.id)
-       
-       //may need to refetch child Page
-       if(result){
-        
-        await UpdateChildCoinsAndPoints(childInfo)
-        await setChildCoins(childCoins + task.task.coins) 
-        await setChildPoints(childPoints + task.task.coins)
-        let childdefault = await GetChildDefaultSchedule(childInfo.Id)
-        //console.log("Not sure what this is:",childInfo.Id)
-        if(childdefault !=null) await setChildDefaultSpace(childdefault)
-        setRunAgain(true)
-        Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel",  onPress: () =>setTaskModal(false) }])
-        
+    const ApproveSubmittedTask = async () => {
+        let result = await ApproveTaskForCompletionChild(task.id)
 
-        // setRefreshChildTask(true)
-        
-       } 
-       // console.log("approve task for child");
+        if (result) {
+
+            await UpdateChildCoinsAndPoints(childInfo)
+            await setChildCoins(childCoins + task.task.coins)
+            await setChildPoints(childPoints + task.task.coins)
+            let childdefault = await GetChildDefaultSchedule(childInfo.Id)
+            if (childdefault != null) await setChildDefaultSpace(childdefault)
+            setRunAgain(true)
+            Alert.alert("Congratulations", 'Task is now completed', [{ text: "Ok", style: "cancel", onPress: () => setTaskModal(false) }])
+
+        }
+   
         setModalVisible(false)
-
     }
-
-    
-
-
 
     return (
-        
 
         <View>
-            {/* {console.log("task123", task)} */}
             <ModalComponent>
                 <View style={styles.modalContainer}>
-                <View>
-                <View style={styles.modalHead}>
-                    <View style={styles.headerWidth}>
-                    <Text style={[styles.mainHeader, {color:secondaryTextColor}]}>{task.task.name + " " + task.item.name}</Text>
-                    </View>
-                    <View style={styles.coinStart}>
-                        <View>
-                            <Text> <FontAwesome5 name="coins" color={yellowColor} /> {task.task.coins} coins</Text>
-                            <Text> <FontAwesome name="star" color={yellowColor} /> {task.task.coins} points</Text>
+                    <View>
+                        <View style={styles.modalHead}>
+                            <View style={styles.headerWidth}>
+                                <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{task.task.name + " " + task.item.name}</Text>
+                            </View>
+                            <View style={styles.coinStart}>
+                                <View>
+                                    <Text> <FontAwesome5 name="coins" color={yellowColor} /> {task.task.coins} coins</Text>
+                                    <Text> <FontAwesome name="star" color={yellowColor} /> {task.task.coins} points</Text>
+                                </View>
+                            </View>
                         </View>
 
+
+                        <View style={styles.underlinedView}>
+                            <UnderlinedOneHeaderComponent titleFirst={'Space'}></UnderlinedOneHeaderComponent>
+                            <View style={styles.txtRap}>
+                                <Text>{Space}</Text>
+                            </View>
+                        </View>
+
+                        <View style={styles.underlinedView}>
+                            <UnderlinedOneHeaderComponent titleFirst={'Location'}></UnderlinedOneHeaderComponent>
+                            <View style={styles.txtRap}>
+                                <Text>{Location}</Text>
+                            </View>
+                        </View>
+
+                        <View style={styles.underlinedView}>
+                            <UnderlinedOneHeaderComponent titleFirst={'Instructions'}></UnderlinedOneHeaderComponent>
+                            <View style={styles.txtRap}>
+                                <Text>{task.task.description}</Text>
+                            </View>
+                        </View>
+
+                        <View style={styles.underlinedView}>
+                            <UnderlinedOneHeaderComponent titleFirst={'Completion by'}></UnderlinedOneHeaderComponent>
+                            <View style={styles.txtRap}>
+                                <Text>Date: {task.dateScheduled.slice(0, 10)}</Text>
+                            </View>
+                        </View>
                     </View>
-
-                </View>
-
-
-                <View style={styles.underlinedView}>
-                    <UnderlinedOneHeaderComponent titleFirst={'Space'}></UnderlinedOneHeaderComponent>
-                    <View style={styles.txtRap}>
-                        <Text>{Space}</Text>
+                    <View>
+                        {
+                            isButton ?
+                                !task.isRequestedApproval ?
+                                    <ButtonModalComponent onPress={() => { SubmitTaskForCompletion() }}>
+                                        <Text>Completed</Text>
+                                    </ButtonModalComponent>
+                                    :
+                                    <ButtonModalComponent onPress={() => { ApproveSubmittedTask() }}>
+                                        <Text>Approve</Text>
+                                    </ButtonModalComponent>
+                                : null
+                        }
                     </View>
-                </View>
-
-                <View style={styles.underlinedView}>
-                    <UnderlinedOneHeaderComponent titleFirst={'Location'}></UnderlinedOneHeaderComponent>
-                    <View style={styles.txtRap}>
-                        <Text>{Location}</Text>
-                    </View>
-                </View>
-
-                <View style={styles.underlinedView}>
-                    <UnderlinedOneHeaderComponent titleFirst={'Instructions'}></UnderlinedOneHeaderComponent>
-                    <View style={styles.txtRap}>
-                        <Text>{task.task.description}</Text>
-                    </View>
-                </View>
-
-                <View style={styles.underlinedView}>
-                    <UnderlinedOneHeaderComponent titleFirst={'Completion by'}></UnderlinedOneHeaderComponent>
-                    <View style={styles.txtRap}>
-                        <Text>Date: {task.dateScheduled.slice(0,10)}</Text>
-                    </View>
-                </View>
-                </View>
-                <View>
-                    {
-                        isButton?
-                        !task.isRequestedApproval?
-                            <ButtonModalComponent onPress={()=> {SubmitTaskForCompletion()}}>
-                            <Text>Completed</Text>
-                            </ButtonModalComponent>
-                        :
-
-
-                        <ButtonModalComponent onPress={()=> {ApproveSubmittedTask()}}>
-                         <Text>Approve</Text>
-                        </ButtonModalComponent>
-                        : null
-                    }
-                   
-
-                       
-
-
-                </View>
-
-
                 </View>
             </ModalComponent>
-
         </View>
 
     )
 }
 
 const styles = StyleSheet.create({
+
     underlinedView: {
         paddingLeft: 10,
         paddingRight: 10,
         justifyContent: 'center',
         marginBottom: '5%',
     },
-    modalContainer:{
-        height:"90%",
+
+    modalContainer: {
+        height: "90%",
         justifyContent: 'space-between',
     },
+
     modalHead: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -227,20 +185,26 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         paddingLeft: 10
     },
+
     txtRap: {
         flexDirection: 'row',
         flexWrap: 'wrap'
     },
+    
     coinStart: {
         flexDirection: 'row',
         justifyContent: 'flex-end'
-    },  mainHeader: {
-        fontSize:20,
-        fontWeight: "bold", 
-        textTransform:"uppercase"
+    }, 
+
+    mainHeader: {
+        fontSize: 20,
+        fontWeight: "bold",
+        textTransform: "uppercase"
     },
-    headerWidth:{
+
+    headerWidth: {
         width: "70%"
     }
 });
+
 export default TaskInfoModalComponent

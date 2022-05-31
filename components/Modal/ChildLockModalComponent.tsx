@@ -7,11 +7,9 @@ import FullButtonComponent from "../FullButtonComponent";
 import { ThemeContext } from "../../context/ThemeContext";
 import ModalComponent from "../ModalComponent";
 import UserContext from "../../context/UserContext";
-//// need backend fetch to update passcode/
 import { useNavigation } from '@react-navigation/native';
 import IChildPassCode from "../../Interfaces/IChildPassCode";
 import { UpdateChildPassCode } from "../../services/dataService";
-
 
 
 const ChildLockModalComponent: FC = ({ }) => {
@@ -45,7 +43,6 @@ const ChildLockModalComponent: FC = ({ }) => {
             setTaskModal(false)
             setModalVisible(false);
             navigation.navigate("ChildTasks");
-            // setRefreshChildTask(true);
             setRunAgain(true);
 
         }
@@ -61,27 +58,20 @@ const ChildLockModalComponent: FC = ({ }) => {
         await UpdateChildPassCode(childinfo)
     }
 
-
-
-
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.centeredView}>
                 <ModalComponent>
-
-
-                    <Text style={[styles.modalText, {color:primaryTextColor, fontWeight: "bold"}]}>ACTIVATE CHILD LOCK</Text>
-
+                    <Text style={[styles.modalText, { color: primaryTextColor, fontWeight: "bold" }]}>ACTIVATE CHILD LOCK</Text>
                     {
                         checkPassCode ?
                             <>
                                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                    <Text  style={[styles.modalText, {color:primaryTextColor}]}>Create a 5 digit code</Text>
+                                    <Text style={[styles.modalText, { color: primaryTextColor }]}>Create a 5 digit code</Text>
                                 </View>
 
                                 <View style={styles.codeInput}>
                                     <CodeInput
-
                                         keyboardType="numeric"
                                         activeColor='grey'
                                         inactiveColor='grey'
@@ -89,24 +79,22 @@ const ChildLockModalComponent: FC = ({ }) => {
                                         ignoreCase={true}
                                         inputPosition='center'
                                         size={50}
-                                        onFulfill={(e: number) =>  setChildPassCode((e)) }
+                                        onFulfill={(e: number) => setChildPassCode((e))}
                                         containerStyle={{ marginTop: 30 }}
                                         codeInputStyle={{ borderWidth: 1.5 }}
                                     />
                                 </View>
                                 <View style={styles.codeInputBtn}>
-                                    <FullButtonComponent color={blueColor} radius={10} onPress={() => {updatePasscode(),  navToChildLockScreen() }}> <Text>Lock</Text></FullButtonComponent>
+                                    <FullButtonComponent color={blueColor} radius={10} onPress={() => { updatePasscode(), navToChildLockScreen() }}> <Text>Lock</Text></FullButtonComponent>
                                 </View>
                             </>
                             :
                             <>
-                                {/* havent test out logic yet */}
                                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                    <Text  style={[styles.modalText, {color:primaryTextColor}]}>Enter your 5 digit code</Text>
+                                    <Text style={[styles.modalText, { color: primaryTextColor }]}>Enter your 5 digit code</Text>
                                 </View>
                                 <View style={styles.codeInput}>
                                     <CodeInput
-
                                         keyboardType="numeric"
                                         activeColor='grey'
                                         inactiveColor='grey'
@@ -114,18 +102,16 @@ const ChildLockModalComponent: FC = ({ }) => {
                                         ignoreCase={true}
                                         inputPosition='center'
                                         size={50}
-                                        onFulfill={(e: number) =>  setNewCode(Number(e)) }
+                                        onFulfill={(e: number) => setNewCode(Number(e))}
                                         containerStyle={{ marginTop: 30 }}
                                         codeInputStyle={{ borderWidth: 1.5 }}
                                     />
                                 </View>
                                 <View style={styles.codeInputBtn}>
-                                    <FullButtonComponent color={blueColor} radius={10} onPress={() =>  navToChildUnlockScreen() }> <Text>Unlock</Text></FullButtonComponent>
+                                    <FullButtonComponent color={blueColor} radius={10} onPress={() => navToChildUnlockScreen()}> <Text>Unlock</Text></FullButtonComponent>
                                 </View>
-
                             </>
                     }
-
                 </ModalComponent>
             </View>
         </TouchableWithoutFeedback>
@@ -133,23 +119,27 @@ const ChildLockModalComponent: FC = ({ }) => {
 };
 
 const styles = StyleSheet.create({
+
     centeredView: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
         marginTop: 22
     },
+
     modalText: {
         marginBottom: 15,
         textAlign: "center",
         fontSize: 20
     },
+
     codeInput: {
         flex: 0.8,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         marginTop: 10,
     },
+    
     codeInputBtn: {
         flex: 0,
         flexDirection: 'row',

@@ -1,25 +1,25 @@
 import React from "react";
 import { FC, useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import {ThemeContext} from "../context/ThemeContext"
+import { ThemeContext } from "../context/ThemeContext"
 
-interface NameType{
+interface NameType {
     name: string | null;
 }
 
-const UserNameComponent: FC<NameType> =({name}) => {
-    const {secondaryTextColor, lightLilacColor} = useContext(ThemeContext)
+const UserNameComponent: FC<NameType> = ({ name }) => {
+    const { secondaryTextColor, lightLilacColor } = useContext(ThemeContext)
 
-    return(
-        <Text style={[styles.mainHeader, {color:secondaryTextColor}]}>{name}</Text>
+    return (
+        <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{name}</Text>
     )
 }
 
 const styles = StyleSheet.create({
-        mainHeader: {
-            fontSize:15,
-            fontWeight: "bold", 
-        },
-    })
+    mainHeader: {
+        fontSize: 15,
+        fontWeight: "bold",
+    },
+})
 
 export default UserNameComponent

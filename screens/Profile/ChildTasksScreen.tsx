@@ -1,4 +1,3 @@
-// import { StatusBar } from 'expo-status-bar';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { FC, useContext, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, StatusBar, Image, Pressable, Alert } from 'react-native';
@@ -9,7 +8,7 @@ import RootStackParamList from '../../types/INavigation';
 import AvatarComponent from '../../components/AvatarComponent';
 import CoinsPointsDisplayContainer from '../../components/Profile/CoinsPointsDisplayContainer';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
-////
+
 import { FontAwesome5 } from '@expo/vector-icons';
 import SquareColoredButton from '../../components/SquareColoredButton';
 import iconsMap from '../../types/IconsMap';
@@ -33,23 +32,13 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
 
   const { secondaryTextColor, primaryTextColor, lilacColor } = useContext(ThemeContext)
-  // const [childDefaultSpace, setChildDefaultSpace] = useState<any>()
-
-  // const [todayDate, setTodayDate] = useState<any>()
-
-
-  // interface IchildCoinAndPoint {
-  //   Id: number;
-  //   DependentCoins: number;
-  //   DependentPoints: number
-  // }
 
   const [space, setSpace] = useState<String>("")
   const [location, setLocation] = useState<String>("")
   const [coin, setCoin] = useState<String>("")
   const [insturction, setInstruction] = useState<String>("")
   const [title, setTitle] = useState<String>("")
-  // const [selectedTask, setSelectedTask]=useState<any[]>([])
+  
   const [requestedApproval, setRequestedApproval] = useState<boolean>(false)
 
 
@@ -60,11 +49,6 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   const [childSelectedRoom, setChildSelectedRoom] = useState<any>()
 
   const [childUpdateCoins, setChildUpdateCoins] = useState<IchildCoinAndPoint>()
-
-
-
-  // let newArr = ['bed', 'bathroom', 'kitchen']
-  // let r = Math.floor(Math.random() * 7)
 
 
   const childTaskDate = () => {
@@ -83,8 +67,6 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
     }
 
-    //need to re fetch child default space for new data to map room.
-
     let nextTasks = childDefaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => sevenDays.includes(task.dateScheduled)))
     setChildScheduleTasks(nextTasks)
 
@@ -93,7 +75,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     childDefaultSpace.rooms.map((room: any) => {
       let tempArr = [] as any;
       let tempRoomArr = [] as any;
-      //console.log("Task:", childDefaultSpace)
+      
       room.tasksAssigned.map((task: any) => {
         if (sevenDays.includes(task.dateScheduled)) {
           tempArr.push(task);
@@ -121,8 +103,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
         : null
     }
     setRunAgain(false)
-    // setRefreshChildTask(false)
-    //setSpace(rooms[0].spaceName);
+    
   }
 
   const ChildDefault = async () => {
@@ -133,21 +114,15 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     }
   }
 
-  //I have a feeling this is running more than once thats why the value isnt changing. 
+   
 
 
 
 
-  //need to refect the value of childPage for coins to change
+
 
   useEffect(() => {
-    //repeat
-    // navigation.addListener('focus', () =>{
-  //     console.log("===============================")
-  //  console.log(runAgain)
-  console.log(childPage) 
-   //all the child info:
-  //  console.log("child Page:", childPage)
+    
     if(childDefaultSpace.length!=0){
 
       setBlank(false)
@@ -160,9 +135,6 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
     }
   
-
-   
-
   }, [runAgain])
 
 
@@ -185,8 +157,7 @@ const handleChangeInfo = (isChangeName:boolean) => {
 }
 
 const handleDeleteChild= async()=> {
-// console.log("delete this kid")
- //console.log(childPage.id)
+
 setWaiting(true)
 let deleted = await DeleteChildByChildID(childPage.id)
 if(deleted)
@@ -260,10 +231,8 @@ if(deleted)
 
           }
 
-
-
         </View>
-        {/* Add GERE */}
+        
         
         <View>
         {
@@ -298,9 +267,7 @@ if(deleted)
               <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
                 {childScheduleRooms!=null ?
                   childScheduleRooms.map((room: any, x: number) => {
-                    // missing logic to display task not completed and today and future task.
-
-                    //fix space name and location
+                    
                     return (
                       <View key={x} style={styles.sqrBtn}>
                         <SquareColoredButton idx={x + rState + 1} onPress={() => {setChildSelectedRoom(room), setSpace(room.spaceName) }}>
@@ -316,7 +283,7 @@ if(deleted)
 
                     )
                   })
-                  // does not display even if they have nothing 
+                  
                   :null
                 }
 
@@ -364,21 +331,17 @@ if(deleted)
 
                         </TaskSpaceRowComponent>
 
-
-
-
                       )
                     })
                     :
                     <Text style={[{color:primaryTextColor}]}>Child has no upcoming tasks</Text>
-                  // {Alert.alert("Error", 'You have no Task', [{ text: "Ok", style: "cancel" }])}
+                  
                 }
               </View>
             </>
             :
             <Text style={[{color:primaryTextColor}]}>There are no rooms or tasks</Text>
         }
-
 
         {modalVisible === true ?
           <ChildLockModalComponent /> : taskModal === true ?

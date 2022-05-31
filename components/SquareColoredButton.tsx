@@ -1,52 +1,50 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { FC, useContext } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import {ThemeContext} from "../context/ThemeContext"
+import { ThemeContext } from "../context/ThemeContext"
 import UserContext from "../context/UserContext";
 
 interface Props {
     children: ReactNode,
     idx: number,
-    onPress:Function
+    onPress: Function
 }
 
-const SquareColoredButton: FC<Props> =(props) => {
-    const {orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor} = useContext(ThemeContext)
-  const { activeRoom, setActiveRoom } = useContext(UserContext)
+const SquareColoredButton: FC<Props> = (props) => {
+    const { orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor } = useContext(ThemeContext)
+    const { activeRoom, setActiveRoom } = useContext(UserContext)
 
-    const [bgColor, setBgColor]= useState('')
+    const [bgColor, setBgColor] = useState('')
 
-  useEffect(()=> {
-      selectColor()
-},[])
+    useEffect(() => {
+        selectColor()
+    }, [])
 
     const selectColor = () => {
-        //let r = Math.floor (Math.random()*7)
-        let index =0
+        let index = 0
         let colors = [orangeColor, purpleColor, fuchsiaColor, violetColor, greenColor, yellowColor, blueColor]
         index = props.idx % colors.length
-        setBgColor(colors[index]) 
+        setBgColor(colors[index])
     }
 
-    return(
-        <Pressable  style={[styles.container,  {backgroundColor:bgColor}]} onPress={()=>props.onPress()}>
+    return (
+        <Pressable style={[styles.container, { backgroundColor: bgColor }]} onPress={() => props.onPress()}>
             {props.children}
-
         </Pressable>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        width:80,
+        width: 80,
         height: 80,
         padding: 3,
         paddingTop: 7,
-        borderRadius:10,
+        borderRadius: 10,
         margin: 3,
-        alignItems:"center",
-      
+        alignItems: "center",
+
     },
-    })
+})
 
 export default SquareColoredButton

@@ -1,4 +1,3 @@
-// import { StatusBar } from 'expo-status-bar';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { FC, useContext, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, StatusBar, Image, Pressable, Alert } from 'react-native';
@@ -9,7 +8,7 @@ import RootStackParamList from '../../types/INavigateProfile';
 import AvatarComponent from '../../components/AvatarComponent';
 import CoinsPointsDisplayContainer from '../../components/Profile/CoinsPointsDisplayContainer';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
-////
+
 import { FontAwesome5 } from '@expo/vector-icons';
 import SquareColoredButton from '../../components/SquareColoredButton';
 import iconsMap from '../../types/IconsMap';
@@ -37,7 +36,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     const [coin, setCoin] = useState<String>("")
     const [insturction, setInstruction] = useState<String>("")
     const [title, setTitle] = useState<String>("")
-    // const [selectedTask, setSelectedTask]=useState<any[]>([])
+
     const [requestedApproval, setRequestedApproval] = useState<boolean>(false)
 
 
@@ -46,14 +45,11 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     const [childCoin, setChildCoin] = useState<any>("")
     const [childPoint, setChildPoint] = useState<any>("")
 
-
     const [childScheduleRooms, setChildScheduleRooms] = useState<any>()
 
     const [childSelectedRoom, setChildSelectedRoom] = useState<any>()
 
     const [childUpdateCoins, setChildUpdateCoins] = useState<IchildCoinAndPoint>()
-
-
 
 
     let newArr = ['bed', 'bathroom', 'kitchen']
@@ -76,7 +72,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
         }
 
-        //need to re fetch child default space for new data to map room.
+
 
         let nextTasks = childDefaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => oneDays.includes(task.dateScheduled)))
         setChildScheduleTasks(nextTasks)
@@ -105,47 +101,27 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
             rooms.push({ id: room.id, spaceName: room.spaceName, spaceCategory: room.spaceCategory, todaysTasks: taskArr[idx] });
         });
 
-        // let completedTask: any = []
-        // let notCompletedTask: any = []
-        // let newRooms = rooms.slice()
-
-        // newRooms.map((x: any) => x.todaysTasks.map((need: any) => need.isCompleted ? completedTask.push(need) : notCompletedTask.push(need)))
-
         setChildScheduleRooms(rooms != null || rooms.length != 0 ? rooms : 0)
-        // setChildScheduleRoomsCompleted(completedTask != null || completedTask.length != 0 ? completedTask : 0)
-        // setChildScheduleRoomsNotCompleted(notCompletedTask != null || notCompletedTask.length != 0 ? notCompletedTask : 0)
         setChildSelectedRoom(rooms[0] != null || rooms[0] != 0 ? rooms[0] : 0)
         {
             rooms != 0 && rooms[0] != 0 ?
                 setSpace(rooms[0].spaceName)
                 : null
-                //console.log('yess')
+
         }
-
-        //setSpace(rooms[0].spaceName);
-        
     }
-
-
 
     useEffect(() => {
 
         childTaskDate()
-        // console.log("run again")
-        // console.log(runAgain)
         if (runAgain) {
             childTaskDate()
             setRunAgain(false)
         }
 
-
     }, [runAgain])
 
-    
-
-
     return (
-
         <View style={styles.container}>
             <View>
                 <View>
@@ -163,14 +139,11 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                             <UserNameComponent name={childPage.dependentName} />
                         </View>
 
-                        <Text style={{ color: primaryTextColor}}>{childPage.dependentAge} years old</Text>
-                        {/* <Text style={{ color: primaryTextColor, paddingTop:5}}>{childDefaultSpace.collectionName}</Text> */}
-
+                        <Text style={{ color: primaryTextColor }}>{childPage.dependentAge} years old</Text>
 
                         <View style={styles.coinContainer}>
                             <CoinsPointsDisplayContainer coins={childCoins} points={childPoints} ></CoinsPointsDisplayContainer>
                         </View>
-
 
                     </View>
                     <View style={styles.unlockIconView}>
@@ -179,31 +152,27 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                         </Pressable>
                     </View>
 
-
-
                 </View>
                 <View>
-                <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{childDefaultSpace.collectionName}</Text>
+                    <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{childDefaultSpace.collectionName}</Text>
                 </View>
                 {
                     childSelectedRoom != null ?
                         <View style={styles.underLineView}>
-                        <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
+                            <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
                         </View>
 
-                    : null
+                        : null
                 }
-               
+
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
                     {childScheduleRooms != null ?
                         childScheduleRooms.map((room: any, x: number) => {
-                            // missing logic to display task not completed and today and future task.
-
-                            //fix space name and location
+                            
                             return (
                                 room != null ?
                                     <View key={x} style={styles.sqrBtn}>
-                                        <SquareColoredButton idx={x + rState + 1} onPress={() => {setChildSelectedRoom(room), setSpace(room.spaceName) }}>
+                                        <SquareColoredButton idx={x + rState + 1} onPress={() => { setChildSelectedRoom(room), setSpace(room.spaceName) }}>
                                             <View style={styles.sqrBtn}>
                                                 <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
                                             </View>
@@ -212,9 +181,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                                             </View>
                                         </SquareColoredButton>
                                     </View>
-                                    :null
-
-
+                                    : null
                             )
                         })
 
@@ -222,73 +189,72 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                     }
 
                 </ScrollView>
-              
-                    <View style={styles.underLineView}>
-                     <UnderlinedOneHeaderComponent titleFirst={'Remaining Tasks'}></UnderlinedOneHeaderComponent>
-                     </View>
 
-                    
-                
-              
+                <View style={styles.underLineView}>
+                    <UnderlinedOneHeaderComponent titleFirst={'Remaining Tasks'}></UnderlinedOneHeaderComponent>
+                </View>
+
                 <ScrollView style={styles.taskStyle}>
 
                     {
                         childSelectedRoom != null ?
                             childSelectedRoom.todaysTasks.map((taskName: any, x: number) => {
-                                // setChildScheduleRoomsNotCompleted
+                                
 
                                 return (
                                     !taskName.isCompleted ?
-                                        <TaskSpaceRowComponent key={x} idx={x} onPress={() => { setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false)
-                                        
-                                        {
-                                            let childInfoCoin: IchildCoinAndPoint = {
-                                              Id: childPage.id,
-                                              DependentCoins:taskName.task.coins,
-                                              DependentPoints:taskName.task.coins
+                                        <TaskSpaceRowComponent key={x} idx={x} onPress={() => {
+                                            setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false)
+
+                                            {
+                                                let childInfoCoin: IchildCoinAndPoint = {
+                                                    Id: childPage.id,
+                                                    DependentCoins: taskName.task.coins,
+                                                    DependentPoints: taskName.task.coins
+                                                }
+                                                setChildUpdateCoins(childInfoCoin)
                                             }
-                                            setChildUpdateCoins(childInfoCoin)
-                                          }}}>
+                                        }}>
 
-                                            <View style={[{flexDirection: 'row'}]}>
-                                              
-                                              
-                                                    <View style={[{width: '85%',}]}>
-                                                        <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>{taskName.task.name + " " + taskName.item.name}
+                                            <View style={[{ flexDirection: 'row' }]}>
 
-                                                        </Text>
-                                                    </View>
-                                                    <View style={[{width: '15%', justifyContent:'flex-end'}]}>
-                                                        {
-                                                             taskName.isRequestedApproval && !taskName.isCompleted?
-                                                             <Ionicons name="time-sharp" size={30} color="#FFF" />
 
-                                                             : 
-                                                            
-                                                        <Text style={[{ color: 'white', fontSize: 18, fontWeight: 'bold'  }]}> 
-                                                        <FontAwesome5 name="coins" color='white' />  {taskName.task.coins}</Text>
-                                                        }
-                                                     
-                                                    </View>
-                                               
+                                                <View style={[{ width: '85%', }]}>
+                                                    <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>{taskName.task.name + " " + taskName.item.name}
+
+                                                    </Text>
+                                                </View>
+                                                <View style={[{ width: '15%', justifyContent: 'flex-end' }]}>
+                                                    {
+                                                        taskName.isRequestedApproval && !taskName.isCompleted ?
+                                                            <Ionicons name="time-sharp" size={30} color="#FFF" />
+
+                                                            :
+
+                                                            <Text style={[{ color: 'white', fontSize: 18, fontWeight: 'bold' }]}>
+                                                                <FontAwesome5 name="coins" color='white' />  {taskName.task.coins}</Text>
+                                                    }
+
+                                                </View>
+
                                             </View>
 
                                         </TaskSpaceRowComponent>
                                         :
-                                        x < 1 && x===0 ?<Text key={x} style={[{color:primaryTextColor}]}>You Have No Task Today</Text>:null
+                                        x < 1 && x === 0 ? <Text key={x} style={[{ color: primaryTextColor }]}>You Have No Task Today</Text> : null
                                 )
                             })
                             :
-                            <Text style={[{color:primaryTextColor}]}> You have no tasks today</Text>
+                            <Text style={[{ color: primaryTextColor }]}> You have no tasks today</Text>
 
                     }
                 </ScrollView>
                 {
                     childSelectedRoom != null ?
-                <View style={styles.underLineView}>
-                    <UnderlinedOneHeaderComponent titleFirst={'Completed Tasks '}></UnderlinedOneHeaderComponent>
-                </View>
-                : null
+                        <View style={styles.underLineView}>
+                            <UnderlinedOneHeaderComponent titleFirst={'Completed Tasks '}></UnderlinedOneHeaderComponent>
+                        </View>
+                        : null
                 }
                 <ScrollView style={styles.taskStyle}>
 
@@ -296,13 +262,13 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                         childSelectedRoom != null ?
                             childSelectedRoom.todaysTasks.map((taskName: any, x: number) => {
 
-                                // !taskName.isCompleted
+                                
                                 return (
                                     taskName.isCompleted ?
-                                        <TaskSpaceRowComponent key={x+1} idx={x + 1} onPress={() => { setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
+                                        <TaskSpaceRowComponent key={x + 1} idx={x + 1} onPress={() => { setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(!taskName.isRequestedApproval && !taskName.isCompleted ? true : false) }}>
 
                                             <View style={styles.centering}>
-                                                
+
                                                 <View style={{ justifyContent: 'center' }}>
                                                     <View style={{ justifyContent: 'center' }}>
                                                         <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
@@ -315,14 +281,14 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                                             </View>
                                         </TaskSpaceRowComponent>
                                         :
-                                        x < 1 && x===0 ?<Text key={x} style={[{color:primaryTextColor}]}>You Have No Completed Task Today</Text> :null
+                                        x < 1 && x === 0 ? <Text key={x} style={[{ color: primaryTextColor }]}>You Have No Completed Task Today</Text> : null
                                 )
 
 
                             })
                             :
                             null
-                        // {Alert.alert("Error", 'You have no Task', [{ text: "Ok", style: "cancel" }])}
+                        
                     }
                 </ScrollView>
 
@@ -331,10 +297,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                         <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} childInfo={childUpdateCoins} />
                         : null}
 
-
-
             </View>
-
         </View>
     );
 }
@@ -407,12 +370,12 @@ const styles = StyleSheet.create({
     centering: {
         flexDirection: 'row',
         justifyContent: 'center'
-    }, 
+    },
     mainHeader: {
         fontSize: 25,
         fontWeight: "bold",
-        padding:10
-      },
+        padding: 10
+    },
 });
 
 export default ChildTasksScreen

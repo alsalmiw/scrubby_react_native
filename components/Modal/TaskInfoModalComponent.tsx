@@ -84,7 +84,7 @@ const TaskInfoModalComponent: FC<ITaskInfoModal> = ({ Space, Location, task, isC
               if(result){
                 setRunAgain(true)
                 let childRefesh = await GetChildDefaultSchedule(childInfo.Id)
-                if(childRefesh !=null) await setChildDefaultSpace(childRefesh)
+                if(childRefesh.length!=0) await setChildDefaultSpace(childRefesh)
                 Alert.alert("Congratulations", 'Task has been submited to be completed', [{ text: "Ok", style: "cancel", onPress: () =>setTaskModal(false) }]);
                 
                 

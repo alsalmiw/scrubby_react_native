@@ -6,14 +6,14 @@ import * as ImagePicker from 'expo-image-picker';
 import TitleComponent from "./AddEdit/TitleComponent";
 import FullButtonComponent from "./FullButtonComponent";
 import UserContext from "../context/UserContext";
-import { ChangeAvatarImage, ChangeDependentAvatarImage, GetDependantByChildId } from "../services/dataService";
+import { ChangeAvatarImage, ChangeDependentAvatarImage, GetDependantByChildId, GetUserByUsername } from "../services/dataService";
 import { useNavigation } from "@react-navigation/native";
 import TwoFullButtonComponent from './TwoFullButtonComponent';
 
 
 const AddPhotoComponent = () => {
     const {lilacColor, orangeColor, blueColor} = useContext(ThemeContext)
-  const {username, isEditImage, setIsEditImage, memberInfo, userData, setChildPage } = useContext(UserContext)
+  const {username, isEditImage, setIsEditImage, memberInfo, userData, setChildPage, setUserData } = useContext(UserContext)
 
     const [image, setImage] = useState('');
     const [imgType, setImgType] = useState('');
@@ -103,7 +103,12 @@ const AddPhotoComponent = () => {
                           console.log(data)
                           let result = await ChangeAvatarImage(data)
                           if(result) {
+
                               alert("You have successfully updated your photo")
+                              let userInfo = await GetUserByUsername(userData.username)
+                              if (userInfo!=null) {
+                                  setUserData(userInfo)
+                              }
                               navigation.navigate('MyProfile')
                             }
                     

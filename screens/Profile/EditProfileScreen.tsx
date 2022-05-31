@@ -1,7 +1,7 @@
 // import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useState } from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Alert } from 'react-native';
 import {AddPhotoComponent} from '../../components/AddPhotoComponent';
 import RootStackParamList from '../../types/INavigation'
 import InputFieldComponent from '../../components/AddEdit/InputFieldComponent'
@@ -22,6 +22,7 @@ type Props = NativeStackScreenProps <RootStackParamList, 'EditProfile'>
 const EditProfileScreen: FC<Props> = ({navigation})=> {
   const {orangeColor, blueColor} = useContext(ThemeContext)
   const [newName, setNewName] = useState('')
+  const [isSelected, setIsSelected]= useState<boolean>(false)
   const {username, isEditImage, setIsEditImage, memberInfo, userData, setUserData, setChildPage } = useContext(UserContext)
 
 
@@ -37,12 +38,14 @@ const EditProfileScreen: FC<Props> = ({navigation})=> {
   
 
   const changeName = async() => {
-    if(newName.length==0)
-    {
-      alert ("Please enter a new name")
-    }
-    else{
-    
+    let regi = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g;
+    let regiNums= /[0-9]/;
+
+    if (newName.length == 0 || newName == null ||regi.test(newName) || regiNums.test(newName)) {
+      Alert.alert("Error", 'Please Enter a Valid Name or Age. Try Again.', [{ text: "Cancel", style: "cancel" }]);
+      setIsSelected(false)
+      setNewName('')
+    }else{
     if(!memberInfo.isChild)
     {
       let data:INewName = {
@@ -82,7 +85,7 @@ const EditProfileScreen: FC<Props> = ({navigation})=> {
             navigation.navigate('ChildTasks')
           }
   
-    }
+        }
     }
   }
 
@@ -101,11 +104,20 @@ const EditProfileScreen: FC<Props> = ({navigation})=> {
         </View>
         <View>
         <WhiteSubTitleComponent title={!memberInfo.isChild?"New Name": "Child's New Name"} />
-        <InputFieldComponent maxLength={20} value={""} holder="enter new name" hide={false} onChangeText={(e: string)=>setNewName(e)} />
+        <InputFieldComponent maxLength={20} value={newName} holder="enter new name" hide={false} onChangeText={(e: string)=>{setNewName(e), e.length>0?setIsSelected(true):setIsSelected(false)}} />
         </View>
-        <TwoFullButtonComponent text1={"Back"} text2={"Save"} onAcceptPress={handleSave} onBackPress={()=>navigation.goBack()} color={blueColor}/>
-       </> 
+        {
+                !isSelected?
+                <FullButtonComponent radius ={0} onPress={()=>navigation.goBack()} color={blueColor}>
+                <Text>Back</Text>
+                </FullButtonComponent>
 
+                    :  
+
+                 <TwoFullButtonComponent text1={"Back"} text2={"Save"} onAcceptPress={handleSave} onBackPress={()=>navigation.goBack()} color={blueColor}/>
+        }
+       </> 
+        
     :
     <AddPhotoComponent />
  

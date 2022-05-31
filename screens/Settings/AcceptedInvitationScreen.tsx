@@ -28,16 +28,15 @@ const AcceptedInvitationScreen: FC<Props> = ({ navigation }) => {
     const [fullName, setFullName] = useState<string>("");
     const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor } = useContext(ThemeContext);
     const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh, acceptedInvitations, setAcceptedInvitations, rState, mySpaces, setMySpaces } = useContext(UserContext)
-    const [bgColor, setBgColor]= useState('')
+    const [bgColor, setBgColor] = useState('')
 
     let r = Math.floor(Math.random() * 7)
 
     const handleDisplayFullName = async () => {
-       // console.log(acceptedInvitations);
+
 
         let inviterUserNameAsyncStorage = (await AsyncStorage.getItem('Inviter'))!;
-        //This gives me peter
-        //console.log(inviterUserNameAsyncStorage);
+
 
         for (let i = 0; i < acceptedInvitations.length; i++) {
             if (acceptedInvitations[i].inviterUsername === inviterUserNameAsyncStorage) {
@@ -49,13 +48,13 @@ const AcceptedInvitationScreen: FC<Props> = ({ navigation }) => {
             }
         }
 
-       // console.log(mySpaces);
+
 
 
     }
 
     const handleDisplayAlert = () => {
-        //console.log('Hello There')
+
     }
 
     useEffect(() => {
@@ -79,7 +78,7 @@ const AcceptedInvitationScreen: FC<Props> = ({ navigation }) => {
             <View style={styles.secondRowContainer}>
                 <UnderlinedOneHeaderComponent titleFirst='Add To'></UnderlinedOneHeaderComponent>
                 <View style={styles.insideSecondRowContainer1}>
-                    
+
                 </View>
                 <UnderlinedOneHeaderComponent titleFirst='You Are Added To'></UnderlinedOneHeaderComponent>
             </View>

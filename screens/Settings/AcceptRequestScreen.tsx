@@ -7,7 +7,7 @@ import UnderlinedHeaderComponent from "../../components/UnderlinedHeaderComponen
 import UnderlinedOneHeaderComponent from "../../components/UnderlinedOneHeaderComponent";
 import { ThemeContext } from "../../context/ThemeContext";
 import RootStackParamList from "../../types/INavigateSettings";
-/////
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserContext from "../../context/UserContext";
 import { AcceptInvite, DeleteInvite, GetUserByUsername } from "../../services/dataService";
@@ -19,7 +19,7 @@ import UserNameComponent from "../../components/UserNameComponent";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AcceptRequest'>
 
-const AcceptRequestScreen: FC<Props> = ({ navigation, route,}) => {
+const AcceptRequestScreen: FC<Props> = ({ navigation, route, }) => {
 
     interface IPerson {
         coins: number,
@@ -32,7 +32,7 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route,}) => {
     }
 
 
-    const { purpleColor , lilacColor, primaryTextColor, secondaryTextColor} = useContext(ThemeContext)
+    const { purpleColor, lilacColor, primaryTextColor, secondaryTextColor } = useContext(ThemeContext)
     const { inviters, setInviters, userData, refresh, setRefresh } = useContext(UserContext)
     const [fullName, setFullName] = useState("")
     const [Name, setName] = useState("")
@@ -44,54 +44,49 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route,}) => {
         await handleGetLocalNameInfo()
         let accept = await AcceptInvite(person.id, userData.username)
         setRefresh(true)
-        Alert.alert("Congratulation", `${person.name} can now share a space with you`, [{ text: "Cancel", style: "cancel", onPress: () => { setRefresh(true); navigation.navigate("ManageInvites")} }])
+        Alert.alert("Congratulation", `${person.name} can now share a space with you`, [{ text: "Cancel", style: "cancel", onPress: () => { setRefresh(true); navigation.navigate("ManageInvites") } }])
     }
 
     const handleGetLocalNameInfo = async () => {
         let displayFullName: any = await AsyncStorage.getItem('InviterFullName')
-      //  console.log(displayFullName);
+        
         if (displayFullName.length != 0) {
             setFullName(displayFullName)
         }
         let displayPersonName: any = await AsyncStorage.getItem('Inviter')
         let displayPerson = await GetUserByUsername(displayPersonName);
         if (displayPerson != null) {
-            //console.log(displayPerson)
+            
             setName(displayPersonName)
             setPerson(displayPerson);
         }
 
-        
+
 
     }
 
     const handleGetInviterPhoto = async () => {
         let photo = await AsyncStorage.getItem('InviterPhoto')!;
         setInviterPhoto(photo);
-        
+
     }
 
-    
+
 
     const handleDisplayAlert = () => {
-        Alert.alert("Deleting request" , "You are about to delete a request, would you like to delete this?", 
-        [
-            { text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "destructive" },
-            { text : "Delete", onPress: removeInvitee, style: "default" }
-        ])
+        Alert.alert("Deleting request", "You are about to delete a request, would you like to delete this?",
+            [
+                { text: "Cancel", onPress: () => {}, style: "destructive" },
+                { text: "Delete", onPress: removeInvitee, style: "default" }
+            ])
     }
 
-  
+
 
     const removeInvitee = async () => {
-        //call delete fetch here
-       let result = await DeleteInvite( person.id, userData.username)
-       //console.log(result);
-
-       //console.log(result);
-
-        //do I even need this code
-        //setInviters(inviters.filter((person: IPerson) => person.username != Name))
+        
+        let result = await DeleteInvite(person.id, userData.username)
+        
         setRefresh(true)
         navigation.navigate("ManageInvites");
 
@@ -103,7 +98,7 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route,}) => {
     useEffect(() => {
         handleGetName()
         handleGetInviterPhoto();
-        //console.log('hello')
+        
 
     }, [])
 
@@ -114,28 +109,28 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route,}) => {
                     <HeaderComponent title={"Pending Request"}></HeaderComponent>
                 </View>
                 <View style={styles.firstRowContainer}>
-                    
-                    <AvatarComponent onPress={()=>console.log("Im in the right page")} imageSource={inviterPhoto}/>
+
+                    <AvatarComponent onPress={() => {}} imageSource={inviterPhoto} />
 
                     <View style={styles.insideFirstRowContainer1}>
-                    <UserNameComponent name={fullName}></UserNameComponent>
-                    <Pressable style={{ flexDirection: 'row' , alignItems: 'center'}} onPress={handleDisplayAlert}>
-                    <Feather name="trash-2" size={30} color={lilacColor} />
-                        <UserNameComponent name="Delete User"></UserNameComponent>
-                    </Pressable>
+                        <UserNameComponent name={fullName}></UserNameComponent>
+                        <Pressable style={{ flexDirection: 'row', alignItems: 'center' }} onPress={handleDisplayAlert}>
+                            <Feather name="trash-2" size={30} color={lilacColor} />
+                            <UserNameComponent name="Delete User"></UserNameComponent>
+                        </Pressable>
                     </View>
 
                 </View>
-              
+
                 <View style={styles.underlineContainer}>
                     <UnderlinedOneHeaderComponent titleFirst="Action" />
                 </View>
-                <View style={[styles.underlineContainer, {paddingTop:10}]}>
-                    <UserNameComponent name="This user has invited you to share responsibilities."/>
+                <View style={[styles.underlineContainer, { paddingTop: 10 }]}>
+                    <UserNameComponent name="This user has invited you to share responsibilities." />
                 </View>
 
             </View>
-            <TwoFullButtonComponent text1="Back" text2="Accept" color={purpleColor} onBackPress={() => {navigation.navigate("ManageInvites"), console.log()}} onAcceptPress={() => { handleAcceptBtn() }} />
+            <TwoFullButtonComponent text1="Back" text2="Accept" color={purpleColor} onBackPress={() => { navigation.navigate("ManageInvites") }} onAcceptPress={() => { handleAcceptBtn() }} />
         </>
     )
 }

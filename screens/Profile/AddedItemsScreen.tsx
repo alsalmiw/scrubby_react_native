@@ -1,4 +1,3 @@
-// import { StatusBar } from 'expo-status-bar';
 import { FC, useState, useContext } from 'react';
 import { ScrollView, StyleSheet, Text, View, StatusBar, FlatList } from 'react-native';
 import UserContext from '../../context/UserContext';
@@ -36,160 +35,114 @@ interface noColorTaskInfo {
   color?: number
 }
 
-
-
 type Props = NativeStackScreenProps<RootStackParamList, 'AddedItems'>
 
-
-const AddedItemsScreen: FC<Props> = ({navigation}) => {
+const AddedItemsScreen: FC<Props> = ({ navigation }) => {
 
   const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData, rState, setRState, setRoomTasks, myRoom, storedAddedItems, setStoredAddedItems, roomTasks, noAddedItems, setNoAddedItems } = useContext(UserContext)
 
   const { lilacColor, purpleColor } = useContext(ThemeContext)
   const windowWidth = Dimensions.get('window').width * 0.25;
-  
+
 
   const handleNavigate = () => {
-    //console.log('Hello World');
     navigation.navigate("AddItems");
   }
 
   const handleNavigateDone = async () => {
-  
-    //console.log('This is the done button');
-    //console.log(addTask);
 
     let newAddTask: noColorTaskInfo[] = [...addTask];
-   
-    //await AddSelectedTask(addTask)
-
-    //I need to copy addTask to another variable
-    //Then i need to get that new variable and loop through each object and delete the color property
-    //Then with the newly formatted object without color property, send it to AddSelectedTask(newAddTask)
-    //Then i must set the addTask to empty 
-
-    //console.log('This is the new add task array of object');
-    //console.log(newAddTask);
 
     newAddTask.forEach((task: noColorTaskInfo) => {
       delete task.color;
     })
 
-    //console.log('This is the deleted color new Add Task');
-   //console.log(newAddTask);
-
-    //Now i just send newAddTask to the addSelectedTask
     let result = await AddSelectedTask(newAddTask)
-    
-    //console.log("result is " + result)
-    if(result)
-    {
+
+    if (result) {
       let tasks = await GetTasksByRoomId(newAddTask[0].spaceId)
-    if(tasks.length!= 0){
+      if (tasks.length != 0) {
 
-      setRoomTasks(tasks)
-      navigation.navigate('AddedTasks')
-      //console.log(tasks)
-    }
-       
+        setRoomTasks(tasks)
+        navigation.navigate('AddedTasks')
+      }
+
     }
 
-    //I am assuming
     setAddTask([])
 
-
-    //This is just a default location, need to ask where this exactly goes
- 
   }
 
-  const handleDeleteItem = (id:number) => {
+  const handleDeleteItem = (id: number) => {
 
     setAddTask((currentTasks: any) => {
 
-      return currentTasks.filter((task:any, x:number) => x !== id)
-      
+      return currentTasks.filter((task: any, x: number) => x !== id)
+
     });
-  
+
   }
 
-  const handleDeleteItemTask = async(task: any) => {
-    //console.log(task.id)
+  const handleDeleteItemTask = async (task: any) => {
     let isDelete = await DeleteTaskByTaskId(task.id)
-    if(isDelete){
-     // console.log(isDelete)
-      setStoredAddedItems(storedAddedItems.filter((addedtask: any)=> addedtask.id !== task.id))
-      setRoomTasks(roomTasks.filter((addedTask: any)=> addedTask.id !== task.id))
+    if (isDelete) {
+      setStoredAddedItems(storedAddedItems.filter((addedtask: any) => addedtask.id !== task.id))
+      setRoomTasks(roomTasks.filter((addedTask: any) => addedTask.id !== task.id))
     }
 
   }
-  
+
   return (
     <View style={styles.container}>
-      {/* This header component use font size 25, later must change to percentage based on device width */}
-     <View>
       <View>
-        <HeaderComponent title={myRoom.spaceName}/>
-        
-      </View>
-      <View style={styles.underlineContainer}>
-      <UnderlinedOneHeaderComponent titleFirst="Added Items" />
-      </View>
+        <View>
+          <HeaderComponent title={myRoom.spaceName} />
+        </View>
+        <View style={styles.underlineContainer}>
+          <UnderlinedOneHeaderComponent titleFirst="Added Items" />
+        </View>
 
-
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: '2%' , alignItems: 'center'}}>
-       
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: '2%', alignItems: 'center' }}>
           <AddItemButtonComponent onPress={handleNavigate}>
             <Entypo name="squared-plus" size={windowWidth} color={lilacColor} />
           </AddItemButtonComponent>
-        
-        {
+          {
+            addTask.map((colorBtn: taskInfo, x: number) => {
+              return (
+                <View key={x}>
+                  <SquareColoredButton key={colorBtn.id} idx={colorBtn.color} onPress={handleDeleteItem.bind(this, x)} >
+                    <Entypo name="minus" size={30} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
+                    <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>{colorBtn.name}</Text>
+                  </SquareColoredButton>
+                </View>
+              )
+            })
+          }
+          {
+            storedAddedItems.length > 0 ?
 
-          addTask.map((colorBtn: taskInfo, x: number) => {
-           // console.log(colorBtn);
-            return (
-              <View key={x}>
-                <SquareColoredButton key={colorBtn.id} idx={colorBtn.color}  onPress={handleDeleteItem.bind(this, x)} >
-                  <Entypo name="minus" size={30} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
-                  <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>{colorBtn.name}</Text>
-                </SquareColoredButton>
-              </View>
-
-            )
-          })
-        }
-        {
-          storedAddedItems.length > 0?
-
-          storedAddedItems.map((task: any, idx: number) =>{
-          return(
-            <View key={idx}>
-            <SquareColoredButton key={task.id} idx={task.color}  onPress={()=>handleDeleteItemTask(task)} >
-              <Entypo name="minus" size={30} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
-              <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>{task.item.name}</Text>
-            </SquareColoredButton>
-          </View>
-
-          )
-          })
-
-          : null
-        }
+              storedAddedItems.map((task: any, idx: number) => {
+                return (
+                  <View key={idx}>
+                    <SquareColoredButton key={task.id} idx={task.color} onPress={() => handleDeleteItemTask(task)} >
+                      <Entypo name="minus" size={30} color="white" style={{ paddingBottom: 0, marginBottom: 0, textAlign: 'center' }} />
+                      <Text style={{ color: 'white', textAlign: 'center', marginTop: 0 }}>{task.item.name}</Text>
+                    </SquareColoredButton>
+                  </View>
+                )
+              })
+              : null
+          }
+        </View>
       </View>
-      </View>
-        {
-          noAddedItems || (noAddedItems && storedAddedItems.length!>0) ?
-          <FullButtonComponent radius ={0} onPress={()=>{navigation.goBack(), setNoAddedItems(false)}} color={purpleColor}>
+      {
+        noAddedItems || (noAddedItems && storedAddedItems.length! > 0) ?
+          <FullButtonComponent radius={0} onPress={() => { navigation.goBack(), setNoAddedItems(false) }} color={purpleColor}>
             <Text>Back</Text>
           </FullButtonComponent>
-          : 
-
-                <TwoFullButtonComponent color={purpleColor} text1={"Back"} text2={"Add"} onBackPress={()=>{navigation.navigate("AddedTasks"),  setAddTask([])}} onAcceptPress={handleNavigateDone} />
-        }
-
-      
-
-
-
+          :
+          <TwoFullButtonComponent color={purpleColor} text1={"Back"} text2={"Add"} onBackPress={() => { navigation.navigate("AddedTasks"), setAddTask([]) }} onAcceptPress={handleNavigateDone} />
+      }
     </View>
   );
 }
@@ -209,5 +162,3 @@ const styles = StyleSheet.create({
 });
 
 export default AddedItemsScreen
-
-// onPress={() => { colorBtn.UserId = userData.id, addTask.push(colorBtn), console.log(addTask)

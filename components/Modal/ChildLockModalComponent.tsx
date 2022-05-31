@@ -54,7 +54,7 @@ const ChildLockModalComponent: FC = ({ }) => {
             Id: childPage.id,
             DependentPassCode: childPassCode,
         }
-        console.log(childinfo)
+        
         await UpdateChildPassCode(childinfo)
     }
 
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         marginTop: 10,
     },
-    
+
     codeInputBtn: {
         flex: 0,
         flexDirection: 'row',

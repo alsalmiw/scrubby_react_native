@@ -95,33 +95,45 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
             isDeleted: false,
             isAccepted: true
         }
-       // console.log(newSharedSpace)
+       //console.log(newSharedSpace)
 
         let result = await CreateSharedSpaces(newSharedSpace)
         
         if (result) {
-            console.log("You added a new shared space")
+            //console.log("You added a new shared space")
             setRefreshLocalUseEffect((prevState: boolean) => !prevState);
+            let sharedSpaces = await GetSharedCollectionsDetailsByUsername(userData.username)
             let invitesInfo = await GetInvitationByUsername(userData.username)
+            if(sharedSpaces.length!==0) {
+              //  console.log("i resetted shared spaces")
+             //  console.log(sharedSpaces)
+                setSharedSpacesInfo(sharedSpaces)
+                
+            }else{
+                setSharedSpacesInfo([])
+             
+            }
             if(invitesInfo.length!=0){
                 setInvited(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
                 setInviters(invitesInfo.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
                 setAcceptedInvitations(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
             //  console.log(invitesInfo.sentInvites)
-                setRefreshTaskPage(true)
-                console.log("I resetted wiith info")
+             
+               
+                //console.log("I resetted wiith info")
+            
             }else{
                 setInvited([])
                 setInviters([])
                 setAcceptedInvitations([])
             }
-            setRefreshTaskPage(true)
+         
         }
 
     }
 
     const handleDeleteSharedSpace = async (filteredSharedSpace: any) => {
-        console.log("You deleted a shared space");
+        //console.log("You deleted a shared space");
         // console.log(filteredSharedSpace.id)
         // console.log(sharedSpaces);
 
@@ -133,7 +145,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
         // console.log(result);
         
         if (result) {
-            console.log("You deleted a shared Space")
+            //console.log("You deleted a shared Space")
             setRefreshLocalUseEffect((prevState: boolean) => !prevState);
             let sharedSpaces = await GetSharedCollectionsDetailsByUsername(userData.username)
             let invitesInfo = await GetInvitationByUsername(userData.username)
@@ -155,7 +167,9 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
                 setInvited([])
                 setInviters([])
                 setAcceptedInvitations([])
+                setRefreshTaskPage(true)
             }
+         
            
          
         }
@@ -237,7 +251,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
             <View>
             <HeaderComponent title={'Add To My Space'}></HeaderComponent>
             <View style={styles.firstRowContainer}>
-                <AvatarComponent onPress={()=>console.log("addedpeople")} imageSource={invitedPhoto} />
+                <AvatarComponent onPress={()=>console.log("")} imageSource={invitedPhoto} />
                 <View style={styles.insideFirstRowContainer1}>
                     <UserNameComponent name={fullName}></UserNameComponent>
                     <Pressable style={styles.insideFirstRowContainer2} onPress={handleDeleteUserAlert} >
@@ -269,7 +283,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
                     {
                         myHouses.filter((myHouse: any) => !sharedSpaces.map((sharedSpace: any) => sharedSpace.collectionId).includes(myHouse.id)).map((filteredMySpaces: any, idx: number) => 
                         <TaskSpaceRowPlus
-                            idx={rState + idx}
+                            idx={r + idx}
                             key={filteredMySpaces.collectionName}
                             onPress={handleAddSharedAlert.bind(this, filteredMySpaces)}>
                             {filteredMySpaces.collectionName}
@@ -288,7 +302,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
                     {
                         myHouses.filter((myHouse: any) => sharedSpaces.map((sharedSpace: any) => sharedSpace.collectionId).includes(myHouse.id)).map((filteredSharedSpace: any, idx: number) => 
                         <TaskSpaceRowMinus
-                            idx={rState + idx + mySpaces.length + 1}
+                            idx={r + idx + 2}
                             key={filteredSharedSpace.id + 100}
                             onPress={handleDeleteSharedAlert.bind(this, filteredSharedSpace)}>
                             {filteredSharedSpace.collectionName}

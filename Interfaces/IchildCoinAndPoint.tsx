@@ -1,5 +1,5 @@
 export default interface IchildCoinAndPoint {
-    Id: number;
-    DependentCoins: number;
-    DependentPoints: number
-  }
+  Id: number;
+  DependentCoins: number;
+  DependentPoints: number
+}

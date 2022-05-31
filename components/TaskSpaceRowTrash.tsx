@@ -4,7 +4,7 @@ import TaskSpaceRowIconComponent from './TaskSpaceRowIconComponent';
 import TaskSpaceRowComponent from './TaskSpaceRowComponent';
 import { ThemeContext } from '../context/ThemeContext';
 import { Feather } from '@expo/vector-icons';
-import { DeleteSpaceCollectionById, GetSpaceCollectionByUsername } from '../services/dataService';
+import { DeleteSpaceCollectionById, GetSpaceCollectionByUsername, GetUserDefaultSchedule } from '../services/dataService';
 import UserContext from '../context/UserContext';
 
 
@@ -19,7 +19,7 @@ interface Props {
 const TaskSpaceRowTrash: FC<Props> = (props) => {
 
   const {bgColor, lilacColor} = useContext(ThemeContext)
-  const { setMySpaces, mySpaces, setMyHouses, myHouses, userData } = useContext(UserContext)
+  const { setMySpaces, mySpaces, setMyHouses, myHouses, userData, defaultSpace, setDefaultSpace, setRunAgain, setSharedSpacesInfo, sharedSpacesInfo, spacesRooms, setSpacesRoom } = useContext(UserContext)
 
 
   const handleDeleteSpace = async () => {
@@ -30,6 +30,13 @@ const TaskSpaceRowTrash: FC<Props> = (props) => {
       if(collections.length > 0){
         setMyHouses(collections)
     }
+    if(props.spaceId == defaultSpace.id){
+      let defaultCollection = await GetUserDefaultSchedule(userData.username)
+        setDefaultSpace(defaultCollection)
+        setRunAgain(true)
+    }
+    setSharedSpacesInfo(sharedSpacesInfo.filter((space:any) => space.id!=props.spaceId))
+    setSpacesRoom(spacesRooms.filter((space:any) => space.id!=props.spaceId))
     }
     console.log(props.spaceId)
     

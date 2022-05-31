@@ -79,8 +79,9 @@ const AddedTasksScreen: FC<Props> = ({navigation})=> {
       <ScrollView>
     <View style={styles.container}>
          <HeaderComponent title="MY Added Tasks" />
+         <View style={{padding: 10}}>
          <UnderlinedOneHeaderComponent titleFirst={"My Room: "+ myRoom.spaceName} />
-        
+        </View>
     </View>
      <View style={styles.addExtraContainer}>
      <AddItemButtonComponent onPress={displayAddIcon}>
@@ -116,7 +117,9 @@ const AddedTasksScreen: FC<Props> = ({navigation})=> {
       })
       :
       
-      <Text>You have no Tasks</Text>
+      <View style={[ {padding:10}]}>
+                    <UserNameComponent name="You have no tasks. Add items for a list of auto generated tasks."/>
+                </View>
     }
     
     
@@ -143,8 +146,8 @@ const AddedTasksScreen: FC<Props> = ({navigation})=> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    //alignItems: 'center',
+    justifyContent:"space-between",
     
   },
   addExtraContainer:{

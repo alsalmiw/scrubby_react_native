@@ -16,7 +16,7 @@ const AvatarComponent:FC<IAvatar> =(props) =>{
     const handleViewProfile =()=> {
     if(props.onPress)
     {
-        console.log('pressed Image')
+     
         props.onPress()
     }
 }

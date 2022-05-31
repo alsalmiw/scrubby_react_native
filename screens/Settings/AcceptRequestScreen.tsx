@@ -11,9 +11,10 @@ import RootStackParamList from "../../types/INavigateSettings";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserContext from "../../context/UserContext";
 import { AcceptInvite, DeleteInvite, GetUserByUsername } from "../../services/dataService";
-
+import { Feather } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import AvatarComponent from "../../components/AvatarComponent";
+import UserNameComponent from "../../components/UserNameComponent";
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AcceptRequest'>
@@ -31,7 +32,7 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route,}) => {
     }
 
 
-    const { purpleColor } = useContext(ThemeContext)
+    const { purpleColor , lilacColor, primaryTextColor, secondaryTextColor} = useContext(ThemeContext)
     const { inviters, setInviters, userData, refresh, setRefresh } = useContext(UserContext)
     const [fullName, setFullName] = useState("")
     const [Name, setName] = useState("")
@@ -43,19 +44,19 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route,}) => {
         await handleGetLocalNameInfo()
         let accept = await AcceptInvite(person.id, userData.username)
         setRefresh(true)
-        Alert.alert("Congratulation", `${person.username} can now share a space with you`, [{ text: "Cancel", style: "cancel", onPress: () => { setRefresh(true); navigation.navigate("ManageInvites")} }])
+        Alert.alert("Congratulation", `${person.name} can now share a space with you`, [{ text: "Cancel", style: "cancel", onPress: () => { setRefresh(true); navigation.navigate("ManageInvites")} }])
     }
 
     const handleGetLocalNameInfo = async () => {
         let displayFullName: any = await AsyncStorage.getItem('InviterFullName')
-        console.log(displayFullName);
+      //  console.log(displayFullName);
         if (displayFullName.length != 0) {
             setFullName(displayFullName)
         }
         let displayPersonName: any = await AsyncStorage.getItem('Inviter')
         let displayPerson = await GetUserByUsername(displayPersonName);
         if (displayPerson != null) {
-            console.log(displayPerson)
+            //console.log(displayPerson)
             setName(displayPersonName)
             setPerson(displayPerson);
         }
@@ -85,7 +86,7 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route,}) => {
     const removeInvitee = async () => {
         //call delete fetch here
        let result = await DeleteInvite( person.id, userData.username)
-       console.log(result);
+       //console.log(result);
 
        //console.log(result);
 
@@ -102,7 +103,7 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route,}) => {
     useEffect(() => {
         handleGetName()
         handleGetInviterPhoto();
-
+        //console.log('hello')
 
     }, [])
 
@@ -110,28 +111,31 @@ const AcceptRequestScreen: FC<Props> = ({ navigation, route,}) => {
         <>
             <View style={styles.container}>
                 <View>
-                    <HeaderComponent title={"ADD TO MY SPACE"}></HeaderComponent>
+                    <HeaderComponent title={"Pending Request"}></HeaderComponent>
                 </View>
-                <View style={{ flexDirection: 'row', paddingLeft: '2%' }}>
+                <View style={styles.firstRowContainer}>
                     
-                    <AvatarComponent onPress={undefined} imageSource={inviterPhoto}/>
-         
+                    <AvatarComponent onPress={()=>console.log("Im in the right page")} imageSource={inviterPhoto}/>
 
-                    <Pressable onPress={handleDisplayAlert}>
-                        <FontAwesome name="trash-o" size={24} style={{ paddingLeft: 20 }} color="#414141" />
-                        <Text>Delete User</Text>
+                    <View style={styles.insideFirstRowContainer1}>
+                    <UserNameComponent name={fullName}></UserNameComponent>
+                    <Pressable style={{ flexDirection: 'row' , alignItems: 'center'}} onPress={handleDisplayAlert}>
+                    <Feather name="trash-2" size={30} color={lilacColor} />
+                        <UserNameComponent name="Delete User"></UserNameComponent>
                     </Pressable>
+                    </View>
 
                 </View>
+              
                 <View style={styles.underlineContainer}>
                     <UnderlinedOneHeaderComponent titleFirst="Action" />
                 </View>
-                <View style={styles.underlineContainer}>
-                    <Text style={{ fontSize: 20, paddingTop: 10 }}>This user has invited you to share responsibilities.</Text>
+                <View style={[styles.underlineContainer, {paddingTop:10}]}>
+                    <UserNameComponent name="This user has invited you to share responsibilities."/>
                 </View>
 
             </View>
-            <TwoFullButtonComponent text1="Back" text2="Accept" color={purpleColor} onBackPress={() => navigation.navigate("ManageInvites")} onAcceptPress={() => { handleAcceptBtn() }} />
+            <TwoFullButtonComponent text1="Back" text2="Accept" color={purpleColor} onBackPress={() => {navigation.navigate("ManageInvites"), console.log()}} onAcceptPress={() => { handleAcceptBtn() }} />
         </>
     )
 }
@@ -144,6 +148,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: "space-between",
         paddingLeft: 10,
+    },
+    insideFirstRowContainer1: {
+        justifyContent: 'space-around',
+        paddingLeft: '3%',
+        flex: 1
+    },
+    firstRowContainer: {
+        flexDirection: 'row',
+    },
+    insideFirstRowContainer2: {
+        flexDirection: 'row',
+        alignItems: 'center'
     },
 });
 

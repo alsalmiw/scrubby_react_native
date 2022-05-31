@@ -33,11 +33,11 @@ const AcceptedInvitationScreen: FC<Props> = ({ navigation }) => {
     let r = Math.floor(Math.random() * 7)
 
     const handleDisplayFullName = async () => {
-        console.log(acceptedInvitations);
+       // console.log(acceptedInvitations);
 
         let inviterUserNameAsyncStorage = (await AsyncStorage.getItem('Inviter'))!;
         //This gives me peter
-        console.log(inviterUserNameAsyncStorage);
+        //console.log(inviterUserNameAsyncStorage);
 
         for (let i = 0; i < acceptedInvitations.length; i++) {
             if (acceptedInvitations[i].inviterUsername === inviterUserNameAsyncStorage) {
@@ -49,13 +49,13 @@ const AcceptedInvitationScreen: FC<Props> = ({ navigation }) => {
             }
         }
 
-        console.log(mySpaces);
+       // console.log(mySpaces);
 
 
     }
 
     const handleDisplayAlert = () => {
-        console.log('Hello There')
+        //console.log('Hello There')
     }
 
     useEffect(() => {

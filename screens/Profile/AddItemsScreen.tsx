@@ -41,7 +41,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AddItems'>
 
 
 const AddItemsScreen: FC<Props> = ({ navigation }) => {
-  const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData, rState, setRState, myRoom, storedAddedItems, setStoredAddedItems } = useContext(UserContext)
+  const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData, rState, setRState, myRoom, storedAddedItems, setStoredAddedItems, setNoAddedItems } = useContext(UserContext)
 
   const[counter,setCounter] =useState<number>(0)
   const [selectedCategory, setSelectedCategory] = useState<string>('Bathroom')
@@ -83,12 +83,15 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
       setStoredAddedItems(addedItemsWColor)
     }else{
          setStoredAddedItems([])
+        
     }
 
 
     navigation.navigate('AddedItems')
-    setCounter(0);
+    setNoAddedItems(false)
   }
+
+
 
   return (
     <View style={{flex:1,  justifyContent: "space-between"}}>
@@ -158,7 +161,7 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
               {
                 task.map((colorBtn: taskInfo, x: number) => {
                   return (
-                    <SquareColoredButton key={x} idx={rState + x} onPress={() => { colorBtn.UserId = userData.id, addTask.push({ ...colorBtn, 'color': (rState + x), 'spaceId': myRoom.id }), console.log(addTask), setCounter(counter + 1) }} >
+                    <SquareColoredButton key={x} idx={rState + x} onPress={() => { colorBtn.UserId = userData.id, addTask.push({ ...colorBtn, 'color': (rState + x), 'spaceId': myRoom.id }),  setCounter(counter + 1) }} >
                       <Entypo name="plus" size={30} color="white" style={styles.plusIconStyle} />
                       <Text style={styles.plusIconText}>{colorBtn.name}</Text>
                     </SquareColoredButton>
@@ -174,7 +177,7 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
 
       </ScrollView >
       <View></View>
-      <TwoFullButtonComponent text1={"Back"} text2={"Add"} onAcceptPress={handleSelectedTasks} onBackPress={()=>navigation.goBack()} color={purpleColor}/>
+      <TwoFullButtonComponent text1={"Back"} text2={"Add"} onAcceptPress={handleSelectedTasks} onBackPress={()=>{navigation.goBack(), setNoAddedItems(true)}} color={purpleColor}/>
       
       
     </View>

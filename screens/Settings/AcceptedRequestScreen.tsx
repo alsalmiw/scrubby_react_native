@@ -17,6 +17,7 @@ import FullButtonComponent from '../../components/FullButtonComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DeleteInvite, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername, GetSpaceCollectionByUserId } from '../../services/dataService';
 import { DeleteSharedSpacesById } from '../../services/dataService';
+import { DeleteInvitationByInvitedAndInviterUsername, DeleteInvitation } from '../../services/dataService';
 import TaskSpaceRowIconComponent from '../../components/TaskSpaceRowIconComponent';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import TaskSpaceRowTrash from '../../components/TaskSpaceRowTrash';
@@ -38,40 +39,38 @@ const AcceptedRequestScreen: FC<Props> = ({ navigation }) => {
 
 
     const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor } = useContext(ThemeContext);
-    const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh, acceptedInvitations, setAcceptedInvitations, rState, mySpaces, setMySpaces, sentAcceptedInvitations, setSentAcceptedInvitations, savedUsername } = useContext(UserContext)
+    const { userData, inviters, setInviters, invited, setInvited, refresh, setRefresh, acceptedInvitations, setAcceptedInvitations, rState, mySpaces, setMySpaces, sentAcceptedInvitations, setSentAcceptedInvitations, savedUsername, myHouse } = useContext(UserContext)
 
     const [sharedSpaces, setSharedSpaces] = useState<any>([]);
     const [refreshLocalUseEffect, setRefreshLocalUseEffect] = useState<boolean>(false);
     const [inviterInfo, setInviterInfo] = useState<any>("");
     const [inviterSpaceCollections, setInviterSpaceCollections] = useState<any>();
+    const [r, set] = useState<number>(Math.floor(Math.random() * 7))
 
 
-    let r = Math.floor(Math.random() * 7)
+
 
 
     const handleDisplaySharedSpaces = async () => {
 
         //Gets shared spaces shared by both invited and inviter
-        console.log('Saved name is')
-        console.log(savedUsername)
+        // console.log('Saved name is')
+        // console.log(savedUsername)
         let inviterRequestResult = JSON.parse((await AsyncStorage.getItem("AcceptedInviterRequest"))!);
 
-        let result1 = await AsyncStorage.getAllKeys();
-        console.log(result1);
-
-        console.log(inviterRequestResult);
+        // console.log(inviterRequestResult);
 
         setInviterInfo(inviterRequestResult);
 
 
 
         let result = await GetSharedSpacesByInvitedAndInviterUsername(savedUsername, inviterRequestResult.inviterUsername!);
-        console.log(result)
+       // console.log(result)
 
         setSharedSpaces(result);
 
         let inviterSpaceCollectionResult = await GetSpaceCollectionByUserId(inviterRequestResult.inviterId);
-        console.log(inviterSpaceCollectionResult)
+       // console.log(inviterSpaceCollectionResult)
         setInviterSpaceCollections(inviterSpaceCollectionResult)
 
 
@@ -106,42 +105,38 @@ const AcceptedRequestScreen: FC<Props> = ({ navigation }) => {
     // }
 
     const handleDeleteSharedSpace = async (sharedSpace: any) => {
-        console.log("You deleted a shared space");
-        console.log(sharedSpace);
-        console.log(sharedSpace.id)
+     //   console.log("You deleted a shared space");
+      //  console.log(sharedSpace);
+    //    console.log(sharedSpace.id)
 
         //I believe that sharedSpace.id is what we are going to send to DeleteSharedSpacesById(sharedSpace.id);
         //And this should delete shared space
        
 
 
-        // let result = await DeleteSharedSpacesById(findSharedSpace);
-        // console.log(result);
+        let result = await DeleteSharedSpacesById(sharedSpace);
+       // console.log(result);
 
-        // if (result) {
-        //     console.log("You deleted a shared Space")
-        //     setRefreshLocalUseEffect((prevState: boolean) => !prevState);
-        // }
+        if (result) {
+           // console.log("You deleted a shared Space")
+            setRefreshLocalUseEffect((prevState: boolean) => !prevState);
+        }
 
     }
 
     const handleDeleteInvite = async () => {
 
-        let invitedUserToBeDeleted = await AsyncStorage.getItem('Invited')!;
+        // console.log(savedUsername);
+        // console.log(inviterInfo.inviterUsername)
 
-        const DeleteInviteFetch = async () => {
-            let result = await DeleteInvite(userData.id, invitedUserToBeDeleted!);
-            console.log(result);
-            // setRefresh((prevRefresh:boolean) => prevRefresh = true)
-            // navigation.navigate('ManageInvites');
-            console.log('shit')
-            console.log(userData.id)
-            console.log(invitedUserToBeDeleted);
+        // console.log('This is the local storage request info');
+        // console.log(inviterInfo.id);
 
-        }
-
-        DeleteInviteFetch();
-
+        //Need to test this after walaa checks invites
+        let result = await DeleteInvitation(inviterInfo.id);
+        console.log(result);
+        setRefresh((prevRefresh:boolean) => prevRefresh = true)
+        navigation.navigate('ManageInvites');
 
     }
 
@@ -196,14 +191,15 @@ const AcceptedRequestScreen: FC<Props> = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <View>
             <HeaderComponent title={'Add To My Space'}></HeaderComponent>
             <View style={styles.firstRowContainer}>
-                <AvatarComponent onPress={undefined} imageSource={inviterInfo.inviterPhoto} />
+                <AvatarComponent onPress={()=> console.log('right page')} imageSource={inviterInfo.inviterPhoto} />
                 <View style={styles.insideFirstRowContainer1}>
                     <UserNameComponent name={inviterInfo.inviterFullname}></UserNameComponent>
                     <View style={styles.insideFirstRowContainer2}>
                         {/* The hello there is just a test, i will remove later when done adding changes */}
-                        <Feather name="trash-2" size={40} color='#000' onPress={handleDeleteUserAlert} />
+                        <Feather name="trash-2" size={30} color={lilacColor} onPress={handleDeleteUserAlert} />
                         <UserNameComponent name="Delete User"></UserNameComponent>
                     </View>
                 </View>
@@ -225,6 +221,7 @@ const AcceptedRequestScreen: FC<Props> = ({ navigation }) => {
                     } */}
 
                     {
+                        sharedSpaces.length > 0 ?
                         sharedSpaces.map((sharedSpace: any, idx: number) =>
                             <TaskSpaceRowMinus
                                 idx={rState + idx}
@@ -237,12 +234,16 @@ const AcceptedRequestScreen: FC<Props> = ({ navigation }) => {
                                 }
 
                             </TaskSpaceRowMinus>)
+                            : 
+                            <View style={[{padding:10}]}>
+                            <UserNameComponent name="You have accepted to share responsibilities with this person. They have not added you to their spaces yet."/>
+                        </View>
                     }
 
                 </View>
 
             </View>
-
+            </View>
             <FullButtonComponent onPress={handleNavigateBack} radius={0} color={purpleColor}>
                 <Text>Back</Text>
             </FullButtonComponent>
@@ -256,6 +257,7 @@ export default AcceptedRequestScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        justifyContent: "space-between",
         paddingTop: StatusBar.currentHeight,
     },
     firstRowContainer: {
@@ -277,6 +279,6 @@ const styles = StyleSheet.create({
     },
     insideSecondRowContainer1: {
         marginTop: '3%'
-    }
-
+    }, 
+ 
 })

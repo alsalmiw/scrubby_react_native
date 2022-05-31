@@ -31,7 +31,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ScheduleScreen'>
 
 
 const ScheduleScreen: FC<Props> = ({ navigation }) => {
-  const { savedUsername, setSavedUsername, setMySpaces, mySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate, defaultCollection, runScheduleAgain, setRunScheduleAgain, defaultScheduleOptions, firstTime, setFirstTime, setSpacesRoom, setWaiting , waiting } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, mySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate, defaultCollection, runScheduleAgain, setRunScheduleAgain, defaultScheduleOptions, firstTime, setFirstTime, setSpacesRoom, setWaiting , waiting, defaultDeleted, setDefaultDeleted } = useContext(UserContext)
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
 
   const [taskInfo, setTaskInfo] = useState() as any
@@ -61,6 +61,9 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
    
     if(firstTime){
       GetUserInfoByUsername()
+    }
+    if(defaultDeleted){
+      GetTaskDates()
     }
    }
     
@@ -108,7 +111,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
     if (datesArr.length > 0) {
 
 
-    //     console.log(runScheduleAgain)
+    //     console.log(runSchedule//Again)
       if (runScheduleAgain==true) {
         //setActiveDate(activeDate)
         getRoomsbyDate(activeDate)

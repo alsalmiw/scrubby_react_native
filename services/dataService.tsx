@@ -279,6 +279,12 @@ async function DeleteInvitation(inviteId:number){
     return data;
 }
 
+async function DeleteInvitationByInvitedAndInviterUsername(invitedUsername: any, inviterUsername: any) {
+    let res = await fetch(`${link}/InviteUsers/DeleteInvitation/${invitedUsername}/${inviterUsername}`);
+    let data = await res.json();
+    return data;
+}
+
 
 async function InviteUser(newUser: IInviteUser) {
     let res= await fetch(`${link}/InviteUsers/InviteUser`, {
@@ -614,6 +620,13 @@ async function GetCollectionsRoomsByUsername(username:string){
     return data;
 }
 
+async function GetDependantByChildId(childId:number){
+    let res = await fetch(`${link}/Dependent/GetDependantByChildId/${childId}`)
+    let data =await res.json();
+    return data;
+}
+
+
 
 async function UpdateUserTaskToCompleted(taskId:number){
     let res = await fetch(`${link}/AssignedTasksUsers/UpdateUserTaskToCompleted/${taskId}`, {
@@ -897,14 +910,14 @@ async function UpdateChildName(NewName:any)
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({NewName})
+        body: JSON.stringify(NewName)
     });
     if(!res.ok)
     {
         const message = `An Error has Occured ${res.status}`
         throw new Error (message)
     }
-    let data:boolean = await res.json();
+    let data:any = await res.json();
     console.log(data)
     return data;
 }
@@ -932,6 +945,7 @@ async function DeleteTaskByTaskId(taskId:number)
 
 
 
-export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId, GetUserData, RedeemCoinsUser, RedeemCoinsChild, GetSharedSpacesById, DeleteInvitation, NewCoinAmountDependent, NewCoinAmountUser, AddChildAssignedTasks, AddUserAssignedTasks, UpdateChildPassCode, GetUserDefaultSchedule, GetChildDefaultSchedule, UpdateUserTaskToCompleted, ApproveTaskForCompletionChild, SubmitTaskChildApproval, AddDefaultUserSpace,  CreateSharedSpaces, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername, DeleteSharedSpacesById, GetDependantDTOByChildId, CreateChildDefaultSchedule, DeleteSpaceCollectionById, GetAllTasksHistoryForMembers, DeleteInvitationByInvitedInviter, UpdateChildName, UpdateChildCoinsAndPoints, ChangeAvatarImage, ChangeDependentAvatarImage, GetDependantsDTOByUserId, GetAcceptedInvitationsbyInviterId, GetDependantsDTOByUsername, GetScoreBoardByUsername, GetCollectionByUsername, GetMyTaskedCollectionsByUsername, GetUserDefaultScheduleByUserId, GetSpaceCollectionByUsername, GetSpacesDTOByID, UpdateCoinsAndPointsUser, DeleteTaskByTaskId, GetDefaultOptionsByUsername,  GetSharedCollectionsDetailsByUsername, GetAllTasksHistoryForMembersByUsername, GetCollectionsRoomsByUsername, DeleteChildByChildID, GetCollectionDTOByCollectionID}
+export {UserLogin, CreateAccount, UpdateName, DeleteUser, AddNewRoom, UpdatePassword, AddChild, GetSpaceCollectionByUserId, GetUserByUsername, GetDependantByUserId, GetAllSpaceItems, AddSelectedTask, AllInvitesByInvitedUsername, InviteUser,  GetSpacesByCollectionID, AddNewSpace, AcceptInvite, ChildFreeSwitch, GetSelectedTasksByUserID, GetAllTasks, GetInvitationByUsername, DeleteInvite, GetTasksByRoomId, GetUserData, RedeemCoinsUser, RedeemCoinsChild, GetSharedSpacesById, DeleteInvitation, NewCoinAmountDependent, NewCoinAmountUser, AddChildAssignedTasks, AddUserAssignedTasks, UpdateChildPassCode, GetUserDefaultSchedule, GetChildDefaultSchedule, UpdateUserTaskToCompleted, ApproveTaskForCompletionChild, SubmitTaskChildApproval, AddDefaultUserSpace,  CreateSharedSpaces, GetSharedSpacesByUserId, GetSharedSpacesByInvitedAndInviterUsername, DeleteSharedSpacesById, GetDependantDTOByChildId, CreateChildDefaultSchedule, DeleteSpaceCollectionById, GetAllTasksHistoryForMembers, DeleteInvitationByInvitedInviter, UpdateChildName, UpdateChildCoinsAndPoints, ChangeAvatarImage, ChangeDependentAvatarImage, GetDependantsDTOByUserId, GetAcceptedInvitationsbyInviterId, GetDependantsDTOByUsername, GetScoreBoardByUsername, GetCollectionByUsername, GetMyTaskedCollectionsByUsername, GetUserDefaultScheduleByUserId, GetSpaceCollectionByUsername, GetSpacesDTOByID, UpdateCoinsAndPointsUser, DeleteTaskByTaskId, GetDefaultOptionsByUsername,  GetSharedCollectionsDetailsByUsername, GetAllTasksHistoryForMembersByUsername, GetCollectionsRoomsByUsername, DeleteChildByChildID, GetCollectionDTOByCollectionID, DeleteInvitationByInvitedAndInviterUsername, GetDependantByChildId}
+
 
 

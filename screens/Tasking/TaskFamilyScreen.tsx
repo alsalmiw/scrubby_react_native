@@ -24,7 +24,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'TaskFamily'>
 const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
 
   const { fuchsiaColor, lilacColor, lightLilacColor, blueColor, purpleColor, greenColor } = useContext(ThemeContext);
-  const { mySpaces, userData, childData, childrenData, acceptedInvitations, taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser, seeAll, isChildFree, setChildrenData, setAcceptedInvitations, sharedSpacesInfo, setSharedSpacesInfo, spacesRooms, setWaiting, waiting } = useContext(UserContext)
+  const { mySpaces, userData, childData, childrenData, acceptedInvitations, taskUser, setTaskUser, mySpace, setMySpace, selectedUser, setSelectedUser, seeAll, isChildFree, setChildrenData, setAcceptedInvitations, sharedSpacesInfo, setSharedSpacesInfo, spacesRooms, setWaiting, waiting, refreshTaskPage, setRefreshTaskPage } = useContext(UserContext)
 
   const [isInvited, setIsInvited] = useState(false)
   const [allMembers, setAllMembers] = useState([]) as any
@@ -35,10 +35,17 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
    
     handleCreateUsersList()
     ShowMembers()
+    console.log("outside " +refreshTaskPage)
+
+    if(refreshTaskPage){
+      console.log("insidee " +refreshTaskPage)
+      handleCreateUsersList()
+      
+    }
 
     
     
-  }, [childrenData, acceptedInvitations, sharedSpacesInfo, spacesRooms])
+  }, [childrenData, sharedSpacesInfo, acceptedInvitations, spacesRooms])
 
   const getUsers =async () => {
 
@@ -99,7 +106,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
               isChild: false,
               isInvited: true
             }
-
+            console.log("I setted shared invites spaces people")
              let foundmember = membersArr.some((member:any) => {
               if(member.id==invited.id && member.isChild==false) {
                return true
@@ -120,9 +127,11 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
       : null
 
     setAllMembers(membersArr)
-    //console.log(membersArr)
+    console.log(refreshTaskPage)
+    setRefreshTaskPage(false)
+    //console.sslog(membersArr)
 
-    //console.log(membersArr)
+    console.log("i resetted members list")
   }
 
   let r = Math.floor(Math.random() * 7)
@@ -156,7 +165,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
 
     )
   }
-
+  
   return (
     <SplashComponentFaded>
 
@@ -225,6 +234,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
 
             (sharedSpacesInfo.length > 0 ?
               sharedSpacesInfo.map((space: any, idx: number) => space.sharedWith.map((shared: any) => {
+                console.log(shared)
                 return (
                   shared.invitedId == taskUser.id ?
                   space.rooms!= null?

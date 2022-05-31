@@ -64,17 +64,21 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   const handleGoToSpaceRooms = async (space: any) => {
     // console.log("collection id is "+space.id)
     let spaceRooms = await GetSpacesByCollectionID(space.id)
-    console.log(space)
+    //console.log(spaceRooms)
     // console.log("spacerooms" + spaceRooms)
-    setMySpace(space)
+   
 
-    if (spaceRooms.length != 0) {
+    if (spaceRooms!= null || spaceRooms.length != 0) {
       setMyRooms(spaceRooms)
-      navigation.navigate('Rooms')
+     navigation.navigate('Rooms')
+    
+      //console.log("in the if statement")
     }
     else {
       setMyRooms('')
-      navigation.navigate('Rooms')
+      //console.log("in the else statement")
+     
+     navigation.navigate('Rooms')
     }
   }
 
@@ -102,7 +106,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
 
 
 
-  }, [myHouses, childrenData]);
+  }, [myHouses, childrenData, userData]);
 
 
 
@@ -153,6 +157,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     await setChildPoints(child.dependentPoints)
     let childDefault = await GetChildDefaultSchedule(child.id)
     // console.log("Child fetch", childDefault)
+    //console.log("Child fetch", childDefault)
     if (childDefault.length != 0) {
       setChildDefaultSpace(childDefault)
       navigation.navigate('ChildTasks')
@@ -162,7 +167,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     else {
       setChildDefaultSpace([])
       //console.log("child Page",childPage)
-      
+      setWaiting(false)
       navigation.navigate('ChildTasks')
       //console.log('empty default space')
       // console.log("Child Default Space",childDefaultSpace)
@@ -228,9 +233,9 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
           </View>
           {/* <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo="" titleThree="" /> */}
           <Pressable style={styles.secondRow} onPress={handleAddNewSpaceNavigation}>
-            <AddItemButtonComponent onPress={() => { handleAddNewSpaceNavigation }}>
+     
               <Entypo name="squared-plus" size={50} color={lilacColor} />
-            </AddItemButtonComponent>
+       
             <View style={styles.userNameContainer}>
               <UserNameComponent name="Create a New Space"></UserNameComponent>
             </View>

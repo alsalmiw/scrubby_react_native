@@ -167,7 +167,7 @@ let sendDates=[] as any
                       let spaceInfo = await GetCollectionDTOByCollectionID(mySpace.id)
                             if(spaceInfo!=null){
                             setMySpace(spaceInfo)
-                            console.log("they came")
+                      
 
                             }
                           }

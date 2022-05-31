@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { View, Pressable, Text, StyleSheet } from 'react-native';
 
 
-const AddItemButtonComponent:FC<{onPress: () => void}> = (props) => {
+const AddItemButtonComponent: FC<{ onPress: () => void }> = (props) => {
 
     const addButtonHandler = () => {
         props.onPress()
@@ -23,20 +23,14 @@ const AddItemButtonComponent:FC<{onPress: () => void}> = (props) => {
 export default AddItemButtonComponent;
 
 const styles = StyleSheet.create({
+
     buttonOuterContainer: {
         borderRadius: 24,
-        margin:0,
-        padding:0
-
+        margin: 0,
+        padding: 0
     },
 
     buttonInnerContainer: {
-        // paddingVertical: '9%',
-        // paddingHorizontal: '12%',
         borderRadius: 10
     },
-
-    
-
-
 })

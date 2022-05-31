@@ -34,7 +34,7 @@ const EditProfileScreen: FC<Props> = ({navigation})=> {
 
     }
   }
-
+//
   
 
   const changeName = async() => {

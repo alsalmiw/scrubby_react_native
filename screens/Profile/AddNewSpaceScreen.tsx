@@ -12,6 +12,7 @@ import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 import { ISpace } from '../../Interfaces/ISpace';
 import UserContext from '../../context/UserContext';
 import { AddNewSpace, GetCollectionByUsername, GetCollectionsRoomsByUsername, GetDefaultOptionsByUsername, GetSpaceCollectionByUsername, GetUserDefaultSchedule } from '../../services/dataService';
+import FullButtonComponent from '../../components/FullButtonComponent';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AddNewSpace'>
 
@@ -21,6 +22,8 @@ const AddNewSpaceScreen: FC<Props> = ({ navigation, route }) => {
   const { userData, setMySpaces, myHouses, setMyHouses, setSpacesRoom, setDefaultScheduleOptions, setDefaultSpace, defaultSpace, setRunScheduleAgain } = useContext(UserContext)
 
   const [newSpace, setNewSpace] = useState('')
+  const [isSelected, setIsSelected]= useState<boolean>(false)
+
 
   const handleAddSpace = async () => {
 
@@ -28,9 +31,13 @@ const AddNewSpaceScreen: FC<Props> = ({ navigation, route }) => {
 
     if (newSpace.length == 0 || newSpace == null) {
       Alert.alert("Error", 'Invalid Space Name. Try Again.', [{ text: "Cancel", style: "cancel" }]);
+      setNewSpace("")
+      setIsSelected(false)
     }
     else if (regi.test(newSpace) ) {
       Alert.alert("Error", `Invalid Space Name. Try Again.`, [{ text: "Okay", style: "cancel" }]);
+      setNewSpace("")
+      setIsSelected(false)
     }
 
     else {
@@ -71,7 +78,6 @@ const AddNewSpaceScreen: FC<Props> = ({ navigation, route }) => {
 
         if(collections.length > 0){
           setMyHouses(collections)
-          console.log("they came")
           }
       }
     }
@@ -82,9 +88,16 @@ const AddNewSpaceScreen: FC<Props> = ({ navigation, route }) => {
       <TitleComponent title="My New Space" />
       <View style={{paddingLeft:10}}>
         <WhiteSubTitleComponent title="Name" />
-        <InputFieldComponent value="" maxLength={20} holder="enter new space" hide={false} onChangeText={(e: string) => setNewSpace(e)} />
+        <InputFieldComponent value={newSpace} maxLength={20} holder="enter new space" hide={false} onChangeText={(e: string) => {setNewSpace(e), e.length>0? setIsSelected(true): setIsSelected(false)}} />
       </View>
+      {
+          !isSelected?
+          <FullButtonComponent radius ={0} onPress={()=>navigation.goBack()} color={greenColor}>
+                <Text>Back</Text>
+                </FullButtonComponent>
+          :
       <TwoFullButtonComponent text1="Back" text2="Add" color={greenColor} onAcceptPress={() => handleAddSpace()} onBackPress={() => navigation.goBack()} />
+}
     </View>
 
 

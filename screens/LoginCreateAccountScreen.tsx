@@ -47,7 +47,7 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
     const checkLocalStorages = async () => {
         let token = await AsyncStorage.getItem("Token");
         let username= await AsyncStorage.getItem("Username");
-        
+        console.log(username)
        setUsername(username)
          if( token!=null && username!=null )
          { 

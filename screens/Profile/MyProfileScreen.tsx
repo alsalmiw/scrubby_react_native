@@ -64,6 +64,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
   const handleGoToSpaceRooms = async (space: any) => {
     // console.log("collection id is "+space.id)
     let spaceRooms = await GetSpacesByCollectionID(space.id)
+    setMySpace(space)
     //console.log(spaceRooms)
     // console.log("spacerooms" + spaceRooms)
    

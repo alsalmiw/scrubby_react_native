@@ -23,6 +23,7 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
   const {orangeColor, blueColor} = useContext(ThemeContext)
   const [newChildName, setNewChildName] = useState('')
   const [newChildAge, setNewChildAge] =  useState<string>('')
+  const [isSelected, setIsSelected]= useState<boolean>(false)
   let avR = Math.floor(Math.random() * 46)
 
 
@@ -36,6 +37,7 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
 
     if (newChildName.length == 0 || newChildName == null || Number(newChildAge)<=0 || newChildAge == null  || regi.test(newChildName) || regiLetters.test(newChildAge) || regi.test(newChildAge) || regiNums.test(newChildName)) {
       Alert.alert("Error", 'Please Enter a Valid Name or Age. Try Again.', [{ text: "Cancel", style: "cancel" }]);
+      setIsSelected(false);
     }
    
     else {
@@ -80,7 +82,7 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
      
         <View>
         <WhiteSubTitleComponent title="Name" />
-        <InputFieldComponent value={''} maxLength={20} holder="enter your name" hide={false} onChangeText={(e: string)=>setNewChildName(e)} />
+        <InputFieldComponent value={''} maxLength={20} holder="enter your name" hide={false} onChangeText={(e: string)=>{setNewChildName(e), e.length>0?setIsSelected(true): setIsSelected(false)}} />
         </View>
         <View>
         <WhiteSubTitleComponent title="Age" />
@@ -90,7 +92,16 @@ const AddChildScreen: FC<Props> = ({navigation, route})=> {
         </FullButtonComponent> */}
         </View>
         </View>
-        <TwoFullButtonComponent text1="Back" text2="Add" color={blueColor} onAcceptPress={()=>handleSave()} onBackPress={()=>navigation.goBack()}/>
+        {
+          !isSelected?
+          <FullButtonComponent radius ={0} onPress={()=>navigation.goBack()} color={blueColor}>
+                <Text>Back</Text>
+                </FullButtonComponent>
+          :
+
+           <TwoFullButtonComponent text1="Back" text2="Add" color={blueColor} onAcceptPress={()=>handleSave()} onBackPress={()=>navigation.goBack()}/>
+        }
+       
 
         
     </View>

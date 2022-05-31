@@ -51,6 +51,8 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
 
 
   const { purpleColor, primaryTextColor, lilacColor, blueColor } = useContext(ThemeContext)
+  const [isSelected, setIsSelected]= useState<boolean>(false)
+  
 
   useEffect(() => {
     fetchSpaceInfo();
@@ -161,7 +163,7 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
               {
                 task.map((colorBtn: taskInfo, x: number) => {
                   return (
-                    <SquareColoredButton key={x} idx={rState + x} onPress={() => { colorBtn.UserId = userData.id, addTask.push({ ...colorBtn, 'color': (rState + x), 'spaceId': myRoom.id }),  setCounter(counter + 1) }} >
+                    <SquareColoredButton key={x} idx={rState + x} onPress={() => { colorBtn.UserId = userData.id, addTask.push({ ...colorBtn, 'color': (rState + x), 'spaceId': myRoom.id }),  setCounter(counter + 1) , counter>0?setIsSelected(true):setIsSelected(false)}} >
                       <Entypo name="plus" size={30} color="white" style={styles.plusIconStyle} />
                       <Text style={styles.plusIconText}>{colorBtn.name}</Text>
                     </SquareColoredButton>
@@ -177,8 +179,14 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
 
       </ScrollView >
       <View></View>
+      {
+          !isSelected?
+          <FullButtonComponent radius ={0} onPress={()=>navigation.goBack()} color={purpleColor}>
+                <Text>Back</Text>
+                </FullButtonComponent>
+          :
       <TwoFullButtonComponent text1={"Back"} text2={"Add"} onAcceptPress={handleSelectedTasks} onBackPress={()=>{navigation.goBack(), setNoAddedItems(true)}} color={purpleColor}/>
-      
+}
       
     </View>
   );

@@ -118,7 +118,7 @@ setSpacesRoom([])
                   <FontAwesome name={'edit'} size={25} style={{marginRight: 10, color: orangeColor}} />
                 </SettingsLinkComponent> */}
 
-                <SettingsLinkComponent linkName='Invites'  onPress={()=> navigation.navigate('ManageInvites')} >
+                <SettingsLinkComponent linkName='Manage Invitations'  onPress={()=> navigation.navigate('ManageInvites')} >
                   <FontAwesome name={'group'} size={25} style={{marginRight: 10, color: fuchsiaColor}} />
                 </SettingsLinkComponent>
 

@@ -1,7 +1,7 @@
 // import { StatusBar } from 'expo-status-bar';
-import { FC, useContext, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { StyleSheet, View, StatusBar, Image, Pressable, Alert, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, StatusBar, Image, Pressable, Alert, TouchableHighlight, Text } from 'react-native';
 
 import RootStackParamList from '../../types/INavigateProfile'
 import { ThemeContext } from '../../context/ThemeContext';
@@ -14,6 +14,7 @@ import icons from '../../types/Icons'
 import UserContext from '../../context/UserContext';
 import IRoom from '../../Interfaces/IRoom'
 import {AddNewRoom, GetCollectionByUsername, GetCollectionsRoomsByUsername, GetDefaultOptionsByUsername, GetSpaceCollectionByUsername, GetSpacesByCollectionID} from '../../services/dataService'
+import FullButtonComponent from '../../components/FullButtonComponent';
 
 type Props = NativeStackScreenProps <RootStackParamList, 'AddNewSpace'>
 
@@ -25,16 +26,25 @@ const AddNewRoomScreen: FC<Props> = ({navigation, route})=> {
     const [category, setCategory] = useState('')
     const [roomName, setRoomName] = useState('')
     const [selectedRoom, setSelectedRoom]= useState<string>('')
+  const [isSelected, setIsSelected]= useState<boolean>(false)
+
+  useEffect(() => {
+   console.log(mySpace.id) 
+  },[])
 
     const handleAddRoom = async() => {
 
       let regi = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g
 
-    if (roomName.length == 0 || roomName == null) {
+    if (roomName.length == 0 || roomName == null || regi.test(roomName)) {
       Alert.alert("Error", 'Invalid Room Name. Try Again.', [{ text: "Cancel", style: "cancel" }]);
+      setIsSelected(false)
+
     }
-    else if (regi.test(roomName) ) {
-      Alert.alert("Error", `Invalid Room Name. Try Again.`, [{ text: "Okay", style: "cancel" }]);
+    else if (category.length == 0 || category == null) {
+      Alert.alert("Error", `Category not Selected. Try Again.`, [{ text: "Okay", style: "cancel" }]);
+    
+
     }
 
     else {
@@ -86,7 +96,7 @@ const handleCategory = (name: string) => {
          <TitleComponent title="My New Room" />
          <View style={[styles.contentContainer]}>
          <WhiteSubTitleComponent title="Name" />
-        <InputFieldComponent value={''} maxLength={8} holder="enter new room" hide={false} onChangeText={(e: string)=>setRoomName(e)} />
+        <InputFieldComponent value={roomName} maxLength={8} holder="enter new room" hide={false} onChangeText={(e: string)=>{setRoomName(e), e.length>0?setIsSelected(true): setIsSelected(false)}} />
         <WhiteSubTitleComponent title="Select Icon" />
         <View style={styles.iconsContainer}>
         {
@@ -101,7 +111,13 @@ const handleCategory = (name: string) => {
    
         </View>
         </View>
+       { !isSelected?
+          <FullButtonComponent radius ={0} onPress={()=>navigation.goBack()} color={fuchsiaColor}>
+                <Text>Back</Text>
+                </FullButtonComponent>
+          :
        <TwoFullButtonComponent text1="Back" text2="Add" color={fuchsiaColor} onAcceptPress={()=>handleAddRoom()} onBackPress={()=>navigation.goBack()}/>
+       }
     </View>
 
     

@@ -1,17 +1,14 @@
-// import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, StatusBar, Pressable, Image, FlatList } from 'react-native';
-//
 
 import icons from '../../types/Icons';
 
-// import Line from '../../components/AddEdit/LineComponent';
 import UnderlinedHeaderComponent from '../../components/UnderlinedHeaderComponent';
 import UserContext from '../../context/UserContext';
 import UnderlinedOneHeaderComponent from '../../components/UnderlinedOneHeaderComponent';
 import SquareColoredButton from '../../components/SquareColoredButton';
 
-//icon
+
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
@@ -22,11 +19,9 @@ import { AddSelectedTask, GetAllSpaceItems, GetTasksByRoomId } from '../../servi
 import RootStackParamList from '../../types/INavigateProfile'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
-//
+
 interface taskInfo {
   description: string;
   id: number;
@@ -43,58 +38,47 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AddItems'>
 const AddItemsScreen: FC<Props> = ({ navigation }) => {
   const { seeAll, setSeeAll, task, setTask, allTask, setAllTask, addTask, setAddTask, userData, rState, setRState, myRoom, storedAddedItems, setStoredAddedItems, setNoAddedItems } = useContext(UserContext)
 
-  const[counter,setCounter] =useState<number>(0)
+  const [counter, setCounter] = useState<number>(0)
   const [selectedCategory, setSelectedCategory] = useState<string>('Bathroom')
- 
-
-  //let r = Math.floor(Math.random() * 7)
-
 
   const { purpleColor, primaryTextColor, lilacColor, blueColor } = useContext(ThemeContext)
 
   useEffect(() => {
     fetchSpaceInfo();
-   
-
 
   }, [])
 
   const fetchSpaceInfo = async () => {
     let data = await GetAllSpaceItems();
     if (data.length != 0) {
-      setAllTask(data); 
+      setAllTask(data);
       setTask(data.filter((aTask: taskInfo) => aTask.tags.includes("bathroom")))
     }
 
-
   }
   const AddItems = (name: string) => {
-    console.log(name)
     setTask(allTask.filter((aTask: taskInfo) => aTask.tags.includes(name.toLowerCase())))
   }
 
   const handleSelectedTasks = async () => {
-   
-    let getAddedItems = await GetTasksByRoomId(myRoom.id)
-    if(getAddedItems.length>0){
-      let addedItemsWColor = [] as any
-      getAddedItems.map((task:any, idx: number)=>  addedItemsWColor.push({ ...task, 'color': (rState + idx+2), 'spaceId': myRoom.id }))
-     
-      setStoredAddedItems(addedItemsWColor)
-    }else{
-         setStoredAddedItems([])
-        
-    }
 
+    let getAddedItems = await GetTasksByRoomId(myRoom.id)
+    if (getAddedItems.length > 0) {
+      let addedItemsWColor = [] as any
+      getAddedItems.map((task: any, idx: number) => addedItemsWColor.push({ ...task, 'color': (rState + idx + 2), 'spaceId': myRoom.id }))
+
+      setStoredAddedItems(addedItemsWColor)
+    } else {
+      setStoredAddedItems([])
+
+    }
 
     navigation.navigate('AddedItems')
     setNoAddedItems(false)
   }
 
-
-
   return (
-    <View style={{flex:1,  justifyContent: "space-between"}}>
+    <View style={{ flex: 1, justifyContent: "space-between" }}>
       <ScrollView style={styles.container}>
         <View style={styles.headTitle}>
           <HeaderComponent title={myRoom.spaceName}> </HeaderComponent>
@@ -111,21 +95,19 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
                     {
                       icons.map((icon, idx) => {
                         return (
-                          <View key={idx} style={[styles.categories, {borderColor:selectedCategory==icon.Name?blueColor:lilacColor}]}>
-                            <Pressable onPress={() => {AddItems(icons[idx].Name), setSelectedCategory(icon.Name)}}>
+                          <View key={idx} style={[styles.categories, { borderColor: selectedCategory == icon.Name ? blueColor : lilacColor }]}>
+                            <Pressable onPress={() => { AddItems(icons[idx].Name), setSelectedCategory(icon.Name) }}>
                               <View style={{ alignItems: 'center' }}>
                                 <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                               </View>
-                              <Text style={[{ textAlign: 'center', color:primaryTextColor }]}>{icons[idx].NickName} </Text>
+                              <Text style={[{ textAlign: 'center', color: primaryTextColor }]}>{icons[idx].NickName} </Text>
                             </Pressable>
                           </View>
                         )
                       })
                     }
                   </ScrollView>
-
                 </View>
-
               </>
               :
               <View style={styles.rest2}>
@@ -133,12 +115,12 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
                   {
                     icons.map((icon, idx) => {
                       return (
-                        <View key={idx} style={[styles.categories2, {borderColor:selectedCategory==icon.Name?blueColor:lilacColor}]}>
-                          <Pressable onPress={() => {AddItems(icons[idx].Name), setSelectedCategory(icon.Name)}}>
+                        <View key={idx} style={[styles.categories2, { borderColor: selectedCategory == icon.Name ? blueColor : lilacColor }]}>
+                          <Pressable onPress={() => { AddItems(icons[idx].Name), setSelectedCategory(icon.Name) }}>
                             <View style={{ alignItems: 'center' }}>
                               <Image style={{ width: 50, height: 50, }} source={icon.Link} />
                             </View>
-                            <Text style={{ textAlign: 'center',  color:primaryTextColor }}>{icons[idx].NickName} </Text>
+                            <Text style={{ textAlign: 'center', color: primaryTextColor }}>{icons[idx].NickName} </Text>
                           </Pressable>
                         </View>
                       )
@@ -150,7 +132,7 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
         </>
 
         <View style={styles.underlineContainer}>
-          <UnderlinedOneHeaderComponent titleFirst={'Items   '+counter } />
+          <UnderlinedOneHeaderComponent titleFirst={'Items   ' + counter} />
         </View>
         <ScrollView>
           <View style={styles.rest3}>
@@ -161,25 +143,20 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
               {
                 task.map((colorBtn: taskInfo, x: number) => {
                   return (
-                    <SquareColoredButton key={x} idx={rState + x} onPress={() => { colorBtn.UserId = userData.id, addTask.push({ ...colorBtn, 'color': (rState + x), 'spaceId': myRoom.id }),  setCounter(counter + 1) }} >
+                    <SquareColoredButton key={x} idx={rState + x} onPress={() => { colorBtn.UserId = userData.id, addTask.push({ ...colorBtn, 'color': (rState + x), 'spaceId': myRoom.id }), setCounter(counter + 1) }} >
                       <Entypo name="plus" size={30} color="white" style={styles.plusIconStyle} />
                       <Text style={styles.plusIconText}>{colorBtn.name}</Text>
                     </SquareColoredButton>
                   )
                 })
               }
-
             </View>
           </View>
         </ScrollView >
-
-
-
       </ScrollView >
       <View></View>
-      <TwoFullButtonComponent text1={"Back"} text2={"Add"} onAcceptPress={handleSelectedTasks} onBackPress={()=>{navigation.goBack(), setNoAddedItems(true)}} color={purpleColor}/>
-      
-      
+      <TwoFullButtonComponent text1={"Back"} text2={"Add"} onAcceptPress={handleSelectedTasks} onBackPress={() => { navigation.goBack(), setNoAddedItems(true) }} color={purpleColor} />
+
     </View>
   );
 }
@@ -187,7 +164,6 @@ const AddItemsScreen: FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     paddingTop: StatusBar.currentHeight,
-    //position: 'absolute'
   },
   headTitle: {
 
@@ -214,7 +190,6 @@ const styles = StyleSheet.create({
     minHeight: 85,
     maxHeight: 85
 
-
   },
   rest2: {
     paddingLeft: 10,
@@ -226,7 +201,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   categories2: {
-  
+
     borderWidth: 3,
     borderRadius: 10,
     padding: 8,
@@ -260,10 +235,8 @@ const styles = StyleSheet.create({
   plusIconText: {
     color: 'white',
     textAlign: 'center',
-
     marginTop: 0
   }
-
 
 });
 

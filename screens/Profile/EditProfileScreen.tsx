@@ -38,11 +38,11 @@ const EditProfileScreen: FC<Props> = ({navigation})=> {
   
 
   const changeName = async() => {
-    let regi = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g;
+    let regi = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g;
     let regiNums= /[0-9]/;
 
     if (newName.length == 0 || newName == null ||regi.test(newName) || regiNums.test(newName)) {
-      Alert.alert("Error", 'Please Enter a Valid Name or Age. Try Again.', [{ text: "Cancel", style: "cancel" }]);
+      Alert.alert("Error", 'Please Enter a Valid Name. Try Again.', [{ text: "Cancel", style: "cancel" }]);
       setIsSelected(false)
       setNewName('')
     }else{

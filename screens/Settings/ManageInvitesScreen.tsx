@@ -146,7 +146,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
         {
             inviters.length > 0 ?
         <View style={{ alignItems: 'center' }}>
-          <UnderlinedOneHeaderComponent titleFirst='Recieved Requests' />
+          <UnderlinedOneHeaderComponent titleFirst='Received Requests' />
         </View>
         :null
         }
@@ -189,7 +189,7 @@ const ManageInvitesScreen: FC<Props> = ({ navigation, route }) => {
 
         <View style={[styles.underlineContainer]}>
         {acceptedInvitations.length>0 ?
-          <UnderlinedOneHeaderComponent titleFirst='Accepted Recieved Requests'></UnderlinedOneHeaderComponent>
+          <UnderlinedOneHeaderComponent titleFirst='Accepted Received Requests'></UnderlinedOneHeaderComponent>
           :null}
           {
             acceptedInvitations != null ?

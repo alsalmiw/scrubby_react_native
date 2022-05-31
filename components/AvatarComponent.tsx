@@ -4,35 +4,32 @@ import IAvatar from '../types/IAvatars'
 
 
 interface IAvatar {
-    onPress: Function| undefined
-    imageSource:any
+    onPress: Function | undefined
+    imageSource: any
 }
 
+const AvatarComponent: FC<IAvatar> = (props) => {
 
+    const handleViewProfile = () => {
 
-const AvatarComponent:FC<IAvatar> =(props) =>{
-
-
-    const handleViewProfile =()=> {
-    if(props.onPress)
-    {
-     
-        props.onPress()
+        if (props.onPress) {
+            props.onPress()
+        }
     }
-}
 
-    return(
-                <Pressable style={[styles.container]} onPress={() => handleViewProfile()}>
-                <Image source={{uri: props.imageSource}} style={{ width: 100, height: 100, borderRadius:10 }} />
-                </Pressable>
+    return (
+        <Pressable style={[styles.container]} onPress={() => handleViewProfile()}>
+            <Image source={{ uri: props.imageSource }} style={{ width: 100, height: 100, borderRadius: 10 }} />
+        </Pressable>
     )
 }
 
 const styles = StyleSheet.create({
+    
     container: {
-        borderRadius:10, 
+        borderRadius: 10,
         width: 100,
-        height: 100, 
+        height: 100,
         margin: 5
     }
 })

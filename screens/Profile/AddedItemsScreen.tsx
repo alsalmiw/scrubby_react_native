@@ -177,7 +177,7 @@ const AddedItemsScreen: FC<Props> = ({navigation}) => {
       </View>
       </View>
         {
-          noAddedItems?
+          noAddedItems || (noAddedItems && storedAddedItems.length!>0) ?
           <FullButtonComponent radius ={0} onPress={()=>{navigation.goBack(), setNoAddedItems(false)}} color={purpleColor}>
             <Text>Back</Text>
           </FullButtonComponent>

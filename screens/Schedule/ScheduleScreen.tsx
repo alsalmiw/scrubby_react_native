@@ -111,7 +111,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
     if (datesArr.length > 0) {
 
 
-    //     console.log(runScheduleAgain)
+    //     console.log(runSchedule//Again)
       if (runScheduleAgain==true) {
         //setActiveDate(activeDate)
         getRoomsbyDate(activeDate)

@@ -6,14 +6,14 @@ import * as ImagePicker from 'expo-image-picker';
 import TitleComponent from "./AddEdit/TitleComponent";
 import FullButtonComponent from "./FullButtonComponent";
 import UserContext from "../context/UserContext";
-import { ChangeAvatarImage, ChangeDependentAvatarImageawait } from "../services/dataService";
+import { ChangeAvatarImage, ChangeDependentAvatarImage, GetDependantByChildId } from "../services/dataService";
 import { useNavigation } from "@react-navigation/native";
 import TwoFullButtonComponent from './TwoFullButtonComponent';
 
 
 const AddPhotoComponent = () => {
     const {lilacColor, orangeColor, blueColor} = useContext(ThemeContext)
-  const {username, isEditImage, setIsEditImage, memberInfo, userData } = useContext(UserContext)
+  const {username, isEditImage, setIsEditImage, memberInfo, userData, setChildPage } = useContext(UserContext)
 
     const [image, setImage] = useState('');
     const [imgType, setImgType] = useState('');
@@ -111,12 +111,16 @@ const AddPhotoComponent = () => {
                         else if (memberInfo.isChild)
                         {
                           let data = {
-                            Id: memberInfo.Id,
+                            Id: memberInfo.id,
                             Photo: response.path
                             }
                             console.log(data)
-                            let result = ChangeDependentAvatarImageawait (data)
+                            let result = await ChangeDependentAvatarImage (data)
                             if(result) {
+                                let childInfo = await GetDependantByChildId(memberInfo.id)
+                                if(childInfo!=null) {
+                                  setChildPage(childInfo)
+                                }
                                 alert("You have successfully updated your child's photo")
                                 navigation.navigate('ChildTasks')
                               }
@@ -135,7 +139,7 @@ const AddPhotoComponent = () => {
         <TitleComponent title={memberInfo.isChild?"Edit Child's Photo":"Edit Profile Photo"} />
         <Pressable style={[styles.container]} onPress={selectPhoto}>
             {
-                isSelected?
+                isSelected && image.length>0?
            <Image source={{ uri: image }} style={{ width: 200, height: 200, borderRadius:10 }} />
                 :
                  <FontAwesome name="photo" color={lilacColor} size={50}  />
@@ -146,8 +150,15 @@ const AddPhotoComponent = () => {
         </Pressable>
              </View>
 
+             {
+                isSelected && image.length>0?
 
-<TwoFullButtonComponent text1={"Back"} text2={"Save"} onAcceptPress={handleSaveImage} onBackPress={()=>navigation.goBack()} color={blueColor}/>
+                <TwoFullButtonComponent text1={"Back"} text2={"Save"} onAcceptPress={handleSaveImage} onBackPress={()=>navigation.goBack()} color={blueColor}/>
+                    :
+                <FullButtonComponent radius ={0} onPress={()=>navigation.goBack()} color={blueColor}>
+                            <Text>Back</Text>
+                            </FullButtonComponent>
+                }
 
 </>
     )

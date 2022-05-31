@@ -8,7 +8,7 @@ import InputFieldComponent from '../../components/AddEdit/InputFieldComponent'
 import TitleComponent from '../../components/AddEdit/TitleComponent'
 import FullButtonComponent from '../../components/FullButtonComponent'
 import WhiteSubTitleComponent from '../../components/AddEdit/WhiteSubTitleComponent';
-import {UpdateChildName, UpdateName} from '../../services/dataService'
+import {GetDependantByChildId, GetDependantDTOByChildId, GetUserByUsername, UpdateChildName, UpdateName} from '../../services/dataService'
 import UserContext from '../../context/UserContext';
 import INewName from '../../Interfaces/INewName'
 import { ThemeContext } from '../../context/ThemeContext';
@@ -22,7 +22,7 @@ type Props = NativeStackScreenProps <RootStackParamList, 'EditProfile'>
 const EditProfileScreen: FC<Props> = ({navigation})=> {
   const {orangeColor, blueColor} = useContext(ThemeContext)
   const [newName, setNewName] = useState('')
-  const {username, isEditImage, setIsEditImage, memberInfo, userData } = useContext(UserContext)
+  const {username, isEditImage, setIsEditImage, memberInfo, userData, setUserData, setChildPage } = useContext(UserContext)
 
 
   const handleSave = async () => {
@@ -53,6 +53,11 @@ const EditProfileScreen: FC<Props> = ({navigation})=> {
       let result = await UpdateName(data)
       if(result) {
           alert("You have successfully updated your name")
+          let userInfo = await GetUserByUsername(userData.username)
+          if (userInfo!=null) {
+              setUserData(userInfo)
+             
+          }
           navigation.navigate('MyProfile')
         }
 
@@ -60,13 +65,20 @@ const EditProfileScreen: FC<Props> = ({navigation})=> {
     else if (memberInfo.isChild)
     {
       let data:any = {
-        ChildId: memberInfo.Id,
-        Name: newName
+        ChildId: memberInfo.id,
+        FullName: newName
         }
         console.log(data)
         let result = await UpdateChildName(data)
         if(result) {
-            alert("You have successfully updated your child's name")
+          let childInfo = await GetDependantByChildId(memberInfo.id)
+          if(childInfo!=null) {
+            setChildPage(childInfo)
+            console.log(childInfo)
+              
+          }
+         alert("You have successfully updated your child's name")
+         
             navigation.navigate('ChildTasks')
           }
   

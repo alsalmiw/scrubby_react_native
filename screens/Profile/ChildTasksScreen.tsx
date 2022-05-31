@@ -29,7 +29,7 @@ import UserNameComponent from '../../components/UserNameComponent';
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setMemberInfo, setIsEditImage , setRunAgain, childPoints, setChildPoints, childCoins, setChildCoins, refreshChildTask, setRefreshChildTask, setBlank, setChildrenData, waiting, setWaiting} = useContext(UserContext)
+  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setMemberInfo, setIsEditImage , setRunAgain, childPoints, setChildPoints, childCoins, setChildCoins, refreshChildTask, setRefreshChildTask, setBlank, setChildrenData, waiting, setWaiting, spacesRooms} = useContext(UserContext)
 
 
   const { secondaryTextColor, primaryTextColor, lilacColor } = useContext(ThemeContext)
@@ -145,11 +145,12 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
     // navigation.addListener('focus', () =>{
   //     console.log("===============================")
   //  console.log(runAgain)
-
+  console.log(childPage) 
    //all the child info:
   //  console.log("child Page:", childPage)
-    
-  setBlank(false)
+    if(childDefaultSpace.length!=0){
+
+      setBlank(false)
    
     if(runAgain)
     {
@@ -157,6 +158,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
      childTaskDate()
     }
 
+    }
+  
 
    
 
@@ -166,8 +169,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 const handleChangeInfo = (isChangeName:boolean) => {
 
   let newDetails= {
-    personId: childPage.Id,
-    username: "",
+    id: childPage.id,
     isChild: true,
   }
   setMemberInfo(newDetails)
@@ -246,27 +248,38 @@ if(deleted)
 
 
           </View>
+          {childDefaultSpace.length!=0?
+          
           <View style={styles.unlockIconView}>
             <Pressable onPress={() =>  setModalVisible(true) }>
               <FontAwesome5 name="unlock" size={40} color={lilacColor} />
             </Pressable>
           </View>
+          :null
+ 
+
+          }
 
 
 
         </View>
         {/* Add GERE */}
+        
+        <View>
+        {
+          childDefaultSpace.length!=0? 
         <View style={[styles.flexrow, {padding:10}]}>
           <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{childDefaultSpace.collectionName}</Text>
           {
-            childPage.scheduledTasks.length > 1 ?
+            spacesRooms.length > 1 ?
 
               < Pressable style={[styles.paddingL]} onPress={() => navigation.navigate("DefaultChildOptions")}>
                 <MaterialCommunityIcons name="home-import-outline" size={30} color={secondaryTextColor} />
               </Pressable>
               : null
           }
-        </View>
+        </View>:null
+        }
 
           {
              childSelectedRoom != null ?
@@ -372,7 +385,7 @@ if(deleted)
             <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} childInfo={ childUpdateCoins}  />
             : null}
 
-
+          </View>
 
       </View>
 

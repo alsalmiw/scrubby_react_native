@@ -1,4 +1,4 @@
-export default interface INewName{
-    Username:string;
-    Name:string;
+export default interface INewName {
+    Username: string;
+    Name: string;
 }

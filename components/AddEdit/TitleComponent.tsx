@@ -17,10 +17,12 @@ const TitleComponent: FC<TitleType> = ({ title }) => {
 }
 
 const styles = StyleSheet.create({
+
     mainHeader: {
         fontSize: 30,
         color: "white",
     },
+    
     headerContainer: {
         flexDirection: "row",
         justifyContent: "center",

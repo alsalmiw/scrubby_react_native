@@ -39,6 +39,7 @@ const InputFieldComponent: FC<IInputType> = (props) => {
 };
 
 const styles = StyleSheet.create({
+    
     SectionStyle: {
         flexDirection: 'row',
         justifyContent: 'center',
@@ -52,9 +53,11 @@ const styles = StyleSheet.create({
         margin: 10,
         overflow: 'hidden',
     },
+
     ImageStyle: {
         paddingLeft: 10
     },
+
     inputUsername: {
         flex: 1,
         height: 60,

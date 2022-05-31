@@ -29,19 +29,20 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
   const [isInvited, setIsInvited] = useState(false)
   const [allMembers, setAllMembers] = useState([]) as any
   const [firstTime, setFirstTime] = useState<boolean>(true)
+  const [r, setR]=useState<number>(Math.floor(Math.random() * 7))
 
 
   useEffect(() => {
    
     handleCreateUsersList()
     ShowMembers()
-    console.log("outside " +refreshTaskPage)
+    //console.log("outside " +refreshTaskPage)
 
-    if(refreshTaskPage){
-      console.log("insidee " +refreshTaskPage)
-      handleCreateUsersList()
+    // if(refreshTaskPage){
+    //   console.log("insidee " +refreshTaskPage)
+    //   handleCreateUsersList()
       
-    }
+    // }
 
     
     
@@ -106,7 +107,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
               isChild: false,
               isInvited: true
             }
-            console.log("I setted shared invites spaces people")
+           // console.log("I setted shared invites spaces people")
              let foundmember = membersArr.some((member:any) => {
               if(member.id==invited.id && member.isChild==false) {
                return true
@@ -127,17 +128,17 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
       : null
 
     setAllMembers(membersArr)
-    console.log(refreshTaskPage)
+    //console.log(refreshTaskPage)
     setRefreshTaskPage(false)
     //console.sslog(membersArr)
 
-    console.log("i resetted members list")
+  
   }
 
-  let r = Math.floor(Math.random() * 7)
+  
 
   const handleGoToSpaceRooms = async (space: any) => {
-        console.log("collection id is "+space.id)
+      //  console.log("collection id is "+space.id)
         setWaiting(true)
     let spaceInfo = await GetCollectionDTOByCollectionID(space.id)
     if(spaceInfo!=null){
@@ -145,6 +146,8 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
        navigation.navigate('TaskMember')
       
     }
+
+    
 
   }
 
@@ -234,7 +237,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
 
             (sharedSpacesInfo.length > 0 ?
               sharedSpacesInfo.map((space: any, idx: number) => space.sharedWith.map((shared: any) => {
-                console.log(shared)
+               // console.log(shared)
                 return (
                   shared.invitedId == taskUser.id ?
                   space.rooms!= null?

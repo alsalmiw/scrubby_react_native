@@ -66,7 +66,6 @@ const AddNewRoomScreen: FC<Props> = ({ navigation, route }) => {
       }
     }
 
-
   }
 
   const handleCategory = (name: string) => {
@@ -91,7 +90,6 @@ const AddNewRoomScreen: FC<Props> = ({ navigation, route }) => {
               )
             })
           }
-
         </View>
       </View>
       <TwoFullButtonComponent text1="Back" text2="Add" color={fuchsiaColor} onAcceptPress={() => handleAddRoom()} onBackPress={() => navigation.goBack()} />

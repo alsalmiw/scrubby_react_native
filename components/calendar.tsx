@@ -1,6 +1,6 @@
-import {addDays} from 'date-fns';
-import React, {useState} from 'react';
-import {Button, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import { addDays } from 'date-fns';
+import React, { useState } from 'react';
+import { Button, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import WeekCalendar from './WeekCalendar';
 
 const calendar: React.FC = () => {

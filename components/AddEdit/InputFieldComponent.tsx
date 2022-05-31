@@ -3,28 +3,26 @@ import { StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import UserContext from "../../context/UserContext";
 
-interface IInputType{
+interface IInputType {
     onChangeText: Function;
     holder: string;
     hide: boolean;
     maxLength: number;
-    value:string;
+    value: string;
 }
 
-
 const InputFieldComponent: FC<IInputType> = (props) => {
-    const {searchUser, setSearchUser} = useContext(UserContext)
- 
+    const { searchUser, setSearchUser } = useContext(UserContext)
+
     const handleOnChange = (e: string) => {
         props.onChangeText(e)
     }
 
     return (
         <>
-            
             <View style={styles.SectionStyle}>
                 <TextInput
-                     value={props.value}
+                    value={props.value}
                     maxLength={props.maxLength}
                     // value={searchUser}
                     autoComplete='off'
@@ -32,15 +30,11 @@ const InputFieldComponent: FC<IInputType> = (props) => {
                     placeholder={props.holder}
                     mode='flat'
                     selectionColor='#808080'
-                    secureTextEntry={props.hide} 
-                    onChangeText={(e)=>handleOnChange(e)}
+                    secureTextEntry={props.hide}
+                    onChangeText={(e) => handleOnChange(e)}
                 />
-
             </View>
-
-
         </>
-
     );
 };
 
@@ -51,7 +45,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         borderWidth: 2,
-        //change back to white for other pages
         borderColor: "white",
         height: 60,
         width: "80%",
@@ -60,8 +53,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     ImageStyle: {
-        paddingLeft:10
-
+        paddingLeft: 10
     },
     inputUsername: {
         flex: 1,
@@ -74,10 +66,6 @@ const styles = StyleSheet.create({
         borderRadius: 0,
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
-    
-
-
-
     }
 })
 

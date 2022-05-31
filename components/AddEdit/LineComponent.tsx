@@ -11,8 +11,8 @@ export default function Line() {
 
 const styles = StyleSheet.create({
     lineParent: {
-        flexDirection: 'row'
-        , justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center',
         alignItems: 'center',
         marginTop: 10
     },

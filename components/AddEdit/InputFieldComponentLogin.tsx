@@ -2,27 +2,18 @@ import React, { useState } from "react";
 import { FC, useContext } from "react";
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
-
 import { AntDesign } from '@expo/vector-icons';
-
 import UseUser from '../../hooks/use-user';
 import UserContext from '../../context/UserContext';
-
-
-
-
 
 
 const InputFieldComponentLogin = () => {
     const { setPassword, password, username, setUsername, login, setLogin, fullName, setFullName, } = useContext(UserContext)
     const [hide, setHide] = useState(true);
 
-
-
     return (
-        //userlogin input
         <>
-            {login?
+            {login ?
                 <View style={styles.SectionStyle}>
                     <AntDesign name="user" size={28} color="#808080" style={styles.ImageStyle} />
                     <TextInput
@@ -35,12 +26,9 @@ const InputFieldComponentLogin = () => {
                         onChangeText={e => setFullName(e)}
                         // onEndEditing={(e) => setFullName(e)}
                         value={fullName}
-
-
                     />
-
                 </View>
-                :null
+                : null
             }
             <View style={styles.SectionStyle}>
                 <AntDesign name="user" size={28} color="#808080" style={styles.ImageStyle} />
@@ -53,13 +41,11 @@ const InputFieldComponentLogin = () => {
                     selectionColor='#808080'
                     onChangeText={(e) => setUsername(e)}
                 />
-
             </View>
 
 
             <View style={styles.SectionStyle}>
                 <AntDesign name="lock" size={28} color="#808080" style={styles.ImageStyle} />
-
                 <TextInput
                     value={password}
                     autoComplete='off'
@@ -69,13 +55,8 @@ const InputFieldComponentLogin = () => {
                     selectionColor='#808080'
                     onChangeText={(e) => setPassword(e)}
                     secureTextEntry={hide}
-
                 />
-
-
             </View>
-
-
         </>
 
     );
@@ -97,7 +78,6 @@ const styles = StyleSheet.create({
     },
     ImageStyle: {
         paddingLeft: 10
-
     },
     inputUsername: {
         flex: 1,
@@ -110,10 +90,6 @@ const styles = StyleSheet.create({
         borderRadius: 0,
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
-
-
-
-
     }
 })
 

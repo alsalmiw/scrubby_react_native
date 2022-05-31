@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, Ionicons, FontAwesome } from '@expo/vector-icons';
-import {ThemeContext} from "../context/ThemeContext"
+import { ThemeContext } from "../context/ThemeContext"
 import ScheduleScreen from '../screens/Schedule/ScheduleScreen'
 import SettingsNavigation from '../screens/Settings/SettingsNavigation';
 import TaskFamilyScreen from '../screens/Tasking/TaskFamilyScreen'
@@ -13,16 +13,12 @@ import TaskingNavigation from '../screens/Tasking/TaskingNavigation';
 import ScheduleNavigation from '../screens/Schedule/ScheduleNavigation';
 import RootStackParamList from '../types/INavigation'
 
-
-// type RootStackParamList ={
-//   Nav: undefined,
-// }
 type Props = NativeStackScreenProps<RootStackParamList, 'Nav'>
 
 const Tab = createBottomTabNavigator();
 
-const MyTabs: FC = () =>{
-  const {lilacColor, lightLilacColor} = useContext(ThemeContext)
+const MyTabs: FC = () => {
+  const { lilacColor, lightLilacColor } = useContext(ThemeContext)
   return (
     <Tab.Navigator
       initialRouteName="Feed"
@@ -42,7 +38,7 @@ const MyTabs: FC = () =>{
         }}
       />
       <Tab.Screen
-        name="Profile" 
+        name="Profile"
         component={ProfileNavigation}
         options={{
           headerShown: false,
@@ -78,10 +74,10 @@ const MyTabs: FC = () =>{
   );
 }
 
-const NavigationComponent: FC <Props> =()=> {
+const NavigationComponent: FC<Props> = () => {
   return (
-    
-      <MyTabs />
+
+    <MyTabs />
   );
 }
 

@@ -1,27 +1,23 @@
-
-
-
 export default interface ITask {
-    id:number, 
-   dateCompleted:string,
+    id: number,
+    dateCompleted: string,
     dateCreated: string,
-    isArchived:boolean, 
-    isDeleted:boolean,
+    isArchived: boolean,
+    isDeleted: boolean,
     task: {
         id: number,
         name: string,
         description: string,
         tags: string,
-        time:string,
-        coins:number
-        
+        time: string,
+        coins: number
+
     },
-    item:{
+    item: {
         id: number,
         name: string,
         description: string,
         tags: string,
-       
-    }
 
-  }
+    }
+}

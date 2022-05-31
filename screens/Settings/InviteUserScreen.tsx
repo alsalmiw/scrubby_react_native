@@ -5,8 +5,6 @@ import { ThemeContext } from "../../context/ThemeContext";
 import UserContext from "../../context/UserContext";
 import { AllInvitesByInvitedUsername, InviteUser } from "../../services/dataService";
 
-///
-
 import RootStackParamList from '../../types/INavigateSettings'
 
 import TwoFullButtonComponent from "../../components/TwoFullButtonComponent";
@@ -15,7 +13,6 @@ import InputFieldComponent from "../../components/AddEdit/InputFieldComponent";
 
 import IInviteUser from '../../Interfaces/IInviteUser';
 type Props = NativeStackScreenProps<RootStackParamList, 'InviteUser'>
-
 
 
 const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
@@ -34,8 +31,7 @@ const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
             IsAccepted: false,
             IsDeleted: false
         }
-       // console.log(inviteUser)
-      //  console.log(userData);
+
         if (userData.username === e) {
             Alert.alert("Error", `You can't invite yourself`, [{ text: "Cancel", style: "cancel" }]);
         }
@@ -50,11 +46,9 @@ const InviteUserScreen: FC<Props> = ({ navigation, route }) => {
             }
             else if (!invitedUser) {
                 Alert.alert("Error", `User ${e} is not found or is already invited`, [{ text: "Cancel", style: "cancel" }]);
-               // console.log(invitedUser);
+
             }
         }
-
-
 
     }
 

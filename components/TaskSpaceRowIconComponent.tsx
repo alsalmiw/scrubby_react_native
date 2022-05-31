@@ -5,7 +5,7 @@ interface Props {
     children: ReactNode
 }
 
-const TaskSpaceRowIconComponent:FC<Props> = ({children}) => {
+const TaskSpaceRowIconComponent: FC<Props> = ({ children }) => {
     return (
         <View style={styles.container}>
             {children}

@@ -18,28 +18,27 @@ interface Props {
 
 const TaskSpaceRowTrash: FC<Props> = (props) => {
 
-  const {bgColor, lilacColor} = useContext(ThemeContext)
+  const { bgColor, lilacColor } = useContext(ThemeContext)
   const { setMySpaces, mySpaces, setMyHouses, myHouses, userData, defaultSpace, setDefaultSpace, setRunAgain, setSharedSpacesInfo, sharedSpacesInfo, spacesRooms, setSpacesRoom } = useContext(UserContext)
 
 
   const handleDeleteSpace = async () => {
     let result = await DeleteSpaceCollectionById(props.spaceId)
-    if(result){
-      setMyHouses(myHouses.filter((space:any) => space.id!=props.spaceId))
+    if (result) {
+      setMyHouses(myHouses.filter((space: any) => space.id != props.spaceId))
       let collections = await GetSpaceCollectionByUsername(userData.username)
-      if(collections.length > 0){
+      if (collections.length > 0) {
         setMyHouses(collections)
-    }
-    if(props.spaceId == defaultSpace.id){
-      let defaultCollection = await GetUserDefaultSchedule(userData.username)
+      }
+      if (props.spaceId == defaultSpace.id) {
+        let defaultCollection = await GetUserDefaultSchedule(userData.username)
         setDefaultSpace(defaultCollection)
         setRunAgain(true)
+      }
+      setSharedSpacesInfo(sharedSpacesInfo.filter((space: any) => space.id != props.spaceId))
+      setSpacesRoom(spacesRooms.filter((space: any) => space.id != props.spaceId))
     }
-    setSharedSpacesInfo(sharedSpacesInfo.filter((space:any) => space.id!=props.spaceId))
-    setSpacesRoom(spacesRooms.filter((space:any) => space.id!=props.spaceId))
-    }
-    console.log(props.spaceId)
-    
+
   }
 
   const handleNav = () => {
@@ -49,9 +48,9 @@ const TaskSpaceRowTrash: FC<Props> = (props) => {
     <TaskSpaceRowComponent idx={props.idx} onPress={handleNav}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={styles.textStyle}>{props.children}</Text>
-        <Pressable  onPress={()=>handleDeleteSpace()}>
+        <Pressable onPress={() => handleDeleteSpace()}>
           <Feather name="trash-2" size={27} color={"#FFF"} />
-      </Pressable>
+        </Pressable>
       </View>
     </TaskSpaceRowComponent>
   )

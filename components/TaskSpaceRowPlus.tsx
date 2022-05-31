@@ -16,7 +16,7 @@ interface Props {
 
 const TaskSpaceRowPlus: FC<Props> = (props) => {
 
-  const {bgColor, lilacColor} = useContext(ThemeContext)
+  const { bgColor, lilacColor } = useContext(ThemeContext)
 
   const handleFunction = () => {
     props.onPress();
@@ -25,9 +25,7 @@ const TaskSpaceRowPlus: FC<Props> = (props) => {
     <TaskSpaceRowComponent idx={props.idx} onPress={handleFunction}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <Text style={styles.textStyle}>{props.children}</Text>
-      
-           <FontAwesome name="plus-square" size={40} color="white" />
-      
+        <FontAwesome name="plus-square" size={40} color="white" />
       </View>
     </TaskSpaceRowComponent>
   )

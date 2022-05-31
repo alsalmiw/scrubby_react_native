@@ -44,13 +44,12 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
     const [invitedPhoto, setInvitedPhoto] = useState<any>();
     const [sharedSpaces, setSharedSpaces] = useState<any>([]);
     const [refreshLocalUseEffect, setRefreshLocalUseEffect] = useState<boolean>(false);
-    const [r, setR]=useState<number>(Math.floor(Math.random() * 7))
+    const [r, setR] = useState<number>(Math.floor(Math.random() * 7))
 
 
 
     const handleDisplayFullName = async () => {
-       // console.log(sentAcceptedInvitations);
-
+        
         let invitedUserNameAsyncStorage = (await AsyncStorage.getItem('Invited'))!;
 
         for (let i = 0; i < sentAcceptedInvitations.length; i++) {
@@ -61,7 +60,6 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
                     setFullName(sentAcceptedInvitations[i].invitedUsername);
                 }
 
-                //This sets accepted user's invitation photo
                 setInvitedPhoto(sentAcceptedInvitations[i].invitedPhoto)
             }
         }
@@ -73,166 +71,137 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
 
         let invitedUsername = (await AsyncStorage.getItem('Invited'))!;
 
-        //Gets shared spaces shared by both invited and inviter
-       
         let result = await GetSharedSpacesByInvitedAndInviterUsername(invitedUsername, savedUsername);
-       // console.log(result);
         setSharedSpaces(result);
     }
 
     const handleAddSharedSpace = async (filteredMySpace: any) => {
         let invitedUsername = (await AsyncStorage.getItem('Invited'))!;
 
-        //This will be how we add create shared Space
-
-       // console.log(filteredMySpace);
-         
-        let newSharedSpace:ISharedSpace = {
-            id:0, 
+        let newSharedSpace: ISharedSpace = {
+            id: 0,
             invitedUsername: invitedUsername,
             inviterUsername: savedUsername,
             collectionId: filteredMySpace.id,
             isDeleted: false,
             isAccepted: true
         }
-       //console.log(newSharedSpace)
 
         let result = await CreateSharedSpaces(newSharedSpace)
-        
+
         if (result) {
-            //console.log("You added a new shared space")
+            
             setRefreshLocalUseEffect((prevState: boolean) => !prevState);
             let sharedSpaces = await GetSharedCollectionsDetailsByUsername(userData.username)
             let invitesInfo = await GetInvitationByUsername(userData.username)
-            if(sharedSpaces.length!==0) {
-              //  console.log("i resetted shared spaces")
-             //  console.log(sharedSpaces)
-                setSharedSpacesInfo(sharedSpaces)
+            if (sharedSpaces.length !== 0) {
                 
-            }else{
+                setSharedSpacesInfo(sharedSpaces)
+
+            } else {
                 setSharedSpacesInfo([])
-             
+
             }
-            if(invitesInfo.length!=0){
+            if (invitesInfo.length != 0) {
                 setInvited(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
                 setInviters(invitesInfo.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
                 setAcceptedInvitations(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
-            //  console.log(invitesInfo.sentInvites)
-             
-               
-                //console.log("I resetted wiith info")
-            
-            }else{
+                
+
+            } else {
                 setInvited([])
                 setInviters([])
                 setAcceptedInvitations([])
             }
-         
+
         }
 
     }
 
     const handleDeleteSharedSpace = async (filteredSharedSpace: any) => {
-        //console.log("You deleted a shared space");
-        // console.log(filteredSharedSpace.id)
-        // console.log(sharedSpaces);
+        
 
-        let findSharedSpace = sharedSpaces.find((sharedSpace:any) => sharedSpace.collectionId === filteredSharedSpace.id);
-        // console.log(findSharedSpace);
+        let findSharedSpace = sharedSpaces.find((sharedSpace: any) => sharedSpace.collectionId === filteredSharedSpace.id);
+        
 
 
         let result = await DeleteSharedSpacesById(findSharedSpace);
-        // console.log(result);
-        
+       
+
         if (result) {
-            //console.log("You deleted a shared Space")
+            
             setRefreshLocalUseEffect((prevState: boolean) => !prevState);
             let sharedSpaces = await GetSharedCollectionsDetailsByUsername(userData.username)
             let invitesInfo = await GetInvitationByUsername(userData.username)
-            if(sharedSpaces.length!==0) {
-               
+            if (sharedSpaces.length !== 0) {
+
                 setSharedSpacesInfo(sharedSpaces)
-                   setRefreshTaskPage(true)
-            }else{
+                setRefreshTaskPage(true)
+            } else {
                 setSharedSpacesInfo([])
                 setRefreshTaskPage(true)
             }
-            if(invitesInfo.length!=0){
+            if (invitesInfo.length != 0) {
                 setInvited(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
                 setInviters(invitesInfo.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
                 setAcceptedInvitations(invitesInfo.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
-                console.log("I resetted wiith info")
-            
-            }else{
+                
+
+            } else {
                 setInvited([])
                 setInviters([])
                 setAcceptedInvitations([])
                 setRefreshTaskPage(true)
             }
-         
-           
-         
+
         }
-        
+
     }
 
     const handleDeleteInvite = async () => {
 
         let invitedUserToBeDeleted = await AsyncStorage.getItem('Invited')!;
-        
-        const DeleteInviteFetch = async() => {
+
+        const DeleteInviteFetch = async () => {
             let result = await DeleteInvite(userData.id, invitedUserToBeDeleted!);
-             //console.log(result);
-            // setRefresh((prevRefresh:boolean) => prevRefresh = true)
-            // navigation.navigate('ManageInvites');
-            // console.log('scooby')
-            // console.log(userData.id)
-            // console.log(invitedUserToBeDeleted);
-            
+
         }
-        
+
         DeleteInviteFetch();
 
-        
+
     }
-    
+
     const handleAddSharedAlert = async (filteredMySpace: any) => {
 
-        // console.log('scooby')
-        // console.log(filteredMySpace)
-
         Alert.alert("Adding a Shared Space", "You are about to share a space, would you like to add?",
-        [
-            {text: "Cancel", onPress: undefined, style: "destructive"},
-            {text: "Add", onPress: handleAddSharedSpace.bind(this, filteredMySpace), style: 'default'}
+            [
+                { text: "Cancel", onPress: undefined, style: "destructive" },
+                { text: "Add", onPress: handleAddSharedSpace.bind(this, filteredMySpace), style: 'default' }
 
-        ])
-
-
+            ])
 
     }
 
     const handleDeleteSharedAlert = async (filteredSharedSpace: any) => {
-        // console.log(filteredSharedSpace);
-        Alert.alert("Deleting a Shared Space", "You are about to delete a shared Space, would you like to delete?",
         
-        [
-            {text: "Cancel", onPress: undefined, style: "destructive"},
-            {text: "Delete", onPress: handleDeleteSharedSpace.bind(this, filteredSharedSpace), style: 'default'}
-        ])
+        Alert.alert("Deleting a Shared Space", "You are about to delete a shared Space, would you like to delete?",
+
+            [
+                { text: "Cancel", onPress: undefined, style: "destructive" },
+                { text: "Delete", onPress: handleDeleteSharedSpace.bind(this, filteredSharedSpace), style: 'default' }
+            ])
 
     }
 
     const handleDeleteUserAlert = async () => {
         Alert.alert("Deleting a user", "You are about to delete the user from your invitations, would you like to delete?",
-        [
-            {text: "Cancel", onPress: undefined, style: "destructive"},
-            {text: "Delete", onPress: handleDeleteInvite, style: "default"}
+            [
+                { text: "Cancel", onPress: undefined, style: "destructive" },
+                { text: "Delete", onPress: handleDeleteInvite, style: "default" }
 
-        ])
+            ])
     }
-
-    
 
     const handleNavigateBack = () => {
         navigation.navigate('ManageInvites');
@@ -242,84 +211,61 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
     useEffect(() => {
         handleDisplayFullName();
         handleDisplaySharedSpaces();
-       // console.log(sharedSpaces);
+        
 
     }, [refreshLocalUseEffect])
 
     return (
         <View style={styles.container}>
             <View>
-            <HeaderComponent title={'Add To My Space'}></HeaderComponent>
-            <View style={styles.firstRowContainer}>
-                <AvatarComponent onPress={()=>console.log("")} imageSource={invitedPhoto} />
-                <View style={styles.insideFirstRowContainer1}>
-                    <UserNameComponent name={fullName}></UserNameComponent>
-                    <Pressable style={styles.insideFirstRowContainer2} onPress={handleDeleteUserAlert} >
-                        {/* The hello there is just a test, i will remove later when done adding changes */}
-                        <Feather name="trash-2" size={30} color={lilacColor} />
-                        <UserNameComponent name="Delete User"></UserNameComponent>
-                    </Pressable>
-                </View>
-            </View>
-
-            <View style={styles.secondRowContainer}>
-                <UnderlinedOneHeaderComponent titleFirst='Add To'></UnderlinedOneHeaderComponent>
-                <View style={styles.insideSecondRowContainer1}>
-
-
-                    {/* {
-                        mySpaces.map((space: ISpace, idx: number) =>
-                            <TaskSpaceRowPlus
-                                idx={rState + idx}
-                                key={idx}
-                                onPress={() => { console.log(space); handleDisplayAlert(space) }}
-                            >
-                                {space.collectionName}
-                            </TaskSpaceRowPlus>
-
-                        )
-                    } */}
-
-                    {
-                        myHouses.filter((myHouse: any) => !sharedSpaces.map((sharedSpace: any) => sharedSpace.collectionId).includes(myHouse.id)).map((filteredMySpaces: any, idx: number) => 
-                        <TaskSpaceRowPlus
-                            idx={r + idx}
-                            key={filteredMySpaces.collectionName}
-                            onPress={handleAddSharedAlert.bind(this, filteredMySpaces)}>
-                            {filteredMySpaces.collectionName}
-
-                        </TaskSpaceRowPlus>)
-
-                        
-
-                       
-
-                        
-                    }
-
-
-
-                    {
-                        myHouses.filter((myHouse: any) => sharedSpaces.map((sharedSpace: any) => sharedSpace.collectionId).includes(myHouse.id)).map((filteredSharedSpace: any, idx: number) => 
-                        <TaskSpaceRowMinus
-                            idx={r + idx + 2}
-                            key={filteredSharedSpace.id + 100}
-                            onPress={handleDeleteSharedAlert.bind(this, filteredSharedSpace)}>
-                            {filteredSharedSpace.collectionName}
-
-                        </TaskSpaceRowMinus>)
-
-                        
-
-                        
-
-                    }
-
-
-
+                <HeaderComponent title={'Add To My Space'}></HeaderComponent>
+                <View style={styles.firstRowContainer}>
+                    <AvatarComponent onPress={() => {}} imageSource={invitedPhoto} />
+                    <View style={styles.insideFirstRowContainer1}>
+                        <UserNameComponent name={fullName}></UserNameComponent>
+                        <Pressable style={styles.insideFirstRowContainer2} onPress={handleDeleteUserAlert} >
+                            
+                            <Feather name="trash-2" size={30} color={lilacColor} />
+                            <UserNameComponent name="Delete User"></UserNameComponent>
+                        </Pressable>
+                    </View>
                 </View>
 
-            </View>
+                <View style={styles.secondRowContainer}>
+                    <UnderlinedOneHeaderComponent titleFirst='Add To'></UnderlinedOneHeaderComponent>
+                    <View style={styles.insideSecondRowContainer1}>
+
+
+                        
+
+                        {
+                            myHouses.filter((myHouse: any) => !sharedSpaces.map((sharedSpace: any) => sharedSpace.collectionId).includes(myHouse.id)).map((filteredMySpaces: any, idx: number) =>
+                                <TaskSpaceRowPlus
+                                    idx={r + idx}
+                                    key={filteredMySpaces.collectionName}
+                                    onPress={handleAddSharedAlert.bind(this, filteredMySpaces)}>
+                                    {filteredMySpaces.collectionName}
+
+                                </TaskSpaceRowPlus>)
+
+
+                        }
+
+                        {
+                            myHouses.filter((myHouse: any) => sharedSpaces.map((sharedSpace: any) => sharedSpace.collectionId).includes(myHouse.id)).map((filteredSharedSpace: any, idx: number) =>
+                                <TaskSpaceRowMinus
+                                    idx={r + idx + 2}
+                                    key={filteredSharedSpace.id + 100}
+                                    onPress={handleDeleteSharedAlert.bind(this, filteredSharedSpace)}>
+                                    {filteredSharedSpace.collectionName}
+
+                                </TaskSpaceRowMinus>)
+
+                        }
+
+                    </View>
+
+                </View>
             </View>
             <FullButtonComponent onPress={handleNavigateBack} radius={0} color={purpleColor}>
                 <Text>Back</Text>

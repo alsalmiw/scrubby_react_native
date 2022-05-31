@@ -24,7 +24,7 @@ const UnderlinedOneHeaderComponent: FC<TitleType> =({titleFirst}) => {
 
 const styles = StyleSheet.create({
         mainHeader: {
-            fontSize:20,
+            fontSize:22,
             fontWeight: "bold", 
         }, 
         headerContainer:{

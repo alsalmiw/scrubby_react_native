@@ -75,10 +75,13 @@ const DefaultSpaceChildScreen: FC<Props> = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <ScrollView>
-                <HeaderComponent title="Set Default Schedule" />
-                <UnderlinedTwoHeaderComponent titleFirst={"Child's Spaces"} titleTwo={"Set Default"} />
-
-                <View>
+                <View style={{ flexDirection: 'row' }}>
+                    <HeaderComponent title="Set Default Schedule" />
+                </View>
+                <View style={{paddingLeft:"2.5%", paddingRight:"2.5%" }}>
+                    <UnderlinedTwoHeaderComponent titleFirst={"Child's Spaces"} titleTwo={"Set Default"} />
+                </View>
+                <View style={{paddingLeft:"2.5%", marginTop:'2.5%' }}>
                     {
                         spacesRooms.map((space: any, idx: number) =>
                             space.rooms.length > 0 ?

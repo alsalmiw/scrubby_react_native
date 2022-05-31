@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
             fontWeight: "bold"
         }, 
         headerContainer:{
-            paddingRight: 10,
+            paddingLeft:"2.5%",
             width:'80%',
             flexDirection: "row",
             justifyContent: "flex-start",

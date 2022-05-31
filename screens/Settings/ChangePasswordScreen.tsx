@@ -1,7 +1,7 @@
 // import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useState } from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import RootStackParamList from '../../types/INavigateSettings'
 import InputFieldComponent from '../../components/AddEdit/InputFieldComponent'
 import TitleComponent from '../../components/AddEdit/TitleComponent'
@@ -48,7 +48,7 @@ const ChangePasswordScreen: FC<Props> = ({navigation, route})=> {
   }
   
   return (
- 
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={[styles.container, {backgroundColor:fuchsiaColor}]}>
       <View style={[{ flex:1, justifyContent: 'center', alignItems: 'center'}]}>
         <TitleComponent title="Change Password" />
@@ -67,6 +67,7 @@ const ChangePasswordScreen: FC<Props> = ({navigation, route})=> {
           <Text>Save</Text>
         </FullButtonComponent> */}
     </View>
+    </TouchableWithoutFeedback>
   );
 }
 

@@ -1,7 +1,7 @@
 // import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useState } from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { StyleSheet, Text, View, StatusBar, Alert } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import {AddPhotoComponent} from '../../components/AddPhotoComponent';
 import RootStackParamList from '../../types/INavigation'
 import InputFieldComponent from '../../components/AddEdit/InputFieldComponent'
@@ -92,14 +92,14 @@ const EditProfileScreen: FC<Props> = ({navigation})=> {
 
   
   return (
- 
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
    <View style={[styles.container,{backgroundColor:orangeColor}]}>
      {
    !isEditImage?
    <>
-        <View></View>
+        
         <View style={[{alignItems: 'center'}]}> 
-        <TitleComponent title="Edit FullName" />
+        <TitleComponent title="Edit Full Name" />
         <Ionicons name="person" size={100} color="#FFF" />
         </View>
         <View>
@@ -124,6 +124,7 @@ const EditProfileScreen: FC<Props> = ({navigation})=> {
  }
 
  </View>
+ </TouchableWithoutFeedback>
     
   );
 }

@@ -19,7 +19,7 @@ const HeaderComponent: FC<TitleType> = ({ title }) => {
 
 const styles = StyleSheet.create({
         mainHeader: {
-            fontSize:25,
+            fontSize:26,
             textTransform: "uppercase",
             fontWeight: "bold",
         }, 
@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
             flexDirection: "row",
             justifyContent: "flex-end",
             marginBottom:30,
+            
         }
     })
 

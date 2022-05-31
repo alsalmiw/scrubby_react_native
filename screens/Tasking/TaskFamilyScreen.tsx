@@ -182,13 +182,13 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
         }
 
       </View>
-      <View style={styles.selectMemberCon}>
+      <View style={{paddingLeft:"1.5%", paddingRight:"1.5%"}}>
 
         {
 
           seeAll ?
 
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{paddingTop:"2%"}}>
 
               <ShowMembers />
             </ScrollView>
@@ -201,10 +201,11 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
         }
 
       </View>
+      <View style={{paddingLeft:"2.5%", paddingRight:"2.5%" }}>
       <UnderlinedHeaderComponent titleOne={'My Spaces'} titleTwo={''} titleThree={''} />
+      </View>
 
-
-      <View>
+      <View style={{paddingTop:"2%"}}>
 
         {
 
@@ -290,6 +291,8 @@ const styles = StyleSheet.create({
   selectMemberCon: {
     flexDirection: 'row',
     flexWrap: "wrap",
+    paddingLeft:"2.5%",
+    paddingTop:"2%"
 
   },
   fadedImage: {

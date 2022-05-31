@@ -157,6 +157,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     await setChildCoins(child.dependentCoins)
     await setChildPoints(child.dependentPoints)
     let childDefault = await GetChildDefaultSchedule(child.id)
+    // console.log("Child fetch", childDefault)
     //console.log("Child fetch", childDefault)
     if (childDefault.length != 0) {
       setChildDefaultSpace(childDefault)

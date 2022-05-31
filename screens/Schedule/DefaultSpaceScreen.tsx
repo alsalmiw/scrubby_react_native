@@ -17,7 +17,7 @@ import RootStackParamList from '../../types/INavigation'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import FullButtonComponent from '../../components/FullButtonComponent';
 import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
-import { Ionicons} from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import IDefaultSpace from '../../Interfaces/IDefaultSpace';
 import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 import SplashComponentFaded from '../../components/SplashComponentFaded';
@@ -25,139 +25,136 @@ import SplashComponentFaded from '../../components/SplashComponentFaded';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DefaultOptions'>
 
-const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
+const DefaultSpaceScreen: FC<Props> = ({ navigation }) => {
 
-    const { savedUsername, setSavedUsername, setWaiting, setMySpaces, userData, setUserData, childData, setChildrenData , setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, mySchedule, setRunAgain, defaultScheduleOptions } = useContext(UserContext)
-    const {secondaryTextColor, purpleColor} = useContext(ThemeContext)
+    const { savedUsername, setSavedUsername, setWaiting, setMySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, setSpinnerOn, defaultSpace, setDefaultSpace, mySchedule, setRunAgain, defaultScheduleOptions } = useContext(UserContext)
+    const { secondaryTextColor, purpleColor } = useContext(ThemeContext)
     const [newSelection, setNewSelection] = useState<any>([])
 
     useEffect(() => {
         setNewSelection(defaultSpace)
         DisplayDefaultOptions()
-    },[defaultScheduleOptions])
+    }, [defaultScheduleOptions])
 
-    const handleSetDefaultSchedule =async(space:any)=> {
+    const handleSetDefaultSchedule = async (space: any) => {
         setNewSelection(space)
-       // console.log(userData.username, space.id, space.collectionName)
-      
+        // console.log(userData.username, space.id, space.collectionName)
+
     }
 
     const handleConfirm = async () => {
-        let newDefault:IDefaultSpace = {
-            Id:0,
-            UserId:userData.id,
-            CollectionId:newSelection.id,
-            IsDefault:true, 
-            IsDeleted:false
+        let newDefault: IDefaultSpace = {
+            Id: 0,
+            UserId: userData.id,
+            CollectionId: newSelection.id,
+            IsDefault: true,
+            IsDeleted: false
         }
 
         console.log(newDefault);
         setWaiting(true)
-        let changeDefault = await AddDefaultUserSpace (newDefault)
-        if(changeDefault)
-        {
-           
+        let changeDefault = await AddDefaultUserSpace(newDefault)
+        if (changeDefault) {
+
             let newDefault = await GetUserDefaultSchedule(userData.username)
-            if(newDefault!=null)
-            {
+            if (newDefault != null) {
                 setWaiting(false)
 
-                   console.log(changeDefault)
-            setRunAgain(true)
-            setDefaultSpace(newDefault)
-            
-            alert("You have successfully set the default schedule to " + newSelection.collectionName)
-            navigation.goBack()
+                console.log(changeDefault)
+                setRunAgain(true)
+                setDefaultSpace(newDefault)
+
+                alert("You have successfully set the default schedule to " + newSelection.collectionName)
+                navigation.goBack()
 
             }
-         
+
         }
-        
+
     }
 
-    const handleBackPress =()=> {
+    const handleBackPress = () => {
         navigation.goBack()
     }
 
     const DisplayDefaultOptions = () => {
-        return(
+        return (
 
-<View>
-            {
-                defaultScheduleOptions.map((space:any, idx:number) =>
-                        space.rooms.length > 0?
-                    <TaskSpaceRowComponent key={idx} idx={idx} onPress={()=>handleSetDefaultSchedule(space)}>
-                        <View style={[styles.flexrow]}>
-                        <Text style={[styles.spacesFont]}>{space.collectionName}</Text>
-                        {
-                          
-                          newSelection.id==space.id?
-                            <Ionicons name="radio-button-on" size={24} color="#FFF" />
-                             :
-                             <Ionicons name="radio-button-off" size={24} color="#FFF" />
-                             
-                          
-                             
-                        }
-                       
-                        </View>
-                    </TaskSpaceRowComponent>
-                    :
-                    <TaskSpaceRowComponent key={idx} idx={idx} onPress={undefined}>
-                         <View style={[styles.flexrow]}>
-                        <Text style={[styles.spacesFont]}>{space.collectionName}</Text>
-                        <Text style={{color: '#FFF', fontSize:15}}>Not Available</Text>
-                        </View>
-                        </TaskSpaceRowComponent>
+            <View style={{ paddingLeft: "2.5%"}}>
+                {
+                    defaultScheduleOptions.map((space: any, idx: number) =>
+                        space.rooms.length > 0 ?
+                            <TaskSpaceRowComponent key={idx} idx={idx} onPress={() => handleSetDefaultSchedule(space)}>
+                                <View style={[styles.flexrow]}>
+                                    <Text style={[styles.spacesFont]}>{space.collectionName}</Text>
+                                    {
+                                        newSelection.id == space.id ?
+                                            <Ionicons name="radio-button-on" size={24} color="#FFF" />
+                                            :
+                                            <Ionicons name="radio-button-off" size={24} color="#FFF" />
+                                    }
+
+                                </View>
+                            </TaskSpaceRowComponent>
+                            :
+                            <TaskSpaceRowComponent key={idx} idx={idx} onPress={undefined}>
+                                <View style={[styles.flexrow]}>
+                                    <Text style={[styles.spacesFont]}>{space.collectionName}</Text>
+                                    <Text style={{ color: '#FFF', fontSize: 15 }}>Not Available</Text>
+                                </View>
+                            </TaskSpaceRowComponent>
 
 
-                )
-            }
+                    )
+                }
 
             </View>
 
         )
     }
-    return(
-          <SplashComponentFaded>
-        <View style={styles.container}>
-          
-              
-            <ScrollView>
-            <HeaderComponent title="Set Default Schedule"/>
-            <UnderlinedTwoHeaderComponent titleFirst={"My Spaces"} titleTwo={"Set Default"}/>
+    return (
+        <SplashComponentFaded>
+            <View style={styles.container}>
 
-            <DisplayDefaultOptions/>
-            </ScrollView>
 
-        <View>
-            <TwoFullButtonComponent text1={"Back"} text2={"Confirm"} onAcceptPress={()=>handleConfirm()} color={purpleColor} onBackPress={()=>handleBackPress()} />
+                <ScrollView>
 
-        </View>
-     
-     
-        </View>
-      </SplashComponentFaded>
+                    <HeaderComponent title="Set Default Schedule" />
+
+                    <View style={{ paddingLeft: "2.5%", paddingRight: "2.5%" }}>
+                        <UnderlinedTwoHeaderComponent titleFirst={"My Spaces"} titleTwo={"Set Default"} />
+                    </View>
+                    <DisplayDefaultOptions />
+                </ScrollView>
+
+                <View>
+                    <TwoFullButtonComponent text1={"Back"} text2={"Confirm"} onAcceptPress={() => handleConfirm()} color={purpleColor} onBackPress={() => handleBackPress()} />
+
+                </View>
+
+
+            </View>
+        </SplashComponentFaded>
     )
 
 }
 
 const styles = StyleSheet.create({
     container: {
-    flex: 1,
-    paddingTop:20,
-    justifyContent: "space-between"
+        flex: 1,
+        paddingTop: 20,
+        justifyContent: "space-between"
     },
     flexrow: {
         flexDirection: "row",
         justifyContent: "space-between"
-      },
-      spacesFont:{
-          color:"#FFF",
-          fontSize: 18,
-          fontWeight: "bold"
+    },
+    spacesFont: {
+        color: "#FFF",
+        fontSize: 18,
+        fontWeight: "bold"
 
-      }
+    }
 })
 
 export default DefaultSpaceScreen

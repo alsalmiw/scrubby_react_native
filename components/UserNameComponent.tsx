@@ -17,7 +17,7 @@ const UserNameComponent: FC<NameType> =({name}) => {
 
 const styles = StyleSheet.create({
         mainHeader: {
-            fontSize:15,
+            fontSize:20,
             fontWeight: "bold", 
         },
     })

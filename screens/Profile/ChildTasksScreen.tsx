@@ -29,7 +29,7 @@ import UserNameComponent from '../../components/UserNameComponent';
 type Props = NativeStackScreenProps<RootStackParamList, 'ChildTasks'>
 
 const ChildTasksScreen: FC<Props> = ({ navigation }) => {
-  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setMemberInfo, setIsEditImage , setRunAgain, childPoints, setChildPoints, childCoins, setChildCoins, refreshChildTask, setRefreshChildTask, setBlank, setChildrenData, waiting, setWaiting, spacesRooms} = useContext(UserContext)
+  const { childPage, userData, rState, mySpace, setTasks, setMyRoom, modalVisible, setModalVisible, taskModal, setTaskModal, childRooms, setChildDefaultSpace, childDefaultSpace, selectedTask, setSelectedTask, runAgain, setMemberInfo, setIsEditImage, setRunAgain, childPoints, setChildPoints, childCoins, setChildCoins, refreshChildTask, setRefreshChildTask, setBlank, setChildrenData, waiting, setWaiting, spacesRooms } = useContext(UserContext)
 
 
   const { secondaryTextColor, primaryTextColor, lilacColor } = useContext(ThemeContext)
@@ -127,9 +127,8 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
   const ChildDefault = async () => {
     let childDefault = await GetChildDefaultSchedule(childPage.id)
-    if(childDefault.length > 0)
-    {
-    setChildDefaultSpace(childDefault)   
+    if (childDefault.length > 0) {
+      setChildDefaultSpace(childDefault)
     }
   }
 
@@ -143,253 +142,256 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
   useEffect(() => {
     //repeat
     // navigation.addListener('focus', () =>{
-  //     console.log("===============================")
-  //  console.log(runAgain)
-  console.log(childPage) 
-   //all the child info:
-  //  console.log("child Page:", childPage)
-    if(childDefaultSpace.length!=0){
+    //     console.log("===============================")
+    //  console.log(runAgain)
+    console.log(childPage)
+    //all the child info:
+    //  console.log("child Page:", childPage)
+    if (childDefaultSpace.length != 0) {
 
       setBlank(false)
-   
-    if(runAgain)
-    {
-     ChildDefault()
-     childTaskDate()
-    }
+
+      if (runAgain) {
+        ChildDefault()
+        childTaskDate()
+      }
 
     }
-  
 
-   
+
+
 
   }, [runAgain])
 
 
-const handleChangeInfo = (isChangeName:boolean) => {
+  const handleChangeInfo = (isChangeName: boolean) => {
 
-  let newDetails= {
-    id: childPage.id,
-    isChild: true,
-  }
-  setMemberInfo(newDetails)
-  navigation.navigate('EditProfile')
-  if(isChangeName)
-  {
-    setIsEditImage(false)
-  }
-  else{
-     setIsEditImage(true)
-  }
- 
-}
+    let newDetails = {
+      id: childPage.id,
+      isChild: true,
+    }
+    setMemberInfo(newDetails)
+    navigation.navigate('EditProfile')
+    if (isChangeName) {
+      setIsEditImage(false)
+    }
+    else {
+      setIsEditImage(true)
+    }
 
-const handleDeleteChild= async()=> {
-// console.log("delete this kid")
- //console.log(childPage.id)
-setWaiting(true)
-let deleted = await DeleteChildByChildID(childPage.id)
-if(deleted)
-{
- 
-  let dependents = await GetDependantsDTOByUsername(userData.username)
-  if(dependents!=null){
-    setChildrenData(dependents)
-    navigation.navigate('MyProfile')
-    setWaiting(false)
   }
-}else{
-  setWaiting(false)
-}
-}
+  const handleWarningBeforeDelete = () => {
+    Alert.alert("Warning", 'This action will result in deleteing the child. Are you sure you want to delete.',
+      [
+        { text: "Cancel", style: "destructive", onPress: undefined },
+        { text: "Delete", style: 'default', onPress: () => handleDeleteChild() }
+      ])
+  }
+
+  const handleDeleteChild = async () => {
+    // console.log("delete this kid")
+    //console.log(childPage.id)
+    setWaiting(true)
+    let deleted = await DeleteChildByChildID(childPage.id)
+    if (deleted) {
+      let dependents = await GetDependantsDTOByUsername(userData.username)
+      if (dependents != null) {
+        setChildrenData(dependents)
+        navigation.navigate('MyProfile')
+        setWaiting(false)
+      }
+    } else {
+      setWaiting(false)
+    }
+  }
 
   return (
     <SplashComponentFaded>
-    <ScrollView style={styles.container}>
-      <View>
+      <ScrollView style={styles.container}>
         <View>
-          <HeaderComponent title='Child Tasks'></HeaderComponent>
-        </View>
-
-        <View style={{ flexDirection: 'row' }}>
-          <View style={styles.firstRow}>
-            <View>
-            <View>
-            <AvatarComponent onPress={() => {undefined}} imageSource={childPage.dependentPhoto} />
-              <Pressable  style={styles.deleteChild} onPress={() =>handleDeleteChild()}>
-              <FontAwesome5 name="user-times" size={20} color={lilacColor} />
-              </Pressable>
-             </View>
-            <View style={{flexDirection:"row", justifyContent: "center"}}>
-            <MaterialCommunityIcons name="image-edit-outline" size={20} color={lilacColor} />
-            <Text style={{color:"blue"}} onPress={() =>handleChangeInfo(false)}>Edit image?</Text>
-            </View>
-            </View>
+          <View>
+            <HeaderComponent title='Child Tasks'></HeaderComponent>
           </View>
 
-
-          <View style={styles.nameAndCoinContainer}>
-            <View style={styles.childName}>
-              
-            <Pressable style={{flexDirection: 'row'}} onPress={()=>handleChangeInfo(true)}>
-            <UserNameComponent name={childPage.dependentName} />
-              <View style={{marginLeft:5}}>
-          <FontAwesome5 name="edit" size={20} color={lilacColor} />
-          </View>
-        </Pressable>
-            </View>
-
-            <Text style={{ color: primaryTextColor}}>{childPage.dependentAge} years old</Text>
-
-
-            <View style={styles.coinContainer}>
-              <CoinsPointsDisplayContainer coins={childCoins} points={childPoints} ></CoinsPointsDisplayContainer>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={styles.firstRow}>
+              <View>
+                <View style={{ paddingLeft: '2.5%' }}>
+                  <AvatarComponent onPress={() => { undefined }} imageSource={childPage.dependentPhoto} />
+                  <Pressable style={styles.deleteChild} onPress={() => handleWarningBeforeDelete()}>
+                    <FontAwesome5 name="user-times" size={20} color={lilacColor} />
+                  </Pressable>
+                </View>
+                <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                  <MaterialCommunityIcons name="image-edit-outline" size={20} color={lilacColor} />
+                  <Text style={{ color: "blue" }} onPress={() => handleChangeInfo(false)}>Edit image?</Text>
+                </View>
+              </View>
             </View>
 
 
-          </View>
-          {childDefaultSpace.length!=0?
-          
-          <View style={styles.unlockIconView}>
-            <Pressable onPress={() =>  setModalVisible(true) }>
-              <FontAwesome5 name="unlock" size={40} color={lilacColor} />
-            </Pressable>
-          </View>
-          :null
- 
+            <View style={styles.nameAndCoinContainer}>
+              <View style={styles.childName}>
 
-          }
+                <Pressable style={{ flexDirection: 'row' }} onPress={() => handleChangeInfo(true)}>
+                  <UserNameComponent name={childPage.dependentName} />
+                  <View style={{ marginLeft: 5 }}>
+                    <FontAwesome5 name="edit" size={20} color={lilacColor} />
+                  </View>
+                </Pressable>
+              </View>
+
+              <Text style={{ color: primaryTextColor }}>{childPage.dependentAge} years old</Text>
 
 
+              <View style={styles.coinContainer}>
+                <CoinsPointsDisplayContainer coins={childCoins} points={childPoints} ></CoinsPointsDisplayContainer>
+              </View>
 
-        </View>
-        {/* Add GERE */}
-        
-        <View>
-        {
-          childDefaultSpace.length!=0? 
-        <View style={[styles.flexrow, {padding:10}]}>
-          <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{childDefaultSpace.collectionName}</Text>
-          {
-            spacesRooms.length > 1 ?
 
-              < Pressable style={[styles.paddingL]} onPress={() => navigation.navigate("DefaultChildOptions")}>
-                <MaterialCommunityIcons name="home-import-outline" size={30} color={secondaryTextColor} />
-              </Pressable>
+            </View>
+            {childDefaultSpace.length != 0 ?
+
+              <View style={styles.unlockIconView}>
+                <Pressable onPress={() => setModalVisible(true)}>
+                  <FontAwesome5 name="unlock" size={40} color={lilacColor} />
+                </Pressable>
+              </View>
               : null
-          }
-        </View>:null
-        }
 
-          {
-             childSelectedRoom != null ?
-          <View style={styles.underLineView}>
+
+            }
+
+
+
+          </View>
+          {/* Add GERE */}
+
+          <View>
+            {
+              childDefaultSpace.length != 0 ?
+                <View style={[styles.flexrow, { padding: 10 }]}>
+                  <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{childDefaultSpace.collectionName}</Text>
+                  {
+                    spacesRooms.length > 1 ?
+
+                      < Pressable style={[styles.paddingL]} onPress={() => navigation.navigate("DefaultChildOptions")}>
+                        <MaterialCommunityIcons name="home-import-outline" size={30} color={secondaryTextColor} />
+                      </Pressable>
+                      : null
+                  }
+                </View> : null
+            }
+
+            {
+              childSelectedRoom != null ?
+                <View style={styles.underLineView}>
                   <UnderlinedOneHeaderComponent titleFirst={'My Rooms'}></UnderlinedOneHeaderComponent>
                 </View>
 
-                :null
+                : null
 
-          }
+            }
 
-     
-        {
-          childDefaultSpace != null ?
-            <>
-              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
-                {childScheduleRooms!=null ?
-                  childScheduleRooms.map((room: any, x: number) => {
-                    // missing logic to display task not completed and today and future task.
 
-                    //fix space name and location
-                    return (
-                      <View key={x} style={styles.sqrBtn}>
-                        <SquareColoredButton idx={x + rState + 1} onPress={() => {setChildSelectedRoom(room), setSpace(room.spaceName) }}>
-                          <View style={styles.sqrBtn}>
-                            <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
+            {
+              childDefaultSpace != null ?
+                <>
+                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.myRoomScrollView}>
+                    {childScheduleRooms != null ?
+                      childScheduleRooms.map((room: any, x: number) => {
+                        // missing logic to display task not completed and today and future task.
+
+                        //fix space name and location
+                        return (
+                          <View key={x} style={styles.sqrBtn}>
+                            <SquareColoredButton idx={x + rState + 1} onPress={() => { setChildSelectedRoom(room), setSpace(room.spaceName) }}>
+                              <View style={styles.sqrBtn}>
+                                <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
+                              </View>
+                              <View style={styles.sqrBtn}>
+                                <Text style={styles.sqrTxt}>{room.spaceCategory}</Text>
+                              </View>
+                            </SquareColoredButton>
                           </View>
-                          <View style={styles.sqrBtn}>
-                            <Text style={styles.sqrTxt}>{room.spaceCategory}</Text>
-                          </View>
-                        </SquareColoredButton>
-                      </View>
 
 
-                    )
-                  })
-                  // does not display even if they have nothing 
-                  :null
-                }
-
-              </ScrollView>
-
-              <View style={styles.underLineView}>
-                <UnderlinedOneHeaderComponent titleFirst={'Seven Day Tasks'}></UnderlinedOneHeaderComponent>
-              </View>
-              <View style={styles.taskStyle}>
-
-                {
-                  childSelectedRoom != null ?
-                    childSelectedRoom.todaysTasks.map((taskName: any, x: number) => {
-
-
-                      return (
-
-                        <TaskSpaceRowComponent key={x} idx={x} onPress={() => {
-                        setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted ? true : false)
-                          {
-                            let childInfoCoin: IchildCoinAndPoint = {
-                              Id: childPage.id,
-                              DependentCoins:taskName.task.coins,
-                              DependentPoints:taskName.task.coins
-                            }
-                            setChildUpdateCoins(childInfoCoin)
-                          }
-                          
-                        }}>
-
-                    <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-                    <Text style={{ color: '#FFF', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name} 
-
-                    </Text>
-                    {
-                      taskName.isCompleted?
-                      <AntDesign name="checksquare" size={30} color="#FFF" />
-                      :
-                      taskName.isRequestedApproval && !taskName.isCompleted?
-                      <Ionicons name="time-sharp" size={30} color="#FFF" />
-                      :
-                      null
+                        )
+                      })
+                      // does not display even if they have nothing 
+                      : null
                     }
-                    </View>
 
-                        </TaskSpaceRowComponent>
+                  </ScrollView>
 
+                  <View style={styles.underLineView}>
+                    <UnderlinedOneHeaderComponent titleFirst={'Seven Day Tasks'}></UnderlinedOneHeaderComponent>
+                  </View>
+                  <View style={styles.taskStyle}>
 
-
-
-                      )
-                    })
-                    :
-                    <Text style={[{color:primaryTextColor}]}>Child has no upcoming tasks</Text>
-                  // {Alert.alert("Error", 'You have no Task', [{ text: "Ok", style: "cancel" }])}
-                }
-              </View>
-            </>
-            :
-            <Text style={[{color:primaryTextColor}]}>There are no rooms or tasks</Text>
-        }
+                    {
+                      childSelectedRoom != null ?
+                        childSelectedRoom.todaysTasks.map((taskName: any, x: number) => {
 
 
-        {modalVisible === true ?
-          <ChildLockModalComponent /> : taskModal === true ?
-            <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} childInfo={ childUpdateCoins}  />
-            : null}
+                          return (
+
+                            <TaskSpaceRowComponent key={x} idx={x} onPress={() => {
+                              setTaskModal(true), setSelectedTask(taskName), setCoin(taskName.task.coins), setInstruction(taskName.task.description), setTitle(taskName.task.name + " " + taskName.item.name), setLocation(childDefaultSpace.collectionName), setRequestedApproval(taskName.isRequestedApproval && !taskName.isCompleted ? true : false)
+                              {
+                                let childInfoCoin: IchildCoinAndPoint = {
+                                  Id: childPage.id,
+                                  DependentCoins: taskName.task.coins,
+                                  DependentPoints: taskName.task.coins
+                                }
+                                setChildUpdateCoins(childInfoCoin)
+                              }
+
+                            }}>
+
+                              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Text style={{ color: '#FFF', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
+
+                                </Text>
+                                {
+                                  taskName.isCompleted ?
+                                    <AntDesign name="checksquare" size={30} color="#FFF" />
+                                    :
+                                    taskName.isRequestedApproval && !taskName.isCompleted ?
+                                      <Ionicons name="time-sharp" size={30} color="#FFF" />
+                                      :
+                                      null
+                                }
+                              </View>
+
+                            </TaskSpaceRowComponent>
+
+
+
+
+                          )
+                        })
+                        :
+                        <Text style={[{ color: primaryTextColor }]}>Child has no upcoming tasks</Text>
+                      // {Alert.alert("Error", 'You have no Task', [{ text: "Ok", style: "cancel" }])}
+                    }
+                  </View>
+                </>
+                :
+                <Text style={[{ color: primaryTextColor }]}>There are no rooms or tasks</Text>
+            }
+
+
+            {modalVisible === true ?
+              <ChildLockModalComponent /> : taskModal === true ?
+                <TaskInfoModalComponent Space={space} Location={location} task={selectedTask} isChild={true} taskedInfo={childPage} isButton={requestedApproval} childInfo={childUpdateCoins} />
+                : null}
 
           </View>
 
-      </View>
+        </View>
 
-    </ScrollView>
+      </ScrollView>
     </SplashComponentFaded>
   );
 }
@@ -398,15 +400,15 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: StatusBar.currentHeight
   },
-  deleteChild:{
+  deleteChild: {
     position: 'absolute',
-    top:0,
-    right:-5,
-    backgroundColor:"white",
-    padding:5,
+    top: 0,
+    right: -5,
+    backgroundColor: "white",
+    padding: 5,
     borderRadius: 30,
-    
-   
+
+
   },
   coinContainer: {
     marginTop: '6%',
@@ -440,7 +442,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     paddingTop: 10,
-    paddingRight: 10,
+    paddingRight: "2.5%",
     marginTop: 10,
     height: 100
   },

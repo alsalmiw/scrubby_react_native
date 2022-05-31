@@ -1,7 +1,8 @@
-// import { StatusBar } from 'expo-status-bar';
+// import { StatusBar } from 'expo-status-bar';//
 import { FC, useContext, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ScrollView, StyleSheet, Text, View, StatusBar, Alert } from 'react-native';
+import { StyleSheet, View, StatusBar, Alert, Text } from 'react-native';
+import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 
 import RootStackParamList from '../../types/INavigateProfile'
 import { ThemeContext } from '../../context/ThemeContext';
@@ -34,7 +35,7 @@ const AddNewSpaceScreen: FC<Props> = ({ navigation, route }) => {
       setNewSpace("")
       setIsSelected(false)
     }
-    else if (regi.test(newSpace) ) {
+    else if (regi.test(newSpace)) {
       Alert.alert("Error", `Invalid Space Name. Try Again.`, [{ text: "Okay", style: "cancel" }]);
       setNewSpace("")
       setIsSelected(false)
@@ -53,36 +54,42 @@ const AddNewSpaceScreen: FC<Props> = ({ navigation, route }) => {
       if (result) {
         Alert.alert("You have successfully added a new space")
         navigation.goBack()
-       // setMyHouses([...myHouses, space])
+        // setMyHouses([...myHouses, space])
         let collections = await GetSpaceCollectionByUsername(userData.username)
         let spacesWRooms = await GetCollectionsRoomsByUsername(userData.username)
-      
-        if(spacesWRooms.length > 0){
+
+        if (spacesWRooms.length > 0) {
           setSpacesRoom(spacesWRooms)
         }
-        if(defaultSpace.length==0)
-        {
+        if (defaultSpace.length == 0) {
           let defaultCollection = await GetUserDefaultSchedule(userData.username)
-        if (defaultCollection.length != 0) {
-                
-          setDefaultSpace(defaultCollection)
-          setRunScheduleAgain(true)
+          if (defaultCollection.length != 0) {
+
+            setDefaultSpace(defaultCollection)
+            setRunScheduleAgain(true)
+          }
         }
-        }
-          
+
         let defaultOptions = await GetDefaultOptionsByUsername(userData.username)
-        if(defaultOptions.length != 0){
+        if (defaultOptions.length != 0) {
           setDefaultScheduleOptions(defaultOptions)
-      }
+        }
 
 
-        if(collections.length > 0){
+        if (collections.length > 0) {
           setMyHouses(collections)
           }
       }
     }
   }
   return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={[styles.container, { backgroundColor: purpleColor }]}>
+        <TitleComponent title="My New Space" />
+        <View style={{ paddingLeft: '10%', paddingRight:'2%' }}>
+          <View style={{paddingLeft:'5%', paddingRight:'5%'}}>
+            <WhiteSubTitleComponent title="Name" />
+          </View>
 
     <View style={[styles.container, { backgroundColor: purpleColor }]}>
       <TitleComponent title="My New Space" />
@@ -97,8 +104,12 @@ const AddNewSpaceScreen: FC<Props> = ({ navigation, route }) => {
                 </FullButtonComponent>
           :
       <TwoFullButtonComponent text1="Back" text2="Add" color={greenColor} onAcceptPress={() => handleAddSpace()} onBackPress={() => navigation.goBack()} />
-}
+      }
     </View>
+        
+      </View>
+      </View>
+    </TouchableWithoutFeedback>
 
 
   );

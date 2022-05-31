@@ -1,7 +1,7 @@
 // import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useEffect, useState } from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { StyleSheet, View, StatusBar, Image, Pressable, Alert, TouchableHighlight, Text } from 'react-native';
+import { StyleSheet, View, StatusBar, Image, Pressable, Alert, TouchableHighlight, TouchableWithoutFeedback, Keyboard, Text } from 'react-native';
 
 import RootStackParamList from '../../types/INavigateProfile'
 import { ThemeContext } from '../../context/ThemeContext';
@@ -91,7 +91,7 @@ const handleCategory = (name: string) => {
    
 }
   return (
- 
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={[styles.container, {backgroundColor:yellowColor}]}>
          <TitleComponent title="My New Room" />
          <View style={[styles.contentContainer]}>
@@ -119,7 +119,7 @@ const handleCategory = (name: string) => {
        <TwoFullButtonComponent text1="Back" text2="Add" color={fuchsiaColor} onAcceptPress={()=>handleAddRoom()} onBackPress={()=>navigation.goBack()}/>
        }
     </View>
-
+    </TouchableWithoutFeedback>
     
   );
 }
@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
   iconsContainer: {
       flexDirection:"row",
       flexWrap: "wrap",
+      paddingLeft:"2.5%"
       
       //justifyContent: "space-evenly"
   },

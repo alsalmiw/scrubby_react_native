@@ -9,13 +9,10 @@ interface Props {
 
 const SquareWhiteButton: FC<Props> = (props) => {
 
-
     useEffect(() => {
 
 
     }, [])
-
-
 
     return (
         <Pressable style={[styles.container]} onPress={props.onPress()}>

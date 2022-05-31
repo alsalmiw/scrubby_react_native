@@ -4,7 +4,7 @@ import { Button, Pressable, StyleSheet, Text, View, ScrollView, Image } from 're
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GetAllTasksHistoryForMembers, GetAllTasksHistoryForMembersByUsername, GetCollectionByUsername, GetCollectionsRoomsByUsername, GetMyTaskedCollectionsByUsername, GetUserData } from '../../services/dataService';
 import UserContext from '../../context/UserContext';
-//import ReactNativeCalendar from '../../components/ReactNativeCalendar';
+
 import HeaderComponent from '../../components/HeaderComponent';
 import UserNameComponent from '../../components/UserNameComponent';
 import { ThemeContext } from '../../context/ThemeContext';
@@ -17,21 +17,15 @@ import TaskSpaceRowComponent from '../../components/TaskSpaceRowComponent';
 import { MaterialCommunityIcons, AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-///
 import RootStackParamList from '../../types/INavigation'
 import ScheduleDateBtnComponent from '../../components/ScheduleDateBtnComponent';
 import ModalComponent from '../../components/ModalComponent';
 import TaskInfoModalComponent from '../../components/Modal/TaskInfoModalComponent';
 
-
-
-
 type Props = NativeStackScreenProps<RootStackParamList, 'ScheduleScreen'>
 
-
-
 const ScheduleScreen: FC<Props> = ({ navigation }) => {
-  const { savedUsername, setSavedUsername, setMySpaces, mySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate, defaultCollection, runScheduleAgain, setRunScheduleAgain, defaultScheduleOptions, firstTime, setFirstTime, setSpacesRoom, setWaiting , waiting, defaultDeleted, setDefaultDeleted } = useContext(UserContext)
+  const { savedUsername, setSavedUsername, setMySpaces, mySpaces, userData, setUserData, childData, setChildrenData, setScoreBoardList, setInviters, setInvited, setAcceptedInvitations, defaultSpace, setDefaultSpace, setModalVisible, mySchedule, setMySchedule, setBlank, setTasksHistory, setIsChildFree, activeDate, setActiveDate, defaultCollection, runScheduleAgain, setRunScheduleAgain, defaultScheduleOptions, firstTime, setFirstTime, setSpacesRoom, setWaiting, waiting, defaultDeleted, setDefaultDeleted } = useContext(UserContext)
   const { secondaryTextColor, lightLilacColor, lilacColor } = useContext(ThemeContext)
 
   const [taskInfo, setTaskInfo] = useState() as any
@@ -39,34 +33,27 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
   const [scheduledRooms, setScheduledRooms] = useState<any[]>([])
   const [activeRoom, setActiveRoom] = useState<number>()
 
-
   const [scheduledTasks, setScheduledTasks] = useState<any[]>([])
   const [r, setR] = useState<number>(Math.floor(Math.random() * 7))
   const [selectedRoom, setSelectedRoom] = useState<any>()
   const [showBtn, setShowBtn] = useState<boolean>(true)
 
 
-
-
-
-
-
   useEffect(() => {
-  
-   if(defaultSpace.length!=0)
-   {
 
-    setBlank(false)
-    GetTaskDates()
-   
-    if(firstTime){
-      GetUserInfoByUsername()
-    }
-    if(defaultDeleted){
+    if (defaultSpace.length != 0) {
+
+      setBlank(false)
       GetTaskDates()
+
+      if (firstTime) {
+        GetUserInfoByUsername()
+      }
+      if (defaultDeleted) {
+        GetTaskDates()
+      }
     }
-   }
-    
+
 
   }, [defaultSpace])
 
@@ -85,13 +72,13 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       nextFiftyDays.push(nextDay.toISOString());
 
     }
-        let datesArr = [] as any
+    let datesArr = [] as any
 
-          
-  
-          let nextTasks = defaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => nextFiftyDays.includes(task.dateScheduled)))
 
-        
+
+    let nextTasks = defaultSpace.rooms.map((room: any) => room.tasksAssigned.filter((task: any) => nextFiftyDays.includes(task.dateScheduled)))
+
+
     setScheduledTasks(nextTasks)
 
     nextTasks.map((task: any) => task.map((taskone: any) => datesArr.push(taskone.dateScheduled)))
@@ -102,26 +89,26 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
     }))
 
 
-    
-
-  
 
 
-    
+
+
+
+
     if (datesArr.length > 0) {
 
 
-    //     console.log(runSchedule//Again)
-      if (runScheduleAgain==true) {
-        //setActiveDate(activeDate)
+
+      if (runScheduleAgain == true) {
+
         getRoomsbyDate(activeDate)
 
-     } 
-     else if(!runScheduleAgain) {
+      }
+      else if (!runScheduleAgain) {
         getRoomsbyDate(datesArr[0])
         let day = new Date(datesArr[0])
         setActiveDate(day.toString())
-        
+
       }
     }
     else {
@@ -160,18 +147,18 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
     });
     setScheduledRooms(rooms)
 
-    if (runScheduleAgain==true) {
-      //console.log("im running again setting selected and active room")
-      //console.log(selectedRoom, activeRoom)
-      let findRoom = rooms.filter((r:any) => r.id === selectedRoom.id);
+    if (runScheduleAgain == true) {
 
-    setSelectedRoom(findRoom[0])
-    //setActiveRoom(activeRoom)
-    
 
-    } 
-     else if(!runScheduleAgain){
-      //console.log("im in room one when selecting date")
+      let findRoom = rooms.filter((r: any) => r.id === selectedRoom.id);
+
+      setSelectedRoom(findRoom[0])
+
+
+
+    }
+    else if (!runScheduleAgain) {
+
       setSelectedRoom(rooms[0])
       setActiveRoom(rooms[0].id)
     }
@@ -188,56 +175,32 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
 
 
   const GetUserInfoByUsername = async () => {
-    let username:any= await AsyncStorage.getItem("Username");
-    
-    //let spaces = await GetCollectionByUsername(username)
-    let schedule = await GetMyTaskedCollectionsByUsername (username)
-    let archives = await GetAllTasksHistoryForMembersByUsername (username)
+    let username: any = await AsyncStorage.getItem("Username");
+
+
+    let schedule = await GetMyTaskedCollectionsByUsername(username)
+    let archives = await GetAllTasksHistoryForMembersByUsername(username)
     let spacesWRooms = await GetCollectionsRoomsByUsername(username)
-    
-    // if(spaces.length > 0){
-    //     setMySpaces(spaces)
-    //     setFirstTime(false)
-    // }else{
-    //     setMySpaces([])
-    //     setFirstTime(false)
-    // }
-    if(schedule.length > 0){
+
+
+    if (schedule.length > 0) {
       setMySchedule(schedule)
-      }else{
+    } else {
       setMySchedule([])
-      }
-    
-       if(archives.length!=0){
-      setTasksHistory(archives)
-      
     }
 
-    if(spacesWRooms.length > 0){
+    if (archives.length != 0) {
+      setTasksHistory(archives)
+
+    }
+
+    if (spacesWRooms.length > 0) {
       setSpacesRoom(spacesWRooms)
       setFirstTime(false)
-    }else{setSpacesRoom([])
-      setFirstTime(false)}
-
-  //   let username: any = await AsyncStorage.getItem("Username");
-  //   if (username) {
-  //     setSavedUsername(username)
-  //     let userInfo = await GetUserData(username)
-
-  //     if (userInfo.length != 0) {
-  //       //setChildrenData(userInfo.children)
-  //       //setMySpaces(userInfo.spaces)
-  //       // setUserData(userInfo.userInfo)
-  //       //setScoreBoardList(userInfo.scoreBoard)
-  //       // setInvited(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == false && Invited.isDeleted == false)))
-  //       //setInviters(userInfo.invitations.recievedInvites.filter((Inviter: any) => (Inviter.isAccepted == false && Inviter.isDeleted == false)))
-  //       // setAcceptedInvitations(userInfo.invitations.sentInvites.filter((Invited: any) => (Invited.isAccepted == true && Invited.isDeleted == false)))
-  //       //setMySchedule(userInfo.mySchedule)
-  //       setTasksHistory(userInfo.tasksHistory)
-  //       //setIsChildFree(userInfo.userInfo.isChildFree)
-  //     }
-
-  //   }
+    } else {
+      setSpacesRoom([])
+      setFirstTime(false)
+    }
 
   }
 
@@ -252,137 +215,126 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
       <View style={styles.container}>
         <HeaderComponent title="My Schedule" />
         {
-          defaultSpace.length!=0?
-        <>
-        <View style={[styles.flexrow]}>
-          <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{defaultSpace.collectionName}</Text>
-          {
-            defaultScheduleOptions.length > 1 ?
+          defaultSpace.length != 0 ?
+            <>
+              <View style={[styles.flexrow]}>
+                <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{defaultSpace.collectionName}</Text>
+                {
+                  defaultScheduleOptions.length > 1 ?
 
-              < Pressable style={[styles.paddingL]} onPress={() => navigation.navigate("DefaultOptions")}>
-                <MaterialCommunityIcons name="home-import-outline" size={30} color={secondaryTextColor} />
-              </Pressable>
-              : null
-          }
-
-
-        </View>
-
-        <View style={styles.rowHeader}>
-          <UnderlinedOneHeaderComponent titleFirst={"Tasked Dates"} />
-        </View>
-        {/* <ReactNativeCalendar/> */}
-
-        <ScrollView horizontal style={styles.datesContainer} showsHorizontalScrollIndicator={false}>
-          {scheduledDates.length > 0 ?
-            scheduledDates.map((date: string, idx: number) => {
-
-              return (
-                //   <Pressable key={idx} style={[styles.dateBtn, {borderColor:"black"}]} onPress={()=>getRoomsbyDate(date)}>
-                // <Text style={styles.dateText}>{date.slice(0,3)}</Text> 
-                // <View style={styles.dash}></View>
-                // <Text style={styles.dateText}>{date.slice(8,10)}</Text> 
-                //  </Pressable>
-                <ScheduleDateBtnComponent key={idx} idx={idx} date={date} onPress={() => { getRoomsbyDate(date), setActiveDate(date) }} />
-              )
-            })
-            :
-            <Text>Your Schedule is Empty.</Text>
-
-          }
-
-        </ScrollView>
-        {
-          scheduledDates.length > 0 ?
-            <View>
-              <UnderlinedOneHeaderComponent titleFirst={"My Rooms"} />
-            </View>
-            : null
-        }
-
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {
-            scheduledRooms.map((room: any, idx: number) => {
-
-              return (
-                <Pressable key={idx} onPress={() => { setSelectedRoom(room), setActiveRoom(room.id) }} >
-
-                  <SquareColoredButton idx={r + idx} onPress={() => { setSelectedRoom(room), setActiveRoom(room.id) }}>
-                    <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
-                    <Text style={{ color: "rgb(255, 255, 255)" }}>{room.spaceName}</Text>
-                  </SquareColoredButton>
-                  <View style={[styles.fadedImage, { backgroundColor: "#FFF", opacity: activeRoom == room.id ? 0 : 0.5 }]}></View>
-                </Pressable>
-              )
-
-            })
-          }
-
-        </ScrollView>
-        {
-
-          scheduledDates.length > 0 ?
-            <View>
-              <UnderlinedOneHeaderComponent titleFirst={"My Tasks"} />
-            </View>
-            : null
+                    < Pressable style={[styles.paddingL]} onPress={() => navigation.navigate("DefaultOptions")}>
+                      <MaterialCommunityIcons name="home-import-outline" size={30} color={secondaryTextColor} />
+                    </Pressable>
+                    : null
+                }
 
 
-        }
-        {/* <View>
-    <UnderlinedOneHeaderComponent titleFirst={"My Tasks"}  />
-      </View> */}
-        <View>
-          {
-            selectedRoom != null ?
-              selectedRoom.todaysTasks != null ?
-                selectedRoom.todaysTasks.length > 0 ?
-                  selectedRoom.todaysTasks.map((taskInfo: any, idx: number) => {
+              </View>
+
+              <View style={styles.rowHeader}>
+                <UnderlinedOneHeaderComponent titleFirst={"Tasked Dates"} />
+              </View>
+
+
+              <ScrollView horizontal style={styles.datesContainer} showsHorizontalScrollIndicator={false}>
+                {scheduledDates.length > 0 ?
+                  scheduledDates.map((date: string, idx: number) => {
+
                     return (
 
-                      //<Text key={idx}>{taskInfo.task.name}  {taskInfo.item.name}</Text>
-                      //<TaskRowTaskInfoComponent r={r} key={idx} idx={idx} task={taskInfo} />
-                      <TaskSpaceRowComponent key={idx} idx={r + idx} onPress={() => { displayTaskModel(taskInfo), setTaskInfo(taskInfo), setShowBtn(taskInfo.isCompleted) }}>
-                        <View style={[styles.taskContainer, styles.flexrow]}>
-                          <Text style={[styles.text, { color: "#FFF" }]}>{taskInfo.task.name} {taskInfo.item.name}</Text>
-                          <View style={[styles.flexrow]}>
-                            {
-                              !taskInfo.isCompleted ?
-                                null
-                                // <>
-                                // <FontAwesome5 name="coins" color={"#FFF"} size={20} /> 
-                                // <Text style={[styles.text, ]}> {taskInfo.task.coins} coins</Text>
-                                // </>
-                                :
-                                <AntDesign name="checksquare" size={30} color="#FFF" />
-                            }
-
-                          </View>
-                        </View>
-                      </TaskSpaceRowComponent>
-
+                      <ScheduleDateBtnComponent key={idx} idx={idx} date={date} onPress={() => { getRoomsbyDate(date), setActiveDate(date) }} />
                     )
                   })
+                  :
+                  <Text>Your Schedule is Empty.</Text>
 
+                }
+
+              </ScrollView>
+              {
+                scheduledDates.length > 0 ?
+                  <View>
+                    <UnderlinedOneHeaderComponent titleFirst={"My Rooms"} />
+                  </View>
                   : null
-                : null
-              : null
-          }
+              }
 
-          {
-            taskInfo != null ?
+              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                {
+                  scheduledRooms.map((room: any, idx: number) => {
 
-              <TaskInfoModalComponent childInfo={''} Space={defaultSpace.collectionName} Location={selectedRoom.spaceName} task={taskInfo} isChild={false} taskedInfo={userData} isButton={!showBtn} />
+                    return (
+                      <Pressable key={idx} onPress={() => { setSelectedRoom(room), setActiveRoom(room.id) }} >
 
-              : null
-          }
-        </View>
-    </>
-            : 
-            <View style={{paddingLeft:10}}>
-            <Text>You have no schedule.</Text>
+                        <SquareColoredButton idx={r + idx} onPress={() => { setSelectedRoom(room), setActiveRoom(room.id) }}>
+                          <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
+                          <Text style={{ color: "rgb(255, 255, 255)" }}>{room.spaceName}</Text>
+                        </SquareColoredButton>
+                        <View style={[styles.fadedImage, { backgroundColor: "#FFF", opacity: activeRoom == room.id ? 0 : 0.5 }]}></View>
+                      </Pressable>
+                    )
+
+                  })
+                }
+
+              </ScrollView>
+              {
+
+                scheduledDates.length > 0 ?
+                  <View>
+                    <UnderlinedOneHeaderComponent titleFirst={"My Tasks"} />
+                  </View>
+                  : null
+
+
+              }
+
+              <View>
+                {
+                  selectedRoom != null ?
+                    selectedRoom.todaysTasks != null ?
+                      selectedRoom.todaysTasks.length > 0 ?
+                        selectedRoom.todaysTasks.map((taskInfo: any, idx: number) => {
+                          return (
+
+                            <TaskSpaceRowComponent key={idx} idx={r + idx} onPress={() => { displayTaskModel(taskInfo), setTaskInfo(taskInfo), setShowBtn(taskInfo.isCompleted) }}>
+                              <View style={[styles.taskContainer, styles.flexrow]}>
+                                <Text style={[styles.text, { color: "#FFF" }]}>{taskInfo.task.name} {taskInfo.item.name}</Text>
+                                <View style={[styles.flexrow]}>
+                                  {
+                                    !taskInfo.isCompleted ?
+                                      null
+
+                                      :
+                                      <AntDesign name="checksquare" size={30} color="#FFF" />
+                                  }
+
+                                </View>
+                              </View>
+                            </TaskSpaceRowComponent>
+
+                          )
+                        })
+
+                        : null
+                      : null
+                    : null
+                }
+
+                {
+                  taskInfo != null ?
+
+                    <TaskInfoModalComponent childInfo={''} Space={defaultSpace.collectionName} Location={selectedRoom.spaceName} task={taskInfo} isChild={false} taskedInfo={userData} isButton={!showBtn} />
+
+                    : null
+                }
+              </View>
+            </>
+            :
+            <View style={{ paddingLeft: 10 }}>
+              <Text>You have no schedule.</Text>
             </View>
-}
+        }
       </View>
 
 
@@ -424,9 +376,7 @@ const styles = StyleSheet.create({
     borderColor: "#000000",
     margin: 20,
   },
-  // dateText: {
-  //   fontSize: 20,
-  // },
+  
   datesContainer: {
 
     flexDirection: "row",
@@ -439,13 +389,11 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   text: {
-    //color: 'rgb(255, 255, 255)',
+    
     fontWeight: 'bold',
     fontSize: 20,
   },
-  // taskInfo: {
-  //   fontSize: 20,
-  // },
+  
   paddingL: {
     paddingLeft: 10,
   },

@@ -16,11 +16,13 @@ const WhiteSubTitleComponent: FC<TitleType> = ({ title }) => {
 }
 
 const styles = StyleSheet.create({
+
     mainHeader: {
         fontSize: 20,
         color: "white",
         fontWeight: "bold"
     },
+    
     headerContainer: {
         paddingRight: 10,
         width: '80%',

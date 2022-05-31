@@ -21,6 +21,8 @@ const ChangePasswordScreen: FC<Props> = ({navigation, route})=> {
     const [newPassword, setNewPassword] = useState('')
     const [repeatNewPassword, setRepeatNewPassword] = useState('')
     const {userData} = useContext(UserContext)
+  const [isSelected, setIsSelected]= useState<boolean>(false)
+
 
 
   const changePassword = async () => {
@@ -40,6 +42,8 @@ const ChangePasswordScreen: FC<Props> = ({navigation, route})=> {
       }
       else{
           alert("Please make sure both passwords are correct")
+          setRepeatNewPassword('')
+          setNewPassword('')
       }
   }
 
@@ -56,16 +60,19 @@ const ChangePasswordScreen: FC<Props> = ({navigation, route})=> {
         <View style={[{justifyContent: 'center'}]}>
         <WhiteSubTitleComponent title="New Password" />
         
-        <InputFieldComponent value={""} maxLength={20} holder="new password" hide={true} onChangeText={(e: string)=>setNewPassword(e)} />
+        <InputFieldComponent value={newPassword} maxLength={20} holder="new password" hide={true} onChangeText={(e: string)=>setNewPassword(e)} />
         <WhiteSubTitleComponent title="Repeat New Password" />
-        <InputFieldComponent  value={""} maxLength={20} holder="new password" hide={true} onChangeText={(e: string)=>setRepeatNewPassword(e)} />
+        <InputFieldComponent  value={repeatNewPassword} maxLength={20} holder="new password" hide={true} onChangeText={(e: string)=>{setRepeatNewPassword(e), e.length>0? setIsSelected(true):setIsSelected(false)}} />
         </View>
         </View>
-
+        {
+                isSelected?
         <TwoFullButtonComponent color={yellowColor} text1={"Back"} text2={"Save"} onBackPress={()=>{navigation.goBack()}} onAcceptPress={handleSave} />
-        {/* <FullButtonComponent radius={0} onPress={handleSave} color={yellowColor}>
+        :
+        <FullButtonComponent radius={0} onPress={handleSave} color={yellowColor}>
           <Text>Save</Text>
-        </FullButtonComponent> */}
+        </FullButtonComponent>
+        }
     </View>
     </TouchableWithoutFeedback>
   );

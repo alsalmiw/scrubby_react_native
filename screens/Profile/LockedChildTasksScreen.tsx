@@ -303,13 +303,13 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
 
                                             <View style={styles.centering}>
                                                 
-                                                <View style={{ justifyContent: 'center' }}>
-                                                    <View style={{ justifyContent: 'center' }}>
-                                                        <Text style={{ color: 'white', fontSize: 20 }}>{taskName.task.name + " " + taskName.item.name}
+                                                <View style={{ flexDirection: 'row' }}>
+                                                    <View style={{ width: '85%'}}>
+                                                        <Text style={{ color: 'white', fontSize: 18 , fontWeight:"bold"}}>{taskName.task.name + " " + taskName.item.name}
                                                         </Text>
                                                     </View>
-                                                    <View style={styles.centering}>
-                                                        <Text style={{ color: 'white', fontSize: 25 }}> <FontAwesome5 name="coins" color='white'  />  {taskName.task.coins}</Text>
+                                                    <View style={{width: '15%'}}>
+                                                        <Text style={{ color: 'white', fontSize: 18 , fontWeight:"bold" }}> <FontAwesome5 name="coins" color='white'  />  {taskName.task.coins}</Text>
                                                     </View>
                                                 </View>
                                             </View>

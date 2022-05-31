@@ -85,18 +85,17 @@ const AddNewSpaceScreen: FC<Props> = ({ navigation, route }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={[styles.container, { backgroundColor: purpleColor }]}>
+        <View></View>
         <TitleComponent title="My New Space" />
-        <View style={{ paddingLeft: '10%', paddingRight:'2%' }}>
-          <View style={{paddingLeft:'5%', paddingRight:'5%'}}>
+        <View style={{ paddingLeft: '5%' }}>
+          <View style={{}}>
             <WhiteSubTitleComponent title="Name" />
           </View>
-
-    <View style={[styles.container, { backgroundColor: purpleColor }]}>
-      <TitleComponent title="My New Space" />
-      <View style={{paddingLeft:10}}>
-        <WhiteSubTitleComponent title="Name" />
+        
         <InputFieldComponent value={newSpace} maxLength={20} holder="enter new space" hide={false} onChangeText={(e: string) => {setNewSpace(e), e.length>0? setIsSelected(true): setIsSelected(false)}} />
+
       </View>
+
       {
           !isSelected?
           <FullButtonComponent radius ={0} onPress={()=>navigation.goBack()} color={greenColor}>
@@ -106,9 +105,7 @@ const AddNewSpaceScreen: FC<Props> = ({ navigation, route }) => {
       <TwoFullButtonComponent text1="Back" text2="Add" color={greenColor} onAcceptPress={() => handleAddSpace()} onBackPress={() => navigation.goBack()} />
       }
     </View>
-        
-      </View>
-      </View>
+     
     </TouchableWithoutFeedback>
 
 

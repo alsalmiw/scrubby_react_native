@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   iconsContainer: {
       flexDirection:"row",
       flexWrap: "wrap",
-      paddingLeft:"2.5%"
+      //paddingLeft:"2.5%"
       
       //justifyContent: "space-evenly"
   },

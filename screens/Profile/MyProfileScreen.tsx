@@ -204,7 +204,7 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
     <>
       <SplashComponentFaded>
         <ScrollView style={styles.container}>
-
+         
           <HeaderComponent title="MY PROFILE"></HeaderComponent>
           <View style={styles.firstRow}>
             <View>

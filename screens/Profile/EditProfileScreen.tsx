@@ -94,6 +94,7 @@ const EditProfileScreen: FC<Props> = ({navigation})=> {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
    <View style={[styles.container,{backgroundColor:orangeColor}]}>
+   <View></View>
      {
    !isEditImage?
    <>

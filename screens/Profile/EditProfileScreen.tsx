@@ -67,24 +67,36 @@ const EditProfileScreen: FC<Props> = ({navigation})=> {
     }
     else if (memberInfo.isChild)
     {
-      let data:any = {
-        ChildId: memberInfo.id,
-        FullName: newName
-        }
-        console.log(data)
-        let result = await UpdateChildName(data)
-        if(result) {
-          let childInfo = await GetDependantByChildId(memberInfo.id)
-          if(childInfo!=null) {
-            setChildPage(childInfo)
-            console.log(childInfo)
-              
-          }
-         alert("You have successfully updated your child's name")
-         
-            navigation.navigate('ChildTasks')
-          }
+      let regi = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g;
+      let regiNums= /[0-9]/;
   
+      if (newName.length == 0 || newName == null ||regi.test(newName) || regiNums.test(newName)) {
+        Alert.alert("Error", 'Please Enter a Valid Name. Try Again.', [{ text: "Cancel", style: "cancel" }]);
+        setIsSelected(false)
+        setNewName('')
+      }
+      else{
+        let data:any = {
+                ChildId: memberInfo.id,
+                FullName: newName
+                }
+                console.log(data)
+                let result = await UpdateChildName(data)
+                if(result) {
+                  let childInfo = await GetDependantByChildId(memberInfo.id)
+                  if(childInfo!=null) {
+                    setChildPage(childInfo)
+                    console.log(childInfo)
+                      
+                  }
+                alert("You have successfully updated your child's name")
+                
+                    navigation.navigate('ChildTasks')
+                  }
+          
+
+      }
+     
         }
     }
   }

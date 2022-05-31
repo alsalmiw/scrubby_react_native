@@ -130,6 +130,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
     setAllMembers(membersArr)
     //console.log(refreshTaskPage)
     setRefreshTaskPage(false)
+    ShowMembers()
     //console.sslog(membersArr)
 
   

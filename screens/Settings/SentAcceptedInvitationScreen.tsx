@@ -106,7 +106,7 @@ const SentAcceptedInvitation: FC<Props> = ({ navigation }) => {
             let invitesInfo = await GetInvitationByUsername(userData.username)
             if(sharedSpaces.length!==0) {
               //  console.log("i resetted shared spaces")
-             //  console.log(sharedSpaces)
+             //  console.log(sharedSpaces)//
                 setSharedSpacesInfo(sharedSpaces)
                 
             }else{

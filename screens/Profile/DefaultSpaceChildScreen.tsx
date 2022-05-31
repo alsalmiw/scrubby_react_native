@@ -4,7 +4,6 @@ import { Button, Pressable, StyleSheet, Text, View, ScrollView, Image } from 're
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AddDefaultUserSpace, CreateChildDefaultSchedule, GetChildDefaultSchedule, GetUserData } from '../../services/dataService';
 import UserContext from '../../context/UserContext';
-//import ReactNativeCalendar from '../../components/ReactNativeCalendar';
 import HeaderComponent from '../../components/HeaderComponent';
 import UserNameComponent from '../../components/UserNameComponent';
 import { ThemeContext } from '../../context/ThemeContext';
@@ -21,7 +20,7 @@ import { Ionicons } from '@expo/vector-icons';
 import IDefaultSpace from '../../Interfaces/IDefaultSpace';
 import TwoFullButtonComponent from '../../components/TwoFullButtonComponent';
 import IDefaultSpaceChild from '../../Interfaces/IDefaultSpaceChild';
-//
+
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DefaultChildOptions'>
 
@@ -37,7 +36,7 @@ const DefaultSpaceChildScreen: FC<Props> = ({ navigation }) => {
 
     const handleSetDefaultSchedule = async (space: any) => {
         setNewSelection(space)
-        console.log(childPage.dependentName, space.id, space.collectionName)
+        
 
     }
 
@@ -50,18 +49,18 @@ const DefaultSpaceChildScreen: FC<Props> = ({ navigation }) => {
             IsDelete: false
         }
 
-        console.log(newDefault);
+        
 
         let changeDefault = await CreateChildDefaultSchedule(newDefault)
         if (changeDefault) {
-            //get child default page
+            
             let childDefault = await GetChildDefaultSchedule(childPage.id)
-            // console.log("Child fetch",childDefault)
+            
             if (childDefault.length != 0) {
                 setChildDefaultSpace(childDefault)
-                console.log(changeDefault)
+                
                 setRunAgain(true)
-                //setChildDefaultSpace(newSelection)
+                
                 alert("You have successfully set the default schedule to " + newSelection.collectionName)
                 navigation.goBack()
             }
@@ -77,7 +76,6 @@ const DefaultSpaceChildScreen: FC<Props> = ({ navigation }) => {
             <ScrollView>
                 <HeaderComponent title="Set Default Schedule" />
                 <UnderlinedTwoHeaderComponent titleFirst={"Child's Spaces"} titleTwo={"Set Default"} />
-
                 <View>
                     {
                         spacesRooms.map((space: any, idx: number) =>
@@ -91,9 +89,6 @@ const DefaultSpaceChildScreen: FC<Props> = ({ navigation }) => {
                                                 <Ionicons name="radio-button-on" size={24} color="#FFF" />
                                                 :
                                                 <Ionicons name="radio-button-off" size={24} color="#FFF" />
-
-
-
                                         }
 
                                     </View>
@@ -105,8 +100,6 @@ const DefaultSpaceChildScreen: FC<Props> = ({ navigation }) => {
                                         <Text style={{ color: '#FFF', fontSize: 15 }}>Not Available</Text>
                                     </View>
                                 </TaskSpaceRowComponent>
-
-
                         )
                     }
 
@@ -115,7 +108,6 @@ const DefaultSpaceChildScreen: FC<Props> = ({ navigation }) => {
 
             <View>
                 <TwoFullButtonComponent text1={"Back"} text2={"Confirm"} onAcceptPress={() => handleConfirm()} color={purpleColor} onBackPress={() => handleBackPress()} />
-
             </View>
 
 

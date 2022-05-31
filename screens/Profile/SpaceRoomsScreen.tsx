@@ -1,4 +1,4 @@
-// import { StatusBar } from 'expo-status-bar';
+
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { FC, useContext, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, StatusBar, Image, Dimensions } from 'react-native';
@@ -9,109 +9,81 @@ import RootStackParamList from '../../types/INavigateProfile'
 import AddItemButtonComponent from '../../components/AddItemButtonComponent';
 import SquareColoredButton from '../../components/SquareColoredButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {GetUserByUsername, GetSpaceCollectionByUserId, GetDependantByUserId, GetSpacesByCollectionID, GetSpacesDTOByID, GetTasksByRoomId} from '../../services/dataService'
+import { GetUserByUsername, GetSpaceCollectionByUserId, GetDependantByUserId, GetSpacesByCollectionID, GetSpacesDTOByID, GetTasksByRoomId } from '../../services/dataService'
 import UserContext from '../../context/UserContext';
 import { Entypo } from '@expo/vector-icons';
 import { ThemeContext } from '../../context/ThemeContext';
 import iconsMap from '../../types/IconsMap'
-import {GetSelectedTasksByUserID, GetAllTasks} from '../../services/dataService'
+import { GetSelectedTasksByUserID, GetAllTasks } from '../../services/dataService'
 import FullButtonComponent from '../../components/FullButtonComponent';
 
+type Props = NativeStackScreenProps<RootStackParamList, 'Rooms'>
 
-
-type Props = NativeStackScreenProps <RootStackParamList, 'Rooms'>
-
-const SpaceRoomsScreen: FC<Props> = ({navigation})=> {
+const SpaceRoomsScreen: FC<Props> = ({ navigation }) => {
   const { bgColor, lilacColor, purpleColor } = useContext(ThemeContext)
-  const { setUsersAddedTasks, usersAddedTasks, userData,  myRooms, setMyRooms, mySpace, setMySpace, myRoom, setMyRoom, tasksAPI, setTasksAPI, setRoomTasks} = useContext(UserContext)
+  const { setUsersAddedTasks, usersAddedTasks, userData, myRooms, setMyRooms, mySpace, setMySpace, myRoom, setMyRoom, tasksAPI, setTasksAPI, setRoomTasks } = useContext(UserContext)
 
   const windowWidth = Dimensions.get('window').width * 0.25;
   const [r, setR] = useState<number>(Math.floor(Math.random() * 7))
   useEffect(() => {
-   
-    //console.log(myRooms)
-    //GetAllTasksByUserID()
- 
-   }, [mySpace])
- 
 
 
-  //  const GetAllTasksByUserID =async () => {
-        
-  //   let usersTasks = await GetSelectedTaskgsByUserID(userData.id)
-  //   if(usersTasks.length!= 0)
-  //   {     
-  //     //console.log(usersTasks)
-  //     setUsersAddedTasks (usersTasks)
-  //   }
-   
-  // }
-  const goToRoomsTasks = async (room:any) =>{
 
-    //get tasks by room id
-    // let roomDTO = await GetSpacesDTOByID(room.id)
-    // if(roomDTO.length!= 0){
-    //   setMyRoom(roomDTO)
-    //   navigation.navigate('AddedTasks')
-    // }
-    // else{
-    //   setMyRoom(room)
-    //   navigation.navigate('AddedTasks')
-    // }
-    console.log(room.id)
+  }, [mySpace])
+
+
+  const goToRoomsTasks = async (room: any) => {
+
+
+    
     let tasks = await GetTasksByRoomId(room.id)
-    if(tasks.length!= 0){
+    if (tasks.length != 0) {
       setMyRoom(room)
       setRoomTasks(tasks)
       navigation.navigate('AddedTasks')
-      //console.log(tasks)
+
     }
-    else{
+    else {
       setRoomTasks([])
       setMyRoom(room)
       navigation.navigate('AddedTasks')
     }
-  
-   
-    
-  }
 
+  }
 
   return (
     <View style={styles.container}>
-   <HeaderComponent title={mySpace.collectionName}/> 
-   <UnderlinedOneHeaderComponent titleFirst={'My Rooms'} />
+      <HeaderComponent title={mySpace.collectionName} />
+      <UnderlinedOneHeaderComponent titleFirst={'My Rooms'} />
 
-   <View style={styles.roomsContainer}>
+      <View style={styles.roomsContainer}>
 
-   <AddItemButtonComponent onPress={() =>navigation.navigate('AddNewRoom')}>
-    <Entypo  name="squared-plus" size={100} color={lilacColor} />
-    </AddItemButtonComponent> 
+        <AddItemButtonComponent onPress={() => navigation.navigate('AddNewRoom')}>
+          <Entypo name="squared-plus" size={100} color={lilacColor} />
+        </AddItemButtonComponent>
 
-       
-    {
-    myRooms.length!=0?
-      myRooms.map((room:any, idx:number) => {
-        return(
-       
-        <SquareColoredButton key={idx} idx={r+idx} onPress={() => {goToRoomsTasks(room)}}>
-          <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
-        <Text style={[{color:"#FFF"}]}>{room.spaceName}</Text>
-        </SquareColoredButton>
-      
-        )
-      })
-      :
-      null
-    }
-    </View>
-       {/* map through all the rooms here */}
-    
+        {
+          myRooms.length != 0 ?
+            myRooms.map((room: any, idx: number) => {
+              return (
 
-       <FullButtonComponent color={purpleColor} onPress={() =>navigation.goBack()} radius={0}>
+                <SquareColoredButton key={idx} idx={r + idx} onPress={() => { goToRoomsTasks(room) }}>
+                  <Image style={styles.buttonSize} source={iconsMap.get(room.spaceCategory)} />
+                  <Text style={[{ color: "#FFF" }]}>{room.spaceName}</Text>
+                </SquareColoredButton>
+
+              )
+            })
+            :
+            null
+        }
+      </View>
+
+
+      <FullButtonComponent color={purpleColor} onPress={() => navigation.goBack()} radius={0}>
         <Text>Back</Text>
-       </FullButtonComponent>
-    
+      </FullButtonComponent>
+
     </View>
   );
 }
@@ -119,28 +91,26 @@ const windowWidth = Dimensions.get('window').width * 0.33;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // paddingTop: 50,
-    // padding:10
+
   },
-  roomsContainer:{
+  roomsContainer: {
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center'
-    
+
   },
-  iconSize:{
+  iconSize: {
     width: 60,
     height: 60,
-},
-buttonSize: {
-   width:50, height:50
-},
-roomsContainerIn:{
+  },
+  buttonSize: {
+    width: 50, height: 50
+  },
+  roomsContainerIn: {
+    marginTop: 8,
 
-  marginTop:8,
-  
-},
+  },
 
 });
 

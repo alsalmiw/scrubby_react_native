@@ -3,17 +3,15 @@ import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import UserContext from "../context/UserContext";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-/// do on press logic
+
 const ModalComponent: FC<any> = ({ children }) => {
 
   const { modalVisible, setModalVisible, taskModal, setTaskModal } = useContext(UserContext)
   const handleX = () => {
-    if(modalVisible == true)
-    {
+    if (modalVisible == true) {
       setModalVisible(false)
     }
-    if(taskModal == true)
-    {
+    if (taskModal == true) {
       setTaskModal(false)
     }
   }
@@ -24,10 +22,6 @@ const ModalComponent: FC<any> = ({ children }) => {
         animationType="slide"
         transparent={true}
         visible={modalVisible || taskModal}
-        // onRequestClose={() => {
-        //   Alert.alert("Modal has been closed.");
-        //   setModalVisible(false);
-        // }}
       >
         <View style={styles.centeredView}>
 
@@ -41,12 +35,7 @@ const ModalComponent: FC<any> = ({ children }) => {
                 <AntDesign name="close" size={35} color="black" />
               </Pressable>
             </View>
-
-
-
             {children}
-
-
           </View>
         </View>
       </Modal>
@@ -70,7 +59,6 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     paddingTop: 10,
     padding: 10,
-    // alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

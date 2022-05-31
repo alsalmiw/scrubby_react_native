@@ -29,33 +29,24 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
   const [isInvited, setIsInvited] = useState(false)
   const [allMembers, setAllMembers] = useState([]) as any
   const [firstTime, setFirstTime] = useState<boolean>(true)
-  const [r, setR]=useState<number>(Math.floor(Math.random() * 7))
+  const [r, setR] = useState<number>(Math.floor(Math.random() * 7))
 
 
   useEffect(() => {
-   
+
     handleCreateUsersList()
     ShowMembers()
-    //console.log("outside " +refreshTaskPage)
-
-    // if(refreshTaskPage){
-    //   console.log("insidee " +refreshTaskPage)
-    //   handleCreateUsersList()
-      
-    // }
-
-    
     
   }, [childrenData, sharedSpacesInfo, acceptedInvitations, spacesRooms])
 
-  const getUsers =async () => {
+  const getUsers = async () => {
 
-    let dependent= await GetDependantsDTOByUserId(userData.Id)
-    if(dependent.length!= 0){
+    let dependent = await GetDependantsDTOByUserId(userData.Id)
+    if (dependent.length != 0) {
       setChildrenData(dependent)
     }
     let invites = await GetAcceptedInvitationsbyInviterId(userData.Id)
-    if(invites.length!= 0){
+    if (invites.length != 0) {
       setAcceptedInvitations(invites)
     }
 
@@ -63,7 +54,7 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
 
   const handleCreateUsersList = () => {
 
-    
+
     let membersArr = [] as any
     let member = {
       id: userData.id,
@@ -93,11 +84,11 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
         })
         : null
       : null
-        //console.log("membersArray",membersArr)
+    
     acceptedInvitations.length > 0 ?
       acceptedInvitations.map((person: any, idx: number) => {
         sharedSpacesInfo.map((space: any, idx: number) => space.sharedWith.map((shared: any) => {
-          let invited=[] as any
+          let invited = [] as any
           if (shared.invitedId == person.invitedId) {
             invited =
             {
@@ -107,20 +98,16 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
               isChild: false,
               isInvited: true
             }
-           // console.log("I setted shared invites spaces people")
-             let foundmember = membersArr.some((member:any) => {
-              if(member.id==invited.id && member.isChild==false) {
-               return true
+            
+            let foundmember = membersArr.some((member: any) => {
+              if (member.id == invited.id && member.isChild == false) {
+                return true
               }
             })
-            if(!foundmember)
-            {
+            if (!foundmember) {
               membersArr.push(invited)
             }
           }
-
-         
-
 
         }
         ))
@@ -128,26 +115,26 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
       : null
 
     setAllMembers(membersArr)
-    //console.log(refreshTaskPage)
+    
     setRefreshTaskPage(false)
-    //console.sslog(membersArr)
+    
 
-  
+
   }
 
-  
+
 
   const handleGoToSpaceRooms = async (space: any) => {
-      //  console.log("collection id is "+space.id)
-        setWaiting(true)
+    
+    setWaiting(true)
     let spaceInfo = await GetCollectionDTOByCollectionID(space.id)
-    if(spaceInfo!=null){
-        setMySpace(spaceInfo)
-       navigation.navigate('TaskMember')
-      
+    if (spaceInfo != null) {
+      setMySpace(spaceInfo)
+      navigation.navigate('TaskMember')
+
     }
 
-    
+
 
   }
 
@@ -168,102 +155,102 @@ const TaskFamilyScreen: FC<Props> = ({ navigation }) => {
 
     )
   }
-  
+
   return (
     <SplashComponentFaded>
 
-    <ScrollView style={styles.container}>
-      <HeaderComponent title="Task Family" />
-      <View style={styles.underlineContainer}>
-        {allMembers.length <= 3 ?
-          <UnderlinedOneHeaderComponent titleFirst={'Select Member'} />
-          :
-          <UnderlinedHeaderComponent titleOne={'Select Member'} titleTwo={'see all'} titleThree={'see less'} />
-        }
-
-      </View>
-      <View style={styles.selectMemberCon}>
-
-        {
-
-          seeAll ?
-
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-
-              <ShowMembers />
-            </ScrollView>
-
+      <ScrollView style={styles.container}>
+        <HeaderComponent title="Task Family" />
+        <View style={styles.underlineContainer}>
+          {allMembers.length <= 3 ?
+            <UnderlinedOneHeaderComponent titleFirst={'Select Member'} />
             :
-            <View style={styles.selectMemberCon}>
-              <ShowMembers />
-            </View>
+            <UnderlinedHeaderComponent titleOne={'Select Member'} titleTwo={'see all'} titleThree={'see less'} />
+          }
 
-        }
+        </View>
+        <View style={styles.selectMemberCon}>
 
-      </View>
-      <UnderlinedHeaderComponent titleOne={'My Spaces'} titleTwo={''} titleThree={''} />
+          {
 
+            seeAll ?
 
-      <View>
+              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 
-        {
+                <ShowMembers />
+              </ScrollView>
 
+              :
+              <View style={styles.selectMemberCon}>
+                <ShowMembers />
+              </View>
 
-          !taskUser.isInvited ?
+          }
 
-            (spacesRooms.length > 0 ?
-              spacesRooms.map((space: any, idx: number) => {
-                return (
-                  <View  key={idx}>
-                  {
-                    space.rooms!=null ?
-                 
-                  <TaskSpaceRowComponent
-                    idx={r + idx}
-                    key={idx}
-                    onPress={() => handleGoToSpaceRooms(space)}
-                  >
-                    <Text style={styles.spaceFont}>{space.collectionName}</Text>
-                  </TaskSpaceRowComponent>
-                  :null
-                   }
-                  </View>
-                )
-              })
-              : <Text style={{padding:10}}>Loading ... or you have no spaces</Text>
-            )
-
-            :
-
-            (sharedSpacesInfo.length > 0 ?
-              sharedSpacesInfo.map((space: any, idx: number) => space.sharedWith.map((shared: any) => {
-               // console.log(shared)
-                return (
-                  shared.invitedId == taskUser.id ?
-                  space.rooms!= null?
-                    <TaskSpaceRowComponent
-                      idx={r + idx}
-                      key={idx}
-                      onPress={() => handleGoToSpaceRooms(space)}
-                    >
-                      <Text style={styles.spaceFont}>{space.collectionName}</Text>
-                    </TaskSpaceRowComponent>
-                    :null
-                    : null
-
-                )
-              }))
-              : <Text style={{padding:10}}>Loading ... or you have no spaces</Text>
-            )
+        </View>
+        <UnderlinedHeaderComponent titleOne={'My Spaces'} titleTwo={''} titleThree={''} />
 
 
+        <View>
+
+          {
 
 
-        }
+            !taskUser.isInvited ?
 
-      </View>
+              (spacesRooms.length > 0 ?
+                spacesRooms.map((space: any, idx: number) => {
+                  return (
+                    <View key={idx}>
+                      {
+                        space.rooms != null ?
 
-    </ScrollView>
+                          <TaskSpaceRowComponent
+                            idx={r + idx}
+                            key={idx}
+                            onPress={() => handleGoToSpaceRooms(space)}
+                          >
+                            <Text style={styles.spaceFont}>{space.collectionName}</Text>
+                          </TaskSpaceRowComponent>
+                          : null
+                      }
+                    </View>
+                  )
+                })
+                : <Text style={{ padding: 10 }}>Loading ... or you have no spaces</Text>
+              )
+
+              :
+
+              (sharedSpacesInfo.length > 0 ?
+                sharedSpacesInfo.map((space: any, idx: number) => space.sharedWith.map((shared: any) => {
+                  
+                  return (
+                    shared.invitedId == taskUser.id ?
+                      space.rooms != null ?
+                        <TaskSpaceRowComponent
+                          idx={r + idx}
+                          key={idx}
+                          onPress={() => handleGoToSpaceRooms(space)}
+                        >
+                          <Text style={styles.spaceFont}>{space.collectionName}</Text>
+                        </TaskSpaceRowComponent>
+                        : null
+                      : null
+
+                  )
+                }))
+                : <Text style={{ padding: 10 }}>Loading ... or you have no spaces</Text>
+              )
+
+
+
+
+          }
+
+        </View>
+
+      </ScrollView>
     </SplashComponentFaded>
   );
 }
@@ -272,8 +259,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    // paddingTop: 60,
-     padding: 10,
+    
+    padding: 10,
   },
   spaceFont: {
     color: '#fff',

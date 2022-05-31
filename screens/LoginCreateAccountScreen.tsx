@@ -40,10 +40,24 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
     let avR = Math.floor(Math.random() * 46)
 
     useEffect(() => {
-
+        checkLocalStorages()
+       
     }, [])
 
+    const checkLocalStorages = async () => {
+        let token = await AsyncStorage.getItem("Token");
+        let username= await AsyncStorage.getItem("Username");
+        
+       setUsername(username)
+         if( token!=null && username!=null )
+         { 
+            setBlank(true)
+             setUsername(username)
+             fecthUserData(username)
 
+         }
+ 
+    }
 
 
     const addUser = async () => {
@@ -80,12 +94,24 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
         //console.log(userLoginData)
         setSavedUsername(username);
         setSavedPassword(password);
-
         let result = await UserLogin(userLoginData);
         if (result.token != null) {
 
             AsyncStorage.setItem("Token", result.token);
             AsyncStorage.setItem("Username", username);
+            fecthUserData(username)
+        }
+        else {
+            Alert.alert("Error", 'Incorrect Username or Password.', [{ text: "Cancel", style: "cancel" }])
+            setBlank(false)
+            //console.log('fail')
+        }
+       
+    }
+
+    const fecthUserData = async(username:string) => {
+
+       
           
             let defaultCollection = await GetUserDefaultSchedule(username)
             let userInfo = await GetUserByUsername(username)
@@ -158,19 +184,9 @@ const LoginAndCreateAccountScreen: FC<Props> = ({ navigation, route }) => {
                 setMyHouses([])
             }
 
-            
-           
-        
-
-
-
-        }
-        else {
-            Alert.alert("Error", 'Incorrect Username or Password.', [{ text: "Cancel", style: "cancel" }])
-            setBlank(false)
-            //console.log('fail')
-        }
+    
     }
+
     const checkTextInput = () => {
         let regi = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g
         let space = /[ ]/

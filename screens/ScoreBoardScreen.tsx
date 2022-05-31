@@ -63,10 +63,10 @@ const ScoreBoardScreen: FC<Props> = ({ navigation, route }) => {
           scoreBoardList.sort((a: any, b: any) => b.points - a.points).map((people: any, idx: number) => {
             return (
               !isChildFree? 
-              <ParticipantsList people={people} idx={idx}/>
+              <ParticipantsList key={idx} people={people} idx={idx}/>
          
               :!people.isChild?
-              <ParticipantsList people={people} idx={idx}/>
+              <ParticipantsList key={idx} people={people} idx={idx}/>
               :null
             )
           })

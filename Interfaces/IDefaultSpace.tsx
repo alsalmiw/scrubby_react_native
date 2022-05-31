@@ -3,5 +3,5 @@ export default interface IDefaultSpace{
     UserId:number,
     CollectionId:number,
     IsDefault:boolean, 
-    IsDelete:boolean
+    IsDeleted:boolean
 }

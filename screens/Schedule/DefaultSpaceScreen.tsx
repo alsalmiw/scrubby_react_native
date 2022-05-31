@@ -48,7 +48,7 @@ const DefaultSpaceScreen: FC<Props> = ({navigation})=> {
             UserId:userData.id,
             CollectionId:newSelection.id,
             IsDefault:true, 
-            IsDelete:false
+            IsDeleted:false
         }
 
         console.log(newDefault);

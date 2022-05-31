@@ -229,8 +229,13 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
           </ScrollView>
         </View>
       </TouchableWithoutFeedback>
+
+      {
+            selectedUser.coins>0? 
       <TwoFullButtonComponent color={purpleColor} text1={"Back"} text2={"Redeem"} onBackPress={()=>{navigation.goBack()}} onAcceptPress={handleRedeem} />
-      {/* <FullButtonComponent radius={0} color={purpleColor} onPress={() => handleGoBack()}><Text> Back </Text></FullButtonComponent> */}
+      :
+     <FullButtonComponent radius={0} color={purpleColor} onPress={() => handleGoBack()}><Text> Back </Text></FullButtonComponent> 
+}
     </>
   );
 }

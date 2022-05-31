@@ -228,9 +228,9 @@ const MyProfileScreen: FC<Props> = ({ navigation }) => {
           </View>
           {/* <UnderlinedHeaderComponent titleOne="My Spaces" titleTwo="" titleThree="" /> */}
           <Pressable style={styles.secondRow} onPress={handleAddNewSpaceNavigation}>
-            <AddItemButtonComponent onPress={() => { handleAddNewSpaceNavigation }}>
+     
               <Entypo name="squared-plus" size={50} color={lilacColor} />
-            </AddItemButtonComponent>
+       
             <View style={styles.userNameContainer}>
               <UserNameComponent name="Create a New Space"></UserNameComponent>
             </View>

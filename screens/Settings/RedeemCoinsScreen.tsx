@@ -190,9 +190,9 @@ const RedeemCoinsScreen: FC<Props> = ({ navigation, route }) => {
                
                   {
                     selectedUser.coins>0? 
-                   <Text>  {selectedUser.name} has coins!! Enter the value of coins you would like to redeem:   </Text>
+                   <Text>{selectedUser.name} has coins!! Enter the value of coins you would like to redeem:   </Text>
                     : 
-                    <Text>  {selectedUser.name} does not have any coins. Complete tasks to earn coins!   </Text>
+                    <Text>{selectedUser.name} does not have any coins. Complete tasks to earn coins!   </Text>
                   }
                 
               </View>
@@ -256,8 +256,8 @@ const styles = StyleSheet.create({
   textContent: {
 
     marginTop: 10,
-    paddingLeft: 10,
-    paddingRight: 10
+    paddingLeft: "2.5%",
+    paddingRight: "2.5%"
   },
   buttonContent: {
     

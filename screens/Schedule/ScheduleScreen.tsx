@@ -254,7 +254,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
         {
           defaultSpace.length!=0?
         <>
-        <View style={[styles.flexrow]}>
+        <View style={[styles.flexrow, styles.colorItems]}>
           <Text style={[styles.mainHeader, { color: secondaryTextColor }]}>{defaultSpace.collectionName}</Text>
           {
             defaultScheduleOptions.length > 1 ?
@@ -273,7 +273,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
         </View>
         {/* <ReactNativeCalendar/> */}
 
-        <ScrollView horizontal style={styles.datesContainer} showsHorizontalScrollIndicator={false}>
+        <ScrollView horizontal style={styles.datesContainer} showsHorizontalScrollIndicator={false} >
           {scheduledDates.length > 0 ?
             scheduledDates.map((date: string, idx: number) => {
 
@@ -294,13 +294,13 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
         </ScrollView>
         {
           scheduledDates.length > 0 ?
-            <View>
+            <View style={styles.rowHeader}>
               <UnderlinedOneHeaderComponent titleFirst={"My Rooms"} />
             </View>
             : null
         }
 
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.colorItems}>
           {
             scheduledRooms.map((room: any, idx: number) => {
 
@@ -322,7 +322,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
         {
 
           scheduledDates.length > 0 ?
-            <View>
+            <View style={styles.rowHeader}>
               <UnderlinedOneHeaderComponent titleFirst={"My Tasks"} />
             </View>
             : null
@@ -332,7 +332,7 @@ const ScheduleScreen: FC<Props> = ({ navigation }) => {
         {/* <View>
     <UnderlinedOneHeaderComponent titleFirst={"My Tasks"}  />
       </View> */}
-        <View>
+        <View style={styles.colorItems}>
           {
             selectedRoom != null ?
               selectedRoom.todaysTasks != null ?
@@ -399,13 +399,20 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   mainHeader: {
-    fontSize: 25,
+    fontSize: 30,
     fontWeight: "bold",
   },
   rowHeader: {
-    paddingTop: 10,
     flexDirection: 'row',
+    paddingLeft: '2.5%',
+    paddingRight: '2.5%'
   },
+  colorItems: {
+    paddingTop:'2.5%',
+    paddingLeft: '2.5%',
+    paddingRight: '2.5%'
+  },
+  
   dateBtn: {
     width: 80,
     height: 100,

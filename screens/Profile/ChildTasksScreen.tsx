@@ -214,7 +214,7 @@ if(deleted)
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.firstRow}>
             <View>
-            <View>
+            <View style={{paddingLeft:'2.5%'}}>
             <AvatarComponent onPress={() => {undefined}} imageSource={childPage.dependentPhoto} />
               <Pressable  style={styles.deleteChild} onPress={() =>handleDeleteChild()}>
               <FontAwesome5 name="user-times" size={20} color={lilacColor} />
@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     paddingTop: 10,
-    paddingRight: 10,
+    paddingRight: "2.5%",
     marginTop: 10,
     height: 100
   },

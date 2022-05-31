@@ -191,16 +191,16 @@ let r = Math.floor(Math.random() * 7)
      }
               
     </View>
- 
+     <View style={{paddingLeft:"2.5%", paddingRight:'2.5%'}}>
     <UnderlinedOneHeaderComponent titleFirst={'Last 30 days'}  />
-   
+    </View>
     
     <View style = {styles.flexrow}>
        
        
       
 </View>
-
+<View style={{marginTop:'2%'}}>
      {
          selectedUser!=null?
          tasksList.length!=0?
@@ -210,7 +210,7 @@ let r = Math.floor(Math.random() * 7)
             task.memberId==selectedUser.id && task.isChild == selectedUser.isChild?
         
              
-            <View key={idx}>
+            <View key={idx} style={{paddingLeft:'2.5%'}}>
             <TaskRowHistoryComponent r={r} key={idx} idx={idx} task={task} />
             <View style={[ {display:current===idx?"flex": "none", padding: 10}]}>
             <Text style={[styles.taskInfo ]}>Location: {task.taskSpace} </Text>
@@ -230,6 +230,7 @@ let r = Math.floor(Math.random() * 7)
          : <Text style={{padding:10}}>Loading .... or you have no Task History</Text>
          :null
      }
+     </View>
 
     </ScrollView>
          

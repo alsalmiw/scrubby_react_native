@@ -97,7 +97,7 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
            
             seeAll?
 
-                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{paddingLeft:'2%'}}>
 
                       <ShowRooms />
                   
@@ -105,7 +105,7 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
 
                   : 
 
-                  <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                  <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft:'2%' , paddingRight:'2%' }}>
                   
                     <ShowRooms />
 
@@ -115,12 +115,12 @@ const TaskMemberScreen: FC<Props> = ({navigation, route})=> {
               </View>
           
           
-          <View>
+          <View style={{paddingLeft:'2.5%', paddingRight:'2.5%'}}>
            <UnderlinedOneHeaderComponent titleFirst={' Assign Tasks' }/>
         </View>
             {/* </View>l */}
 
-          <View>
+          <View style={{paddingLeft:'2%'}}>
              
             {
               tasks.length>0?
@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
   },
   firstRowContainer: {
       flexDirection: 'row',
+      paddingLeft:'2.5%'
   },
   insideFirstRowContainer1: {
       justifyContent: 'center',
@@ -174,7 +175,8 @@ const styles = StyleSheet.create({
  underlineContainer: {
   flexDirection: 'row',
   justifyContent: "space-between",
-  paddingLeft: 10,
+  paddingLeft: '2.5%',
+   paddingRight:'2.5%'
 },
 fadedImage: {
   borderRadius:5, 

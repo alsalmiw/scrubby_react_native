@@ -309,7 +309,7 @@ const ChildTasksScreen: FC<Props> = ({ navigation }) => {
                                                         </Text>
                                                     </View>
                                                     <View style={styles.centering}>
-                                                        <Text style={[{ color: 'white', fontSize: 20 }]}> <FontAwesome5 name="coins" color='white' />  {taskName.task.coins}</Text>
+                                                        <Text style={{ color: 'white', fontSize: 25 }}> <FontAwesome5 name="coins" color='white'  />  {taskName.task.coins}</Text>
                                                     </View>
                                                 </View>
                                             </View>
@@ -361,6 +361,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        paddingLeft:"2%"
     },
     buttonSize: {
         width: 50, height: 50

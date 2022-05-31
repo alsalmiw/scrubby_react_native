@@ -13,10 +13,9 @@ interface Props {
   children: ReactNode
 }
 
-
 const TaskSpaceRowMinus: FC<Props> = (props) => {
 
-  const {bgColor, lilacColor} = useContext(ThemeContext)
+  const { bgColor, lilacColor } = useContext(ThemeContext)
 
   const handleFunction = () => {
     props.onPress();
@@ -25,14 +24,7 @@ const TaskSpaceRowMinus: FC<Props> = (props) => {
     <TaskSpaceRowComponent idx={props.idx} onPress={handleFunction}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <Text style={styles.textStyle}>{props.children}</Text>
-        
-          {/* <Entypo name="trash" size={24} color={bgColor} /> */}
-          
-           <FontAwesome name="minus-square" size={40} color="white" />
-           
-          
-
-        
+        <FontAwesome name="minus-square" size={40} color="white" />
       </View>
     </TaskSpaceRowComponent>
   )

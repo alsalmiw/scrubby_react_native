@@ -1,6 +1,5 @@
-// import { StatusBar } from 'expo-status-bar';
 import { FC, useContext, useState } from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StyleSheet, View, StatusBar, Image, Pressable, Alert, TouchableHighlight } from 'react-native';
 
 import RootStackParamList from '../../types/INavigateProfile'
@@ -13,126 +12,116 @@ import SquareWhiteButton from '../../components/SquareWhiteButton';
 import icons from '../../types/Icons'
 import UserContext from '../../context/UserContext';
 import IRoom from '../../Interfaces/IRoom'
-import {AddNewRoom, GetCollectionByUsername, GetCollectionsRoomsByUsername, GetDefaultOptionsByUsername, GetSpaceCollectionByUsername, GetSpacesByCollectionID} from '../../services/dataService'
+import { AddNewRoom, GetCollectionByUsername, GetCollectionsRoomsByUsername, GetDefaultOptionsByUsername, GetSpaceCollectionByUsername, GetSpacesByCollectionID } from '../../services/dataService'
 
-type Props = NativeStackScreenProps <RootStackParamList, 'AddNewSpace'>
+type Props = NativeStackScreenProps<RootStackParamList, 'AddNewSpace'>
 
-const AddNewRoomScreen: FC<Props> = ({navigation, route})=> {
-  
-    const {yellowColor, fuchsiaColor} = useContext(ThemeContext)
-    const { userData, setMySpaces, myRooms, setMyRooms, mySpace, setMyHouses, setMySpace, setSpacesRoom, setDefaultScheduleOptions } = useContext(UserContext)
+const AddNewRoomScreen: FC<Props> = ({ navigation, route }) => {
 
-    const [category, setCategory] = useState('')
-    const [roomName, setRoomName] = useState('')
-    const [selectedRoom, setSelectedRoom]= useState<string>('')
+  const { yellowColor, fuchsiaColor } = useContext(ThemeContext)
+  const { userData, setMySpaces, myRooms, setMyRooms, mySpace, setMyHouses, setMySpace, setSpacesRoom, setDefaultScheduleOptions } = useContext(UserContext)
 
-    const handleAddRoom = async() => {
+  const [category, setCategory] = useState('')
+  const [roomName, setRoomName] = useState('')
+  const [selectedRoom, setSelectedRoom] = useState<string>('')
 
-      let regi = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g
+  const handleAddRoom = async () => {
+
+    let regi = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g
 
     if (roomName.length == 0 || roomName == null) {
       Alert.alert("Error", 'Invalid Room Name. Try Again.', [{ text: "Cancel", style: "cancel" }]);
     }
-    else if (regi.test(roomName) ) {
+    else if (regi.test(roomName)) {
       Alert.alert("Error", `Invalid Room Name. Try Again.`, [{ text: "Okay", style: "cancel" }]);
     }
 
     else {
-     console.log(mySpace.id)
-      
-      let newRoom:IRoom = {
-        id:0, 
+
+      let newRoom: IRoom = {
+        id: 0,
         spaceName: roomName,
         spaceCategory: category,
         collectionId: mySpace.id
       }
-      console.log(newRoom)
 
       let result = await AddNewRoom(newRoom)
-      if (result)
-      {
+      if (result) {
         Alert.alert("You have successfully added a new room")
         navigation.goBack()
 
-      let spaceRooms = await GetSpacesByCollectionID(mySpace.id)
-        if(spaceRooms.length > 0){
+        let spaceRooms = await GetSpacesByCollectionID(mySpace.id)
+        if (spaceRooms.length > 0) {
           setMyRooms(spaceRooms)
-          console.log(spaceRooms)
         }
         let spacesWRooms = await GetCollectionsRoomsByUsername(userData.username)
-        if(spacesWRooms.length > 0){
+        if (spacesWRooms.length > 0) {
           setSpacesRoom(spacesWRooms)
         }
 
         let defaultOptions = await GetDefaultOptionsByUsername(userData.username)
-        if(defaultOptions.length != 0){
+        if (defaultOptions.length != 0) {
           setDefaultScheduleOptions(defaultOptions)
-      }
+        }
       }
     }
-   
 
-}
 
-const handleCategory = (name: string) => {
+  }
+
+  const handleCategory = (name: string) => {
     setCategory(name)
-    console.log(name);
     setSelectedRoom(name)
-   
-}
+
+  }
   return (
- 
-    <View style={[styles.container, {backgroundColor:yellowColor}]}>
-         <TitleComponent title="My New Room" />
-         <View style={[styles.contentContainer]}>
-         <WhiteSubTitleComponent title="Name" />
-        <InputFieldComponent value={''} maxLength={8} holder="enter new room" hide={false} onChangeText={(e: string)=>setRoomName(e)} />
+    <View style={[styles.container, { backgroundColor: yellowColor }]}>
+      <TitleComponent title="My New Room" />
+      <View style={[styles.contentContainer]}>
+        <WhiteSubTitleComponent title="Name" />
+        <InputFieldComponent value={''} maxLength={8} holder="enter new room" hide={false} onChangeText={(e: string) => setRoomName(e)} />
         <WhiteSubTitleComponent title="Select Icon" />
         <View style={styles.iconsContainer}>
-        {
-            icons.map((icon, idx)=> {
-                return (
-            <Pressable  style={[styles.iconContainer,{borderWidth:3, borderColor: selectedRoom==icon.Name?  fuchsiaColor:yellowColor}  ]} key={idx} onPress={()=>handleCategory(icon.Name)} >
-            <Image style={styles.iconSize} source={icon.Link} />
-            </Pressable>
-            )
+          {
+            icons.map((icon, idx) => {
+              return (
+                <Pressable style={[styles.iconContainer, { borderWidth: 3, borderColor: selectedRoom == icon.Name ? fuchsiaColor : yellowColor }]} key={idx} onPress={() => handleCategory(icon.Name)} >
+                  <Image style={styles.iconSize} source={icon.Link} />
+                </Pressable>
+              )
             })
-        }
-   
-        </View>
-        </View>
-       <TwoFullButtonComponent text1="Back" text2="Add" color={fuchsiaColor} onAcceptPress={()=>handleAddRoom()} onBackPress={()=>navigation.goBack()}/>
-    </View>
+          }
 
-    
+        </View>
+      </View>
+      <TwoFullButtonComponent text1="Back" text2="Add" color={fuchsiaColor} onAcceptPress={() => handleAddRoom()} onBackPress={() => navigation.goBack()} />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
-    justifyContent:"space-between",
-  
+    justifyContent: "space-between",
+
   },
-  contentContainer:{
+  contentContainer: {
     padding: 10,
   },
   iconsContainer: {
-      flexDirection:"row",
-      flexWrap: "wrap",
-      
-      //justifyContent: "space-evenly"
+    flexDirection: "row",
+    flexWrap: "wrap",
+
   },
-  iconContainer:{
+  iconContainer: {
     backgroundColor: "#FFF",
-    borderRadius:10,
+    borderRadius: 10,
     margin: 1,
-    padding:10
+    padding: 10
   },
-  iconSize:{
-      width: 60,
-      height: 60,
+  iconSize: {
+    width: 60,
+    height: 60,
   }
 });
 

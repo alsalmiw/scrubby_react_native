@@ -10,10 +10,9 @@ interface Props {
   idx: number
 }
 
+const TaskSpaceRowCheck: FC<Props> = (props) => {
 
-const TaskSpaceRowCheck:FC<Props> = (props) => {
-
-  const {bgColor, lilacColor} = useContext(ThemeContext)
+  const { bgColor, lilacColor } = useContext(ThemeContext)
 
   const handleNav = () => {
     props.onPress();
